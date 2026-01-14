@@ -1,0 +1,49 @@
+---
+title: "“Shrinkwrapped” List with CSS"
+datePublished: 2016-08-02T22:49:11+00:00
+cover: /images/ch_Cg-5yC.jpeg
+tags: ["css", "web-design", "web-development"]
+
+---
+
+
+
+
+This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
+
+![Photo by Annie Spratt](/images/1_09ICYcC6EVhb5rbscfMN9w.webp)*Photo by [Annie Spratt](https://unsplash.com/@fableandfolk)*
+
+The following code will create a list (&lt;ul&gt; in this case) that is only as wide as its longest item.
+
+### HTML
+
+The HTML is very simple. Just an unordered list:
+
+```
+<ul>
+  <li>Lorem ipsum</li>
+  <li>Dolor sit amet</li>
+  <li>Consectetur</li>
+  <li>Adipiscing</li>
+  <li>Morbi odio</li>
+  <li>Mi blandit vehicula</li>
+</ul>
+```
+
+
+### CSS
+
+These lines do all the work. The border declaration is optional but helps to visualize the result.
+
+```
+ul {
+  border: solid 1px #555555;
+  display: inline-block;  
+}
+```
+
+
+### Examples
+
+
+[The browser support for display: inline-block](http://caniuse.com/#feat=inline-block) is excellent. You can feel comfortable using it in today’s web environment.

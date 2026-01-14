@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import { siteTitle } from '../site';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts: CollectionEntry<'blog'>[] = await getCollection('blog');
+
+  return posts.map(post => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const defaultCover = '/images/default-cover.jpg';
+const cover = post.data.cover ?? defaultCover;
+const pageTitle = `${post.data.title} - ${siteTitle}`;
+---
+
+<Layout title={pageTitle}>
+    <div class="flex flex-col gap-6 text-center">
+        <h2 class="text-3xl font-bold">{post.data.title}</h2>
+        <div class="text-zinc-400">{post.data.datePublished.toISOString().slice(0, 10)}</div>
+        <img class="rounded" src={cover} />
+    </div>
+
+    <div class="prose prose-zinc mx-auto">
+        <Content />
+
+        {cover === defaultCover && <p>Cover photo by <a href="https://unsplash.com/@space_parts?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Olli Kilpi</a> on <a href="https://unsplash.com/photos/abstract-white-mesh-wave-pattern-with-soft-lighting-K7EEEPFFjh0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>.</p> }
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-4">
+      {
+      post.data.tags && post.data.tags.map((tag) => (
+        <span class="text-zinc-400">#{tag}</span>
+      ))
+      }
+    </div>
+
+    <Footer />
+</Layout>

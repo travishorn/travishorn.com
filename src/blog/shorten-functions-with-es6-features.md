@@ -1,0 +1,52 @@
+---
+title: "Shorten functions with ES6 features"
+datePublished: 2019-01-03T22:01:02+00:00
+cover: /images/QxgJH1sCE.webp
+tags: ["javascript", "web-development", "es6"]
+
+---
+
+
+
+
+ES6 implements features which use a more expressive closure syntax and more intuitive expression interpolation that can shorten your functions.
+
+![](/images/LeyQf446A.webp)
+
+Consider this function.
+
+```
+function sayHello(name) {
+  return 'Hello, ' + name + '.';
+}
+```
+
+
+Using [template literals string interpolation](http://es6-features.org/#StringInterpolation), we can re-write the function like so.
+
+```
+functon sayHello(name) {
+  return `Hello, ${name}.`;
+}
+```
+
+
+Notice the backticks instead of quotes around the string.
+
+We can further shorten it using [arrow functions](http://es6-features.org/#ExpressionBodies).
+
+```
+var sayHello = name => `Hello, ${name}.`;
+```
+
+
+Using this syntax, the function is shortened drastically, without losing any code clarity.
+
+The function above looks nice, but there’s one last change I would personally make to make the code even easier to reason about.
+
+```
+const sayHello = name => `Hello, ${name}.`;
+```
+
+
+I swapped `var` for `const`. Constants cannot be re-assigned, so this function will always do the same thing no matter when it’s called during run-time.
