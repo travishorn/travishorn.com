@@ -12,20 +12,24 @@ const pageTitle = title ?? siteTitle;
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/travis-horn-circle-16x16.png" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{pageTitle}</title>
 	</head>
 	<body>
 		<div class="min-h-screen bg-zinc-50 text-zinc-700 pb-24 font-['Open_Sans_Variable']">
 			<div class="max-w-3xl mx-auto p-12 flex flex-col gap-12">
-				<h1 class="font-semibold">
-					<a class="hover:text-zinc-600 class flex gap-2 items-center" href="/">
-						<img alt="Profile photo of Travis Horn" src="/travis-horn-circle-16x16.png" />
-						{siteTitle}
-					</a>
-				</h1>
+				<header>
+					<h1 class="font-semibold">
+						<a class="hover:text-zinc-600 class flex gap-2 items-center" href="/">
+							<img alt="Profile photo of Travis Horn" src="/travis-horn-circle-16x16.png" />
+							{siteTitle}
+						</a>
+					</h1>
+				</header>
 
-				<slot />
+				<main class="flex flex-col gap-12">
+					<slot />
+				</main>
 			</div>
 		</div>
     </body>

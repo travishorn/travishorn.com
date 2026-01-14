@@ -29,11 +29,11 @@ const pageTitle = `${post.data.title} - ${siteTitle}`;
         <img class="rounded" src={cover} />
     </div>
 
-    <div class="prose prose-zinc mx-auto">
-        <Content />
+      <div class="prose prose-zinc w-full mx-auto">
+          <Content />
 
-        {cover === defaultCover && <p>Cover photo by <a href="https://unsplash.com/@space_parts?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Olli Kilpi</a> on <a href="https://unsplash.com/photos/abstract-white-mesh-wave-pattern-with-soft-lighting-K7EEEPFFjh0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>.</p> }
-    </div>
+          {cover === defaultCover && <p>Cover photo by <a href="https://unsplash.com/@space_parts?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Olli Kilpi</a> on <a href="https://unsplash.com/photos/abstract-white-mesh-wave-pattern-with-soft-lighting-K7EEEPFFjh0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>.</p> }
+      </div>
 
     <div class="flex flex-wrap justify-center gap-4">
       {
