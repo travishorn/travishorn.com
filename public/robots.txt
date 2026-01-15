@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://travishorn.com/sitemap-index.xml
