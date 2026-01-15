@@ -1,6 +1,8 @@
 ---
+
 import "@fontsource-variable/open-sans";
 import "../styles/global.css";
+import Search from "../components/Search.astro";
 import { siteTitle, siteDescription } from '../site';
 
 interface Props { title?: string; description?: string; ogImage?: string; }
@@ -36,13 +38,15 @@ const pageOgImage = ogImage || '/images/default-cover.jpg';
 	<body>
 		<div class="min-h-screen bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-50 pb-24 font-['Open_Sans_Variable']">
 			<div class="max-w-3xl mx-auto p-12 flex flex-col gap-12">
-				<header>
+				<header class="flex flex-col gap-4 md:flex-row md:gap-2 items-center justify-between">
 					<h1 class="font-semibold">
 						<a class="hover:text-zinc-600 dark:hover:text-zinc-300 class flex gap-2 items-center" href="/">
 							<img class="w-7 h-7" alt="Profile photo of Travis Horn" src="/images/travis-horn-circle-64x64.png" />
 							{siteTitle}
 						</a>
 					</h1>
+
+					<Search />
 				</header>
 
 				<slot />
@@ -50,3 +54,4 @@ const pageOgImage = ogImage || '/images/default-cover.jpg';
 		</div>
     </body>
 </html>
+
