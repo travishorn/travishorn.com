@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ProseImage from '../components/ProseImage.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
 import Footer from '../components/Footer.astro';
 import { siteTitle } from '../site';
 import defaultCover from '../blog/images/default-cover.jpg';
@@ -61,13 +62,7 @@ const schema = JSON.stringify({
     </div>
   </article>
 
-  <div class="flex flex-wrap justify-center gap-4">
-    {
-    post.data.tags && post.data.tags.map((tag) => (
-      <span class="text-zinc-500">#{tag}</span>
-    ))
-    }
-  </div>
+  <RelatedPosts currentPost={post} />
 
   <Footer />
 </Layout>

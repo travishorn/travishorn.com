@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import PostCard from './PostCard.astro';
+
+const { currentPost } = Astro.props;
+
+type PostWithScore = CollectionEntry<'blog'> & { similarityScore: number };
+
+// Get all blog posts
+const allPosts = await getCollection('blog');
+
+// Filter out the current post
+const otherPosts = allPosts.filter(post => post.id !== currentPost.id);
+
+// Score posts based on matching tags
+let relatedPosts: PostWithScore[] = otherPosts.map(post => {
+  const postTags = post.data.tags || [];
+  const currentTags = currentPost.data.tags || [];
+  
+  // Count how many tags match
+  const matchingTags = postTags.filter(tag => currentTags.includes(tag));
+  
+  return {
+    ...post,
+    similarityScore: matchingTags.length
+  };
+}).filter(post => post.similarityScore > 0) // Only keep posts with at least 1 match
+  .sort((a, b) => {
+    // Sort by score first (descending)
+    if (b.similarityScore !== a.similarityScore) {
+      return b.similarityScore - a.similarityScore;
+    }
+
+    //If scores match, sort by date (newest first)
+    return b.data.datePublished.valueOf() - a.data.datePublished.valueOf();
+  })
+  .slice(0, 3); // Take the top 3
+
+// FALLBACK: If we don't have 3 related posts, fill the gaps with recent posts
+if (relatedPosts.length < 3) {
+  const recentPosts: PostWithScore[] = otherPosts
+    .sort((a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf())
+    .filter(post => !relatedPosts.find(p => p.id === post.id)) // Avoid duplicates
+    .slice(0, 3 - relatedPosts.length)
+    .map(post => ({ ...post, similarityScore: 0 }));
+    
+  relatedPosts.push(...recentPosts);
+}
+---
+
+<p>Here are some more articles you might like:</p>
+
+<div class="flex flex-col gap-6">
+    {relatedPosts.map(post => (
+        <PostCard post={post} />
+    ))}
+</div>

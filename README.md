@@ -4,7 +4,6 @@ My personal profile and blog.
 
 ## To Do
 
-- "More like this"
 - Search
 - Deploy on Netlify
 - Dark mode
