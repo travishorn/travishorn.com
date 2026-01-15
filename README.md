@@ -4,8 +4,6 @@ My personal profile and blog.
 
 ## To Do
 
-- Semantic, well-defined metadata on blog articles
-- RSS feed
 - "More like this"
 - Search
 - Deploy on Netlify
