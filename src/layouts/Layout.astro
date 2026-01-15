@@ -34,11 +34,11 @@ const pageOgImage = ogImage || '/images/default-cover.jpg';
 		<meta property="twitter:image" content={new URL(pageOgImage, Astro.url.origin).toString()} />
 	</head>
 	<body>
-		<div class="min-h-screen bg-zinc-50 text-zinc-700 pb-24 font-['Open_Sans_Variable']">
+		<div class="min-h-screen bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-50 pb-24 font-['Open_Sans_Variable']">
 			<div class="max-w-3xl mx-auto p-12 flex flex-col gap-12">
 				<header>
 					<h1 class="font-semibold">
-						<a class="hover:text-zinc-600 class flex gap-2 items-center" href="/">
+						<a class="hover:text-zinc-600 dark:hover:text-zinc-300 class flex gap-2 items-center" href="/">
 							<img class="w-7 h-7" alt="Profile photo of Travis Horn" src="/images/travis-horn-circle-64x64.png" />
 							{siteTitle}
 						</a>

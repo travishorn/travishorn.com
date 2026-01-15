@@ -6,7 +6,6 @@ My personal profile and blog.
 
 - Search
 - Deploy on Netlify
-- Dark mode
 - Old article cleanup (start with "Removing Conficker..." and work your way newer)
   - Remove extra cover photo (move credit to end, delete duplicate webp file)
   - Add alt text to images
