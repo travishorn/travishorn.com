@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ProseImage from '../components/ProseImage.astro';
 import Footer from '../components/Footer.astro';
@@ -22,11 +22,25 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const cover = post.data.cover ?? defaultCover;
+const optimizedCover = await getImage({ src: cover });
 const pageTitle = `${post.data.title} - ${siteTitle}`;
-const pageDescription = post.body?.slice(0, 170).replace(/\n/g, ' ') + '…';
+const pageDescription = post.body?.slice(0, 150).replace(/\n/g, ' ') + '…';
+const pageOgImage = optimizedCover.src;
+
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": pageDescription,
+  "image": optimizedCover.src,
+  "author": { "@type": "Person", "name": "Travis Horn" },
+  "datePublished": post.data.datePublished.toISOString(),
+});
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
+<script type="application/ld+json" set:html={schema} />
+
+<Layout title={pageTitle} description={pageDescription} ogImage={pageOgImage}>
   <article class="flex flex-col gap-12">
     <div class="flex flex-col gap-6 text-center">
         <h2 class="text-3xl font-bold">{post.data.title}</h2>

@@ -3,11 +3,12 @@ import "@fontsource-variable/open-sans";
 import "../styles/global.css";
 import { siteTitle, siteDescription } from '../site';
 
-interface Props { title?: string; description?: string }
-const { title, description } = Astro.props as Props;
+interface Props { title?: string; description?: string; ogImage?: string; }
+const { title, description, ogImage } = Astro.props as Props;
 
 const pageTitle = title ?? siteTitle;
 const pageDescription = description ?? siteDescription;
+const pageOgImage = ogImage || '/images/default-cover.jpg';
 ---
 
 <html lang="en">
@@ -17,6 +18,20 @@ const pageDescription = description ?? siteDescription;
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={pageDescription} />
 		<title>{pageTitle}</title>
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDescription} />
+		<meta property="og:image" content={new URL(pageOgImage, Astro.url.origin).toString()} />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={pageTitle} />
+		<meta property="twitter:description" content={pageDescription} />
+		<meta property="twitter:image" content={new URL(pageOgImage, Astro.url.origin).toString()} />
 	</head>
 	<body>
 		<div class="min-h-screen bg-zinc-50 text-zinc-700 pb-24 font-['Open_Sans_Variable']">
