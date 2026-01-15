@@ -10,9 +10,10 @@ const { post } = Astro.props as Props;
 ---
 
 <a class="border border-zinc-300 hover:bg-zinc-100 rounded p-4 flex gap-4 items-center" href={`/${post.id}`}>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 flex-1">
     <div class="font-semibold">{post.data.title}</div>
     <div class="text-zinc-500 text-sm">{post.body?.slice(0, 170)}&hellip;</div>
   </div>
-  <IconChevronRight class="w-16 h-16" />
+
+  <IconChevronRight />
 </a>
