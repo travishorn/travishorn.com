@@ -9,21 +9,22 @@ tags: ["javascript", "nodejs", "npm"]
 
 
 
-I recently read on The Changelog a short post about a tool called Go Package Store.
-> *An app that displays updates for the Go packages in your GOPATH.*
+I recently read on [The Changelog](https://changelog.com/) a short post about a tool called **Go Package Store**.
 
-It has a simple interface that lets you see and update Go packages. According to the Changelog, “Every package ecosystem needs this.” I loved the idea and decided to replicate the project for npm.
+> An app that displays updates for the Go packages in your GOPATH.
 
-## Presenting [npm Package Store](https://github.com/travishorn/npm-package-store)
+It has a simple interface that lets you see and update Go packages. According to The Changelog, “Every package ecosystem needs this.” I loved the idea and decided to replicate the project for npm.
 
-A web app that displays updates for your globally installed npm modules. Inspired by Go Package Store.
+## Presenting [**npm Package Store**](https://github.com/travishorn/npm-package-store)
 
-![](./images/-TS3k37fB.webp)
+A web app that displays updates for your globally installed npm modules. Inspired by **Go Package Store**.
+
+![A screenshot of **npm Package Store**. Navigation at the top reads "My modules" and "Installed". "Installed" is active. Two main sections appear: "Updates" and "Up to date". Each lists some packages. For each package, it shows the name, author, and description. There is an "Update" button next to each pacakge in the "Updates" section.](./images/-TS3k37fB.webp)
 
 ## Installation
 
-```
-> git clone [https://github.com/travishorn/npm-package-store.git](https://github.com/travishorn/npm-package-store.git)
+```console
+> git clone https://github.com/travishorn/npm-package-store.git
 > cd npm-package-store
 > npm start
 ```
@@ -31,13 +32,13 @@ A web app that displays updates for your globally installed npm modules. Inspire
 
 Then just go to [http://127.0.0.1:3000](http://127.0.0.1:3000/)
 
-You can modify the port npm Package Store runs on with the PORT environment variable.
+You can modify the port **npm Package Store** runs on with the PORT environment variable.
 
 ## To do
 
 There’s plenty of room for improvement on this project.
 
-* I’ve already [published it as an npm module](https://www.npmjs.org/package/npm-package-store), but similar to Go Package Manager, I’d like to make this into a binary that can be installed and executed globally, instead of a cloned repository.
+* I’ve already [published it as an npm module](https://www.npmjs.org/package/npm-package-store), but similar to **Go Package Manager**, I’d like to make this into a binary that can be installed and executed globally, instead of a cloned repository.
 
 * The web app should show the changelog between the currently installed version and the latest version. npm tracks certain changes in the package metadata, but this doesn’t include commit messages. npm Package Store will have to follow the repository property in package.json and query GitHub’s API to see changes.
 
@@ -48,5 +49,3 @@ There’s plenty of room for improvement on this project.
 * I’d also like to offer more options than just “update.” These might include “uninstall”, “downgrade”, etc.
 
 See the code and contribute on GitHub: [https://github.com/travishorn/npm-package-store](https://github.com/travishorn/npm-package-store)
-
-*Originally published on my old blog on September 29, 2014.*

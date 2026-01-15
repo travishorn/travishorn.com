@@ -13,9 +13,11 @@ Update April 17, 2012: David Boyer has created a more feature-rich version of th
 Any time your servers are accepting input from the public Internet, you have to be aware of the many types of attacks that can be launched against them. Some examples are [cross-site scripting (XSS)](http://en.wikipedia.org/wiki/Cross-site_scripting) and [SQL injection](http://en.wikipedia.org/wiki/SQL_injection). Today I’m going to talk about [cross-site request forgery (CSRF)](http://en.wikipedia.org/wiki/Cross-site_request_forgery) and, specifically, how to prevent it in ColdFusion 9.
 
 Cross-site request forgery is (as described on [Wikipedia](http://en.wikipedia.org/wiki/Cross-site_request_forgery)):
-> *… a type of malicious exploit of a website whereby unauthorized commands are transmitted from a user that the website trusts. Unlike cross-site scripting (XSS), which exploits the trust a user has for a particular site, CSRF exploits the trust that a site has in a user’s browser.*
+> … a type of malicious exploit of a website whereby unauthorized commands are transmitted from a user that the website trusts. Unlike cross-site scripting (XSS), which exploits the trust a user has for a particular site, CSRF exploits the trust that a site has in a user’s browser.
 
-![Image credit: Terri Oda](./images/1_rk_VdqwWqZ331Ms7E3Eziw.webp)*Image credit: [Terri Oda](https://www.flickr.com/photos/terrio/)*
+![Diagram showing a web server serving a web page to a web browser. Malicious content is being served to the victim's web browser and into the web page.](./images/1_rk_VdqwWqZ331Ms7E3Eziw.webp)
+
+*Image credit: [Terri Oda](https://www.flickr.com/photos/terrio/)*
 
 What this means is that, unless your server is properly protected, it could accept input from a source other than who you intended. A common way for an attacker to achieve this would be by having a legitimate user, who may already be logged into your site, execute some code unintentionally. This could be as simple as crafting a misleading HTML element such as an image or link. When the code is executed by the user, it would send a request to your site, which would normally not be an issue since you already trust the user. However, the attacker’s code could have the user perform any action he would normally be able to do on your site, such as delete his account, post a comment on a forum, transfer currency, etc.
 
@@ -108,5 +110,3 @@ That’s it. This is how the code should appear altogether:
 
 
 In most cases, you won’t have to worry about someone trying to exploit an attack like this, unless you’re developing on a high-profile or currency-driven site. But with only five extra lines of code (and even less on some platforms, including CF10) it doesn’t hurt or complicate things to build in a little extra prevention.
-
-*This post first appeared on my old blog on April 16, 2012.*

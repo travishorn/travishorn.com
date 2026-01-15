@@ -16,11 +16,13 @@ const pageDescription = "Explore my blog posts on web development, programming, 
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-	<div class="flex flex-col gap-6">
-		{
-		sortedPosts.map((post) => (
-			<PostCard post={post} />
-		))
-		}
-	</div>
+	<main class="flex flex-col gap-12">
+		<div class="flex flex-col gap-6">
+			{
+			sortedPosts.map((post) => (
+				<PostCard post={post} />
+			))
+			}
+		</div>
+	</main>
 </Layout>

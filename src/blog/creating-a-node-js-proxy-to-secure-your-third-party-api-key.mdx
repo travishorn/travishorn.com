@@ -13,8 +13,6 @@ Today I am creating a mailing list signup form that will post data to a sheet on
 
 Instead, we’ll create a proxy in Node.js in less than 50 lines of code.
 
-![Photo by Juan D Nella](./images/1_XviICXh4doDeG_ZyDB6Tkw.webp)*Photo by [Juan D Nella](https://unsplash.com/juandinella)*
-
 First let’s set up the database. Log into Fieldbook and create a new book. In that book, make a sheet named **Contacts**. This sheet will contain these three columns
 
 * **Contact ID** (I am just using Fieldbook’s built in numeric ID)
@@ -27,7 +25,7 @@ Now, click on **API**, then **Manage API access**, then **Generate a new API key
 
 Now for the code. Let’s create a new directory and cd into it.
 
-```
+```console
 mkdir fbproxy
 cd fbproxy
 ```
@@ -35,7 +33,7 @@ cd fbproxy
 
 Next, let’s initialize our npm project.
 
-```
+```console
 npm init
 ```
 
@@ -44,14 +42,14 @@ Answer any prompts.
 
 Now we can install dependencies.
 
-```
+```console
 npm install express body-parser requestify moment --save
 ```
 
 
 The proxy itself is simple enough. In a new file called index.js, we’ll first put the parser in strict mode and require our modules.
 
-```
+```javascript
 'use strict';
 
 var express = require('express');
@@ -60,10 +58,9 @@ var requestify = require('requestify');
 var moment = require('moment');
 ```
 
-
 Now set up the constants.
 
-```
+```javascript
 var PORT = process.env.PORT || 3000;
 var BASE_URL = 'https://api.fieldbook.com/v1/[your book ID]';
 var API_OPTIONS = {
@@ -77,10 +74,9 @@ var API_OPTIONS = {
 var app = express();
 ```
 
-
 Since the form will be running from a separate service as our proxy, we’ll need to set up CORS. And since we’ll be accepting form data, we’ll set up the body-parser, too.
 
-```
+```javascript
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -90,10 +86,9 @@ app.use(function(req, res, next) {
 app.use(bodyParser.urlencoded({ extended: true }));
 ```
 
-
 Finally, we get to the meat of the proxy: a single route for handling POST requests from our form.
 
-```
+```javascript
 app.post('/contacts', function(req, res) {
   var URL = BASE_URL + '/contacts';
 
@@ -114,32 +109,30 @@ app.post('/contacts', function(req, res) {
 });
 ```
 
-
 With everything else set up, we will simply tell our proxy to listen for incoming connections.
 
-```
+```javascript
 app.listen(PORT, function() {
   console.log('Fieldbook proxy listening on port %s.', PORT);
 });
 ```
 
-
 In order to run the proxy, we’ll set our environment variables. This will depend on your operating system. But if you’re on Windows like me, open the command prompt and run these commands:
 
-```
+```console
 SET PORT=3000
 SET FB_API_USERNAME=[your API username]
 SET FB_API_PASSWORD=[your API password]
 ```
 
-
 And simply start the proxy:
 
-```
+```console
 node index.js
 ```
 
-
 This proxy will accept form data with an emailAddress key, add the sign up date, and post it to your Fieldbook sheet securely. However, it’s worth mentioning that, as it is, this proxy accepts form data from any origin.
 
-[Read part two](https://travishorn.com/creating-a-front-end-for-working-with-your-api-proxy-7843670c6022#.3uax22l00) to see how to write up a quick front-end form for posting data to this proxy. The code for both this proxy and the front-end form is located in [this GitHub repository](https://github.com/travishorn/fieldbook-proxy-example/).
+[Read part two](https://travishorn.com/creating-a-front-end-for-working-with-your-api-proxy) to see how to write up a quick front-end form for posting data to this proxy. The code for both this proxy and the front-end form is located in [this GitHub repository](https://github.com/travishorn/fieldbook-proxy-example/).
+
+Cover photo by [Juan D Nella](https://unsplash.com/juandinella).

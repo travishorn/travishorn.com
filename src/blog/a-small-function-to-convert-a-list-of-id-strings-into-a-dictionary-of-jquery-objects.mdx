@@ -11,16 +11,13 @@ tags: ["jquery", "javascript", "web-development"]
 
 I often use jQuery to modify the DOM. The simplest way to do this is to use jQuery’s query selector and a modifier function.
 
-```
+```javascript
 $('#intro').css('background-color', 'green');
 ```
 
-
-![Photo by Kalliop3 under CC BY-SA 2.0](./images/1_NnXo-KrTwltkqdL77lkubg.webp)*Photo by [Kalliop3](https://www.flickr.com/photos/ubicumque/) under [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/)*
-
 If you have to perform multiple actions on the same element, you can keep using this selector.
 
-```
+```javascript
 $('#intro').css('background-color', 'green');
 
 // Later...
@@ -31,7 +28,7 @@ $('#intro').hide();
 
 Instead of searching the DOM every time we want to access this element, it is much more efficient to search for it once and store it in a variable.
 
-```
+```javascript
 var intro = $('#intro');
 
 intro.css('background-color', 'green');
@@ -44,7 +41,7 @@ intro.hide();
 
 If you have many elements to access…
 
-```
+```javascript
 var intro = $('#intro');
 var header = $('#header');
 var button = $('#button');
@@ -57,7 +54,7 @@ var footer = $('#footer');
 
 it may be wise to put them all into a “dictionary” object.
 
-```
+```javascript
 var dom = {
   intro: $('#intro'),
   header: $('#header'),
@@ -72,7 +69,7 @@ var dom = {
 
 This way they can be accessed by dot (or bracket) notation from the main object.
 
-```
+```javascript
 dom.intro.css('background-color', 'green');
 dom.header.hide();
 
@@ -85,7 +82,7 @@ Writing the dictionary seems inefficient because there’s a lot of duplicated w
 
 ### The idsToJqObjects function
 
-```
+```javascript
 var idsToJqObjects = function(arr) {
   return arr
     .reduce(function addJqToObject(obj, newKey) {
@@ -98,7 +95,7 @@ var idsToJqObjects = function(arr) {
 
 Use it in this way:
 
-```
+```javascript
 var dom = idstoJqObjects([
   'intro',
   'header',
@@ -112,3 +109,5 @@ var dom = idstoJqObjects([
 
 
 Your jQuery objects can be accessed with the same dot or bracket notation as before, without having to write duplicate code for each ID/variable.
+
+Cover photo by [Kalliop3](https://www.flickr.com/photos/ubicumque/) under [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/).

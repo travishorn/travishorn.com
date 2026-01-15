@@ -23,8 +23,6 @@ I will break this problem down into six categories:
 
 * Technology
 
-![Photo by Jay Wennington](./images/1_JN5atqW0tbV9y0JYFtb32Q.webp)*Photo by [Jay Wennington](https://unsplash.com/jaywennington)*
-
 ### User interface
 
 I like to rely on third-party frameworks for user interface to keep things simple and easy-to-use for the end user. Sometimes you can take risks with user interface but for the most part, users will have a better time navigating your site if you stick to the interface elements they are used to.
@@ -55,7 +53,7 @@ There is a whole industry dedicated to this subject. For the developer, the easi
 
 If the goal is to lay out a page with a main content area and a sidebar, you may be tempted to use a table like so:
 
-```
+```html
 <table>
   <tbody>
     <tr>
@@ -71,14 +69,12 @@ While this *will* work, it is incorrect on a semantic level. Tables should only 
 
 Instead, let’s use a semantic approach:
 
-```
+```html
 <style>
   content, aside { float: left; }
   content        { width: 75%; }
   aside          { width: 25%; }
 </style>
-
-...
 
 <article>Content</article>
 <aside>Sidebar</aside>
@@ -90,6 +86,7 @@ This is much better. Search engines will have a much easier time understanding y
 I’ve found that most SEO issues disappear when you code in this style because your code is optimized for search engines by default.
 
 ### Maintainability
+
 > Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.
 
 — John F. Woods
@@ -119,3 +116,5 @@ Depending on what server technology and applications you have running on the bac
 It gets even tougher on the front-end. A user may be using any browser or device they choose. It is best to stick with widely supported features, which can be checked on the excellent site, [Can I use…](http://caniuse.com/). In some cases, polyfills may be available that will “fill in” the missing functionality in browsers that don’t support a certain feature. These can be reliable once thoroughly tested.
 
 While there are many other areas for consideration when building an application or site, these few should get any developer up and running to make a user friendly, secure, performant, optimized, maintainable, and accessible site.
+
+Cover photo by [Jay Wennington](https://unsplash.com/jaywennington).

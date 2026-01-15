@@ -27,6 +27,7 @@ const pageDescription = post.body?.slice(0, 170).replace(/\n/g, ' ') + '…';
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
+  <article class="flex flex-col gap-12">
     <div class="flex flex-col gap-6 text-center">
         <h2 class="text-3xl font-bold">{post.data.title}</h2>
         <div class="text-zinc-500">{post.data.datePublished.toISOString().slice(0, 10)}</div>
@@ -39,19 +40,20 @@ const pageDescription = post.body?.slice(0, 170).replace(/\n/g, ' ') + '…';
         />
     </div>
 
-      <div class="prose prose-zinc w-full mx-auto">
-          <Content components={{ img: ProseImage }} />
+    <div class="prose prose-zinc w-full mx-auto">
+        <Content components={{ img: ProseImage }} />
 
-          {cover === defaultCover && <p>Cover photo by <a href="https://unsplash.com/@space_parts">Olli Kilpi</a> on <a href="https://unsplash.com/photos/abstract-white-mesh-wave-pattern-with-soft-lighting-K7EEEPFFjh0">Unsplash</a>.</p> }
-      </div>
-
-    <div class="flex flex-wrap justify-center gap-4">
-      {
-      post.data.tags && post.data.tags.map((tag) => (
-        <span class="text-zinc-500">#{tag}</span>
-      ))
-      }
+        {cover === defaultCover && <p>Cover photo by <a href="https://unsplash.com/@space_parts">Olli Kilpi</a> on <a href="https://unsplash.com/photos/abstract-white-mesh-wave-pattern-with-soft-lighting-K7EEEPFFjh0">Unsplash</a>.</p> }
     </div>
+  </article>
 
-    <Footer />
+  <div class="flex flex-wrap justify-center gap-4">
+    {
+    post.data.tags && post.data.tags.map((tag) => (
+      <span class="text-zinc-500">#{tag}</span>
+    ))
+    }
+  </div>
+
+  <Footer />
 </Layout>

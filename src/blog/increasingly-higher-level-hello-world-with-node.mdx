@@ -10,7 +10,7 @@ tags: ["javascript", "nodejs"]
 
 This is a small experiment that I found a little neat and it may give some clarity to the layers of some Node stacks. I’m going to use Node to send “Hello world!” to the browser in increasingly higher level stacks; starting all the way from TCP and moving up to Zappa. Each example has the same goal: to send the text “Hello world!” to the browser. Even though, we’re not using them, each higher level adds enormous capabilities that I’ll go over at each step.
 
-![](./images/hLi3AHU21.webp)
+![Screenshot of some code reading `socket.end('Hello world!')l`](./images/hLi3AHU21.webp)
 
 To run the code in this post, you need to [have Node installed](https://github.com/joyent/node/wiki/Installation). Let’s start with…
 
@@ -18,7 +18,7 @@ To run the code in this post, you need to [have Node installed](https://github.c
 
 This is about as low-level as we can go here seeing as the web runs on [TCP](http://en.wikipedia.org/wiki/Transmission_Control_Protocol). Everything else will be built upon this layer. There is no cruft here: no HTML, no CSS, not even headers will be sent.
 
-```
+```javascript
 var net = require('net');
 
 var server = net.createServer(function (socket) {
@@ -39,7 +39,7 @@ The net module is a part of Node and its createServer method creates a new TCP s
 
 [HTTP](http://en.wikipedia.org/wiki/HTTP) is built upon TCP. It defines a communication structure for displaying web pages. Headers are now sent along with content.
 
-```
+```javascript
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
@@ -61,7 +61,7 @@ Now things are starting to get powerful. You can already do a lot with just the 
 
 Connect is not a native part of Node, so you must install it first with npm install connect.
 
-```
+```javascript
 var connect = require('connect');
 
 var app = connect()
@@ -78,7 +78,7 @@ Moving up, let’s try it with [Express](http://expressjs.com/) now. Express is 
 
 Express can be installed by running npm install express.
 
-```
+```javascript
 var express = require('express');
 
 var app = express.createServer();
@@ -97,9 +97,9 @@ This time app becomes an instance of express, which we use to create a server. T
 
 Finally, we have [Zappa](http://zappajs.org/). This platform extends Express, providing support for CoffeeScript and Socket.IO. If you’ve never used CoffeeScript, it’s an optimized language that directly compiles down to plain JavaScript.
 
-You’ll need to install Zappa with npm install zappa.
+You’ll need to install Zappa with `npm install zappa`.
 
-```
+```javascript
 require('zappa') -> @get '/': 'Hello world!'
 ```
 
@@ -117,5 +117,3 @@ It’s interesting to see how all of these technologies are built upon each othe
 * [Express](https://github.com/visionmedia/express)
 
 * [Zappa](https://github.com/mauricemach/zappa)
-
-*This post first appeared on my old blog on April 23, 2012.*

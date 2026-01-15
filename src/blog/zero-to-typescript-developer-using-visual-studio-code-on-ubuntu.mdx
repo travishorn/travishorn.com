@@ -11,8 +11,6 @@ tags: ["ubuntu", "javascript", "typescript"]
 
 Let’s start from scratch, or rather — with a running installation of Ubuntu. From there, I’ll walk you through installing and setting up an environment to code with TypeScript. In a future post, I’ll walk though some of the basics of TypeScript that build upon JavaScript.
 
-![Photo by Luca Bravo](./images/1_AMQ7-bp78CV-aOvRaZ_8hw.webp)*Photo by [Luca Bravo](https://unsplash.com/@lucabravo)*
-
 The bare minimum for this tutorial is a computer running Ubuntu. If you don’t yet have that, I’ll point you to [the official installation documentation](http://www.ubuntu.com/download/desktop/install-ubuntu-desktop).
 
 The first thing you’ll need is Node.js. Obviously, if you already have it, you can skip this section. Otherwise…
@@ -79,7 +77,7 @@ At this point, you have created a new folder for developing your first TypeScrip
 
 1. Type…
 
-```
+```json
 {
     "compilerOptions": {
       "target": "es5",
@@ -111,7 +109,7 @@ With the editor set up, we can begin coding.
 
 1. In it, type…
 
-```
+```javascript
 class speak {
     public static hello(person: string): string {
       return "Hello, " + person + ".";
@@ -181,3 +179,6 @@ When we built the project, the TypeScript compiler is just fine with any errors;
 Press Shift + F5 to stop debugging, fix the error, build, and launch the debugger again. Once again, no errors. You can follow this pattern of editing, building, and launching the debugger as often as you like during coding sessions.
 
 In the [next post](https://travishorn.com/building-upon-javascript-with-typescript-b2857451f505#.kqsyp6nz5), I walk though some of the basics of TypeScript that build upon JavaScript.
+
+Cover photo by [Luca Bravo](https://unsplash.com/@lucabravo).
+

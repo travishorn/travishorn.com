@@ -10,7 +10,7 @@ tags: ["javascript", "web-development"]
 
 If you are using Grunt to run your tests and Travis-CI for your continuous integration, you will need to command Travis-CI to install the grunt-cli before running your test script(s). grunt-cli is meant to be a global package, so adding it to your dependencies or devDependencies is not ideal.
 
-![](./images/pvHsrCXe_f.webp)
+![The logos for Grunt and Travis-CI side-by-side](./images/pvHsrCXe_f.webp)
 
 You’ll need the following your package.json…
 
@@ -20,7 +20,7 @@ You’ll need the following your package.json…
 
 Like so:
 
-```
+```json
 {
   "name": "projectname",
   "version": "0.0.1",
@@ -40,7 +40,7 @@ Like so:
 
 As an example, the following might be part of your test task in gruntfile.js:
 
-```
+```javascript
 module.exports = function(grunt) {
   grunt.initConfig({
     nodeunit: {
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 
 Finally, in order to run Grunt on Travis-CI, make sure your .travis.yml file looks similar to this:
 
-```
+```yaml
 language: node_js
 node_js:
   - "0.10"
@@ -70,5 +70,3 @@ before_script:
 
 
 Note the last line in particular. This will cause Travis-CI to install grunt-cli as a global package before running the grunt test task. You will need to keep that line present in your .travis.yml file, since Travis-CI [preserves no state between builds](http://about.travis-ci.org/docs/user/build-configuration/#Travis-CI-Preserves-No-State-Between-Builds). This method is [used by the Grunt project itself](https://github.com/gruntjs/grunt/blob/master/.travis.yml).
-
-*Originally published on my old blog on September 13, 2014.*

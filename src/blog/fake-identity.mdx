@@ -13,8 +13,6 @@ This is the latest project I’ve open-sourced. It is a JavaScript module that y
 
 *Generate random identity objects including name, address, etc. This may be useful if you are trying to fill your application with random personal data.*
 
-![](./images/pSH0X88Wv.webp)
-
 * [Download .zip](https://github.com/travishorn/fake-identity/zipball/master)
 
 * [Download .tar.gz](https://github.com/travishorn/fake-identity/tarball/master)
@@ -47,7 +45,7 @@ This is the latest project I’ve open-sourced. It is a JavaScript module that y
 
 Add the following to your page:
 
-```
+```html
 <script src="dist/fake-identity.js"></script>
 ```
 
@@ -58,7 +56,7 @@ This will make a new global variable named Identity available.
 
 Add the following to your page:
 
-```
+```html
 <script src="dist/fake-identity.js"></script>
 ```
 
@@ -69,23 +67,23 @@ This will make a new global variable named Identity available.
 
 Run
 
-```
+```console
 npm install fake-identity
 ```
 
 
 Add the following to your application:
 
-```
+```javascript
 var Identity = require('fake-identity');
 ```
 
 
 ## Usage
 
-Once installed, just use Identity.generate() in your scripts to get an identity object with random values. The returned object looks like this:
+Once installed, just use `Identity.generate()` in your scripts to get an identity object with random values. The returned object looks like this:
 
-```
+```javascript
 {
   firstName: "Amelia",
   lastName: "Wright",
@@ -105,7 +103,7 @@ Once installed, just use Identity.generate() in your scripts to get an identity 
 
 You can also pass a number to generate more than one identity. Multiple identity objects are returned in an array like so:
 
-```
+```javascript
 Identity.generate(3);
 
 [
@@ -132,7 +130,7 @@ Identity.generate(3);
 
 Run
 
-```
+```console
 gulp test
 ```
 
