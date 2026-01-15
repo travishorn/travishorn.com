@@ -1,0 +1,503 @@
+---
+title: "Zero Downtime: Setting up a 3-Node MariaDB Cluster"
+datePublished: 2025-12-30T12:00:19+00:00
+cover: ./images/199da268-4794-48e1-bc22-2c2974666cce.webp
+tags: ["mysql", "databases", "mariadb", "replication", "galera-cluster"]
+
+---
+
+
+
+Most developers are used to spinning up a single instance of their database system and calling it a day. But what happens when you need true redundancy? How do you ensure that a hardware failure doesn't wipe out your latest transactions?
+
+Today, we are experimenting with database replication using MariaDB and Galera Cluster.
+
+Galera allows us to set up a "multi-master" environment. This means we can treat a group of servers as one giant super-database. It offers synchronous replication (so data is consistent across all nodes) and automatic node joining.
+
+We are going to simulate a production-style environment right on our local machine. We will:
+
+1. Provision three Debian virtual machines.
+    
+2. Network them together to form a private mesh.
+    
+3. Bootstrap a Galera Cluster.
+    
+4. Throw traffic at it with a Node.js load balancer to see the magic in action.
+    
+
+## Step 1: Create a Host-only Network
+
+First, we need to create a private network. This allows our virtual machines to communicate with one another (and our host machine) without exposing their internal replication traffic to the outside world.
+
+1. Open **VirtualBox**.
+    
+2. In the left sidebar, click the **Tools** menu icon (the hamburger menu) and select Network.
+    
+3. Click the **Host-only Networks** tab.
+    
+4. If a network already exists, you can use it. If not, click **Create** to generate a new one.
+    
+5. Select the adapter you just created and ensure the **Adapter** tab is configured manually with the following settings:
+    
+    1. **IPv4 Address**: `192.168.56.1`
+        
+    2. **IPv4 Network Mask**: `255.255.255.0`
+        
+6. Click **Apply**.
+    
+
+Note: We will configure the IP addresses for the individual nodes manually inside Debian later, so you don't need to worry about the DHCP server settings here.
+
+## Step 2: Create the First Node ("galera-alpha")
+
+We will create our first node, install the operating system, and configure it to serve as a template for the other two.
+
+### VirtualBox Configuration
+
+1. In VirtualBox, click **Machine** &gt; **New**.
+    
+2. **Name:** `galera-alpha`.
+    
+3. **ISO Image:** Select the latest Debian ISO image. You can download it from [https://debian.org](https://debian.org)
+    
+4. **Unattended Install:** Check the box for **Skip Unattended Installation**. This is important; we want to configure the hostname and user manually.
+    
+5. **Hardware:**
+    
+    1. **Base Memory:** 2048 MB is sufficient, but more is better if you can spare.
+        
+    2. **Processors:** 2 CPUs are sufficient, but again, more is better.
+        
+    3. **Hard Disk:** The 20 GB default is fine
+        
+6. Click **Finish** to create the VM container.
+    
+
+### Configure Networking
+
+Before powering on, we need to set up the dual-network architecture: Adapter 1 for internet access (downloading packages) and Adapter 2 for our private cluster traffic.
+
+1. Right-click `galera-alpha` and choose **Settings**.
+    
+2. Go to the **Network** section.
+    
+3. **Adapter 1:** Ensure **Enable Network Adapter** is checked and **Attached to** is set to **NAT**.
+    
+4. **Adapter 2:** Check **Enable Network Adapter** and set **Attached to** to **Host-only Adapter**.
+    
+    1. **Name:** Select the network we created in **Step 1**.
+        
+
+### Operating System Installation
+
+1. Power on the virtual machine.
+    
+2. Follow the standard Debian installer prompts. Choose the defaults or whichever options make sense for you.
+    
+3. **Network Configuration:** When asked to choose the primary network interface, select the first one (usually `enp0s3`) to ensure the installer can reach the internet.
+    
+4. **Hostname:** `galera-alpha`
+    
+5. **Domain name:** `local` (or anything you want, as long as all nodes we will create match)
+    
+6. **Software Selection:** When you reach the software selection screen:
+    
+    1. Uncheck **Debian desktop environment** and **GNOME** (we want a headless server).
+        
+    2. Check **SSH server** and **standard system utilities**.
+        
+7. Finish the installation and allow the VM to reboot.
+    
+8. Once the login prompt appears, **power off** the virtual machine. We are now ready to clone it.
+    
+
+## Step 3: Clone the Nodes
+
+Now that we have a fresh base installation, we will clone it to create our second and third nodes.
+
+1. In VirtualBox, right-click `galera-alpha` and select **Clone**.
+    
+2. **Name:** `galera-beta`
+    
+3. **MAC Address Policy:** Select **Generate new MAC addresses for all network adapters**. Critical: If you miss this step, your routers will see identical MAC addresses and the networking will fail.
+    
+4. Click **Finish**.
+    
+5. Repeat the process to create `galera-gamma`.
+    
+
+## Step 4: Configure Hostnames and IPs
+
+We now have three identical servers. We need to give them unique identities and assign static IP addresses to the private network interface (Adapter 2).
+
+1. Start all three virtual machines.
+    
+2. Log in as **root** on each machine.
+    
+
+### Set Hostnames
+
+Run the following command on the respective nodes to set their system hostnames:
+
+* **Node 2:** `hostnamectl set-hostname galera-beta`
+    
+* **Node 3:** `hostnamectl set-hostname galera-gamma`
+    
+
+Note: `galera-alpha` should already be set from the installation step.
+
+### Configure Static IPs
+
+We need to configure the second network interface (usually `enp0s8`) with a static IP.
+
+1. Verify your interface name by running `ip link`. You are looking for the interface that is *down* or has no IP (likely the second one listed).
+    
+2. Edit the network configuration file, `/etc/network/interfaces`.
+    
+3. Append the configuration for the specific node:
+    
+
+```bash
+# On galera-alpha
+allow-hotplug enp0s8
+iface enp0s8 inet static
+    address 192.168.56.101
+    netmask 255.255.255.0
+
+# On galera-beta
+allow-hotplug enp0s8
+iface enp0s8 inet static
+    address 192.168.56.102
+    netmask 255.255.255.0
+
+# On galera-gamma
+allow-hotplug enp0s8
+iface enp0s8 inet static
+    address 192.168.56.103
+    netmask 255.255.255.0
+```
+
+3. Apply the changes by restarting the networking service on all nodes: `systemctl restart networking`
+    
+
+### Update the Hosts File
+
+To make communication easier (so we don't have to remember IPs), we will map the hostnames in the `/etc/hosts` file.
+
+Edit `/etc/hosts` on all three nodes and append the following lines to the bottom:
+
+```bash
+192.168.56.101 galera-alpha
+192.168.56.102 galera-beta
+192.168.56.103 galera-gamma
+```
+
+### Install Software
+
+Finally, install the database server and `rsync` (which Galera uses the synchronize data between nodes) on all three nodes:
+
+```bash
+apt install -y mariadb-server rsync
+```
+
+## Step 5: Configure MariaDB for Galera Cluster
+
+We need to tell MariaDB how to communicate with its peers.
+
+Edit `/etc/mysql/mariadb.conf.d/60-galera.cnf`. Make sure these settings are set on all three nodes.
+
+```bash
+wsrep_on = ON
+wsrep_cluster_name = "GaleraCluster" # Give it any name you want
+wsrep_cluster_address = "gcomm://192.168.56.101,192.168.56.102,192.168.56.103"
+binlog_format = row
+default_storage_engine = InnoDB
+innodb_autoinc_lock_mode = 2
+
+bind-address = 0.0.0.0
+
+wsrep_provider = /usr/lib/libgalera_smm.so
+wsrep_sst_method = rsync
+
+# On galera-alpha only
+wsrep_node_address = 192.168.56.101
+wsrep_node_name = galera-alpha
+
+# On galera-beta only
+wsrep_node_address = 192.168.56.102
+wsrep_node_name = galera-beta
+
+# On galera-gamma only
+wsrep_node_address = 192.168.56.103
+wsrep_node_name = galera-gamma
+```
+
+## Step 6: Bootstrap the Cluster
+
+We can't just start the service on all nodes simultaneously because they will all look for an existing cluster to join, fail to find one, and crash. We must designate one node to create the initial "Primary Component."
+
+The following steps should be done on **Node 1 (galera-alpha)** ONLY.
+
+1. First, ensure the standard service is stopped: `systemctl stop mariadb`
+    
+2. Run the bootstrap command. This starts MariaDB in a special mode that initializes a new cluster UUID: `galera_new_cluster`
+    
+3. Verify the cluster is running: `mariadb -e "SHOW STATUS LIKE 'wsrep_cluster_size';"`
+    
+
+The value should be `1`. If the value is `0` or the command fails, check the logs (`journalctl -xeu mariadb.service`) to ensure there are no configuration typos in the `.cnf` file.
+
+## Step 7: Join the Nodes
+
+Now that the cluster exists, `galera-beta` and `galera-gamma` can join it. Because we listed their IPs in the `wsrep_cluster_address` configuration, they will automatically find the Primary node and sync up.
+
+The following steps should be done on **Node 2 (galera-beta)** and **Node 3 (galera-gamma)** ONLY.
+
+1. Restart the MariaDB service: `systemctl restart mariadb`.
+    
+2. Verify the cluster size on any machine: `mariadb -e "SHOW STATUS LIKE 'wsrep_cluster_size';"`
+    
+
+The value should now be `3`.
+
+## Step 8: Manual Replication Test
+
+Before we write any code, let's verify that database replication is actually working.
+
+1. On `galera-alpha`, create a database and a test table inside MariaDB:
+    
+
+```sql
+CREATE DATABASE cluster_test;
+USE cluster_test;
+CREATE TABLE cats (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));
+INSERT INTO cats (name) VALUES ('Izzy'), ('Milo');
+```
+
+2. On `galera-beta` or `galera-gamma`, check if the data arrived:
+    
+
+```sql
+USE cluster_test;
+SELECT * FROM cats;
+```
+
+If you see `Izzy` and `Milo` listed, congratulations! You have a working multi-master cluster.
+
+## Step 9: The Load Balancer Test (Node.js)
+
+To truly see the power of the cluster, we need an application that can connect to all nodes, read/write data, and handle failover. We will write a simple Node.js script that acts as a "smart client," rotating connections between our three servers.
+
+### Prepare the Database
+
+Log into MariaDB on **any** of the nodes (since replication is active, it doesn't matter which one) and run the following commands to set up the application schema:
+
+```sql
+CREATE DATABASE cluster_app;
+USE cluster_app;
+
+CREATE TABLE visits (
+    id UUID NOT NULL DEFAULT uuid_v7(),
+    node_name VARCHAR(50),
+    PRIMARY KEY (id)
+);
+
+CREATE USER 'cluster_app_user'@'%' IDENTIFIED BY 'strong_password';
+GRANT ALL PRIVILEGES ON cluster_app.* TO 'cluster_app_user'@'%';
+FLUSH PRIVILEGES;
+```
+
+### Set Up the Application
+
+For this experiment, we will host the application on `galera-alpha`. In a real production environment, your application would live on a separate server, but this works for our experiment.
+
+1. Install Node.js and npm: `apt install -y nodejs npm`
+    
+2. Initialize the project:
+    
+
+```bash
+mkdir cluster-app
+cd cluster-app
+npm init -y
+npm install mariadb
+```
+
+3. Create the script:
+    
+
+Create a file named `index.js` and paste in the following code. This script initializes a connection pool containing all three nodes. It creates a loop that performs a write operation followed by a read operation every 2 seconds, logging which physical server handled the request.
+
+```javascript
+const mariadb = require("mariadb");
+
+const DB_CREDENTIALS = {
+  user: "cluster_app_user",
+  password: "strong_password",
+  database: "cluster_app",
+  connectionLimit: 5,
+};
+
+const CLUSTER_NODES = [
+  { id: "galera-alpha", host: "192.168.56.101" },
+  { id: "galera-beta", host: "192.168.56.102" },
+  { id: "galera-gamma", host: "192.168.56.103" },
+];
+
+const CHECK_INTERVAL_MS = 2000;
+
+// Initialize the PoolCluster.
+const cluster = mariadb.createPoolCluster();
+
+// Add nodes to the cluster configuration
+CLUSTER_NODES.forEach((node) => {
+  cluster.add(node.id, { host: node.host, ...DB_CREDENTIALS });
+  console.log(`Added node to pool: ${node.id} (${node.host})`);
+});
+
+async function performHealthCheck() {
+  let conn;
+
+  try {
+    // Get a connection from a random node in the cluster
+    // `null` here means to consider all nodes for the connection
+    // `'RANDOM'` tells the connection to choose a random node
+    conn = await cluster.getConnection(null, "RANDOM");
+
+    // Identify which physical server we are connected to
+    const hostnameRes = await conn.query("SELECT @@HOSTNAME AS server_id;");
+    const serverName = hostnameRes[0].server_id;
+
+    // Perform a Write Operation
+    const insertRes = await conn.query(
+      "INSERT INTO visits (node_name) VALUES (?) RETURNING id;",
+      [serverName]
+    );
+
+    // Log success
+    console.log(`Success on node: ${serverName} | ID: ${insertRes[0].id}`);
+
+    // Perform a Read Operation
+    const recentRes = await conn.query(
+      "SELECT id, node_name FROM visits ORDER BY id DESC LIMIT 3;"
+    );
+
+    // Log recent visits
+    console.log(recentRes);
+  } catch (err) {
+    console.error(`Connection Error:`, err.message);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+// Perform the health check every interval (2000ms)
+const intervalId = setInterval(performHealthCheck, CHECK_INTERVAL_MS);
+```
+
+### Run the Test
+
+Start the application by running `node index.js`.
+
+Watch the console output. You should see the application connecting to `galera-alpha`, `galera-beta`, and `galera-gamma` in a random fashion.
+
+```bash
+Added node to pool: galera-alpha (192.168.56.101)
+Added node to pool: galera-beta (192.168.56.102)
+Added node to pool: galera-gamma (192.168.56.103)
+Success on node: galera-alpha | ID: 019b4b82-1d95-7464-8da8-cf72905a0f09
+[
+  {
+    id: '019b4b82-1d95-7464-8da8-cf72905a0f09',
+    node_name: 'galera-alpha'
+  },
+  {
+    id: '019b4b80-c7a9-7844-9710-d69a9ca30855',
+    node_name: 'galera-beta'
+  },
+  {
+    id: '019b4b80-bfd9-76c8-9146-77531b6ec8d7',
+    node_name: 'galera-gamma'
+  }
+]
+Success on node: galera-beta | ID: 019b4b82-27ba-71d8-b94f-f9b06e0534d6
+[
+  {
+    id: '019b4b82-27ba-71d8-b94f-f9b06e0534d6',
+    node_name: 'galera-beta'
+  },
+  {
+    id: '019b4b82-1d95-7464-8da8-cf72905a0f09',
+    node_name: 'galera-alpha'
+  },
+  {
+    id: '019b4b80-c7a9-7844-9710-d69a9ca30855',
+    node_name: 'galera-beta'
+  }
+]
+```
+
+### Create Some Chaos
+
+While the script is running, try shutting down one of the nodes (e.g., go to **VirtualBox** and power off `galera-beta`) or stopping the MariaDB service (`systemctl stop mariadb`). You will see the application report a connection error briefly, and then immediately continue working by routing traffic to the remaining two nodes!
+
+## Conclusion
+
+So, what have we actually accomplished here?
+
+By pulling the plug on `galera-beta` while our script was running, we demonstrated **High Availability (HA)** in action. In a traditional single-node setup, that power outage would have meant a complete service stoppage, angry users, and frantic 3:00 AM phone calls.
+
+In our cluster, the application hiccuped for a fraction of a second, realized the path was blocked, and immediately rerouted traffic to the healthy nodes (`alpha` and `gamma`). The data remained consistent, and the service remained online.
+
+This type of architecture provides two massive benefits:
+
+1. With a cluster, you have fault tolerance. Hardware fails. Updates go wrong. You can take a node offline for maintenance (or lose one to a disaster) without affecting your users.
+    
+2. While writes in a Galera cluster can be slightly slower (due to the overhead of syncing), your read capacity skyrockets. You can direct heavy reporting queries to one node while keeping another node free for fast user interactions.
+    
+
+In a true production environment, you would likely put a dedicated load balancer (like **HAProxy** or **ProxySQL**) in front of these nodes so your application only needs to know one IP address. But today, you've built the foundation: a self-healing, multi-master mesh that refuses to die.
+
+## Bonus: Recovering from a Full Outage
+
+If all nodes go down (a **full outage**), you must follow a specific procedure to re-bootstrap and bring everything back up.
+
+When the cluster crashes, Galera attempts to mark the last node that was running as “safe” to restart from. check the state file on **all** nodes:
+
+```bash
+cat /var/lib/mysql/grastate.dat
+```
+
+Look for the line `safe_to_bootstrap: 1`.
+
+If you find a node with `1`, run the bootstrap command **only** on that node:
+
+```bash
+galera_new_cluster
+```
+
+If none of the nodes are safe to bootstrap (none have `1`), compare the `seqno` number in the files. Identify the node with the **highest** `seqno` number. On that node **only**, edit the `/var/lib/mysql/grastate.dat` file. Change, `safe_to_bootstrap: 0` to `safe_to_bootstrap: 1`. Save the file. Then, bootstrap it with `galera_new_cluster`.
+
+Verify the bootstrapped node has initialized the cluster:
+
+```bash
+mariadb -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
+```
+
+The size should be `1`.
+
+You can start/restart the MariaDB service on the remaining nodes:
+
+```bash
+systemctl start mariadb
+```
+
+Check the cluster size once again:
+
+```bash
+mariadb -e "SHOW STATUS LIKE 'wsrep_cluster_size';"
+```
+
+It should now read `3`. If you run into trouble, check the logs with `journalctl -u mariadb -n 50`.
+
+Cover photo by [BoliviaInteligente](https://unsplash.com/@boliviainteligente?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/a-colorful-background-with-a-wavy-design-mRWaf6G61qg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).

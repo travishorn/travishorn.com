@@ -10,10 +10,12 @@ const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 const sortedPosts = posts.sort(
   (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf()
 );
+
 const pageTitle = `Blog - ${siteTitle}`;
+const pageDescription = "Explore my blog posts on web development, programming, and technical topics.";
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description={pageDescription}>
 	<div class="flex flex-col gap-6">
 		{
 		sortedPosts.map((post) => (

@@ -1,10 +1,11 @@
 ---
 import IconGitHub from "../components/IconGitHub.astro";
 import IconMail from "../components/IconMail.astro";
+import { siteDescription } from "../site";
 ---
 
 <div class="flex flex-col gap-12 text-center">
-    <p>I'm a Data Scientist & Software Engineer. I have a passion for discovering and working with cutting-edge technology. I enjoy collaborating with others to solve problems.</p>
+    <p>{siteDescription}</p>
 
     <div class="flex justify-center gap-12">
         <a class="hover:text-zinc-600" href="https://github.com/travishorn">
