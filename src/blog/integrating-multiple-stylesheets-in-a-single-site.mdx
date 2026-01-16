@@ -13,15 +13,13 @@ The question is: “If you have 5 different stylesheets, how would you best inte
 
 The answer will depend on how your site is laid out and how users use your site. Every linked stylesheet is another HTTP request. Performance-wise, HTTP requests are expensive. Developers would do well to minimize the number of stylesheets, therefor minimizing HTTP requests.
 
-![Photo by Frankie K.](./images/1_WTEvZDuYeR_54XUfXPQOBQ.webp)*Photo by [Frankie K.](https://unsplash.com/@frankie_k)*
-
 So one big stylesheet is the way to go, right? In my opinion, in most cases, yes. However, consider the case that perhaps half of your styles are for an administration panel pages that 99% users will never see. In that case, it would be better to go with two stylesheets: one for public-facing pages and one for the administration panel. Again, the way you split up styles is dependent on your site. Ultimately, I’d say going with one concatenated stylesheet that contains all your styles will be perfectly fine.
 
 ### Working with one stylesheet
 
 What kind of workflow works best for one stylesheet then? The simplest answer would be just one file called styles.css (or similar). When you want to change the style, you just open up styles.css, scroll until you find the relevant section, and modify the CSS. In your HTML, you simply link the sheet like so:
 
-```
+```html
 <link rel="stylesheet" href="styles.css">
 ```
 
@@ -44,7 +42,7 @@ In this case, let’s assume I have an `index.html` and a folder called `css`. I
 
 I could link all these stylesheets in my `index.html` like so:
 
-```
+```html
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/header.css">
 <link rel="stylesheet" href="css/main.css">
@@ -56,28 +54,28 @@ But I want one stylesheet, not four. For this, I’ll add a single build step us
 
 If you don’t already have it, you have to install the Gulp CLI globally. This will only have to be done once on a machine.
 
-```
+```console
 npm install -g gulp-cli
 ```
 
 
 The next step is optional, but since we are working with npm modules, I highly recommend initiating npm on your project to keep track of dependencies:
 
-```
+```console
 npm init
 ```
 
 
 Answer all prompts from `npm init`. When you’re finished, install gulp and the gulp-concat-css plugin as development dependencies:
 
-```
+```console
 npm install --save-dev gulp gulp-concat-css
 ```
 
 
 Now, create a new file called gulpfile.js in your project’s root directory. This file will describe the style concatenation build step as well as any future build steps you may add later.
 
-```
+```javascript
 'use strict';
 
 var gulp = require('gulp');
@@ -96,14 +94,14 @@ This defines a new gulp task called `css`. The task takes any file in the `css` 
 
 Basically, when you run
 
-```
+```console
 gulp css
 ```
 
 
 a new file will appear called `styles.css` which contains all of your styles. In `index.html`, you can replace all those stylesheet links with one line:
 
-```
+```html
 <link rel="stylesheet" href="styles.css">
 ```
 
@@ -114,14 +112,14 @@ If (when) you change the CSS and are ready to push your updates to production, j
 
 At this point you are done. However, I would personally take an extra step and create a default gulp task that includes the `css` task. Add this to `gulpfile.css`:
 
-```
+```javascript
 gulp.task('default', ['css']);
 ```
 
 
 Now, you can run the build by simply running…
 
-```
+```console
 gulp
 ```
 
@@ -137,3 +135,5 @@ If you ever add more build steps (gulp tasks), you can add them to the array we 
 * compressing image files
 
 These can all be done with various [Gulp plugins](http://gulpjs.com/plugins/).
+
+Cover photo by [Frankie K.](https://unsplash.com/@frankie_k).

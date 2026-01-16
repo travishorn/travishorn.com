@@ -11,11 +11,9 @@ tags: ["oop", "javascript", "programing"]
 
 This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
 
-![Photo by Ravali Yan](./images/1_ZQpFkUlcr1zNqFUUMmez1Q.webp)*Photo by [Ravali Yan](https://unsplash.com/@ravali)*
-
 ### Bracket Notation
 
-```
+```javascript
 // Create object using bracket notation
 var testData = new Object();
 testData["districtName"] = "Central School District";
@@ -42,7 +40,7 @@ document.write(showProps(testData));
 
 ### Constructor Function
 
-```
+```javascript
 // Create constructor function and create objects using it
 // Strong convention to use capital initial letter
 function TestData(districtName, schoolName, schoolYear) {
@@ -83,7 +81,7 @@ document.write(showProps(data1));
 
 ### Dot Notation
 
-```
+```javascript
 // Create object using dot notation
 var testData = new Object();
 testData.districtName = "Central School District";
@@ -106,7 +104,7 @@ document.write(showProps(testData));
 
 ### Getters & Setters
 
-```
+```javascript
 // Define one getter and one setter
 var testData = {
   "districtName": "Central School District",
@@ -133,7 +131,7 @@ document.write(testData["schoolYear"]);
 
 ### Nesting Constructor Function
 
-```
+```javascript
 // Create object within object using construction functions
 function School(name, level) {
   this.name = name;
@@ -174,7 +172,7 @@ document.write("lincoln:<br>" + showProps(lincoln) + "<br>");
 
 ### Nesting Object Initializer
 
-```
+```javascript
 // Object within object using initializer
 var testData = {
   "districtName": "Central School District",
@@ -201,7 +199,7 @@ document.write(showProps(testData));
 
 ### Methods
 
-```
+```javascript
 function TestData(districtName, schoolName, schoolYear) {
   this.districtName = districtName;
   this.schoolName = schoolName;
@@ -236,7 +234,7 @@ data1.displayData();
 
 ### Object Initializer
 
-```
+```javascript
 // Create object using object initializer (literal notation)
 var testData = {
   "districtName": "Central School District",
@@ -256,3 +254,5 @@ function showProps(obj) {
 // Write the result of showProps to screen
 document.write(showProps(testData));
 ```
+
+Cover photo by [Ravali Yan](https://unsplash.com/@ravali).

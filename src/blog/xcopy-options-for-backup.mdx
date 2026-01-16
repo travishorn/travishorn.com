@@ -11,13 +11,11 @@ tags: ["command-line", "windows", "backup"]
 
 This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
 
-![Photo by Annie Spratt](./images/1_OCwunCZDifHrMaR5LJP8rg.webp)*Photo by [Annie Spratt](https://unsplash.com/@fableandfolk)*
-
 The command-line program **xcopy** can be a useful tool for scheduled backups. It can be used to mass-copy files and folders to another location such as a network attached storage device. Use the options below for best results.
 
 ### Command
 
-```
+```console
 xcopy [source] [destination] /C /E /G /H /I /K /M /R /X /Y
 ```
 
@@ -46,6 +44,8 @@ xcopy [source] [destination] /C /E /G /H /I /K /M /R /X /Y
 
 ### Example
 
-```
+```console
 xcopy C: \\backup-server\user1 /C /E /G /H /I /K /M /R /X /Y
 ```
+
+Cover photo by [Annie Spratt](https://unsplash.com/@fableandfolk).

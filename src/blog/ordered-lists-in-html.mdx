@@ -10,20 +10,19 @@ tags: ["css", "web-development", "html"]
 
 
 One of my highest rated answers on Stack Overflow is in response to a very simple question.
+
 > Is it possible to specify a starting number for an ordered list?
 
-In this post, I’ll do a deep dive into the standard way to represent ordered lists in HTML: the `&lt;ol&gt;` element. Along the way, I’ll answer the question above.
+In this post, I’ll do a deep dive into the standard way to represent ordered lists in HTML: the `<ol>` element. Along the way, I’ll answer the question above.
 
-![](./images/-1focvMr-W.webp)
-
-First of all, if you’re only reading this to find out how to specify a starting number for an ordered list, and you don’t want to wade through the rest of the post, the simplest method is to use the `start` attribute. Example: `&lt;ol start="5"&gt;...&lt;/ol&gt;`
+First of all, if you’re only reading this to find out how to specify a starting number for an ordered list, and you don’t want to wade through the rest of the post, the simplest method is to use the `start` attribute. Example: `<ol start="5">...</ol>`
 
 With that out of the way…
 
-### What is the &lt;ol&gt; element?
+### What is the `<ol>` element?
 
 According to the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol)…
-> The **HTML `&lt;ol&gt;` element **represents an ordered list of items, typically rendered as a numbered list.
+> The **HTML `<ol>` element **represents an ordered list of items, typically rendered as a numbered list.
 
 In your web browser, it’s typically rendered to look like this:
 
@@ -38,7 +37,7 @@ In your web browser, it’s typically rendered to look like this:
 Of course — just as with almost all HTML elements — you can style it with CSS.
 
 
-### When to use &lt;ol&gt;
+### When to use `<ol>`
 
 To represent a list of items in writing, you have a few options:
 
@@ -65,9 +64,9 @@ If there are many items, but the order does not matter, you could use a bulleted
 - Maple
 - Walnut
 
-However, if the items in your list follow a specific order, you’d can best represent this to the reader as an ordered list. This is where the `&lt;ol&gt;` element comes in. Ordered lists are typically numbered, but can also be organized with Roman numerals or alphabetically ordered letters. Ordered lists are good for things like a series of steps to guide the reader or a listing of competitors where you want to display how they placed in a competition.
+However, if the items in your list follow a specific order, you’d can best represent this to the reader as an ordered list. This is where the `<ol>` element comes in. Ordered lists are typically numbered, but can also be organized with Roman numerals or alphabetically ordered letters. Ordered lists are good for things like a series of steps to guide the reader or a listing of competitors where you want to display how they placed in a competition.
 
-A good test to determine whether your list should be ordered or not is to take a random item in the list and place it somewhere else in the list. Does the list still make sense? You should use an unordered list `&lt;ul&gt;`. Does the list no longer make sense? You should use an ordered list `&lt;ol&gt;`.
+A good test to determine whether your list should be ordered or not is to take a random item in the list and place it somewhere else in the list. Does the list still make sense? You should use an unordered list `<ul>`. Does the list no longer make sense? You should use an ordered list `<ol>`.
 
 **Ordered list example 1: How to do the Hokey Pokey**
 
@@ -89,11 +88,11 @@ A good test to determine whether your list should be ordered or not is to take a
 
 1. Indonesia
 
-### How to use &lt;ol&gt;
+### How to use `<ol>`
 
-As far as HTML elements go, `&lt;ol&gt;` is pretty simple. The only element allowed inside of it is `&lt;li&gt;` (list item). And the only elements allowed inside of `&lt;li&gt;` are nested `&lt;ol&gt;` and `&lt;ul&gt;` (unordered list).
+As far as HTML elements go, `<ol>` is pretty simple. The only element allowed inside of it is `<li>` (list item). And the only elements allowed inside of `<li>` are nested `<ol>` and `<ul>` (unordered list).
 
-```
+```html
 <ol>
   <li>First item</li>
   <li>Second item</li>
@@ -106,7 +105,7 @@ There is no need to type out the number next to each list item. The browser will
 
 For nested lists, follow this format:
 
-```
+```html
 <ol>
   <li> First item
     <ol>
@@ -123,7 +122,7 @@ For nested lists, follow this format:
 
 ### ARIA
 
-According to the ARIA spec, `&lt;ol&gt;` may have [descriptive roles](https://www.w3.org/TR/wai-aria/roles). Here are the roles and when you would use them.
+According to the ARIA spec, `<ol>` may have [descriptive roles](https://www.w3.org/TR/wai-aria/roles). Here are the roles and when you would use them.
 
 * directory —references to members of a group, such as a table of contents
 
@@ -145,9 +144,9 @@ According to the ARIA spec, `&lt;ol&gt;` may have [descriptive roles](https://ww
 
 * presentation — used to change the look of the page but does not have all the functional, interactive, or structural relevance implied by the element type
 
-### &lt;ol&gt;’s attributes
+### `<ol>`’s attributes
 
-In addition to the [global HTML attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes), `&lt;ol&gt;` also supports the following attributes.
+In addition to the [global HTML attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes), `<ol>` also supports the following attributes.
 
 **Compact**
 
@@ -155,7 +154,7 @@ I would stay away from the `compact` attribute. It is deprecated, its behavior i
 
 **Reversed**
 
-A new attribute introduced in HTML5 is the `reversed` attribute. You can use it to indicate that the items are listed in reverse order. In the browser, the list will be displayed with numbers in descending order. If your list, for example, contains ten items, the first item will be labeled 10, the next 9, the next 8, and so on. To use this attribute, use `&lt;ol reversed&gt;` or `&lt;ol reversed="reversed"&gt;`.
+A new attribute introduced in HTML5 is the `reversed` attribute. You can use it to indicate that the items are listed in reverse order. In the browser, the list will be displayed with numbers in descending order. If your list, for example, contains ten items, the first item will be labeled 10, the next 9, the next 8, and so on. To use this attribute, use `<ol reversed>` or `<ol reversed="reversed">`.
 
 Warning: This attribute works in Chrome, Firefox, and Safari, but **does not work** in Edge, Internet Explorer, or Opera.
 
@@ -163,7 +162,7 @@ Warning: This attribute works in Chrome, Firefox, and Safari, but **does not wor
 
 This attribute is the catalyst for this post. It was deprecated in HTML4 and then reintroduced in HTML5. It specifies the start value for numbering the individual list items. To use the `start` attribute, set the value to the number you want to start with.
 
-```
+```html
 <ol start="5">
   <li>Will be labeled 5</li>
   <li>Will be labeled 6</li>
@@ -174,7 +173,7 @@ This attribute is the catalyst for this post. It was deprecated in HTML4 and the
 
 Note that even if you are representing your ordered list using letters (a, b, c) or Roman numerals (i, ii, iii), you will still specify the `start` attribute with a number. For example, the following list will start with the letter “C”.
 
-```
+```html
 <style>
   ol { list-style-type: upper-alpha; }
 </style>
@@ -203,7 +202,7 @@ Another attribute you typically want to stay away from is `type`. However, it do
 
 If you want this functionality, but items aren’t referenced by their number/letter elsewhere in your document, opt **not** to use the `type` attribute, but instead use the `list-style-type` CSS property, which I’ll cover below.
 
-### Styling &lt;ol&gt;
+### Styling `<ol>`
 
 You can style an ordered list using CSS just as you would with any other element. For example, you can set `color` or `font-family`, etc.
 
@@ -225,18 +224,18 @@ I want to bring special attention to the `list-style-type` property. It gives yo
 
 One final thing I want to point out comes from an [answer by Adam Grant on Stack Overflow](https://stackoverflow.com/a/30109692/307338).
 
-`&lt;ol&gt;`'s `start` attribute has a shortcoming. If you start a list, then stop to interject some other content, then begin the list again, you **could** use `&lt;ol start="..."&gt;` to continue numbering where you left off. But what happens when you add a new item to the first part of the list? You **must** update the `start` attribute of the second `&lt;ol&gt;` to keep it consistent. This situation is not ideal. Instead, you can use the CSS properties `counter-increment` and `counter-reset`, which will keep the number consistent automatically.
+`<ol>`'s `start` attribute has a shortcoming. If you start a list, then stop to interject some other content, then begin the list again, you **could** use `<ol start="...">` to continue numbering where you left off. But what happens when you add a new item to the first part of the list? You **must** update the `start` attribute of the second `<ol>` to keep it consistent. This situation is not ideal. Instead, you can use the CSS properties `counter-increment` and `counter-reset`, which will keep the number consistent automatically.
 
 First, remove the numbered markers from both lists:
 
-```
+```css
 ol { list-style-type: none; }
 ```
 
 
-Then, show a counter before **each `&lt;li&gt;` element**:
+Then, show a counter before **each `<li>` element**:
 
-```
+```css
 ol li:before {
   counter-increment: someCounterName;
   content: counter(someCounterName) ". ";
@@ -244,9 +243,9 @@ ol li:before {
 ```
 
 
-Finally, make the counter reset on the first `&lt;ol&gt;` only:
+Finally, make the counter reset on the first `<ol>` only:
 
-```
+```css
 ol:first-of-type { counter-reset: someCounterName; }
 ```
 

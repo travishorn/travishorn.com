@@ -11,15 +11,13 @@ tags: ["jquery", "javascript", "web-development"]
 
 This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
 
-![Photo by Charlie Harutaka](./images/1_XYxrA80uZ03vV6xQnENNvA.webp)*Photo by [Charlie Harutaka](https://unsplash.com/@charlieharutaka)*
-
 jQuery is a fast, concise, JavaScript library that simplifies how to traverse HTML documents, handle events, perform animations, and add AJAX.
 
 ### Including it in a Page
 
-The simplest method is to use the [jQuery CDN](https://code.jquery.com/) and include jQuery just before the closing &lt;/body&gt; tag.
+The simplest method is to use the [jQuery CDN](https://code.jquery.com/) and include jQuery just before the closing `</body>` tag.
 
-```
+```html
 <!doctype html>
 <html>
   <head>
@@ -41,87 +39,81 @@ The simplest method is to use the [jQuery CDN](https://code.jquery.com/) and inc
 
 ### Selecting Elements
 
-Most methods in jQuery require you to target an element(s) on the page. Selection looks like this:
+Most methods in jQuery require you to target an element(s) on the page.
 
-```
+This selects all `<p>` elements:
+
+```javascript
 $('p').doSomething();
 ```
 
+Select an element that has the id `target`. For example `<div id=”target”>`:
 
-Selects all &lt;p&gt; elements.
-
-```
+```javascript
 $('#target').doSomething();
 ```
 
+Select all elements with the class `selectme`. For example `<div class=”selectme”>` or `<li class=”selectme”>`:
 
-Selects an element that has the id “target”. For example &lt;div id=”target”&gt;.
 
-```
+```javascript
 $('.selectme').doSomething();
 ```
-
-
-Selects all elements with the class “selectme”. For example &lt;div class=”selectme”&gt; or &lt;li class=”selectme”&gt;.
 
 For more information about selecting elements, visit [https://api.jquery.com/category/selectors/](https://api.jquery.com/category/selectors/).
 
 ### Manipulating Selected Elements
 
-In all three of the examples above, the method being called was doSomething(). There’s no such method as doSomething() in the default jQuery library, but here are some real ones you can use:
+In all three of the examples above, the method being called was `doSomething()`. There’s no such method as `doSomething()` in the default jQuery library, but here are some real ones you can use.
 
-```
+Add the class `highlight` to every `<span>` on the page:
+
+```javascript
 $('span').addClass('highlight');
 ```
 
+Set the HTML inside every `<p>` to `Replacement text.`
 
-Adds the class “highlight” to every span on the page.
-
-```
+```javascript
 $('p').html('Replacement text.');
 ```
 
+Changes the `alt` attribute of `<img id=”header” …>` to `Sky with clouds`:
 
-Sets the HTML inside every &lt;p&gt; to “Replacement text.”
-
-```
+```javascript
 $('img#header').attr('alt', 'Sky with clouds');
 ```
-
-
-Changes the “alt” attribute of &lt;img id=”header” …&gt; to “Sky with clouds.”
 
 For more information about manipulation, visit [https://api.jquery.com/category/manipulation/](http://api.jquery.com/category/manipulation/).
 
 ### Events
 
-Events are a way to perform an action when a condition is met. Some examples are:
+Events are a way to perform an action when a condition is met. Some examples follow.
 
-```
+Executes when the user clicks on `target`:
+
+```javascript
 $('#target').click(function() {
   // Do something.
 });
 ```
 
+Executes when the user hovers over `target`:
 
-Executes when the user clicks on “target.”
-
-```
+```javascript
 $('#target').hover(function() {
   // Do something.
 });
 ```
 
+Executes when `target` gains focus (user clicks or tabs into it):
 
-Executes when the user hovers over “target.”
-
-```
+```javascript
 $('#target').focus(function() {
   // Do something.
 });
 ```
 
-
-Executes when “target” gains focus (user clicks or tabs into it).
-
 Learn more about events at [https://api.jquery.com/category/events/](http://api.jquery.com/category/events/).
+
+Cover photo by [Charlie Harutaka](https://unsplash.com/@charlieharutaka).

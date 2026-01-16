@@ -11,11 +11,9 @@ tags: ["forms", "javascript", "web-development", "ajax", "frontend-development"]
 
 I recently ran into a situation where I had a `<select>` input and I wanted to populate it with a list of options from an API endpoint. In fact, I had multiple `<select>`s on the same page and I wanted to do it for all of them. I’ll show you the process I went through to build an easy solution.
 
-![](./images/gaft8iQcj.webp)
+Ultimately, what we’ll build is a solution that enables us to add `data-*` attributes to our `<select>` that describe how to fetch our options. Like so:
 
-Ultimately, what we’ll build is a solution that enables us to add `data-*` attributes to our `&lt;select&gt;` that describe how to fetch our options. Like so:
-
-```
+```html
 <select
   id="userId"
   class="form-control"
@@ -31,38 +29,38 @@ Notice the…
 
 * `data-source` that contains the URL to the API endpoint
 
-* `data-valueKey` that tells us what key to use (from the returned JSON) for the `&lt;option&gt;`’s value
+* `data-valueKey` that tells us what key to use (from the returned JSON) for the `<option>`’s value
 
 * `data-displayKey` that tells us what key to use for the displayed text
 
 For simplicity’s sake, I’ll be using [jQuery](https://jquery.com/). However, you could also re-write this using [axios](https://github.com/axios/axios) or vanilla JavaScript with [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) or the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 
-Let’s start off by getting a reference to all of our `&lt;select&gt;`’s that have a `data-source` attribute.
+Let’s start off by getting a reference to all of our `<select>`’s that have a `data-source` attribute.
 
-```
+```javascript
 $('select[data-source]).each(function() {
   // The rest of the code will go here
 });
 ```
 
 
-Inside this function, we’ll grab a copy of `this` inside a jQuery wrapper. In this instance, `this` is a reference to the `&lt;select&gt;` element.
+Inside this function, we’ll grab a copy of `this` inside a jQuery wrapper. In this instance, `this` is a reference to the `<select>` element.
 
-```
+```javascript
 var $select = $(this);
 ```
 
 
-Now, — and this part is optional — I like to add an empty `&lt;option&gt;` that the `&lt;select&gt;` will default to.
+Now, — and this part is optional — I like to add an empty `<option>` that the `<select>` will default to.
 
-```
+```javascript
 $select.append('<option></option>');
 ```
 
 
 Next, we’ll pull the list of items via AJAX.
 
-```
+```javascript
 $.ajax({
   url: $select.attr('data-source');
 }).then(function(options) {
@@ -71,20 +69,20 @@ $.ajax({
 ```
 
 
-Notice we’re getting the URL from the `&lt;select&gt;`’s data-source attribute. Also notice, since `$.ajax()` is a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), we’re attaching a `.then()` function to the end that we can use to determine what happens once the API response is returned.
+Notice we’re getting the URL from the `<select>`’s data-source attribute. Also notice, since `$.ajax()` is a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), we’re attaching a `.then()` function to the end that we can use to determine what happens once the API response is returned.
 
 Inside the `.then()` function, let’s loop through our options.
 
-```
+```javascript
 options.map(function(option) {
   // Handle each option here
 });
 ```
 
 
-For each option, we’ll create a new jQuery-wrapped `&lt;option&gt;` element, set its value, and set the display text.
+For each option, we’ll create a new jQuery-wrapped `<option>` element, set its value, and set the display text.
 
-```
+```javascript
 var $option = $('<option>');
 
 $option
@@ -93,16 +91,16 @@ $option
 ```
 
 
-Finally, we’ll append the `&lt;option&gt;` to the select `&lt;select&gt;`.
+Finally, we’ll append the `<option>` to the select `<select>`.
 
-```
+```javascript
 $select.append($option);
 ```
 
 
 The finished product (19 lines of code) looks like this:
 
-```
+```javascript
 $('select[data-source]').each(function() {
   var $select = $(this);
   
@@ -124,6 +122,6 @@ $('select[data-source]').each(function() {
 });
 ```
 
-%[https://codepen.io/travishorn/pen/wzxxkN]
+[See the demo of this code in action.](https://codepen.io/travishorn/pen/wzxxkN)
 
-All `&lt;select&gt;` elements on the page will automatically have their `&lt;options&gt;` populated from the API in their `data-source`.
+All `<select>` elements on the page will automatically have their `<options>` populated from the API in their `data-source`.

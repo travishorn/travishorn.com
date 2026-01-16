@@ -23,8 +23,6 @@ I will break down the process of using and writing JavaScript modules into these
 
 1. Creating your own modules
 
-![Photo by Erwan Hesry](./images/1_UHCgPFM7FyNVvVx4CY6yWw.webp)*Photo by [Erwan Hesry](https://unsplash.com/@erwanhesry)*
-
 ### 1. Installing Git on Windows
 
 There are many options for installing and using [Git](https://git-scm.com/). On Windows, I recommend installing the GitHub desktop app, which has Git bundled with it. With the GitHub desktop app, you will be able to easily publish any modules you make to the open source community and allow others to access, modify, and collaborate on your modules.
@@ -61,7 +59,7 @@ There are also many ways to install [Node.js](https://nodejs.org/en/). Each have
 
 1. Open a **Command Prompt** and run `node -v` to make sure it works
 
-```
+```console
 > node -v
 v4.4.7
 ```
@@ -81,7 +79,7 @@ Then, when creating a new project…
 
 1. Run `npm init` and answer each question about your project
 
-```
+```console
 > mkdir mypackage
 > cd mypackage
 > npm init
@@ -120,21 +118,21 @@ This will create a **package.json** file that contains metadata about your proje
 
 When you find a package that you want to use, just run
 
-```
+```console
 npm install [package name] --save
 ```
 
 
 This installs the package and saves it as a dependency in **package.json**.
 
-```
+```console
 npm install lodash --save
 ```
 
 
 package.json:
 
-```
+```json
 {
   "name": "mypackage",
   "version": "1.0.0",
@@ -150,14 +148,14 @@ package.json:
 
 Once it is installed, just require it at the top of any script that uses it, like so:
 
-```
+```javascript
 var _ = require('lodash');
 ```
 
 
 You now have access to the `_` object, which contains all the code downloaded and installed with the package.
 
-```
+```javascript
 var myObj = _.assign({ 'a': 1 }, { 'b': 2 }, { 'c': 3 });
 
 // myObj = { 'a': 1, 'b': 2, 'c': 3 }
@@ -172,7 +170,7 @@ Using packaged modules like that in Node is great. But what about the browser? L
 
 Open a **Command Prompt** and run
 
-```
+```console
 npm install -g browserify
 ```
 
@@ -183,7 +181,7 @@ This will install browserify globally. Meaning that it’s not tied to a specifi
 
 When you find a package you want to use, just run
 
-```
+```console
 npm install [package name]
 ```
 
@@ -192,7 +190,7 @@ npm install [package name]
 
 First, require it at the top of any script that uses it, like so:
 
-```
+```javascript
 var _ = require('lodash');
 ```
 
@@ -235,7 +233,7 @@ A good module is well tested, so I’ll show you how to write a module with test
 
 **Fig 1**
 
-```
+```javascript
 require('chai').should();
 var pkg = require('./app');
 
@@ -249,14 +247,14 @@ describe('pkg', function() {
 
 **Fig 2**
 
-```
+```json
 "scripts": { "test": "mocha --reporter spec tests" }
 ```
 
 
 **Fig 3**
 
-```
+```javascript
 module.exports = {
   add: function(num1, num2) {
     return num1 + num2;
@@ -266,3 +264,5 @@ module.exports = {
 
 
 The methods I used in these steps are only one way of doing it. You will undoubtedly develop your own style and figure out what tools work best for you. Hope fully this post will give you a head start.
+
+Cover photo by [Erwan Hesry](https://unsplash.com/@erwanhesry).
