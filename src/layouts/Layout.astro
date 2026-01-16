@@ -1,6 +1,7 @@
 ---
 
 import "@fontsource-variable/open-sans";
+import openSansWoff2 from '@fontsource-variable/open-sans/files/open-sans-latin-wght-normal.woff2?url';
 import "../styles/global.css";
 import Search from "../components/Search.astro";
 import { siteTitle, siteDescription } from '../site';
@@ -16,10 +17,14 @@ const pageOgImage = ogImage || '/images/default-cover.jpg';
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/png" sizes="16x16" href="/images/travis-horn-circle-64x64.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content={pageDescription} />
+		
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/travis-horn-circle-64x64.png" />
+		<link rel="preload" as="font" type="font/woff2" href={openSansWoff2} crossorigin="anonymous" />
+
 		<title>{pageTitle}</title>
+
+		<meta name="description" content={pageDescription} />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
@@ -36,7 +41,7 @@ const pageOgImage = ogImage || '/images/default-cover.jpg';
 		<meta property="twitter:image" content={new URL(pageOgImage, Astro.url.origin).toString()} />
 	</head>
 	<body>
-		<div class="min-h-screen bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-50 pb-24 font-['Open_Sans_Variable']">
+		<div class="min-h-screen bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-50 pb-24">
 			<div class="max-w-3xl mx-auto p-12 flex flex-col gap-12">
 				<header class="flex flex-col gap-4 md:flex-row md:gap-2 items-center justify-between">
 					<h1 class="font-semibold">
