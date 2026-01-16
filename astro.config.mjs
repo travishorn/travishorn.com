@@ -1,9 +1,11 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
+import tailwindcss from '@tailwindcss/vite';
 import pagefind from "astro-pagefind";
+import { redirectMapping } from './src/redirects.js';
+
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,4 +26,6 @@ export default defineConfig({
       theme: 'github-dark-high-contrast',
     },
   },
+
+  redirects: redirectMapping
 });
