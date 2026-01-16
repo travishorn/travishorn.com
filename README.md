@@ -2,10 +2,10 @@
 
 My personal profile and blog.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/f13332b8-c966-40da-b439-d796d0e32133/deploy-status)](https://app.netlify.com/projects/travishorncom/deploys)
+
 ## To Do
 
-- Deploy on Netlify
-- Change inline code parsing style
 - Old article cleanup (start with "Getting browser width..." and work your way newer)
   - Remove extra cover photo (move credit to end, delete duplicate webp file)
   - Add alt text to images
