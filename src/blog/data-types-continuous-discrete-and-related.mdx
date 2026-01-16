@@ -45,7 +45,7 @@ A bell curve plot showing the height of U.S. women. From [Lumen Learning](https:
 
 ![Histogram showing customer age distribution, with the highest frequency around ages 40-50, decreasing steadily in older age groups. Frequency is on the left axis and percent of total on the right.](./images/44c165db-be87-4b3a-bff1-675e78af85cd.webp)
 
-A histogram showing customer age groups. From [Paul Turley’s SQL Server BI Blog](https://sqlserverbi.blog/10-histogram-chart/).
+A histogram showing customer age groups. From [Paul Turley's SQL Server BI Blog](https://sqlserverbi.blog/10-histogram-chart/).
 
 ![Scatter plot showing the relationship between square footage and price for homes. The x-axis represents square footage, and the y-axis represents price in thousands. Data points are scattered, generally showing an upward trend.](./images/efcb04f8-9033-44b0-a780-48a7ceabf93e.webp)
 
@@ -86,7 +86,7 @@ Bar chart showing number of students in various classes. From [Animalia Life](ht
 
 Dot plot showing visitors per hour of the day. From [Anamalia Life](https://animalia-life.club/qa/pictures/dot-plot).
 
-Discrete values can further be broken down into *small-range* and *count* data. Think about the difference between the number on a dice roll and the number of views a YouTube video has? Both are discrete, but we think about them differently. A dice roll is *small-range* discrete data. it has a fixed, limited set of outcomes (1 through 6). Now, the number of views is *count* data. It could be 0, 10, or 10,000 (there’s no upper limit).
+Discrete values can further be broken down into *small-range* and *count* data. Think about the difference between the number on a dice roll and the number of views a YouTube video has? Both are discrete, but we think about them differently. A dice roll is *small-range* discrete data. it has a fixed, limited set of outcomes (1 through 6). Now, the number of views is *count* data. It could be 0, 10, or 10,000 (there's no upper limit).
 
 ## Categorical: Nominal and Ordinal
 
@@ -113,7 +113,7 @@ For example:
 
 * Likert scale (strongly disagree, disagree, neutral, agree, strongly agree)
     
-* Education level (less than high school, high school graduate, some college, bachelor’s degree, master’s degree, doctorate)
+* Education level (less than high school, high school graduate, some college, bachelor's degree, master's degree, doctorate)
     
 * Customer satisfaction (dissatisfied, neutral, satisfied)
     
@@ -130,9 +130,9 @@ Stacked bar chart showing quarterly product sales. From [Visual Paradigm Online]
 
 A mosaic plot showing survival per class. From [ggmosaic](https://haleyjeppson.github.io/ggmosaic/reference/geom_mosaic.html).
 
-Sometimes it can be tempting to treat ordinal values as numeric. Say you’ve got a survey with responses from “Very Dissatisfied” to “Very Satisfied".” You could assign numbers from 1 to 5, but is the jump from “Very Dissatisfied” to “Dissatisfied” the same size as the jump from “Neutral” to “Satisfied?” Probably not.
+Sometimes it can be tempting to treat ordinal values as numeric. Say you've got a survey with responses from "Very Dissatisfied" to "Very Satisfied"." You could assign numbers from 1 to 5, but is the jump from "Very Dissatisfied" to "Dissatisfied" the same size as the jump from "Neutral" to "Satisfied?" Probably not.
 
-It’s common to treat some ordinal data (like Likert scales) as numeric because it unlocks simpler analysis, but be aware you’re making a big assumption that the distance between each category is equal.
+It's common to treat some ordinal data (like Likert scales) as numeric because it unlocks simpler analysis, but be aware you're making a big assumption that the distance between each category is equal.
 
 ## Binary and Dichotomous
 
@@ -168,7 +168,7 @@ For example:
 * Calendar year (1492, 1776, 1945)
     
 
-Note that an interval value can be zero (like 0 degrees Celsius), but that zero point is arbitrary; it is just a reference point, not a complete absence of the property being measured. 0 degrees Celsius doesn’t mean an absence of temperature.
+Note that an interval value can be zero (like 0 degrees Celsius), but that zero point is arbitrary; it is just a reference point, not a complete absence of the property being measured. 0 degrees Celsius doesn't mean an absence of temperature.
 
 Ratio values are similar, having meaningful differences, but they also include a true zero.
 
@@ -185,9 +185,9 @@ For example:
 * Kelvin (0, 273.15, 373.15)
     
 
-A length of 0 is a true zero; the absence of length. It doesn’t matter if you’re measuring in feet, centimeters, or anything else. It’s always zero.
+A length of 0 is a true zero; the absence of length. It doesn't matter if you're measuring in feet, centimeters, or anything else. It's always zero.
 
-With a true zero (ratio data), you can say things like "this is twice as long" or "that is half the price” because the starting point (zero) is absolute.
+With a true zero (ratio data), you can say things like "this is twice as long" or "that is half the price" because the starting point (zero) is absolute.
 
 You can't do this without a true zero (interval data). 20 degrees Celsius is not twice as hot as 10 degrees Celsius. This is also why percentage changes like "a 50% increase in income" only make sense for ratio data.
 
@@ -236,26 +236,26 @@ However, binning is useful when the general group is more important than the exa
 
 ## Decision Flow for Classifying a Variable
 
-1. Is the variable numeric? If yes, it’s quantitative. If no, it’s categorical.
+1. Is the variable numeric? If yes, it's quantitative. If no, it's categorical.
     
-2. If numeric, can it take any real value in a range? If yes, it’s continuous. If no (integers/counts), it’s discrete.
+2. If numeric, can it take any real value in a range? If yes, it's continuous. If no (integers/counts), it's discrete.
     
-3. If categorical, are categories ordered? If yes, it’s ordinal. If no, it’s nominal.
+3. If categorical, are categories ordered? If yes, it's ordinal. If no, it's nominal.
     
 
 ![Flowchart for data classification: Starts with "Numeric?" leading to "Categorical" if no, or "Quantitative" if yes. Quantitative splits into "Discrete" for "Take any value? No" and "Continuous" for "Yes." Categorical branches into "Ordered?" leading to "Ordinal" if yes, and "Nominal" if no.](./images/127b3c6c-1c8c-49ee-a439-df61eb6d7741.webp)
 
 ### Example 1: Number of Siblings
 
-Is it numeric? Yes, it’s a count. So it’s **quantitative**.
+Is it numeric? Yes, it's a count. So it's **quantitative**.
 
-Can it take any value? No, you can’t have 1.5 siblings. It must be a whole number. So it’s **discrete**.
+Can it take any value? No, you can't have 1.5 siblings. It must be a whole number. So it's **discrete**.
 
 ### Example 2: T-shirt Size
 
-Is it numeric? No. So it’s **categorical**.
+Is it numeric? No. So it's **categorical**.
 
-Is there a clear order? Yes, “large” is bigger than “medium.” So it’s **ordinal**.
+Is there a clear order? Yes, "large" is bigger than "medium." So it's **ordinal**.
 
 ## Statistical Test Quick Reference
 
@@ -263,7 +263,7 @@ For continuous vs continuous data, use correlation, linear regression, t-test, o
 
 For continuous vs categorical data (with two groups), use t-test or Mann-Whitney (if nonparametric).
 
-For categorical vs categorical data, use chi-square or Fisher’s exact.
+For categorical vs categorical data, use chi-square or Fisher's exact.
 
 For ordinal outcomes, use Poisson/negative binomial regression.
 
@@ -277,11 +277,11 @@ For ordinal outcomes, use Poisson/negative binomial regression.
     
 * Choose models that match the data type.
     
-* Don’t treat ordinal data as interval without justification.
+* Don't treat ordinal data as interval without justification.
     
 * Watch for zero-inflation in counts.
     
-* Make sure you’re not misusing parametric tests on skewed continuous data.
+* Make sure you're not misusing parametric tests on skewed continuous data.
     
 
 Getting a handle on data types might seem like a small detail, but it's the foundation for any solid analysis. Choosing the right chart, the right model, or the right statistical test all comes back to this first, crucial step. Get this step right, and you're set up for telling an accurate data story.

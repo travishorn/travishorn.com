@@ -23,7 +23,7 @@ It can do all kinds of things, like…
 * Guarantee ACID transactions
     
 
-It’s great for querying CSV files:
+It's great for querying CSV files:
 
 ```sql
 SELECT * FROM read_csv('input.csv');
@@ -41,7 +41,7 @@ In fact, you can combine these statements to read in from and write out to a fil
 COPY (SELECT * FROM read_csv('input.csv')) TO 'output.csv';
 ```
 
-Reading in data just to write it back out is a little pointless. It’s like doing `cp input.csv output.csv` with more steps.
+Reading in data just to write it back out is a little pointless. It's like doing `cp input.csv output.csv` with more steps.
 
 The real power comes in when you have differing file formats. For example, you can convert a tab-separated file to a comma-separated file.
 
@@ -120,7 +120,7 @@ done
 echo "All files have been converted."
 ```
 
-Or, if you’re on Windows, a PowerShell script can do the same thing:
+Or, if you're on Windows, a PowerShell script can do the same thing:
 
 ```powershell
 # Define script parameters.

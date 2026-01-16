@@ -13,7 +13,7 @@ Sparklines can be used to quickly visualize data variance. They are small and in
 
 ![](./images/Oh7Gl0ney.webp)
 
-We’ll be using Vue and D3 to build a small [sparkline](https://en.wikipedia.org/wiki/Sparkline) component using [Vue.js](https://vuejs.org/). In the next article, I’ll show you [how to use this component to build a “dashboard”](https://travishorn.com/building-a-sparkline-dashboard-8bbc9c26c401) for easy visualization of many data points.
+We'll be using Vue and D3 to build a small [sparkline](https://en.wikipedia.org/wiki/Sparkline) component using [Vue.js](https://vuejs.org/). In the next article, I'll show you [how to use this component to build a "dashboard"](https://travishorn.com/building-a-sparkline-dashboard-8bbc9c26c401) for easy visualization of many data points.
 
 First, make sure you have the [Vue CLI](https://cli.vuejs.org/) installed. Then, create a new project.
 
@@ -22,7 +22,7 @@ vue create sparkboard
 ```
 
 
-The CLI will ask you questions about how you’d like to set up your project. You can accept the defaults or manually select features you like. I manually selected…
+The CLI will ask you questions about how you'd like to set up your project. You can accept the defaults or manually select features you like. I manually selected…
 
 * Babel
 
@@ -62,9 +62,9 @@ export default {
 ```
 
 
-Notice the root element of the component is an `&lt;svg&gt;`. This is the element we’ll bind D3 to when creating the chart. You can also see that the `&lt;svg&gt;` has a `viewBox` of `0 0 200 40`. This gives it the dimensions of 200 pixels wide by 40 pixels tall. The actual width and height are determined by the element’s container, but the 200 x 40 `viewBox` gives it a good height to width ratio for a sparkline chart.
+Notice the root element of the component is an `&lt;svg&gt;`. This is the element we'll bind D3 to when creating the chart. You can also see that the `&lt;svg&gt;` has a `viewBox` of `0 0 200 40`. This gives it the dimensions of 200 pixels wide by 40 pixels tall. The actual width and height are determined by the element's container, but the 200 x 40 `viewBox` gives it a good height to width ratio for a sparkline chart.
 
-Finally, there is a `&lt;path&gt;` inside the `&lt;svg&gt;`. This is our actual line. For right now, it’s just a hard-coded, perfectly straight, horizontal line.
+Finally, there is a `&lt;path&gt;` inside the `&lt;svg&gt;`. This is our actual line. For right now, it's just a hard-coded, perfectly straight, horizontal line.
 
 We can see our progress so far by putting our component in the main `App.vue`. In that file, replace everything in the template with…
 
@@ -110,11 +110,11 @@ With the server running, we can visit [http://localhost:8080/](http://localhost:
 
 ![](./images/thFpM5CGj.webp)
 
-It is literally just a horizontal yellow line, which is perfect because that’s exactly what we’ve coded so far.
+It is literally just a horizontal yellow line, which is perfect because that's exactly what we've coded so far.
 
-Let’s code a way to pass data into this component so we can display it using this line.
+Let's code a way to pass data into this component so we can display it using this line.
 
-Going back to `SparkLine.vue` and adding to the `script` section, define a prop called `data`. This prop will be an array. We’ll also tell it to simply use a basic array of `[0, 0]` if no data is passed in.
+Going back to `SparkLine.vue` and adding to the `script` section, define a prop called `data`. This prop will be an array. We'll also tell it to simply use a basic array of `[0, 0]` if no data is passed in.
 
 ```
 <script>
@@ -142,7 +142,7 @@ We can pass data into the component back in `App.vue` like so:
 
 Note that the line above replaces the existing `&lt;SparkLine /&gt;`. Also note that these are just random values I made up. Feel free to use whatever you like.
 
-Now it’s time to use [D3.js](https://d3js.org/) to bind data to the line. First, install D3.
+Now it's time to use [D3.js](https://d3js.org/) to bind data to the line. First, install D3.
 
 ```
 npm i d3
@@ -190,7 +190,7 @@ this.y = d3.scaleLinear().range([40, 0]);
 ```
 
 
-If you’ve used D3 scales before, you might be wondering why we’re not setting the domain here. That’s because we’re going to put that logic in a separate function that can get called any time our data changes.
+If you've used D3 scales before, you might be wondering why we're not setting the domain here. That's because we're going to put that logic in a separate function that can get called any time our data changes.
 
 Now we must define the line function.
 
@@ -206,14 +206,14 @@ What the code above does, is defines a D3 line where the x value is determined b
 
 ![](./images/h_fNqdcvQ.webp)
 
-Finally, let’s call a method to actually plot the data.
+Finally, let's call a method to actually plot the data.
 
 ```
 this.plot();
 ```
 
 
-The function called in the line above doesn’t exist, yet. Let’s create it now.
+The function called in the line above doesn't exist, yet. Let's create it now.
 
 This will go in our components `methods`.
 
@@ -239,7 +239,7 @@ this.y.domain(d3.extent(this.data));
 ```
 
 
-As you can see above, the x scale’s domain starts at 0 and ends at the end of the array. The y scale’s domain starts with the smallest data value and ends with the largest.
+As you can see above, the x scale's domain starts at 0 and ends at the end of the array. The y scale's domain starts with the smallest data value and ends with the largest.
 
 Now to actually adjust the chart line. Also in `plot()`:
 
@@ -252,7 +252,7 @@ If you save `SparkLine.vue` and look again at [http://localhost:8080/](http://lo
 
 ![](./images/-fzfpugMt.webp)
 
-What happens if our data changes? All we need to do is call the `plot()` method again. Set up a watcher to do that. This watcher will “watch” the `data` property and call `plot()` any time it changes.
+What happens if our data changes? All we need to do is call the `plot()` method again. Set up a watcher to do that. This watcher will "watch" the `data` property and call `plot()` any time it changes.
 
 ```
 export default {
@@ -271,7 +271,7 @@ export default {
 
 And now our component can react to data changes!
 
-While all of this works as a single component, there’s one important bug that we have to fix if we want to re-use this component more than once on the same page. Right now, we have D3 selecting the sole `&lt;svg&gt;` element on the page. If you have more than one `&lt;svg&gt;` on the same page, D3 is just going to select the first one it finds. This is no good. We want to select the `&lt;svg&gt;` in *this* component.
+While all of this works as a single component, there's one important bug that we have to fix if we want to re-use this component more than once on the same page. Right now, we have D3 selecting the sole `&lt;svg&gt;` element on the page. If you have more than one `&lt;svg&gt;` on the same page, D3 is just going to select the first one it finds. This is no good. We want to select the `&lt;svg&gt;` in *this* component.
 
 To do that, we can assign our `&lt;svg&gt;` a unique ID.
 
@@ -306,7 +306,7 @@ export default {
 ```
 
 
-We use the template string ``chart-${nanoid()}`` so that our random id is in the format `chart-kHM_8K1yz8GGq6MVBwfoG` or `chart-VG5J13fYZIdMBrSDRuEBX` for example. It’s always random.
+We use the template string ``chart-${nanoid()}`` so that our random id is in the format `chart-kHM_8K1yz8GGq6MVBwfoG` or `chart-VG5J13fYZIdMBrSDRuEBX` for example. It's always random.
 
 In the template, set the `&lt;svg&gt;`'s `id` to this new id.
 
@@ -331,7 +331,7 @@ this.chart = d3.select(`#${this.id}`);
 ```
 
 
-That’s it Our sparkline component is done! You can add multiple sparkline components on the same page and they’ll all show up perfectly.
+That's it Our sparkline component is done! You can add multiple sparkline components on the same page and they'll all show up perfectly.
 
 ```
 <template>
@@ -350,8 +350,8 @@ All code for this article is open source and published on GitHub.
 [**travishorn/vue-sparkline-component**
 *Basic sparkline component for Vue.js using D3.js npm install npm run serve npm run build npm run lint See Configuration…*github.com](https://github.com/travishorn/vue-sparkline-component)
 
-In the next article, I’ll show you [how to use this component to build a “dashboard”](https://travishorn.com/building-a-sparkline-dashboard-8bbc9c26c401) for easy visualization of many data points.
+In the next article, I'll show you [how to use this component to build a "dashboard"](https://travishorn.com/building-a-sparkline-dashboard-8bbc9c26c401) for easy visualization of many data points.
 
 ### Exercise to the reader
 
-The component is hard-coded to have a yellow line. What if you wanted to be able to set the color individually per component? Hint: use a `prop` (and don’t forget to set a default value!).
+The component is hard-coded to have a yellow line. What if you wanted to be able to set the color individually per component? Hint: use a `prop` (and don't forget to set a default value!).

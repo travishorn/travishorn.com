@@ -11,11 +11,11 @@ tags: ["airbnb", "javascript", "web-development", "styleguide", "eslint"]
 
 Airbnb maintains a very popular JavaScript Style Guide that is used by many JavaScript developers worldwide. Following this style guide will ensure your code has a level of clarity that makes reading and maintaining your code easier for anyone who has to work on it.
 
-[ESLint](https://eslint.org/) is a tool for “[linting](https://stackoverflow.com/questions/8503559/what-is-linting)” your code. It can analyze your code and warn you of potential errors. In order for it to work, you need to configure it with specific rules. Luckily, Airbnb — as part of their style guide — provides an ESLint configuration that anyone can use.
+[ESLint](https://eslint.org/) is a tool for "[linting](https://stackoverflow.com/questions/8503559/what-is-linting)" your code. It can analyze your code and warn you of potential errors. In order for it to work, you need to configure it with specific rules. Luckily, Airbnb — as part of their style guide — provides an ESLint configuration that anyone can use.
 
-[VS Code](https://code.visualstudio.com/) is a popular code editor created by Microsoft. One of the nice features is that you can enable extensions that make your life as a developer easier. There is a VS Code extension for ESLint which will integrate it’s linting features right in your editor. You will be warned of potential problems on the fly as you write code.
+[VS Code](https://code.visualstudio.com/) is a popular code editor created by Microsoft. One of the nice features is that you can enable extensions that make your life as a developer easier. There is a VS Code extension for ESLint which will integrate it's linting features right in your editor. You will be warned of potential problems on the fly as you write code.
 
-Many developers consider setting up linting in this way essential. In this post, I’ll show you how to set it all up.
+Many developers consider setting up linting in this way essential. In this post, I'll show you how to set it all up.
 
 ![](./images/NDLIAvjDI.webp)
 
@@ -43,14 +43,14 @@ Follow along with the detailed version below if you are new to any of the concep
 
 First, download and install [Node.js](https://nodejs.org/en/). Its package manager, npm, is included with the installation.
 
-Once Node and npm are installed, open up a terminal (or command prompt). Change directories into the root directory for any coding you do. I call my directory “code”.
+Once Node and npm are installed, open up a terminal (or command prompt). Change directories into the root directory for any coding you do. I call my directory "code".
 
 ```
 > cd C:\users\travis\code
 ```
 
 
-This is the directory in which I want to configure ESLint. Any subdirectories within this one will also use the configuration we are about to set up. This works because, when you run ESLint, it looks in the current directory for a configuration; If it can’t find one, it moves up to the parent directory, checks there, and the process repeats until a configuration is found.
+This is the directory in which I want to configure ESLint. Any subdirectories within this one will also use the configuration we are about to set up. This works because, when you run ESLint, it looks in the current directory for a configuration; If it can't find one, it moves up to the parent directory, checks there, and the process repeats until a configuration is found.
 
 Now initialize a new npm configuration.
 
@@ -78,7 +78,7 @@ module.exports = {
 ```
 
 
-ESLint is installed and configured for Airbnb’s style guide. Now we need to get it working in VS Code.
+ESLint is installed and configured for Airbnb's style guide. Now we need to get it working in VS Code.
 
 Download and install [VS Code](https://code.visualstudio.com/).
 

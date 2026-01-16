@@ -9,11 +9,11 @@ tags: ["javascript", "web-development", "svg"]
 
 
 
-An “options object” is a programming pattern that you can use to pass any number of named arguments to a function. Rather than using an ordered list of arguments, you simply pass one argument, which is an object containing named keys for all of your options. Keep reading to learn how and why.
+An "options object" is a programming pattern that you can use to pass any number of named arguments to a function. Rather than using an ordered list of arguments, you simply pass one argument, which is an object containing named keys for all of your options. Keep reading to learn how and why.
 
 ![](./images/XwHpCW7PG.webp)
 
-Here, I have created an SVG “sketchpad.”
+Here, I have created an SVG "sketchpad."
 
 ```
 <div class="container">
@@ -23,7 +23,7 @@ Here, I have created an SVG “sketchpad.”
 ```
 
 
-I’ve given it some basic sizing and color styling.
+I've given it some basic sizing and color styling.
 
 ```
 html { font-size: 22px; }
@@ -57,7 +57,7 @@ I want to add some shapes to this sketchpad. I *could* do this directly in HTML.
 ```
 
 
-But instead I’m going to create a JavaScript function that builds shapes and appends them to the sketchpad.
+But instead I'm going to create a JavaScript function that builds shapes and appends them to the sketchpad.
 
 ```
 const addCircle = (svg) => {
@@ -87,10 +87,10 @@ addCircle(sketch);
 
 ![An orange circle on a dark background](./images/NUOwOzYhn.webp)*An orange circle on a dark background*
 
-Here’s what I have so far.
+Here's what I have so far.
 
 
-Now I want to be able to programmatically set the color. I’ll do this by adding another argument to the function, and using that argument when setting the stroke.
+Now I want to be able to programmatically set the color. I'll do this by adding another argument to the function, and using that argument when setting the stroke.
 
 ```
 const addCircle = (svg, color) => {
@@ -119,7 +119,7 @@ addCircle(sketch, '#525F7F');
 
 ![A blue circle on a dark background](./images/JoVvihetz.webp)*A blue circle on a dark background*
 
-Here’s the updated function.
+Here's the updated function.
 
 
 What if I want to set *even more* attributes for the circle? I *could* keep adding arguments all day.
@@ -131,7 +131,7 @@ const addCircle = (svg, color, x, y, r, width) => {}
 
 But having so many arguments can get confusing. Consider that, when calling this function, I would have to remember in which order it expects the arguments.
 
-Instead, I’m going to re-write the function to use the options object pattern.
+Instead, I'm going to re-write the function to use the options object pattern.
 
 ```
 const addCircle = (options) => {
@@ -164,7 +164,7 @@ addCircle({
 The function call is more verbose but also more clear.
 
 
-Now I’ll start adding more options.
+Now I'll start adding more options.
 
 ```
 const addCircle = (options) => {
@@ -215,7 +215,7 @@ addCircle({
 Notice the *order* of the arguments no longer matters. The function finds the correct argument by *name*.
 
 
-I could stop here, but it would be nice to have some default options so I don’t have to include a full options object each time I call the function.
+I could stop here, but it would be nice to have some default options so I don't have to include a full options object each time I call the function.
 
 ```
 const addCircle = (options) => {
@@ -237,7 +237,7 @@ const addCircle = (options) => {
 
 Notice all the [logical OR operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Logical_OR) ( `||` ). If the `options.x` value is [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy), the default of `250` is used instead. Same for `options.y` and so on.
 
-So I can call the function with as few arguments as I want. Any options I don’t specify will fall back on the chosen defaults.
+So I can call the function with as few arguments as I want. Any options I don't specify will fall back on the chosen defaults.
 
 ```
 addCircle({
@@ -250,12 +250,12 @@ addCircle({
 
 ![A white circle on a dark background](./images/lQ5livdVn.webp)*A white circle on a dark background*
 
-Here’s the code.
+Here's the code.
 
 
-Just for fun — and to test out my new function — I’m going to feed it some random values.
+Just for fun — and to test out my new function — I'm going to feed it some random values.
 
-For this, I’m going to add [Lodash](https://lodash.com/) to the project. I’m going to use [its `random` function](https://lodash.com/docs/4.17.10#random) on all the circle’s attributes.
+For this, I'm going to add [Lodash](https://lodash.com/) to the project. I'm going to use [its `random` function](https://lodash.com/docs/4.17.10#random) on all the circle's attributes.
 
 ```
 addCircle({
@@ -296,7 +296,7 @@ addCircle({
 
 ![A gray circle on a dark background](./images/Vi0VbfTCx.webp)*A gray circle on a dark background*
 
-For even more fun, I’ll create a loop and add ten circles.
+For even more fun, I'll create a loop and add ten circles.
 
 ```
 let i;
@@ -315,7 +315,7 @@ You can run the code yourself and see what sketch you come up with.
 
 Re-run to get a whole new sketch each time.
 
-Try changing `maxCircles` to get an even busier sketch. Here’s what one hundred circles looks like.
+Try changing `maxCircles` to get an even busier sketch. Here's what one hundred circles looks like.
 
 ![One hundred random circles](./images/nuXtdsD69.webp)*One hundred random circles*
 

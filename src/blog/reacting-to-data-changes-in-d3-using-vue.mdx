@@ -13,11 +13,11 @@ D3 provides a powerful interface for reacting to changes in data. When hooked up
 
 ![](./images/wOYFLO1cV.webp)
 
-Follow along and we’ll build something like this:
+Follow along and we'll build something like this:
 
 ![A chart with three buttons to add, modify, and remove data points. (random data is used here)](./images/rfVON-MrMt.webp)*A chart with three buttons to add, modify, and remove data points. (random data is used here)*
 
-To get started, let’s make a tiny page with some bare-bones HTML and an `&lt;svg&gt;` element. Make sure the `&lt;svg&gt;` has an `id`.
+To get started, let's make a tiny page with some bare-bones HTML and an `&lt;svg&gt;` element. Make sure the `&lt;svg&gt;` has an `id`.
 
 ```
 <!doctype html>
@@ -33,7 +33,7 @@ To get started, let’s make a tiny page with some bare-bones HTML and an `&lt;s
 ```
 
 
-Since we’ll be using [Vue.js](https://vuejs.org/) and [D3.js](https://d3js.org/), let’s make sure to include them. Ideally, you’d be using a build step to pull in these dependencies and bundle them. But for now, simple `&lt;script&gt;` tags will work.
+Since we'll be using [Vue.js](https://vuejs.org/) and [D3.js](https://d3js.org/), let's make sure to include them. Ideally, you'd be using a build step to pull in these dependencies and bundle them. But for now, simple `&lt;script&gt;` tags will work.
 
 Below the `&lt;svg&gt;` tag, add the scripts.
 
@@ -47,7 +47,7 @@ Below the `&lt;svg&gt;` tag, add the scripts.
 ```
 
 
-For this tutorial, we’ll plot some *fake* data regarding blue whales; starting with a very small sample size.
+For this tutorial, we'll plot some *fake* data regarding blue whales; starting with a very small sample size.
 
 ```
 const whales = [
@@ -58,7 +58,7 @@ const whales = [
 ```
 
 
-Before we make it reactive, let’s focus on just getting a static chart built. A [scatter plot](https://en.wikipedia.org/wiki/Scatter_plot) would be a good way to visualize this data.
+Before we make it reactive, let's focus on just getting a static chart built. A [scatter plot](https://en.wikipedia.org/wiki/Scatter_plot) would be a good way to visualize this data.
 
 Start with some dimensions.
 
@@ -74,7 +74,7 @@ const margin = {
 ```
 
 
-Use these dimensions to place a `&lt;g&gt;` element that respects our margins. All other chart elements will be placed inside this `&lt;g&gt;`, so we’ll call it our `chart`.
+Use these dimensions to place a `&lt;g&gt;` element that respects our margins. All other chart elements will be placed inside this `&lt;g&gt;`, so we'll call it our `chart`.
 
 ```
 const chart = d3.select("#chart")
@@ -83,7 +83,7 @@ const chart = d3.select("#chart")
 ```
 
 
-Next, we’ll need some scales. The x axis will plot our whale ages. A linear scale works well for this kind of data.
+Next, we'll need some scales. The x axis will plot our whale ages. A linear scale works well for this kind of data.
 
 The `range` of this scale is the width of our chart (minus the margins we set).
 
@@ -93,7 +93,7 @@ const x = d3.scaleLinear()
 ```
 
 
-If you know anything about D3.js, you may be expecting the `domain` to be set at this time, as well. I’m intentionally omitting it for right now because I only want to set chart values that *don’t* change with the data. Domains react to data changes. Ranges do not.
+If you know anything about D3.js, you may be expecting the `domain` to be set at this time, as well. I'm intentionally omitting it for right now because I only want to set chart values that *don't* change with the data. Domains react to data changes. Ranges do not.
 
 The y axis will plot our whale weights. A linear scale also works well here.
 
@@ -107,7 +107,7 @@ const y = d3.scaleLinear()
 
 Notice the first value of the y scale is the height, and the second value is 0. We want heavier weights at the top of the chart, and zero at the bottom.
 
-Now let’s make some elements into which we can place the axes. We wont actually be placing the axes on the chart at this point, just the placeholder `&lt;g&gt;`s for them. Axes are another element that react to changes in data. If a new data point gets added where the age is older than any existing age in the chart, the x axis will have to adjust. Likewise for the y axis with weights.
+Now let's make some elements into which we can place the axes. We wont actually be placing the axes on the chart at this point, just the placeholder `&lt;g&gt;`s for them. Axes are another element that react to changes in data. If a new data point gets added where the age is older than any existing age in the chart, the x axis will have to adjust. Likewise for the y axis with weights.
 
 ```
 const xAxis = chart.append("g")
@@ -120,11 +120,11 @@ const yAxis = chart.append("g");
 ```
 
 
-Notice the `xAxis` is shifted down so it’s at the bottom of the chart. The `yAxis` doesn’t need to be shifted because it starts at the upper left corner of the chart anyway.
+Notice the `xAxis` is shifted down so it's at the bottom of the chart. The `yAxis` doesn't need to be shifted because it starts at the upper left corner of the chart anyway.
 
-With all of the static elements and values taken care of, it’s time to code the parts of the chart that react to data changes.
+With all of the static elements and values taken care of, it's time to code the parts of the chart that react to data changes.
 
-Place all of this code in a new function we’ll call `plot()`.
+Place all of this code in a new function we'll call `plot()`.
 
 ```
 const plot = () => {
@@ -149,7 +149,7 @@ yAxis.call(d3.axisLeft(y));
 ```
 
 
-Let’s see what this looks like on our page. Immediately after defining the `plot()` function, call it.
+Let's see what this looks like on our page. Immediately after defining the `plot()` function, call it.
 
 Note that this function call goes **outside** the function definition itself.
 
@@ -158,9 +158,9 @@ plot();
 ```
 
 
-![The visual result of the code we’ve written so far.](./images/C-tcojSY8.webp)*The visual result of the code we’ve written so far.*
+![The visual result of the code we've written so far.](./images/C-tcojSY8.webp)*The visual result of the code we've written so far.*
 
-There’s only one more declaration we have to make in order to place dots on this chart.
+There's only one more declaration we have to make in order to place dots on this chart.
 
 Back inside the `plot()` function, add the code for appending `&lt;circle&gt;` elements.
 
@@ -175,21 +175,21 @@ chart.selectAll(".point")
 ```
 
 
-If you are not familiar with D3.js and you’re confused by the code above, you may consider reading up on [D3 data joins](https://observablehq.com/@d3/selection-join).
+If you are not familiar with D3.js and you're confused by the code above, you may consider reading up on [D3 data joins](https://observablehq.com/@d3/selection-join).
 
-Basically, we’re binding all elements with a `class` of `point` to our data. The `.join()` here takes care of adding the appropriate elements if they don’t yet exist, modifying elements if they do, and removing extra elements if there’s more of them than there are data points. Once the elements and data are bound, we add a `&lt;circle&gt;` with an `r` (radius) of 5 pixels for each one.
+Basically, we're binding all elements with a `class` of `point` to our data. The `.join()` here takes care of adding the appropriate elements if they don't yet exist, modifying elements if they do, and removing extra elements if there's more of them than there are data points. Once the elements and data are bound, we add a `&lt;circle&gt;` with an `r` (radius) of 5 pixels for each one.
 
 The chart is now mostly usable.
 
 ![](./images/eojK-P5zA.webp)
 
-The way we’ve coded this chart makes it easy to update when data changes. Every time `plot()` is called, the data is re-analyzed and the chart updates.
+The way we've coded this chart makes it easy to update when data changes. Every time `plot()` is called, the data is re-analyzed and the chart updates.
 
 ## Adapting the chart for use in Vue
 
 This chart is great and all, but how is it usable in Vue.js?
 
-Just to get started, let’s wrap our `&lt;svg&gt;` in a new `&lt;div&gt;` to which we can bind a Vue component.
+Just to get started, let's wrap our `&lt;svg&gt;` in a new `&lt;div&gt;` to which we can bind a Vue component.
 
 ```
 <div id="app">
@@ -211,7 +211,7 @@ new Vue({
 ```
 
 
-Now cut **all** of the other JavaScript we’ve written so far and paste it into the `mounted()` function.
+Now cut **all** of the other JavaScript we've written so far and paste it into the `mounted()` function.
 
 ```
 new Vue({
@@ -229,11 +229,11 @@ new Vue({
 ```
 
 
-To keep the article concise, I’ve snipped out a lot of the code we’ve already written.
+To keep the article concise, I've snipped out a lot of the code we've already written.
 
 The result in the browser at this point should be the same as before we started writing any Vue code.
 
-Now we’ll move some data and functions into their respective Vue environments. `whales` is a data variable, so move it into the `data` property.
+Now we'll move some data and functions into their respective Vue environments. `whales` is a data variable, so move it into the `data` property.
 
 ```
 data: {
@@ -246,7 +246,7 @@ data: {
 ```
 
 
-Once you remove `const whales = [ ... snip ... ]` from the `mounted()` function, the chart will break. To fix it, find all references to `whales` and change them to `this.whales`. This will make each reference look in the view-model’s `data` attribute.
+Once you remove `const whales = [ ... snip ... ]` from the `mounted()` function, the chart will break. To fix it, find all references to `whales` and change them to `this.whales`. This will make each reference look in the view-model's `data` attribute.
 
 The `plot()` function should become a Vue method, so cut and paste it into the `methods` property.
 
@@ -262,7 +262,7 @@ methods: {
 ```
 
 
-Don’t forget to update the call to `plot()` to `this.plot()`.
+Don't forget to update the call to `plot()` to `this.plot()`.
 
 Even updating the call to `this.plot()`, the chart is still broken. Looking at the error in the console, I see:
 
@@ -273,7 +273,7 @@ ReferenceError: x is not defined
 ```
 
 
-Aha! The `plot()` method cannot access our `x` scale because it’s declared in the `mounted()` function’s scope. Looking at the rest of the code, I can see we’ll run into the same issue with all of these variables:
+Aha! The `plot()` method cannot access our `x` scale because it's declared in the `mounted()` function's scope. Looking at the rest of the code, I can see we'll run into the same issue with all of these variables:
 
 * `x`
 
@@ -285,7 +285,7 @@ Aha! The `plot()` method cannot access our `x` scale because it’s declared in 
 
 * `chart`
 
-Update all of those those declarations so they’re `data` attributes. In practice, this means changing all of these:
+Update all of those those declarations so they're `data` attributes. In practice, this means changing all of these:
 
 ```
 const chart = /* .. snip .. */
@@ -323,7 +323,7 @@ this.x.domain([0, d3.max(this.whales, d => d.age)]);
 ```
 
 
-Do this for all references to `chart`, `x`, `y`, `xAxis`, and `yAxis`. When you’re finished, you should see the chart on your page once again.
+Do this for all references to `chart`, `x`, `y`, `xAxis`, and `yAxis`. When you're finished, you should see the chart on your page once again.
 
 Finally, we just need to write a simple piece of code that will cause the `plot()` method to be called whenever `whales` changes. A [Vue watcher](https://it.vuejs.org/v2/guide/computed.html#Watchers) works well here.
 
@@ -346,7 +346,7 @@ To test this out, you can add a button that adds a new whale.
 ```
 
 
-Make sure the button is a child of `&lt;div id="app"&gt;` so it’s part of the Vue app.
+Make sure the button is a child of `&lt;div id="app"&gt;` so it's part of the Vue app.
 
 Now add a method that pushes a new randomly generated whale data point.
 
@@ -365,9 +365,9 @@ methods: {
 
 If you click the button, you see another data point added to the chart.
 
-![The chart now has four data points because I clicked “Add whale”](./images/z_ZUx4R02.webp)*The chart now has four data points because I clicked “Add whale”*
+![The chart now has four data points because I clicked "Add whale"](./images/z_ZUx4R02.webp)*The chart now has four data points because I clicked "Add whale"*
 
-If you click it enough times, you’ll probably get one that has an age or weight outside the bounds of our original three. In that case, you can see the chart update to accommodate the new maximum values.
+If you click it enough times, you'll probably get one that has an age or weight outside the bounds of our original three. In that case, you can see the chart update to accommodate the new maximum values.
 
 ![The chart now has data points outside the original age and weight boundaries](./images/yihYiZ0yK.webp)*The chart now has data points outside the original age and weight boundaries*
 
@@ -398,19 +398,19 @@ removeWhale() {
 ```
 
 
-Clicking “Modify whale” changes a random data point.
+Clicking "Modify whale" changes a random data point.
 
 ![](./images/g0HuUKGDl.webp)
 
-Clicking “Remove whale” removes a random one.
+Clicking "Remove whale" removes a random one.
 
 ![](./images/g_qyyby2-.webp)
 
-That’s it! You can build any form of interactivity into your Vue app. Any time the chart data changes, the chart updates. You could even have your data hooked up to a remote source that gets updated through [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), [websockets](https://developer.mozilla.org/en-US/docs/Glossary/WebSockets), or an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource).
+That's it! You can build any form of interactivity into your Vue app. Any time the chart data changes, the chart updates. You could even have your data hooked up to a remote source that gets updated through [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), [websockets](https://developer.mozilla.org/en-US/docs/Glossary/WebSockets), or an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource).
 
 ## Adding some missing details
 
-While not directly in the scope of this article, it’s important that we label our data. I added a title to the HTML.
+While not directly in the scope of this article, it's important that we label our data. I added a title to the HTML.
 
 ```
 <div id="app">

@@ -35,7 +35,7 @@ reboot
 
 ### Directory Management
 
-Output what directory you’re currently in:
+Output what directory you're currently in:
 
 ```console
 pwd
@@ -166,13 +166,13 @@ ps -aux
 Send email to `y` (email address) with subject `x`. Type your message and press **Ctrl + D**:
 
 ```console
-mail -s “x” y
+mail -s "x" y
 ```
 
 Set an alias so when you type `x`, the command `y` executes
 
 ```console
-alias x=’y’
+alias x='y'
 ```
 
 ### Text Viewing and Editing
@@ -200,7 +200,7 @@ adduser
 Add existing user `x` to the `sudoers` list, giving them access to `sudo` command:
 
 ```console
-echo ‘x ALL=(ALL) ALL’ >> /etc/sudoers
+echo ‘x ALL=(ALL) ALL' >> /etc/sudoers
 ```
 
 Remove an existing user:
@@ -215,13 +215,13 @@ List existing users:
 cat /etc/passwd | cut -d: -f1 | grep -v \#
 ```
 
-See who you’re logged in as:
+See who you're logged in as:
 
 ```console
 id
 ```
 
-See what users are currently logged in and what they’re doing:
+See what users are currently logged in and what they're doing:
 
 ```console
 w
@@ -296,9 +296,9 @@ Generate private and public keys to use with public key authentication. You may 
 ssh-keygen
 ```
 
-After generating keys, append `~/.ssh/id_rsa.pub` to server’s `~/.ssh/authorized_keys` file using the command below.
+After generating keys, append `~/.ssh/id_rsa.pub` to server's `~/.ssh/authorized_keys` file using the command below.
 
-Allow client with public key `x` to connect using public key authentication. `x` can be found in client’s `~/.ssh/id_rsa.pub` file after running command above.
+Allow client with public key `x` to connect using public key authentication. `x` can be found in client's `~/.ssh/id_rsa.pub` file after running command above.
 
 ```console
 cat x >> ~/.ssh/authorized_keys

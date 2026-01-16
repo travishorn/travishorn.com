@@ -8,7 +8,7 @@ tags: ["python", "python3", "pip", "venv", "dependency-management"]
 
 
 
-While powerful tools like virtualenv, pipenv, conda, and Poetry exist to provide extra advantages for dependency management, I’ve found a simple system that works for the small projects I’ve been working on.
+While powerful tools like virtualenv, pipenv, conda, and Poetry exist to provide extra advantages for dependency management, I've found a simple system that works for the small projects I've been working on.
 
 This setup involves built-in features and tools that come bundled with Python by default.
 
@@ -42,7 +42,7 @@ source venv/bin/activate
 .\venv\Scripts\activate
 ```
 
-You’ll know you did it correctly when your prompt changes to have `(venv)` at the beginning. Remember, you must execute the above command each time you start a new coding session.
+You'll know you did it correctly when your prompt changes to have `(venv)` at the beginning. Remember, you must execute the above command each time you start a new coding session.
 
 Installing packages works as usual with `pip install`.
 
@@ -58,7 +58,7 @@ pip freeze > requirements.txt
 
 This generates a `requirements.txt` file which keeps track all the required dependencies.
 
-Any time I’m pulling in code on a new project, whether it’s my own code or someone else’s, I know when I see `requirements.txt`, that I can install the required packages with `pip`.
+Any time I'm pulling in code on a new project, whether it's my own code or someone else's, I know when I see `requirements.txt`, that I can install the required packages with `pip`.
 
 ```bash
 pip install -r requirements.txt

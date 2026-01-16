@@ -17,7 +17,7 @@ At first, I thought an [alias](https://docs.microsoft.com/en-us/powershell/modul
 
 For example, say I just fixed a bug in a Node.js package I am writing. Now I want to bump the version number of my package, publish it through npm, and push the changes to a remote repository.
 
-Normally, I’d execute three commands.
+Normally, I'd execute three commands.
 
 ```
 npm version patch
@@ -26,7 +26,7 @@ git push --follow-tags
 ```
 
 
-This gets tedious when you’re constantly fixing bugs. If I stuff the commands inside a function…
+This gets tedious when you're constantly fixing bugs. If I stuff the commands inside a function…
 
 ```
 function Publish-Patch {
@@ -44,9 +44,9 @@ Publish-Patch
 ```
 
 
-This works great. Except it doesn’t persist across sessions.
+This works great. Except it doesn't persist across sessions.
 
-In order to write persistent functions, you’ll have to store them in a [PowerShell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-6). A profile is a script that gets run at the beginning of every session.
+In order to write persistent functions, you'll have to store them in a [PowerShell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-6). A profile is a script that gets run at the beginning of every session.
 
 PowerShell supports multiple profiles depending on your environment. You can set a profile to run for only a specific user or only inside a specific host program. See the [documentation](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles) for more information.
 
@@ -74,7 +74,7 @@ function Publish-Patch {
 ```
 
 
-In fact, I want to create functions for [each type of update](https://semver.org/) — not just patches. That’s easy, too. Just write the other functions below the first.
+In fact, I want to create functions for [each type of update](https://semver.org/) — not just patches. That's easy, too. Just write the other functions below the first.
 
 ```
 function Publish-Patch {
@@ -97,7 +97,7 @@ function Publish-Major {
 ```
 
 
-There’s one last step before we’re done. By default, PowerShell blocks scripts from running. Which in turn will block your profile from running. You can easily change this setting, though.
+There's one last step before we're done. By default, PowerShell blocks scripts from running. Which in turn will block your profile from running. You can easily change this setting, though.
 
 ```
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -106,4 +106,4 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 I chose the `RemoteSigned` execution policy. It allows scripts to be run, but those from remote sources must be signed by a trusted publisher. While this works for me, there are [other execution policies](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-6) to choose from.
 
-That’s it! Restart your PowerShell session. Now those functions will always be available to you.
+That's it! Restart your PowerShell session. Now those functions will always be available to you.

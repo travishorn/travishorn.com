@@ -8,11 +8,11 @@ tags: ["realtime", "python", "machine-learning", "predictive-analysis", "deliver
 
 
 
-I’ve been playing around with how ML techniques can be applied to logistics and e-commerce. One of the ideas I had floating around my head was to build a model that can be trained on delivery data and then used in real-time as delivery data comes in to do things like predict ETAs. In the real world, things like traffic jams and sudden changes in weather can drastically affect the last mile of delivery. A real-time system that can provide up-to-the-second updates on the ETA of a delivery would be highly beneficial here.
+I've been playing around with how ML techniques can be applied to logistics and e-commerce. One of the ideas I had floating around my head was to build a model that can be trained on delivery data and then used in real-time as delivery data comes in to do things like predict ETAs. In the real world, things like traffic jams and sudden changes in weather can drastically affect the last mile of delivery. A real-time system that can provide up-to-the-second updates on the ETA of a delivery would be highly beneficial here.
 
-I ended up coming up with this **Delivery ETA Prediction System**. It’s is a proof-of-concept that uses machine learning to predict and dynamically adjust delivery ETAs in real-time. It simulates delivery drivers, incorporating factors like location, speed, and environmental conditions, to provide more accurate and up-to-date arrival estimates.
+I ended up coming up with this **Delivery ETA Prediction System**. It's is a proof-of-concept that uses machine learning to predict and dynamically adjust delivery ETAs in real-time. It simulates delivery drivers, incorporating factors like location, speed, and environmental conditions, to provide more accurate and up-to-date arrival estimates.
 
-Let’s dive into how this system works. We’ll go over the architecture, the key components, and the technologies used. We'll explore how the system simulates deliveries, how it trains a machine learning model to predict ETAs, and how it uses that model to provide real-time updates. For a basic system like this, it’s easier to understand than you might think. By the end, you'll understand how such a system can be built and the potential it has for improving delivery accuracy.
+Let's dive into how this system works. We'll go over the architecture, the key components, and the technologies used. We'll explore how the system simulates deliveries, how it trains a machine learning model to predict ETAs, and how it uses that model to provide real-time updates. For a basic system like this, it's easier to understand than you might think. By the end, you'll understand how such a system can be built and the potential it has for improving delivery accuracy.
 
 ## Overview
 
@@ -424,7 +424,7 @@ if __name__ == "__main__":
 
 `load_and_preprocess_data` and `prepare_features_and_target` create the inputs for our model. They calculate the direct distance (using `geopy.distance.geodesic`) between the driver's current location and the destination for each data point, calculate the difference (in minutes) between the `initial_planned_eta` and the current `timestamp`, and convert non-numeric features like `status`, `traffic_level`, and `weather` into numbers using `sklearn.preprocessing.LabelEncoder`. We need to save these encoders so the predictor can apply the *exact same* transformation later.
 
-What are we actually trying to predict? We want the model to predict the `actual_remaining_minutes` until the delivery is completed. This is calculated in `prepare_features_and_target` by looking at the *final* timestamp recorded for each unique `driver_id` in the training data and finding the difference between that final time and the current timestamp for each row. This gives us the “ground truth” for training.
+What are we actually trying to predict? We want the model to predict the `actual_remaining_minutes` until the delivery is completed. This is calculated in `prepare_features_and_target` by looking at the *final* timestamp recorded for each unique `driver_id` in the training data and finding the difference between that final time and the current timestamp for each row. This gives us the "ground truth" for training.
 
 `train_and_evaluate_model` splits the data into training and testing sets. A `RandomForestRegressor` from scikit-learn is used. A Random Forest is a good choice as they are robust, handle non-linear relationships well, and can provide feature importance insights. Key hyperparameters like `n_estimators` (number of trees) and `max_depth` are also set here.
 
@@ -705,7 +705,7 @@ Here are some ideas that could transform this proof-of-concept into a much more 
     
 * Explore features like time spent at recent stops, deviation from the planned route, historical traffic density for the current road segment/time, or driver-specific behavior patterns.
     
-* Use a message queue system to decouple the simulator and predictor. There’s a lot of room for scalability improvements here.
+* Use a message queue system to decouple the simulator and predictor. There's a lot of room for scalability improvements here.
     
 * Containerize and deploy the code to a cloud platform.
     

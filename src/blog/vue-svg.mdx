@@ -9,7 +9,7 @@ tags: ["javascript", "svg", "data-visualisation-1"]
 
 
 
-I love using D3.js for data visualization. However, there are some smaller projects where I’ve found manipulating SVG elements in Vue.js is sufficient. This approach is very appealing when you’re already using Vue. It’s nice because all of your data is already readily accessible, and you don’t have to load up another library and pass the data to it.
+I love using D3.js for data visualization. However, there are some smaller projects where I've found manipulating SVG elements in Vue.js is sufficient. This approach is very appealing when you're already using Vue. It's nice because all of your data is already readily accessible, and you don't have to load up another library and pass the data to it.
 
 ![](./images/9lWyd6rgP.webp)
 
@@ -17,7 +17,7 @@ We can easily build a simple graphic like the one below using the Vue + SVG tech
 
 ![Circles sized according to the data they represent](./images/wVrwwnHNI.webp)*Circles sized according to the data they represent*
 
-For this example, you can just include Vue with a `&lt;script&gt;` tag and write the JavaScript directly in another `&lt;script&gt;` tag. Here’s the boilerplate:
+For this example, you can just include Vue with a `&lt;script&gt;` tag and write the JavaScript directly in another `&lt;script&gt;` tag. Here's the boilerplate:
 
 ```
 <!DOCTYPE html>
@@ -55,9 +55,9 @@ For this example, you can just include Vue with a `&lt;script&gt;` tag and write
 ```
 
 
-Notice, in the Vue app, I’ve already added the data we want to visualize. In the real world, you might be pulling this information via AJAX or it might be stored in a [Vuex](https://vuex.vuejs.org/en/) store. But hard-coding will do for this demonstration.
+Notice, in the Vue app, I've already added the data we want to visualize. In the real world, you might be pulling this information via AJAX or it might be stored in a [Vuex](https://vuex.vuejs.org/en/) store. But hard-coding will do for this demonstration.
 
-Let’s start by adding an `&lt;svg&gt;` element to our app’s template.
+Let's start by adding an `&lt;svg&gt;` element to our app's template.
 
 ```
 <div id="app">
@@ -81,7 +81,7 @@ We want to add a circle for each piece of data.
 
 The circles are now inside the SVG element, but they are not displayed anywhere because they have no position or size.
 
-Let’s start with the Y axis. We want them centered vertically. So the `cy` attribute for all circles will be half the chart’s height. One way to do this might be to look at the height (100), divide in by 2 in your head (50), then set `cy="50"`. But a better option would be to use a computed variable in Vue.
+Let's start with the Y axis. We want them centered vertically. So the `cy` attribute for all circles will be half the chart's height. One way to do this might be to look at the height (100), divide in by 2 in your head (50), then set `cy="50"`. But a better option would be to use a computed variable in Vue.
 
 First, change the `height` attribute on the `&lt;svg&gt;` element to be bound to a Vue variable.
 
@@ -129,9 +129,9 @@ Finally, we can bind our computed property `y` to the `cy` attribute of the circ
 ```
 
 
-The code above means that all circles will have a `cy` that is equal to `chartHeight / 2`. Even if you change the chart’s height, the circles will still remain vertically centered.
+The code above means that all circles will have a `cy` that is equal to `chartHeight / 2`. Even if you change the chart's height, the circles will still remain vertically centered.
 
-With the Y axis done, let’s move on tho the X axis. It’s a little trickier. This one will require a method that acts on the `i` variable (the index of the data — where it is positioned in the array).
+With the Y axis done, let's move on tho the X axis. It's a little trickier. This one will require a method that acts on the `i` variable (the index of the data — where it is positioned in the array).
 
 ```
 <circle
@@ -142,7 +142,7 @@ With the Y axis done, let’s move on tho the X axis. It’s a little trickier. 
 ```
 
 
-Here’s what the method looks like:
+Here's what the method looks like:
 
 ```
 new Vue({
@@ -217,4 +217,4 @@ The result is a simple data visualization using circles.
 
 Those are the basic building blocks. With this knowledge you could code other features such as axis labels or bars ( `&lt;rect&gt;`s).
 
-It’s worth mentioning again that while the possibilities are the same as using D3, D3 is an actual data visualization framework and is far and away the better tool to use for heavy dataviz. But if you’re already using Vue, and your data is already loaded there, it may be an easy and quick option.
+It's worth mentioning again that while the possibilities are the same as using D3, D3 is an actual data visualization framework and is far and away the better tool to use for heavy dataviz. But if you're already using Vue, and your data is already loaded there, it may be an easy and quick option.

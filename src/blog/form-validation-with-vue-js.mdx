@@ -15,7 +15,7 @@ Client-side validation using JavaScript enhances user experience by giving feedb
 
 Before we begin, you must understand that this type of data input validation is no substitute for server-side validation. Without server-side validation, you are trusting the user and whatever tools they are using to make sure input is valid. Client-side validation with [Vue.js](https://vuejs.org/) (or any other JavaScript library/framework) should be used in addition to, not instead of it.
 
-I’ll also mention that many modern browsers have client-side validation built-in by using HTML attributes such as (but not limited to) `required` and `maxlength="10"`. For example, with this tiny form:
+I'll also mention that many modern browsers have client-side validation built-in by using HTML attributes such as (but not limited to) `required` and `maxlength="10"`. For example, with this tiny form:
 
 ```html
 <form>
@@ -29,7 +29,7 @@ If you leave the `input` element empty and click **Submit**, Chrome prevents for
 
 ![An empty text input. A submit button immediately follows. An alert popup appears from the text input saying, "Please fill out this field."](./images/Qg4LJSZrf.webp)
 
-However, not all browsers support this and all of them behave differently. Let’s look at how to build our own form validation using [Vue.js](https://vuejs.org/) so it behaves the same in all modern browsers.
+However, not all browsers support this and all of them behave differently. Let's look at how to build our own form validation using [Vue.js](https://vuejs.org/) so it behaves the same in all modern browsers.
 
 ### Scenario
 
@@ -64,7 +64,7 @@ Start with a basic HTML file with the [Bootstrap 4 stylesheet](https://getbootst
 ```
 
 
-Our form will go in the content area. Just to get a prettier layout, we’ll put it inside a single col, inside a single row, inside a single container. Each of these elements have classes that position them nicely.
+Our form will go in the content area. Just to get a prettier layout, we'll put it inside a single col, inside a single row, inside a single container. Each of these elements have classes that position them nicely.
 
 ```html
 <div class="container mt-3 mt-sm-5">
@@ -96,9 +96,9 @@ Now, our two `input` elements and submit `button` will go inside the form.
 ```
 
 
-You could normally use `type="number"` for the second input, but I’m leaving it as `text` to demonstrate validation.
+You could normally use `type="number"` for the second input, but I'm leaving it as `text` to demonstrate validation.
 
-[Bootstrap provides validation classes](https://getbootstrap.com/docs/4.0/components/forms/#validation). Let’s add `invalid-feedback` `div`s underneath each input.
+[Bootstrap provides validation classes](https://getbootstrap.com/docs/4.0/components/forms/#validation). Let's add `invalid-feedback` `div`s underneath each input.
 
 ```html
 <div class="form-group">
@@ -115,11 +115,11 @@ You could normally use `type="number"` for the second input, but I’m leaving i
 ```
 
 
-Note that you won’t actually see these elements right away. Bootstrap hides them by default.
+Note that you won't actually see these elements right away. Bootstrap hides them by default.
 
 ### Building the Vue App
 
-With the HTML in place, now we’ll jump into `main.js` and start coding the logic for our form.
+With the HTML in place, now we'll jump into `main.js` and start coding the logic for our form.
 
 ```javascript
 var form = new Vue({
@@ -178,7 +178,7 @@ With our models wired up, we can use the computed variables to determine the sta
 missingName: function () { return this.name === ''; },
 ```
 
-`wrongNumber` is a *little* more complex, but not bad at all. Return `true` if the value is not a number **or** it’s less than 1 **or** it’s greater than 10.
+`wrongNumber` is a *little* more complex, but not bad at all. Return `true` if the value is not a number **or** it's less than 1 **or** it's greater than 10.
 
 ```javascript
 wrongNumber: function () {
@@ -191,7 +191,7 @@ wrongNumber: function () {
 ```
 
 
-Oops, we’re calling `isNumeric()` but we haven’t coded it, yet. I found a [great solution on Stack Overflow](http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric/1830844#1830844). Here’s what it looks like:
+Oops, we're calling `isNumeric()` but we haven't coded it, yet. I found a [great solution on Stack Overflow](http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric/1830844#1830844). Here's what it looks like:
 
 ```javascript
 isNumeric: function (n) {
@@ -200,7 +200,7 @@ isNumeric: function (n) {
 ```
 
 
-We’re actually done with the JavaScript except for the actual `validateForm()` function. For that one, we just want to tell our app the user attempted to submit the form and prevent it from submitting if `missingName` or `wrongNumber` are true. Keep in mind you can keep adding computed variables here if you have more inputs that need to be validated.
+We're actually done with the JavaScript except for the actual `validateForm()` function. For that one, we just want to tell our app the user attempted to submit the form and prevent it from submitting if `missingName` or `wrongNumber` are true. Keep in mind you can keep adding computed variables here if you have more inputs that need to be validated.
 
 ```javascript
 validateForm: function (event) {
@@ -217,7 +217,7 @@ Done with JavaScript. Back in the HTML, we need to fire the `validateForm()` fun
 ```
 
 
-Now the form will not submit if there are validation errors. But, at this point, the user doesn’t know exactly *why* the form didn’t submit.
+Now the form will not submit if there are validation errors. But, at this point, the user doesn't know exactly *why* the form didn't submit.
 
 Remember those `invalid-feedback` `div`s that are hidden by default? We can make them appear by setting an `is-invalid` class on the `input` adjacent to them.
 
@@ -232,7 +232,7 @@ Set conditional classes using Vue like so:
 
 The `is-invalid` class will only be applied when both `attemptSubmit` is `true` *and* when `missingName` (or `wrongNumber`) is `true`.
 
-That’s it! On load, the form looks like…
+That's it! On load, the form looks like…
 
 ![Two empty text inputs and a button. The first text input is labeled "Name". The second is labeled "Enter a number between 1 and 10". The button is labeled "Submit".](./images/hiZta1zMW.webp)
 
@@ -244,6 +244,6 @@ Or similar if you try to submit a number outside the range.
 
 ![The same UI again, but the first input contains the value "Travis" and the second input contains the value "15". The second input is outlined in red and has red text underneath that reads, "Make sure this is a number between 1 and 10."](./images/i3SBZjjK2.webp)
 
-The nice part is that, the way we’ve coded it, when the user corrects their mistake, the warning goes away immediately. You could remove the checks for `attemptSubmit` if you want to display the warnings on load (and have them go away immediately when corrected), but I think it’s bad UX to show warnings and errors before the user has even started typing.
+The nice part is that, the way we've coded it, when the user corrects their mistake, the warning goes away immediately. You could remove the checks for `attemptSubmit` if you want to display the warnings on load (and have them go away immediately when corrected), but I think it's bad UX to show warnings and errors before the user has even started typing.
 
 Cover photo by [Chris Barbalis](https://unsplash.com/@cbarbalis).

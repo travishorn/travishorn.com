@@ -9,26 +9,26 @@ tags: ["javascript", "web-design", "browsers"]
 
 
 
-A while back, a user on Stack Overflow asked the question “How to get browser width using JavaScript code?” The accepted answer (from 2009) recommends using the width() method in jQuery, citing this article from howtocreate.co.uk as proof that it’s not easy to write the code yourself.
+A while back, a user on Stack Overflow asked the question "How to get browser width using JavaScript code?" The accepted answer (from 2009) recommends using the width() method in jQuery, citing this article from howtocreate.co.uk as proof that it's not easy to write the code yourself.
 
 Eight years later, is this still the case? Is using jQuery still the best practice?
 
 ![](./images/9Reff-9m6.webp)
 
-There’s still no single reliable property to get browser width (or height) in all browsers. I believe jQuery is actually a great option if you are already using it on your site. If so, you can easily get the browser’s width like so:
+There's still no single reliable property to get browser width (or height) in all browsers. I believe jQuery is actually a great option if you are already using it on your site. If so, you can easily get the browser's width like so:
 
 ```
 $(window).width()
 ```
 
 
-But if you’re not using jQuery already, you don’t need to include an 85 KB library just to use one function. It’s not as hard as you think to code up your own small function.
+But if you're not using jQuery already, you don't need to include an 85 KB library just to use one function. It's not as hard as you think to code up your own small function.
 
 ### Where to start?
 
-There are so many properties in JavaScript that could possibly give you the browser’s width. The developers of jQuery have already thought about this and have had numerous discussions on how to solve this problem. In fact, [you can see some of this discussion right in their GitHub issues](https://github.com/jquery/jquery/issues?utf8=%E2%9C%93&q=is%3Aissue%20width). For that reason, let’s first look at how jQuery does it.
+There are so many properties in JavaScript that could possibly give you the browser's width. The developers of jQuery have already thought about this and have had numerous discussions on how to solve this problem. In fact, [you can see some of this discussion right in their GitHub issues](https://github.com/jquery/jquery/issues?utf8=%E2%9C%93&q=is%3Aissue%20width). For that reason, let's first look at how jQuery does it.
 
-Through the beauty of open source code, we can look into [the jQuery source](https://github.com/jquery/jquery/tree/master/src). Specifically, there is a file called [dimensions.js](https://github.com/jquery/jquery/blob/master/src/dimensions.js). Around [line 36](https://github.com/jquery/jquery/blob/f71eeda0fac4ec1442e631e90ff0703a0fb4ac96/src/dimensions.js#L36) (in version 3.2.1), you can see where it actually determines the width. To simplify; it’s getting the greatest value of `scrollWidth`, `offsetWidth`, or `clientWidth` on both `document.body` and `document.documentElement`.
+Through the beauty of open source code, we can look into [the jQuery source](https://github.com/jquery/jquery/tree/master/src). Specifically, there is a file called [dimensions.js](https://github.com/jquery/jquery/blob/master/src/dimensions.js). Around [line 36](https://github.com/jquery/jquery/blob/f71eeda0fac4ec1442e631e90ff0703a0fb4ac96/src/dimensions.js#L36) (in version 3.2.1), you can see where it actually determines the width. To simplify; it's getting the greatest value of `scrollWidth`, `offsetWidth`, or `clientWidth` on both `document.body` and `document.documentElement`.
 
 ### Building our own
 

@@ -9,13 +9,13 @@ tags: ["koa", "javascript", "web-development", "jwt", "sqlite"]
 
 
 
-In this article, I’ll go over how to create an API server that signs and verifies JSON Web Tokens for authentication.
+In this article, I'll go over how to create an API server that signs and verifies JSON Web Tokens for authentication.
 
 Some of the technologies this server uses include [Koa](https://koajs.com/), [JWTs](https://jwt.io/), [Knex](https://knexjs.org/), [SQLite](https://www.sqlite.org/), and [bcrypt](https://www.npmjs.com/package/bcrypt-nodejs).
 
 ![](./images/aGuzqCsXb.webp)
 
-By the end of this article, we’ll have a fully functional server that can give out JWTs when correct credentials are provided. It will also be able to serve protected information when a valid signed JWT is provided.
+By the end of this article, we'll have a fully functional server that can give out JWTs when correct credentials are provided. It will also be able to serve protected information when a valid signed JWT is provided.
 
 A server like this can be used with a de-coupled JavaScript front-end — typically built with some framework like Angular, React, or Vue.
 
@@ -36,7 +36,7 @@ Initialize a new npm package in this directory.
 ```
 
 
-Now we can start adding modules. Start with [Koa.js](https://koajs.com/). It is a web framework which we’ll use to serve our API.
+Now we can start adding modules. Start with [Koa.js](https://koajs.com/). It is a web framework which we'll use to serve our API.
 
 ```
 > npm i koa
@@ -67,15 +67,15 @@ Run this code with Node.
 ```
 
 
-If you visit [http://localhost:3000/](http://localhost:3000/) you’ll see “Hello World” displayed in your browser.
+If you visit [http://localhost:3000/](http://localhost:3000/) you'll see "Hello World" displayed in your browser.
 
 ![](./images/JgCiQWgS1.webp)
 
-Press Ctrl+C to stop the server. Throughout this article, we’ll be making many changes to the code. To test out the changes, you can either stop and start the server each time or use something like [nodemon](https://nodemon.io/), which will do it for you automatically.
+Press Ctrl+C to stop the server. Throughout this article, we'll be making many changes to the code. To test out the changes, you can either stop and start the server each time or use something like [nodemon](https://nodemon.io/), which will do it for you automatically.
 
 ### Error handling
 
-Before we start adding more features to the server, let’s set up some basic error handling. We can achieve this with a custom middleware handler. Create a new directory named `middleware`. Inside it, create `errorHandler.js`
+Before we start adding more features to the server, let's set up some basic error handling. We can achieve this with a custom middleware handler. Create a new directory named `middleware`. Inside it, create `errorHandler.js`
 
 ```
 module.exports = async (ctx, next) => {
@@ -115,9 +115,9 @@ Good. Basic error handling is set up.
 
 ### Routing
 
-Right now, the server responds with “Hello World” no matter what URL you try to access. Let’s add support for multiple routes at multiple URLs.
+Right now, the server responds with "Hello World" no matter what URL you try to access. Let's add support for multiple routes at multiple URLs.
 
-For that we need to add [koa-router](https://github.com/alexmingoia/koa-router#readme). This package let’s us define “routes” that get executed when specific URLs are accessed.
+For that we need to add [koa-router](https://github.com/alexmingoia/koa-router#readme). This package let's us define "routes" that get executed when specific URLs are accessed.
 
 ```
 > npm i koa-router
@@ -148,9 +148,9 @@ app
 ```
 
 
-We `require` the router, create a new instance, and tell our app to use it’s routes and allowed methods. We’ll define routes in a minute. But what is `allowedMethods()`? It tells our server how to respond when someone tries to access a route with the incorrect method (`GET`, `POST`, etc).
+We `require` the router, create a new instance, and tell our app to use it's routes and allowed methods. We'll define routes in a minute. But what is `allowedMethods()`? It tells our server how to respond when someone tries to access a route with the incorrect method (`GET`, `POST`, etc).
 
-Let’s add our first route; the `auth` route. Remove this code…
+Let's add our first route; the `auth` route. Remove this code…
 
 ```
 app.use((ctx) => {
@@ -166,7 +166,7 @@ router.post('/auth', authRoute);
 ```
 
 
-When someone tries to `POST` to /auth, the `authRoute` route is called. We haven’t created it yet, so let’s do that now.
+When someone tries to `POST` to /auth, the `authRoute` route is called. We haven't created it yet, so let's do that now.
 
 First, `require` it near the top of `index.js`.
 
@@ -184,15 +184,15 @@ module.exports = (ctx) => {
 ```
 
 
-If you `POST` to [http://localhost:3000/auth,](http://localhost:3000/auth,) you’ll see the correct response from the server: “I am the auth route.”
+If you `POST` to [http://localhost:3000/auth,](http://localhost:3000/auth,) you'll see the correct response from the server: "I am the auth route."
 
-`POST`ing isn’t as easy as visiting the URL in your browser; that would issue a `GET` request. Instead, you’ll need to use a tool like [curl](https://curl.haxx.se/) (command line interface) or [Postman](https://www.getpostman.com/) (graphical user interface).
+`POST`ing isn't as easy as visiting the URL in your browser; that would issue a `GET` request. Instead, you'll need to use a tool like [curl](https://curl.haxx.se/) (command line interface) or [Postman](https://www.getpostman.com/) (graphical user interface).
 
 ![](./images/AzQlqpdLq.webp)
 
 ### Signing JWTs
 
-We want the `auth` route to respond with a [JSON Web Token](https://jwt.io/) (JWT). For that, we’ll need to bring in the [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#readme) package.
+We want the `auth` route to respond with a [JSON Web Token](https://jwt.io/) (JWT). For that, we'll need to bring in the [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#readme) package.
 
 ```
 > npm i jsonwebtoken
@@ -227,7 +227,7 @@ const payload = { sub: 1 };
 ```
 
 
-This code says that the `sub` claim (short for [subject](https://tools.ietf.org/html/rfc7519#section-4.1.2)) should be `1`. This would normally be a username or a user ID or something that identifies a unique user on your system. For now, we’ll just mock it up with a simple number.
+This code says that the `sub` claim (short for [subject](https://tools.ietf.org/html/rfc7519#section-4.1.2)) should be `1`. This would normally be a username or a user ID or something that identifies a unique user on your system. For now, we'll just mock it up with a simple number.
 
 Now for the `secret`. This will be the same for every token we sign. So place it at the top right under any `require`s.
 
@@ -236,13 +236,13 @@ const secret = process.env.JWT_SECRET || 'secret';
 ```
 
 
-This code means that our tokens will be signed with the [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `JWT_SECRET`. If none exists, the string “secret” will be used. Obviously, you’ll want to pick a strong secret only you know.
+This code means that our tokens will be signed with the [environment variable](https://en.wikipedia.org/wiki/Environment_variable) `JWT_SECRET`. If none exists, the string "secret" will be used. Obviously, you'll want to pick a strong secret only you know.
 
 Now, when `POST`ing to [http://localhost:3000/auth,](http://localhost:3000/auth,) it responds with a JWT.
 
 ![](./images/Ic23_-wTW.webp)
 
-You can even paste this token into [https://jwt.io](https://jwt.io) and view it’s contents. This is an important concept: tokens shouldn’t contain sensitive information. Anyone can view them. The beauty of them becomes apparent when you realize that *only your server*, with the secret key, can verify it’s signature. When verified, you can be sure that your server was the one who issued the token.
+You can even paste this token into [https://jwt.io](https://jwt.io) and view it's contents. This is an important concept: tokens shouldn't contain sensitive information. Anyone can view them. The beauty of them becomes apparent when you realize that *only your server*, with the secret key, can verify it's signature. When verified, you can be sure that your server was the one who issued the token.
 
 ![](./images/_EDM0Vb4F.webp)
 
@@ -290,9 +290,9 @@ module.exports = (ctx) => {
 ```
 
 
-The code above will pull the supplied username and password. If either of them doesn’t exist, it throws an error and responds with a description of the problem.
+The code above will pull the supplied username and password. If either of them doesn't exist, it throws an error and responds with a description of the problem.
 
-But as it stands, our server doesn’t care what username or password you give it. We need a system to verify submitted credentials.
+But as it stands, our server doesn't care what username or password you give it. We need a system to verify submitted credentials.
 
 ### Verifying credentials
 
@@ -305,11 +305,11 @@ if (username === 'travis' && password === 'mypassword) { /*...*/ }
 
 A better — and more standard — approach is looking up the supplied username and password in a database of users.
 
-Let’s set up a basic [SQLite](https://www.sqlite.org/index.html) database. You can do this with any tool you like. I’m going to be using [DB Browser for SQLite](https://sqlitebrowser.org/).
+Let's set up a basic [SQLite](https://www.sqlite.org/index.html) database. You can do this with any tool you like. I'm going to be using [DB Browser for SQLite](https://sqlitebrowser.org/).
 
 ### SQLite database
 
-First, I’m going to create a new directory to house the database and database-accessing code. Under our jwt-server’s root directory, create a directory called `db`. Using DB Browser (or whatever tool you like), create `db.sqlite` in this directory.
+First, I'm going to create a new directory to house the database and database-accessing code. Under our jwt-server's root directory, create a directory called `db`. Using DB Browser (or whatever tool you like), create `db.sqlite` in this directory.
 
 The first table in this database will be called`users`.
 
@@ -337,12 +337,12 @@ INSERT INTO `users` (
 
 Choose any username and password you like.
 
-If you’re using DB Browser like me, you can save this database with the table and row by clicking **Write Changes**.
+If you're using DB Browser like me, you can save this database with the table and row by clicking **Write Changes**.
 
 ![](./images/J9wxCz3Oq.webp)
-> Note: If you know anything about user information or database security, alarm bells might be going off in your head right now. We’re storing passwords in plaintext. Don’t worry, we’ll solve that in a moment.
+> Note: If you know anything about user information or database security, alarm bells might be going off in your head right now. We're storing passwords in plaintext. Don't worry, we'll solve that in a moment.
 
-The database is set up. We need to hook into it with our JWT server so we can look through it and verify usernames and passwords. We’ll need a couple new packages.
+The database is set up. We need to hook into it with our JWT server so we can look through it and verify usernames and passwords. We'll need a couple new packages.
 
 ```
 > npm i knex sqlite3
@@ -363,7 +363,7 @@ module.exports = knex({
 ```
 
 
-[Knex](https://knexjs.org/) is a SQL query builder. The code above tells it that we have a SQLite database and it’s in this same directory with the filename `db.sqlite`. It also says to use `null` as default. We have to do that last part because SQLite doesn’t support inserting default values.
+[Knex](https://knexjs.org/) is a SQL query builder. The code above tells it that we have a SQLite database and it's in this same directory with the filename `db.sqlite`. It also says to use `null` as default. We have to do that last part because SQLite doesn't support inserting default values.
 
 Back to our `auth` route. Pull in the database configuration.
 
@@ -372,7 +372,7 @@ const db = require('../db');
 ```
 
 
-Database calls in Knex return [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). We’re going to take advantage of that fact by using [JavaScript’s async/await features](https://javascript.info/async-await).
+Database calls in Knex return [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). We're going to take advantage of that fact by using [JavaScript's async/await features](https://javascript.info/async-await).
 
 After the checks that `username` and `password` exist, find the database record.
 
@@ -440,9 +440,9 @@ We are storing our passwords in plaintext. [This is a very, very bad idea](https
 ```
 
 
-This library uses callbacks, which just don’t play nice with Koa. Since we’re only going to need three functions from this library, we can pretty quickly wrap these functions with Promises, which *do* play nice with Koa.
+This library uses callbacks, which just don't play nice with Koa. Since we're only going to need three functions from this library, we can pretty quickly wrap these functions with Promises, which *do* play nice with Koa.
 
-Create a directory called `utilities`. Inside, create `bcrypt.js`. I’m just going to show the whole file here. We are basically wrapping `getSalt`, `hash`, and `compare` in Promises. It’s not too exciting, but necessary to use this library with Koa.
+Create a directory called `utilities`. Inside, create `bcrypt.js`. I'm just going to show the whole file here. We are basically wrapping `getSalt`, `hash`, and `compare` in Promises. It's not too exciting, but necessary to use this library with Koa.
 
 ```
 const bcrypt = require('bcrypt-nodejs');
@@ -488,11 +488,11 @@ module.exports = {
 ```
 
 
-You may notice that, at the end, we’re only exporting `hash` and `compare`. We don’t need to export `genSalt` because it’s only useful *inside* `hash`, which we *are* exporting.
+You may notice that, at the end, we're only exporting `hash` and `compare`. We don't need to export `genSalt` because it's only useful *inside* `hash`, which we *are* exporting.
 
-The only other interesting thing to note is that we’re getting the number of [salt rounds](https://stackoverflow.com/questions/46693430/what-are-salt-rounds-and-how-are-salts-stored-in-bcrypt) from an environment variable called`SALT_ROUNDS`. If it doesn’t exist, we use 20,000.
+The only other interesting thing to note is that we're getting the number of [salt rounds](https://stackoverflow.com/questions/46693430/what-are-salt-rounds-and-how-are-salts-stored-in-bcrypt) from an environment variable called`SALT_ROUNDS`. If it doesn't exist, we use 20,000.
 
-For the purposes of this demo, I simply want to get a hash of the password I’m already using. In this case, I’ll simply use the [Node REPL](https://hackernoon.com/know-node-repl-better-dbd15bca0af6) to access my bcrypt utility library and hash the password directly.
+For the purposes of this demo, I simply want to get a hash of the password I'm already using. In this case, I'll simply use the [Node REPL](https://hackernoon.com/know-node-repl-better-dbd15bca0af6) to access my bcrypt utility library and hash the password directly.
 
 ```
 > node
@@ -505,7 +505,7 @@ $2a$10$3pwJNVCM6NKzBOD1HPZHjuFdjX2Dg771aPZNbbBw9jTUbEMS919Te
 
 The output there is what we really want to store in our database.
 
-Let’s modify the `users` table in `db.sqlite`. The new table has this structure:
+Let's modify the `users` table in `db.sqlite`. The new table has this structure:
 
 ```
 CREATE TABLE `users` (
@@ -516,9 +516,9 @@ CREATE TABLE `users` (
 ```
 
 
-Notice `password` is gone and `passwordHash` is in it’s place.
+Notice `password` is gone and `passwordHash` is in it's place.
 
-Now I’ll simply copy & paste the generated hash into the `passwordHash` field and write changes.
+Now I'll simply copy & paste the generated hash into the `passwordHash` field and write changes.
 
 ![](./images/WGmKr-BiG.webp)
 
@@ -542,7 +542,7 @@ const dbUser = await db.first(['id', **'passwordHash'**])
 ```
 
 
-Third, instead of manually checking to see if the entered password equals the database password, we’ll use the `bcrypt.compare()` function.
+Third, instead of manually checking to see if the entered password equals the database password, we'll use the `bcrypt.compare()` function.
 
 ```
 if (await bcrypt.compare(password, dbUser.passwordHash)) {
@@ -559,7 +559,7 @@ We `await bcrypt.compare()` and pass it two arguments: the entered password and 
 
 Now we have a way to authenticate users and give them a signed JWT. How do you use the JWT?
 
-Let’s say our database contained a list of pets for each user. Authenticated users should be able to see the pets *they* own.
+Let's say our database contained a list of pets for each user. Authenticated users should be able to see the pets *they* own.
 
 Create a table called `pets` in the database.
 
@@ -573,7 +573,7 @@ CREATE TABLE `pets` (
 ```
 
 
-I’m just going to insert a couple rows into this table.
+I'm just going to insert a couple rows into this table.
 
 ```
 INSERT INTO `pets` (
@@ -598,11 +598,11 @@ INSERT INTO `pets` (
 ```
 
 
-Remember that our user “travis” has an id of `1`. So these two pets are associated with him because they have `1` as their `user_id`.
+Remember that our user "travis" has an id of `1`. So these two pets are associated with him because they have `1` as their `user_id`.
 
 ### Authentication middleware
 
-For each route that needs to be protected behind authentication, we will protect it with the same custom middleware. Let’s create it now. Inside the `middleware` directory, create `authenticated.js`.
+For each route that needs to be protected behind authentication, we will protect it with the same custom middleware. Let's create it now. Inside the `middleware` directory, create `authenticated.js`.
 
 The main function of this — and most other middlewares — looks like this.
 
@@ -627,7 +627,7 @@ module.exports = async (ctx, next) => {
 
 If no token is present, we throw a 403 error. Otherwise, continue on to the next middleware.
 
-But it’s not actually enough to check for the existence of the token. We need to verify our server signed it. We need to use `jwt.verify()`. That means we’ll have to `require` the package first. At the top…
+But it's not actually enough to check for the existence of the token. We need to verify our server signed it. We need to use `jwt.verify()`. That means we'll have to `require` the package first. At the top…
 
 ```
 const jwt = require('jsonwebtoken');
@@ -650,7 +650,7 @@ Bearer eyJhbGcizI1NInRVCJ9.eyJz..SNIP..OjEsImzOKnGk-edQsP9QV1INJmZA
 ```
 
 
-Notice the value of the header starts with `Bearer`, then there’s a space, then the actual token. So after we check for the existence of the token, we capture the actual token by splitting the string into two and getting the second part, as indicated in bold below.
+Notice the value of the header starts with `Bearer`, then there's a space, then the actual token. So after we check for the existence of the token, we capture the actual token by splitting the string into two and getting the second part, as indicated in bold below.
 
 ```
 const jwt = require('jsonwebtoken');
@@ -680,11 +680,11 @@ try {
 ```
 
 
-The function `jwt.verify` returns the token’s payload (which includes our user id in the `sub` property). We set the `ctx.request.jwtPayload` variable to this value. That way it can be picked up further down the middleware chain.
+The function `jwt.verify` returns the token's payload (which includes our user id in the `sub` property). We set the `ctx.request.jwtPayload` variable to this value. That way it can be picked up further down the middleware chain.
 
-If the token isn’t valid, however, it throws an error. The error is immediately caught by the [try…catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) statement. Then it’s thrown again to the `errorHandler` we wrote before.
+If the token isn't valid, however, it throws an error. The error is immediately caught by the [try…catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) statement. Then it's thrown again to the `errorHandler` we wrote before.
 
-Now it’s time to see how our `authenticated` middleware works.
+Now it's time to see how our `authenticated` middleware works.
 
 Back in `index.js`, `require` it after the `errorHandler` middleware.
 
@@ -702,7 +702,7 @@ router.get('/my-pets', authenticated, petsRoute);
 
 When a user accesses [http://localhost:3000/my-pets,](http://localhost:3000/my-pets,) their request first goes through the `authenticated` middleware that we just wrote, then to the `petsRoute`.
 
-The `petsRoute` route doesn’t exist on our server yet. We have to `require` it first — underneath the `require` for `authRoute`.
+The `petsRoute` route doesn't exist on our server yet. We have to `require` it first — underneath the `require` for `authRoute`.
 
 ```
 const petsRoute = require('./routes/pets');
@@ -728,9 +728,9 @@ module.exports = async (ctx) => {
 
 The first thing we do in this route is `require` the database.
 
-Then we get a reference to the authenticated user’s id. Remember in `authenticated.js`, we set `ctx.request.jwtPayload`? The payload contains the user’s id in the `sub` property.
+Then we get a reference to the authenticated user's id. Remember in `authenticated.js`, we set `ctx.request.jwtPayload`? The payload contains the user's id in the `sub` property.
 
-We then select the name and species of every pet whose `user_id` is equal to the jwt payload’s `sub`. This way, we know we’re only grabbing pets for a user that’s been authenticated.
+We then select the name and species of every pet whose `user_id` is equal to the jwt payload's `sub`. This way, we know we're only grabbing pets for a user that's been authenticated.
 
 Finally, we send those pet objects to the client.
 
@@ -777,4 +777,4 @@ Source code for this article can be found on GitHub. Feel free to fork it and mo
 
 A server like this can be used with a de-coupled JavaScript front-end — typically built with some framework like Angular, React, or Vue.
 
-To enter new users into the database, you can create an unauthenticated “sign up” route and/or an administration panel which requires authentication along with something like an “admin” flag in the JWT payload.
+To enter new users into the database, you can create an unauthenticated "sign up" route and/or an administration panel which requires authentication along with something like an "admin" flag in the JWT payload.

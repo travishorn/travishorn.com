@@ -17,10 +17,10 @@ You or your company may find it beneficial to view client data sorted and filter
 
 ![](./images/0VKn4w79r.webp)
 
-Here’s a preview of what you can build by following this guide:
+Here's a preview of what you can build by following this guide:
 
 
-First, we must transform the raw data into a format usable by our web app. Here is the raw data I’m using in this example:
+First, we must transform the raw data into a format usable by our web app. Here is the raw data I'm using in this example:
 
 ```
 [
@@ -148,7 +148,7 @@ So far, we have 6 data properties and 3 methods. The 6 data properties are…
 
 * centerCircle — a placeholder property that will represent a semi-transparent circle over the map indicating the area we are currently looking at. This circle will be adjustable.
 
-* center — a 2-value array with latitude and longitude for the center of our map. This could be your company headquarters, retail location, or shipping facility. For the sake of example, I’m using downtown Saint Louis, MO.
+* center — a 2-value array with latitude and longitude for the center of our map. This could be your company headquarters, retail location, or shipping facility. For the sake of example, I'm using downtown Saint Louis, MO.
 
 * radius — represents the radius of the centerCircle, in meters
 
@@ -165,7 +165,7 @@ toRadians(n) {
 ```
 
 
-`distance()` is a helper function that accepts two latitude-longitude coordinates and returns the distance between them. You don’t have to understand this function. Just know that it is using the [Haversine formula](https://rosettacode.org/wiki/Haversine_formula).
+`distance()` is a helper function that accepts two latitude-longitude coordinates and returns the distance between them. You don't have to understand this function. Just know that it is using the [Haversine formula](https://rosettacode.org/wiki/Haversine_formula).
 
 ```
 distance(p1, p2) {
@@ -213,7 +213,7 @@ this.tileLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net
 
 The first line creates a Leaflet map bound to the `&lt;div id="map"&gt;` element, sets the center of the map to the coordinates we defined earlier, and sets the zoom level to 12.
 
-The second block sets the tile layer (the actual images of streets and rivers, etc.). I’m using [Carto’s basemaps](https://carto.com/location-data-services/basemaps/). This is a free tile layer provided by Carto. All that’s required of us is to include the appropriate attribution, which I’ve already included in the code above.
+The second block sets the tile layer (the actual images of streets and rivers, etc.). I'm using [Carto's basemaps](https://carto.com/location-data-services/basemaps/). This is a free tile layer provided by Carto. All that's required of us is to include the appropriate attribution, which I've already included in the code above.
 
 The last line adds the tile layer to the map.
 
@@ -239,7 +239,7 @@ computed: {
 
 With the above code, your Vue app now contains a `clients` array that contains all of your clients and the distance from center for each.
 
-Now let’s create a map marker for each client. Back in `initMap()`…
+Now let's create a map marker for each client. Back in `initMap()`…
 
 ```
 initMap() {
@@ -255,11 +255,11 @@ initMap() {
 ```
 
 
-If you load up `index.html` now, you’ll see a marker for each client on the map.
+If you load up `index.html` now, you'll see a marker for each client on the map.
 
 ![](./images/vYtJzsKFG.webp)
 
-We can also add the semi-transparent “data-selection circle” now, too.
+We can also add the semi-transparent "data-selection circle" now, too.
 
 ```
 initMap() {
@@ -306,7 +306,7 @@ initMap() {
 
 ![](./images/9eu17UO2w.webp)
 
-By default, the center circle’s radius is now set to half the maximum distance. But we also want to be able to adjust this value at runtime. For that, we’ll have to add a range input.
+By default, the center circle's radius is now set to half the maximum distance. But we also want to be able to adjust this value at runtime. For that, we'll have to add a range input.
 
 In the HTML, above `&lt;div id="map"&gt;`, add…
 
@@ -323,9 +323,9 @@ In the HTML, above `&lt;div id="map"&gt;`, add…
 
 ![](./images/qiPdVJF1Z.webp)
 
-If you move the range input slider, the number below it (the radius) changes. The circle doesn’t get redrawn, yet, but we’ll get to that.
+If you move the range input slider, the number below it (the radius) changes. The circle doesn't get redrawn, yet, but we'll get to that.
 
-First, let’s work on formatting that incredibly precise radius value. I know that this number is in meters, because that’s what our `distance()` method returns.
+First, let's work on formatting that incredibly precise radius value. I know that this number is in meters, because that's what our `distance()` method returns.
 
 We can format the number with a filter. In HTML, apply a filter to the number.
 
@@ -346,7 +346,7 @@ filters: {
 ```
 
 
-This filter takes an input in meters, divides it by 100, rounds it to one decimal place, then adds the text “km” to the end. The result is a more user-friendly value displayed.
+This filter takes an input in meters, divides it by 100, rounds it to one decimal place, then adds the text "km" to the end. The result is a more user-friendly value displayed.
 
 ![](./images/gbQ-UE0NH.webp)
 
@@ -365,9 +365,9 @@ When the `radius` property changes, `setRadius()` is called on `centerCircle` wi
 
 You can drag the slider and watch the circle change.
 
-All of this looks cool, but it’s not very useful, yet.
+All of this looks cool, but it's not very useful, yet.
 
-What we really want is to display data about clients that are within the selected radius. Let’s use a computed property to get those clients.
+What we really want is to display data about clients that are within the selected radius. Let's use a computed property to get those clients.
 
 ```
 computed: {
@@ -416,7 +416,7 @@ There is a small UX issue in that the circle stops directly on the client with t
 
 ![](./images/PN1IE7_MR.webp)
 
-It’s not a huge issue, but it would feel much better to be able to expand the circle and really make sure this client is covered. To fix this, we can just add 100 meters to the `maxDistance`.
+It's not a huge issue, but it would feel much better to be able to expand the circle and really make sure this client is covered. To fix this, we can just add 100 meters to the `maxDistance`.
 
 ```
 maxDistance() {

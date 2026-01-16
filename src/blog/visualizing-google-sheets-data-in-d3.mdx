@@ -15,7 +15,7 @@ If you have data in Google Sheets, you can import and visualize it using D3.
 
 ### Creating the table
 
-Maybe you already have data in Google Sheets. If so, you may skip this section. For the sake of demonstration, I’ll show how to create a new sheet with some data.
+Maybe you already have data in Google Sheets. If so, you may skip this section. For the sake of demonstration, I'll show how to create a new sheet with some data.
 
 First, go to [Google Drive](https://drive.google.com) and log in if necessary.
 
@@ -29,11 +29,11 @@ For my example, I typed in some random data about fake organizations.
 
 ### Publish the data
 
-In order to pick it up using D3, we’re going to have to “publish” the data in Google Sheets.
+In order to pick it up using D3, we're going to have to "publish" the data in Google Sheets.
 
 Click **File** &gt; **Publish to web**
 
-In the first dropdown menu, select the name of the sheet which contains your data. In my case, I didn’t set a custom name, so my sheet is simply called **Sheet1**.
+In the first dropdown menu, select the name of the sheet which contains your data. In my case, I didn't set a custom name, so my sheet is simply called **Sheet1**.
 
 In the second dropdown menu, select **Comma-separated values (.csv)**.
 
@@ -43,7 +43,7 @@ Your screen should look similar to this.
 
 Click **Publish**.
 
-You may be asked if you’re sure you want to publish the selection. Click **OK**.
+You may be asked if you're sure you want to publish the selection. Click **OK**.
 
 A link is generated to your data in CSV format. Copy or otherwise make a note of the generated link.
 
@@ -53,7 +53,7 @@ A link is generated to your data in CSV format. Copy or otherwise make a note of
 
 With the data ready to go, we must now do some boilerplate work to set up D3.
 
-On an HTML page, create an SVG element to contain our chart. Make sure to give it an `id` that we can use to select it later. I’m giving mine the dimensions of 500 by 300. This makes my chart a little wider than it is tall.
+On an HTML page, create an SVG element to contain our chart. Make sure to give it an `id` that we can use to select it later. I'm giving mine the dimensions of 500 by 300. This makes my chart a little wider than it is tall.
 
 ```
 <!doctype html>
@@ -85,7 +85,7 @@ And below that, create a new `&lt;script&gt;` element that will hold all the res
 ```
 
 
-Inside the script, I’m going to create a new function that draws our chart. I’ll also call it right now, even though it’s empty.
+Inside the script, I'm going to create a new function that draws our chart. I'll also call it right now, even though it's empty.
 
 ```
 const drawChart = async () => {
@@ -96,7 +96,7 @@ drawChart();
 ```
 
 
-The reason I’m creating a separate function instead of just coding it directly is so I can make use of the `async` and `await` keywords.
+The reason I'm creating a separate function instead of just coding it directly is so I can make use of the `async` and `await` keywords.
 
 ### Importing the data using D3
 
@@ -113,9 +113,9 @@ Replace the URL above with the URL that you copied when publishing the Google Sh
 
 ### An important note on data types
 
-I noticed that I would have issues with numbers coming from Google Sheets. Sometimes they would come in as strings. There may be ways to fix this formatting. But I’ve found the best way is to coerce the numbers in JavaScript.
+I noticed that I would have issues with numbers coming from Google Sheets. Sometimes they would come in as strings. There may be ways to fix this formatting. But I've found the best way is to coerce the numbers in JavaScript.
 
-For example, when creating a scale, you can coerce the “number” to an actual number using the `+` operator.
+For example, when creating a scale, you can coerce the "number" to an actual number using the `+` operator.
 
 ```
 const y = d3.scaleLinear()
@@ -128,9 +128,9 @@ Notice the `+` in front of `d.numMembers`. This makes it so the scale treats it 
 
 ### A simple chart
 
-Now you have the data in JavaScript so you can use it with D3. The rest is up to however you want to visualize it. I’ll go ahead and build a simple chart now.
+Now you have the data in JavaScript so you can use it with D3. The rest is up to however you want to visualize it. I'll go ahead and build a simple chart now.
 
-Set up some basic constants we’ll use later.
+Set up some basic constants we'll use later.
 
 ```
 const viewBox = d3.select("#chart").attr("viewBox").split(" ");
@@ -141,7 +141,7 @@ const chart = d3.select("#chart").append("g").attr("transform", `translate(${mar
 ```
 
 
-Create the x axis scale. These will be “bands” according to the fake organizations I entered into Google Sheets.
+Create the x axis scale. These will be "bands" according to the fake organizations I entered into Google Sheets.
 
 ```
 const x = d3.scaleBand()
@@ -185,7 +185,7 @@ xAxis.selectAll("text")
 
 ![](./images/hACVh1pj0.webp)
 
-The domain and tick lines are actually unnecessary for a simple chart like this. Let’s remove them.
+The domain and tick lines are actually unnecessary for a simple chart like this. Let's remove them.
 
 ```
 xAxis.selectAll(".domain, .tick line").remove();
@@ -194,7 +194,7 @@ xAxis.selectAll(".domain, .tick line").remove();
 
 ![](./images/Zq0TFhp3D.webp)
 
-Let’s “D3 join” our data with some container `&lt;g&gt;` elements.
+Let's "D3 join" our data with some container `&lt;g&gt;` elements.
 
 ```
 const value = chart.selectAll(".value")

@@ -9,7 +9,7 @@ tags: ["data-science", "r", "data-visualisation-1"]
 
 
 
-This tutorial is meant to be a bare-minimum installation guide and mini “getting started” guide. If you will be using R extensively, there are other tools that you will probably want to install and use. I’ll go over some of those at the end of this article.
+This tutorial is meant to be a bare-minimum installation guide and mini "getting started" guide. If you will be using R extensively, there are other tools that you will probably want to install and use. I'll go over some of those at the end of this article.
 
 ### What is R and why would I use it?
 
@@ -21,19 +21,19 @@ R is mainly distributed through [The Comprehensive R Archive Network](https://cr
 
 On this page, you have a few options. The **contrib** link contains packages for use with R. The **Rtools** link contains tools to build packages yourself. For now, we just want to install the base distribution of R, so click **base**.
 
-The first link on this page should say **Download R [version] for Windows**. Go ahead and click that. As the download completes, take a look at the other information on this page. There are further instructions, a list of new features in the latest version, checksums for verifying your download, an FAQ, and some other information if you’re interested.
+The first link on this page should say **Download R [version] for Windows**. Go ahead and click that. As the download completes, take a look at the other information on this page. There are further instructions, a list of new features in the latest version, checksums for verifying your download, an FAQ, and some other information if you're interested.
 
 Once the download completes, go ahead and run the executable. Then…
 
-1. Select your language (probably English if you’re reading this tutorial) and click **OK**
+1. Select your language (probably English if you're reading this tutorial) and click **OK**
 
 1. Click **Next >** through the welcome screen
 
 1. Read the GNU license and click **Next >** again
 
-1. Select an installation directory. The default is probably fine. When you’re ready click **Next >**
+1. Select an installation directory. The default is probably fine. When you're ready click **Next >**
 
-1. The official R documentation recommends installing the “native” version for your operating system. If you are using a 32-bit operating system, select **32-bit User installation** from the dropdown menu. If you are using a 64-bit operating system, choose **64-bit User installation**. If you’re not sure what version you’re running, press Win + Pause and look under the **System type**. When you are ready, click **Next >**
+1. The official R documentation recommends installing the "native" version for your operating system. If you are using a 32-bit operating system, select **32-bit User installation** from the dropdown menu. If you are using a 64-bit operating system, choose **64-bit User installation**. If you're not sure what version you're running, press Win + Pause and look under the **System type**. When you are ready, click **Next >**
 
 1. You will now be asked whether you want to customize the startup options. The defaults are fine, so just select **No (accept defaults)** and click **Next >**
 
@@ -45,9 +45,9 @@ At this point R will start installing. Once it is done, click **Finish** to exit
 
 ### Using R
 
-Congratulations! R is installed. Now what can we do with it? R is very powerful and there is so much you can do with it. However, today I’ll just show off a few features.
+Congratulations! R is installed. Now what can we do with it? R is very powerful and there is so much you can do with it. However, today I'll just show off a few features.
 
-To start off, we’ll need some data. For all of these examples, I’ll use the following CSV data. Please copy and paste the data below into a new file called **students.csv** and save it in **This PC** &gt; **Documents**.
+To start off, we'll need some data. For all of these examples, I'll use the following CSV data. Please copy and paste the data below into a new file called **students.csv** and save it in **This PC** &gt; **Documents**.
 
 ```
 school,    grade, firstName,   lastName, attHrs, absHrs
@@ -65,14 +65,14 @@ Central,       1,     Caleb,     Barnes,    284,      0
 
 The next step is to import this data into an R environment. Go ahead and start up the **RGui** by clicking **Start** &gt; **All apps** &gt; **R** &gt; **R x64 3.3.1** (your version may be different, but similar to mine).
 
-In the **RGui**, you should see an **R Console** window. This is where you can type in different commands to control R. First, let’s import the students.csv data and save it to the **students** variable.
+In the **RGui**, you should see an **R Console** window. This is where you can type in different commands to control R. First, let's import the students.csv data and save it to the **students** variable.
 
 ```
 students = read.csv("students.csv")
 ```
 
 
-If something went wrong, it was probably because R couldn’t find your **students.csv** file. By default, RGui looks in **This PC** &gt; **Documents**, but if you’ve saved your file somewhere else, you can switch to the correct directory by clicking **File &gt; Change dir…**
+If something went wrong, it was probably because R couldn't find your **students.csv** file. By default, RGui looks in **This PC** &gt; **Documents**, but if you've saved your file somewhere else, you can switch to the correct directory by clicking **File &gt; Change dir…**
 
 As long as everything worked correctly, you should be able to just type **students** and it should print our data to the console.
 
@@ -92,7 +92,7 @@ As long as everything worked correctly, you should be able to just type **studen
 ```
 
 
-The data type of the **students** variable is called a **data frame**. Data frames are like “tables” of data.
+The data type of the **students** variable is called a **data frame**. Data frames are like "tables" of data.
 
 ### Sorting
 
@@ -138,7 +138,7 @@ Notice the minus sign in front of **students[,2]** and notice how the 2nd column
 
 ### Adding a computed column
 
-Let’s say you wanted to add a new column to the **students** data frame that had the total hours the student could have attended school. We will call this column **memHrs** and it will be the sum of **attHrs** and **absHrs**. Use this command:
+Let's say you wanted to add a new column to the **students** data frame that had the total hours the student could have attended school. We will call this column **memHrs** and it will be the sum of **attHrs** and **absHrs**. Use this command:
 
 ```
 > students$memHrs <- students$attHrs + students$absHrs
@@ -165,7 +165,7 @@ If we look at **students** again, we see the added column!
 
 ### Converting a column to a factor
 
-Let’s assume that when the **students** data frame was being loaded, R considered the **grade** column to be an integer. It sure *looks* like an integer. They’re just whole numbers. But, in fact, it is merely a discrete number that describes a grade a student is in. We won’t be doing any sort of calculations on the grade, and besides, what if a student was in “kindergarten”? That can’t be represented as an integer. Grade should be a **factor** instead of an integer. To factor this column, use this command:
+Let's assume that when the **students** data frame was being loaded, R considered the **grade** column to be an integer. It sure *looks* like an integer. They're just whole numbers. But, in fact, it is merely a discrete number that describes a grade a student is in. We won't be doing any sort of calculations on the grade, and besides, what if a student was in "kindergarten"? That can't be represented as an integer. Grade should be a **factor** instead of an integer. To factor this column, use this command:
 
 ```
 > students$grade <- factor(students$grade)
@@ -174,7 +174,7 @@ Let’s assume that when the **students** data frame was being loaded, R conside
 
 ### Merging with a VLOOKUP-style process
 
-In this scenario let’s introduce “school codes”. For the sake of example, each school has a school code associated with it. Here’s what the codes look like in CSV format. Save this data as **schoolCodes.csv**
+In this scenario let's introduce "school codes". For the sake of example, each school has a school code associated with it. Here's what the codes look like in CSV format. Save this data as **schoolCodes.csv**
 
 ```
 name,       code
@@ -197,10 +197,10 @@ Now import the codes as a data frame.
 ```
 
 
-We’d like to add the **code** column from **schoolCodes** to the **students** data frame based on the **school** column (which contains the school’s name). Use this command:
+We'd like to add the **code** column from **schoolCodes** to the **students** data frame based on the **school** column (which contains the school's name). Use this command:
 
 ```
-> students$schoolCode <- merge(codes, students, by.x=”name”, by.y=”school”)$code
+> students$schoolCode <- merge(codes, students, by.x="name", by.y="school")$code
 ```
 
 
@@ -222,6 +222,6 @@ The **merge()** function by itself would return to the whole merged data frames.
 ```
 
 
-If you want to learn more about the R language, I’d suggest starting with the [Cookbook for R](http://www.cookbook-r.com/). Once you’re ready to start extending R, you’ll want to use some packages. Packages provide extended functionality in R that can be very useful for analyzing data more efficiently. Packages can be installed through the console or through RGui’s interface. You can find packages in [the CRAN package repository](https://cran.r-project.org/web/packages/).
+If you want to learn more about the R language, I'd suggest starting with the [Cookbook for R](http://www.cookbook-r.com/). Once you're ready to start extending R, you'll want to use some packages. Packages provide extended functionality in R that can be very useful for analyzing data more efficiently. Packages can be installed through the console or through RGui's interface. You can find packages in [the CRAN package repository](https://cran.r-project.org/web/packages/).
 
 Cover photo by [David Goehring](https://www.flickr.com/photos/carbonnyc/) under [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/).

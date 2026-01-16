@@ -30,7 +30,7 @@ You can create this icon using HTML and CSS. The HTML is simple:
 
 A container `div` with class `burger-menu` contains three `div`s with the `line` class. Each line also has their own `line-x` class so we can reference them individually.
 
-Here’s the CSS for `.burger-menu`:
+Here's the CSS for `.burger-menu`:
 
 ```
 .burger-menu {
@@ -105,7 +105,7 @@ When the user taps this icon, they can expect a menu to open. But what if they w
 
 ![An X icon](./images/nApTr1auT.webp)*An X icon*
 
-Before we get to animating the icon, let’s first design the X icon. We’ll re-use two of the burger menu icon’s lines.
+Before we get to animating the icon, let's first design the X icon. We'll re-use two of the burger menu icon's lines.
 
 First, add the class `toggled` to the `.burger-menu`. (Add the class in bold below).
 
@@ -198,7 +198,7 @@ toggleables.forEach((toggleable) => {
 ```
 
 
-The code above means that any time a toggleable icon is clicked, the `toggleIcon` function is fired. Let’s create that function now.
+The code above means that any time a toggleable icon is clicked, the `toggleIcon` function is fired. Let's create that function now.
 
 ```
 const toggleIcon = (e) => {
@@ -207,7 +207,7 @@ const toggleIcon = (e) => {
 ```
 
 
-In the above function, the `e` argument contains a reference to the click event. This is useful because we can figure out which icon was clicked from it. Normally, you could just use `e.target` to get this information, but *there’s a problem!*
+In the above function, the `e` argument contains a reference to the click event. This is useful because we can figure out which icon was clicked from it. Normally, you could just use `e.target` to get this information, but *there's a problem!*
 
 `e.target` will vary depending on whether the user clicked on the container `.toggleable` `div` or any of the children `.line` `div`s.
 
@@ -240,7 +240,7 @@ But if a user clicks on any of the `line`s, it will look something like this:
 ```
 
 
-Remember that adding `.toggled` to the `.toggleable` element is what actually changes our icon. So no matter what element the user clicks on, our goal is to add `.toggled` to the `.toggleable` element — in this case, it’s `div.burger-menu.toggleable`. Sometimes that will be array index 0 and other times it will be index 1.
+Remember that adding `.toggled` to the `.toggleable` element is what actually changes our icon. So no matter what element the user clicks on, our goal is to add `.toggled` to the `.toggleable` element — in this case, it's `div.burger-menu.toggleable`. Sometimes that will be array index 0 and other times it will be index 1.
 
 We can use `Array.find()` to find the element that contains the `toggleable` class:
 
@@ -286,7 +286,7 @@ toggleables.forEach((toggleable) => {
 ```
 
 
-Clicking the icon — whether it’s the container or any of the lines within it — will toggle the `toggled` class, and therefor switch the icon.
+Clicking the icon — whether it's the container or any of the lines within it — will toggle the `toggled` class, and therefor switch the icon.
 
 The last piece is to actually animate the icon. We already have our two states, we just need to ease the transition between them. Due to the way we wrote our existing code, this last step extremely easy: Simply add `transition: all 0.5s;` to the lines.
 

@@ -9,17 +9,17 @@ tags: ["javascript", "nodejs", "excel"]
 
 
 
-This is the fifth article in a series where we’ll be learning to use the powerful logic of a programming language like JavaScript to manipulate spreadsheet data.
+This is the fifth article in a series where we'll be learning to use the powerful logic of a programming language like JavaScript to manipulate spreadsheet data.
 
-In this article, we’ll talk about how to read and parse XSLX files using JavaScript in Node.js.
+In this article, we'll talk about how to read and parse XSLX files using JavaScript in Node.js.
 
 ![](./images/tmk-KlBzX.webp)
 
-Now that you understand how Node.js can be used to read files on your hard drive and how you can build commands for a command-line interface (CLI), let’s learn how to read files saved by Microsoft Excel.
+Now that you understand how Node.js can be used to read files on your hard drive and how you can build commands for a command-line interface (CLI), let's learn how to read files saved by Microsoft Excel.
 
 You could certainly use `fs.readFile()` to read an XLSX file and write code to parse out the data found within. However, this is another case where very smart people have already done this complex work created an npm package based around it.
 
-The package we’ll use is called [ExcelJS](https://www.npmjs.com/package/exceljs). Install it now.
+The package we'll use is called [ExcelJS](https://www.npmjs.com/package/exceljs). Install it now.
 
 ```
 npm i exceljs
@@ -44,7 +44,7 @@ commander.program
 ```
 
 
-The `action` here is going to call `listFirstColAction()` which doesn’t exist yet. Go ahead and create it.
+The `action` here is going to call `listFirstColAction()` which doesn't exist yet. Go ahead and create it.
 
 ```
 // Function for reading XLSX, logging first column of first sheet
@@ -108,13 +108,13 @@ function listFirstColAction(path) {
 ```
 
 
-If you were wondering why we have to use `.then()` after reading the file, that’s just the convention that ExcelJS uses. It is a popular pattern called “promises” and it’s an alternative to the callback pattern we used before. Not all JavaScript libraries use promises and not all use callbacks either. However, some even support both!
+If you were wondering why we have to use `.then()` after reading the file, that's just the convention that ExcelJS uses. It is a popular pattern called "promises" and it's an alternative to the callback pattern we used before. Not all JavaScript libraries use promises and not all use callbacks either. However, some even support both!
 
 Anyway, running this command gives us the expected result.
 
 ![](./images/XMmIuxjwE.webp)
 
-Here’s what the full `index.js` looks like. It’s getting to be a decent size.
+Here's what the full `index.js` looks like. It's getting to be a decent size.
 
 ```
 // Require outside packages
@@ -180,7 +180,7 @@ commander.program.parse(process.argv);
 ```
 
 
-That’s over 60 lines of code including comments. While it’s common for source code files to go way above this number of lines, I still see some value in splitting up our code into logical sections at this time.
+That's over 60 lines of code including comments. While it's common for source code files to go way above this number of lines, I still see some value in splitting up our code into logical sections at this time.
 
 `logAction()` and `listFirstColAction()` can be moved into their own files.
 
@@ -190,7 +190,7 @@ Create a new folder called `actions`. Inside it, create two files called `log` a
 
 Cut the entirety of the `logAction()` function and paste it into `actions/log.js`.
 
-We need to tell Node.js to “export” that this function should be “exported” from the file any time it is “required” in another file. Simply add `module.exports = `before the function definition.
+We need to tell Node.js to "export" that this function should be "exported" from the file any time it is "required" in another file. Simply add `module.exports = `before the function definition.
 
 ```
 module.exports = function logAction(path) {
@@ -199,7 +199,7 @@ module.exports = function logAction(path) {
 ```
 
 
-Since this function uses `fs` we’ll need to make sure to require it at the top of this file. Add the require at the top of the file.
+Since this function uses `fs` we'll need to make sure to require it at the top of this file. Add the require at the top of the file.
 
 ```
 // Require outside packages
@@ -240,7 +240,7 @@ module.exports = function logAction(path) {
 ```
 
 
-Repeat this same process for `actions/listFirstCol.js` keeping in mind that it doesn’t use the `fs` package, but does use `exceljs`.
+Repeat this same process for `actions/listFirstCol.js` keeping in mind that it doesn't use the `fs` package, but does use `exceljs`.
 
 ```
 // Require outside packages
@@ -264,7 +264,7 @@ module.exports = function listFirstColAction(path) {
 ```
 
 
-Now that `index.js` doesn’t use `fs` nor `exceljs`, you can remove the `require` lines for them.
+Now that `index.js` doesn't use `fs` nor `exceljs`, you can remove the `require` lines for them.
 
 Since we moved each of our two actions into their own files, `index.js` is much smaller now.
 
@@ -289,11 +289,11 @@ commander.program.parse(process.argv);
 ```
 
 
-But if you try to run the program, you’ll see an error.
+But if you try to run the program, you'll see an error.
 
 ![](./images/bUQMiR2CH.webp)
 
-`logAction` is being used in our program, but it’s not defined anywhere. That’s right, because we moved it.
+`logAction` is being used in our program, but it's not defined anywhere. That's right, because we moved it.
 
 We can simply `require` it from the file we saved. Do this for both actions.
 
@@ -305,10 +305,10 @@ const listFirstColAction = require("./actions/listFirstCol");
 ```
 
 
-Save the file, try it again, and it’s working!
+Save the file, try it again, and it's working!
 
 ![](./images/wcXr7D76Q.webp)
 
-In this article, we’ve learned how to read and parse XLSX files using ExcelJS. So far we’ve only used a very small set of features from this package. You may consider [reading the documentation and seeing everything ExcelJS can do](https://github.com/exceljs/exceljs#readme).
+In this article, we've learned how to read and parse XLSX files using ExcelJS. So far we've only used a very small set of features from this package. You may consider [reading the documentation and seeing everything ExcelJS can do](https://github.com/exceljs/exceljs#readme).
 
-In the next article, we’ll try generating some summary data from our spreadsheet.
+In the next article, we'll try generating some summary data from our spreadsheet.

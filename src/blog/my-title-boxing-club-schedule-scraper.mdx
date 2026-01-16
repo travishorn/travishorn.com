@@ -9,15 +9,15 @@ tags: ["nodejs", "cli"]
 
 
 
-I built a tool to scrape the latest schedule from Title’s website and output CSV data ready for import into Google Calendar.
+I built a tool to scrape the latest schedule from Title's website and output CSV data ready for import into Google Calendar.
 
 ![](./images/w49c1baDE.webp)
 
-Title Boxing Club is a fitness gym that holds trainer-led classes daily. On their website, each location has its own “homepage.” You can find the schedule for the next 11–12 days on this page. This is the only way to access the schedule online. There is no iCal or alternative transportable version. This makes it difficult to integrate their schedule with your own personal calendar.
+Title Boxing Club is a fitness gym that holds trainer-led classes daily. On their website, each location has its own "homepage." You can find the schedule for the next 11–12 days on this page. This is the only way to access the schedule online. There is no iCal or alternative transportable version. This makes it difficult to integrate their schedule with your own personal calendar.
 
 I decided to create a command line utility that solves this problem.
 
-If you feed this command a location’s homepage URL (for example: [https://titleboxingclub.com/chicago-south-loop-il/](https://titleboxingclub.com/chicago-south-loop-il/)), it will pull the available schedule and automatically create a CSV file.
+If you feed this command a location's homepage URL (for example: [https://titleboxingclub.com/chicago-south-loop-il/](https://titleboxingclub.com/chicago-south-loop-il/)), it will pull the available schedule and automatically create a CSV file.
 
 The output can be saved to a file and [imported into Google Calendar](https://support.google.com/calendar/answer/37118?hl=en).
 
@@ -78,7 +78,7 @@ Once you have the CSV, you can [import it into Google Calendar](https://support.
 
 ![The end result](./images/cYdmzv23U.webp)*The end result*
 
-Since Title understandably only supplies the schedule for the next week or so, you’ll need to rerun the process periodically.
+Since Title understandably only supplies the schedule for the next week or so, you'll need to rerun the process periodically.
 
 ### How does it work?
 

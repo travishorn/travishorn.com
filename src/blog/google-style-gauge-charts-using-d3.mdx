@@ -11,19 +11,19 @@ tags: ["d3js", "web-development", "svg", "data-visualisation-1"]
 
 Google provides a free charting library to display live charts on your site. It works pretty well but has some disadvantages:
 
-* The library must be loaded from Google’s servers
+* The library must be loaded from Google's servers
 
 * Loading can be slow at times
 
 * Limited customization
 
-All of their charts can be re-created using an open-source library like [D3.js](https://d3js.org/) but some of them are easier to re-create than others. Recently, I wanted to switch over a site that was using Google Charts’s gauge chart. I didn’t want to rely on Google anymore.
+All of their charts can be re-created using an open-source library like [D3.js](https://d3js.org/) but some of them are easier to re-create than others. Recently, I wanted to switch over a site that was using Google Charts's gauge chart. I didn't want to rely on Google anymore.
 
 ![](./images/GPP7cZD01.webp)
 
-I was successful in re-creating the gauge chart with basic functionality using D3.js. Here’s how to do it from start to finish.
+I was successful in re-creating the gauge chart with basic functionality using D3.js. Here's how to do it from start to finish.
 
-First, let’s add some styles. These will mostly be colors, as sizes will be defined in JavaScript based on the container element’s dimensions.
+First, let's add some styles. These will mostly be colors, as sizes will be defined in JavaScript based on the container element's dimensions.
 
 ```
 <style>
@@ -62,7 +62,7 @@ First, let’s add some styles. These will mostly be colors, as sizes will be de
 ```
 
 
-These colors resemble the Google chart, but feel free to modify them any way you’d like.
+These colors resemble the Google chart, but feel free to modify them any way you'd like.
 
 With styles out of the way, we can work on the JavaScript. The first order of business is to include D3.js.
 
@@ -131,7 +131,7 @@ const needleCapRadius = width * 0.059;
 ```
 
 
-Feel free to customize these numbers to change the sizing on any of the chart’s components.
+Feel free to customize these numbers to change the sizing on any of the chart's components.
 
 Before we move on, we will also set some values for the ticks.
 
@@ -142,7 +142,7 @@ let angle = -135;
 ```
 
 
-You may notice the last value is a variable rather than a constant. This is because we’ll use it later in a loop to build the ticks around the gauge.
+You may notice the last value is a variable rather than a constant. This is because we'll use it later in a loop to build the ticks around the gauge.
 
 Next, we need a linear scale.
 
@@ -273,7 +273,7 @@ const needle = chart.append('path')
 ```
 
 
-Finally, we add the “cap” that covers the base of the needle.
+Finally, we add the "cap" that covers the base of the needle.
 
 ```
 const needleCap = chart.append('circle')

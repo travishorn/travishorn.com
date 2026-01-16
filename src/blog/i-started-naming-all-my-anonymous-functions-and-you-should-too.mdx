@@ -22,7 +22,7 @@ For example, the `[setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/A
 
 * a number of milliseconds to wait before execution
 
-Here’s a simple demonstration.
+Here's a simple demonstration.
 
 ```
 <!-- HTML -->
@@ -40,13 +40,13 @@ setTimeout(function () {
 ```
 
 
-Upon load, the webpage displays “Wait…”. After one second, it displays “Hello, world.”
+Upon load, the webpage displays "Wait…". After one second, it displays "Hello, world."
 
 See it in action here.
 
 %[https://codepen.io/travishorn/pen/PEmgzG]
 
-See the function inside `setTimeout()`? It doesn’t have a name; it is *anonymous*.
+See the function inside `setTimeout()`? It doesn't have a name; it is *anonymous*.
 
 Although the code works, what happens when we introduce a bug? Say we made a typo on the symbol `message`.
 
@@ -57,7 +57,7 @@ setTimeout(function () {
 ```
 
 
-*Notice I forgot an “s” in “message”.*
+*Notice I forgot an "s" in "message".*
 
 %[https://codepen.io/travishorn/pen/vpmMXO]
 
@@ -73,7 +73,7 @@ DevTools is very nice in that it provides the type of error, the error message, 
 
 But imagine for a minute that the issue was with a much larger application, with much more going on. Things like multiple files, build tools, minification, and concatenation all compound the complexity of fixing bugs. In these cases, **I like to give myself every advantage to find where the problem lies**.
 
-Here’s where naming anonymous functions can be helpful.
+Here's where naming anonymous functions can be helpful.
 
 While the error above is fairly descriptive, we can go further. Go ahead and name that anonymous function.
 
@@ -84,9 +84,9 @@ setTimeout(function **sayHello**() {
 ```
 
 
-*To illustrate the point, I’m keeping the typo in for right now.*
+*To illustrate the point, I'm keeping the typo in for right now.*
 
-Here’s the code now.
+Here's the code now.
 
 %[https://codepen.io/travishorn/pen/baWJgR]
 
@@ -100,7 +100,7 @@ Uncaught ReferenceError: mesage is not defined
 
 It is *almost* identical. But with one big difference: **the name of the function that produced the error**.
 
-In a large project, this extra piece of information could make it that much quicker to find and fix the bug you’re hunting.
+In a large project, this extra piece of information could make it that much quicker to find and fix the bug you're hunting.
 
 ### Bonus
 
@@ -121,7 +121,7 @@ setTimeout(sayHello, 1000);
 
 There are a couple of advantages to this style:
 
-1. It avoids [callback hell](http://callbackhell.com/). Your code becomes “flatter”. Imagine multiple callbacks and `setTimeout`s, all nested inside each other. Before you know it, you will be working with some seriously terrible indentation.
+1. It avoids [callback hell](http://callbackhell.com/). Your code becomes "flatter". Imagine multiple callbacks and `setTimeout`s, all nested inside each other. Before you know it, you will be working with some seriously terrible indentation.
 
 1. `sayHello()` can now be called from other places in your code, instead of being locked down inside this single `setTimeout`.
 
@@ -137,4 +137,4 @@ setTimeout(sayHello, 1000);
 
 %[https://codepen.io/travishorn/pen/ZvKZJM]
 
-If you start naming your anonymous functions, I guarantee you’ll be thankful for it at some point down the road. I hope this little tip helps you next time you’re bug-fixing.
+If you start naming your anonymous functions, I guarantee you'll be thankful for it at some point down the road. I hope this little tip helps you next time you're bug-fixing.

@@ -12,7 +12,7 @@ tags: ["charts", "chartjs", "javascript", "data-visualisation-1"]
 This is a simple example of using Chart.js to create a stacked bar chart (sometimes called a stacked column chart).
 > # Chart.js provides simple yet flexible JavaScript charting for designers & developers.
 
-It allows you to create all types of bar, line, area, and other charts in HTML. It uses the [canvas](https://developer.mozilla.org/en-US/docs/Glossary/Canvas) standard. While I do prefer using [SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG) when working with data visualization on the web, Chart.js is a popular option, so it’s worth checking out.
+It allows you to create all types of bar, line, area, and other charts in HTML. It uses the [canvas](https://developer.mozilla.org/en-US/docs/Glossary/Canvas) standard. While I do prefer using [SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG) when working with data visualization on the web, Chart.js is a popular option, so it's worth checking out.
 
 ![](./images/AG-RbxjGp.webp)
 
@@ -33,14 +33,14 @@ Starting with a basic `index.html`:
 ```
 
 
-In the body, we’ll need a `&lt;canvas&gt;` element to bind to. This is where the chart will appear.
+In the body, we'll need a `&lt;canvas&gt;` element to bind to. This is where the chart will appear.
 
 ```
 <canvas id="chart"></canvas>
 ```
 
 
-And we’ll pull in the Chart.js library.
+And we'll pull in the Chart.js library.
 
 ```
 <script src="[https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js](https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js)"></script>
@@ -56,14 +56,14 @@ The rest of the chart will be coded with JavaScript. So another `&lt;script&gt;`
 ```
 
 
-We’ll first need a reference to the `&lt;canvas&gt;` element we wrote earlier.
+We'll first need a reference to the `&lt;canvas&gt;` element we wrote earlier.
 
 ```
 var ctx = document.getElementById('chart');
 ```
 
 
-And we’ll instantiate a new chart on this element. The first argument is the bound element, and the second is a definition of our chart. The definition will have three properties: type, data, and options.
+And we'll instantiate a new chart on this element. The first argument is the bound element, and the second is a definition of our chart. The definition will have three properties: type, data, and options.
 
 ```
 var myChart = new Chart(ctx, {
@@ -74,9 +74,9 @@ var myChart = new Chart(ctx, {
 ```
 
 
-Notice we’ve told Chart.js that this will be a `bar` type chart.
+Notice we've told Chart.js that this will be a `bar` type chart.
 
-In the `data` property, we’ll define datasets and their labels. In my example, I have three datasets — all with the same label.
+In the `data` property, we'll define datasets and their labels. In my example, I have three datasets — all with the same label.
 
 ```
 data: {
@@ -113,7 +113,7 @@ datasets: [
 ```
 
 
-We’ve told Chart.js that we want a bar chart, we’ve told it about our data, the last step is to tell it that this is chart should be stacked. We do this in the `options` property.
+We've told Chart.js that we want a bar chart, we've told it about our data, the last step is to tell it that this is chart should be stacked. We do this in the `options` property.
 
 ```
 options: {
@@ -129,6 +129,6 @@ The end result is a stacked bar chart.
 
 ![](./images/9nl8dHcbA.webp)
 
-And here’s the complete code:
+And here's the complete code:
 
 %[https://codepen.io/travishorn/pen/kkVKJG]

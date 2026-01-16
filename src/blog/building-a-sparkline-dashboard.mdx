@@ -9,7 +9,7 @@ tags: ["javascript", "web-development", "vuejs", "data-visualisation-1"]
 
 
 
-Building on the last article, I’ll show you how to use the SparkLine component we built to create a “dashboard” of data points that anyone can quickly understand with sparklines.
+Building on the last article, I'll show you how to use the SparkLine component we built to create a "dashboard" of data points that anyone can quickly understand with sparklines.
 
 ![](./images/3JRJ0ZroX.webp)
 
@@ -21,7 +21,7 @@ Now, we can make a dashboard with that component.
 
 ![](./images/9xwEwFH35.webp)
 
-If you don’t already have one created, you should create a Vue project with the [Vue CLI](https://cli.vuejs.org/).
+If you don't already have one created, you should create a Vue project with the [Vue CLI](https://cli.vuejs.org/).
 
 ```
 vue create sparkboard
@@ -56,7 +56,7 @@ export default {
 ```
 
 
-Note that the arrays of data here are just random numbers I picked. Feel free to use whatever you’d like. Later we can pull data from external sources.
+Note that the arrays of data here are just random numbers I picked. Feel free to use whatever you'd like. Later we can pull data from external sources.
 
 Run the development server.
 
@@ -69,11 +69,11 @@ You can view the project at [http://localhost:8080/](http://localhost:8080/)
 
 ![](./images/5FWVr_sdo.webp)
 
-Great! There’s three tiny sparklines just as the code describes.
+Great! There's three tiny sparklines just as the code describes.
 
-I don’t like putting the data directly into the template, so the first thing we’ll do is move it into the script.
+I don't like putting the data directly into the template, so the first thing we'll do is move it into the script.
 
-Let’s pretend our data comes from a set of sensors. The updated script looks like this:
+Let's pretend our data comes from a set of sensors. The updated script looks like this:
 
 ```
 import SparkLine from "./components/SparkLine.vue";
@@ -131,7 +131,7 @@ And instead add it to individual sensor `&lt;div&gt;`s. This requires us to add 
 ```
 
 
-Now that we can style each sensor, it’s time to add some basic styles.
+Now that we can style each sensor, it's time to add some basic styles.
 
 Some padding, rounded corners, and color will make a big difference.
 
@@ -147,7 +147,7 @@ Some padding, rounded corners, and color will make a big difference.
 
 ![](./images/wl4KDKpDe.webp)
 
-I’m a fan of CSS grids. So I’m going to add a class to the root element…
+I'm a fan of CSS grids. So I'm going to add a class to the root element…
 
 ```
 <div class="sensors">
@@ -171,7 +171,7 @@ I’m a fan of CSS grids. So I’m going to add a class to the root element…
 
 These styles make the sensors show up in a grid that will automatically adjust for screen size.
 
-We’ll also need to remove the `width` from each sensor, and instead add a `max-width`.
+We'll also need to remove the `width` from each sensor, and instead add a `max-width`.
 
 ```
 .sensor {
@@ -184,7 +184,7 @@ We’ll also need to remove the `width` from each sensor, and instead add a `max
 
 ![](./images/nek3PF0Hu.webp)
 
-The chart itself doesn’t need to take up so much of the box. Add a class…
+The chart itself doesn't need to take up so much of the box. Add a class…
 
 ```
 <SparkLine class="sensor-chart" :data="sensor" />
@@ -256,7 +256,7 @@ The font can be a little smaller, too.
 
 ![](./images/vi8XXtOER.webp)
 
-Oops. It’s hard to read. We can change the font and color directly in the `.sensor-name` style, but I know we’re going to be adding some more text, so I’m going to make the change higher up.
+Oops. It's hard to read. We can change the font and color directly in the `.sensor-name` style, but I know we're going to be adding some more text, so I'm going to make the change higher up.
 
 ```
 .sensors {
@@ -269,7 +269,7 @@ Oops. It’s hard to read. We can change the font and color directly in the `.se
 
 ![](./images/cnc15pv3l.webp)
 
-It’s starting to come together. How about we show the most recent data point for each sensor? Note the new lines in bold below.
+It's starting to come together. How about we show the most recent data point for each sensor? Note the new lines in bold below.
 
 ```
 <div class="sensors">
@@ -297,7 +297,7 @@ We can make these numbers bigger as you can imagine they might be valuable to se
 
 ![](./images/cU-CrrPg5M.webp)
 
-Just for personal preference, I’m going to set the entire background to a darker color. You can place this right alongside `&lt;style scoped&gt;`.
+Just for personal preference, I'm going to set the entire background to a darker color. You can place this right alongside `&lt;style scoped&gt;`.
 
 ```
 <style>
@@ -310,7 +310,7 @@ body {
 
 ![](./images/qUv6mW1Gh.webp)
 
-And the styles are complete! Let’s see what it looks like with many more sensors.
+And the styles are complete! Let's see what it looks like with many more sensors.
 
 ```
 sensors: [
@@ -339,9 +339,9 @@ sensors: [
 
 It looks good! And the **best** part? Everything is dynamic. You can change the data and everything updates.
 
-Say you poll for updated data via an API. You simply replace or modify any of the sensors’ `data` properties and the dashboard will update.
+Say you poll for updated data via an API. You simply replace or modify any of the sensors' `data` properties and the dashboard will update.
 
-Here’s some code that adds a random data point to the first sensor’s array every second. It also “caps” the array to the latest 15 values only.
+Here's some code that adds a random data point to the first sensor's array every second. It also "caps" the array to the latest 15 values only.
 
 ```
 setInterval(() => {

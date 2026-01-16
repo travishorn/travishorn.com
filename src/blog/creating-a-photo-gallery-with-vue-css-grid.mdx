@@ -23,7 +23,7 @@ If you prefer to look the code itself, you can find the repository on GitHub bel
 
 ### Prerequisites
 
-To follow along, you’ll need [Node.js](https://nodejs.org) and version 3 of the [Vue CLI](https://cli.vuejs.org/).
+To follow along, you'll need [Node.js](https://nodejs.org) and version 3 of the [Vue CLI](https://cli.vuejs.org/).
 
 To install Node.js, go to [the homepage](https://nodejs.org) and find your download.
 
@@ -73,7 +73,7 @@ You can leave all other options as they are and press `Enter`.
 
 For the rest of the options, feel free to accept the defaults by pressing `Enter` at each prompt.
 
-When the CLI finishes, you’ll have a new directory called `photo-gallery` which contains a sample Vue app.
+When the CLI finishes, you'll have a new directory called `photo-gallery` which contains a sample Vue app.
 
 Serve the app.
 
@@ -99,9 +99,9 @@ Inside `src/images/` create another directory called `thumbnails/`. This directo
 
 For best results, I sized all of these thumbnail images to exactly 600 x 600 pixels.
 
-Finally, inside the `src/` directory, create a file called `photos.json`. This will be our “database” of photos. It should contain all the information about each photo.
+Finally, inside the `src/` directory, create a file called `photos.json`. This will be our "database" of photos. It should contain all the information about each photo.
 
-Here is a sample of the structure of this file. If you’re using my sample photos, you can [download the JSON file](https://raw.githubusercontent.com/travishorn/photo-gallery/master/src/photos.json).
+Here is a sample of the structure of this file. If you're using my sample photos, you can [download the JSON file](https://raw.githubusercontent.com/travishorn/photo-gallery/master/src/photos.json).
 
 ```
 [
@@ -129,7 +129,7 @@ Here is a sample of the structure of this file. If you’re using my sample phot
 ```
 
 
-At this point, we have scaffolded a Vue app and added some photo data. The file structure looks something like this. Note that I’m only including the most relevant files and directories here so you can get an idea of where everything important should be.
+At this point, we have scaffolded a Vue app and added some photo data. The file structure looks something like this. Note that I'm only including the most relevant files and directories here so you can get an idea of where everything important should be.
 
 ```
 node_modules/
@@ -157,7 +157,7 @@ src/
 
 ### Grid-based Gallery
 
-Let’s start by modifying `App.vue`. This is the root component everything else will go into. We can remove basically everything in it and replace it with the following.
+Let's start by modifying `App.vue`. This is the root component everything else will go into. We can remove basically everything in it and replace it with the following.
 
 ```
 <template>
@@ -180,9 +180,9 @@ Let’s start by modifying `App.vue`. This is the root component everything else
 ```
 
 
-There’s nothing too crazy going here. The template simply contains the router’s view and nothing else. Then there’s some basic font and color styles.
+There's nothing too crazy going here. The template simply contains the router's view and nothing else. Then there's some basic font and color styles.
 
-By default, the router points to the `Home` view. This view is defined in `src/views/Home.vue`. Let’s edit that now.
+By default, the router points to the `Home` view. This view is defined in `src/views/Home.vue`. Let's edit that now.
 
 This is another simple one. Replace everything in the file with the following.
 
@@ -204,9 +204,9 @@ export default {
 ```
 
 
-This view is simply showing the `Gallery` component. This component doesn’t exist, yet. Let’s create it.
+This view is simply showing the `Gallery` component. This component doesn't exist, yet. Let's create it.
 
-Create `src/components/Gallery.vue`. Here’s the first big chunk of our app.
+Create `src/components/Gallery.vue`. Here's the first big chunk of our app.
 
 The template looks like this:
 
@@ -223,11 +223,11 @@ The template looks like this:
 ```
 
 
-Inside the main `div`, we’re using a `v-for` to loop over a `photos` property and create `div`s for each one.
+Inside the main `div`, we're using a `v-for` to loop over a `photos` property and create `div`s for each one.
 
 Each of these `div`s contains an image.
 
-Each image’s `src` is set by a function we’ll define next.
+Each image's `src` is set by a function we'll define next.
 
 Now for the script.
 
@@ -252,11 +252,11 @@ export default {
 ```
 
 
-In this file, we import the “database” JSON file from earlier.
+In this file, we import the "database" JSON file from earlier.
 
 We use this JSON data to set the `photos` property in the `data` object. This property is an array of photo data that our template loops over to create `div`s for each photo.
 
-In the `methods` area, we’re defining the `thumbUrl()` function we use in the template. The template passes the photo’s filename to this function and it returns the URL to the photo’s thumbnail.
+In the `methods` area, we're defining the `thumbUrl()` function we use in the template. The template passes the photo's filename to this function and it returns the URL to the photo's thumbnail.
 
 At this point, the images are displayed on the page.
 
@@ -293,9 +293,9 @@ Photos will be displayed in a grid and automatically resize. If the photos get t
 
 ### Lightbox
 
-It’s looking great so far. Now we want users to be able to click on a photo and see the full image front-and-center.
+It's looking great so far. Now we want users to be able to click on a photo and see the full image front-and-center.
 
-For that, we’ll wrap each image with a link. Since we’re using Vue Router, we’ll use `router-link` instead of an `a` tag.
+For that, we'll wrap each image with a link. Since we're using Vue Router, we'll use `router-link` instead of an `a` tag.
 
 Update the template.
 
@@ -341,7 +341,7 @@ export default new Router({
 ```
 
 
-At the top, import a photo component which we’ll build in a moment. Then, add a route that uses it.
+At the top, import a photo component which we'll build in a moment. Then, add a route that uses it.
 
 ```
 import Vue from 'vue';
@@ -390,11 +390,11 @@ export default {
 ```
 
 
-This is another simple file. The template is just showing one component, which we import in the script. Normally, we would just leave this file out and wire our route directly to the component, but we’ll need to modify this view later to add a feature, so it’s important.
+This is another simple file. The template is just showing one component, which we import in the script. Normally, we would just leave this file out and wire our route directly to the component, but we'll need to modify this view later to add a feature, so it's important.
 
 The `Photo` view is importing a `Photo` component. Create `src/components/Photo.vue`. This is the last big chunk of the app.
 
-Let’s start with a simple template.
+Let's start with a simple template.
 
 ```
 <template>
@@ -413,11 +413,11 @@ Let’s start with a simple template.
 ```
 
 
-The `.lightbox` `div` is like the container for the image and the info we’ll display next to it.
+The `.lightbox` `div` is like the container for the image and the info we'll display next to it.
 
-The `img` tag actually displays the image. It’s `src` attribute uses another function we’ll code up in the script.
+The `img` tag actually displays the image. It's `src` attribute uses another function we'll code up in the script.
 
-Immediately after the `img` there’s a `div` which will contain information about the photo. You may also notice an inner `div` which will be used for styling.
+Immediately after the `img` there's a `div` which will contain information about the photo. You may also notice an inner `div` which will be used for styling.
 
 Now for the script.
 
@@ -449,13 +449,13 @@ export default {
 ```
 
 
-Here again, we’re importing `photos.json` to get the photo data.
+Here again, we're importing `photos.json` to get the photo data.
 
-But this time we’re using a computed property which find the photo with the `id` specified in the URL.
+But this time we're using a computed property which find the photo with the `id` specified in the URL.
 
-Finally, there’s the `photoUrl()` function which returns an image URL based on a filename. This time, instead of the thumbnail, it provides the URL to the full resolution image.
+Finally, there's the `photoUrl()` function which returns an image URL based on a filename. This time, instead of the thumbnail, it provides the URL to the full resolution image.
 
-Going back to the running app… click on an image and you’ll be brought to the photo view. So far, the component displays the image and a small bit of text that just says “info”.
+Going back to the running app… click on an image and you'll be brought to the photo view. So far, the component displays the image and a small bit of text that just says "info".
 
 The photo is way too big and the info text is pushed off the page. We need some styling.
 
@@ -494,17 +494,17 @@ The photo is way too big and the info text is pushed off the page. We need some 
 
 For the container `.lightbox` we fix it so that it takes up the entire viewport. It also has a semi-transparent dark background color. Perhaps most importantly, it uses `display: grid` with 3 equal width columns.
 
-The `.lightbox-img` has automatic margins, putting it in the center of it’s column. The width is 100% so it always takes up the whole column (and *only* the column — no overflow), and it has `grid-column-start: 2` so that it starts in the second column of our 3-column grid. This puts it in the center.
+The `.lightbox-img` has automatic margins, putting it in the center of it's column. The width is 100% so it always takes up the whole column (and *only* the column — no overflow), and it has `grid-column-start: 2` so that it starts in the second column of our 3-column grid. This puts it in the center.
 
-`.lightbox-info` has a margin of `auto 2rem auto 0` meaning that the top and bottom margins are set automatically, centering it vertically in it’s column. The right margin is set to `2rem` so it’s pushed away from the right edge of the screen. The left margin is set to `0` because there will already be space there from the `grid-gap` we set on the container element.
+`.lightbox-info` has a margin of `auto 2rem auto 0` meaning that the top and bottom margins are set automatically, centering it vertically in it's column. The right margin is set to `2rem` so it's pushed away from the right edge of the screen. The left margin is set to `0` because there will already be space there from the `grid-gap` we set on the container element.
 
-Finally, `.ligthbox-info-inner` uses a light background with a little bit of padding. That’s where our photo info will go.
+Finally, `.ligthbox-info-inner` uses a light background with a little bit of padding. That's where our photo info will go.
 
 These styles make everything look like a lightbox.
 
 ![](./images/QdhdQAinVN.webp)
 
-Right now, there’s just placeholder text in the info box. Replace the word “info” with this template HTML.
+Right now, there's just placeholder text in the info box. Replace the word "info" with this template HTML.
 
 ```
 <p v-if="photo.title">{{ photo.title }}</p>
@@ -526,17 +526,17 @@ Right now, there’s just placeholder text in the info box. Replace the word “
 ```
 
 
-If there’s a photo title, show it.
+If there's a photo title, show it.
 
-If there’s a photo location, show it.
+If there's a photo location, show it.
 
-If there’s a photographer, display their name with a link to their URL.
+If there's a photographer, display their name with a link to their URL.
 
-If there’s a source, display its name with its URL.
+If there's a source, display its name with its URL.
 
 ![](./images/zwcXlEHtv.webp)
 
-Things are starting to come together. There’s a few features that will really complete the app, though.
+Things are starting to come together. There's a few features that will really complete the app, though.
 
 For one, we want to close the lightbox and go back to the gallery whenever someone clicks on the dark background. This is as simple as adding a click event that pushes a route to the router.
 
@@ -616,7 +616,7 @@ The URL always reflects the currently open image. If you send someone a URL to a
 
 ### Cleanup
 
-There are some files the Vue CLI created that we don’t need anymore. You can safely delete…
+There are some files the Vue CLI created that we don't need anymore. You can safely delete…
 
 * `src/views/About.vue`
 
@@ -624,7 +624,7 @@ There are some files the Vue CLI created that we don’t need anymore. You can s
 
 * `src/assets/logo.webp`
 
-You should also consider updating `README.md` to be more descriptive of the actual app we’ve created.
+You should also consider updating `README.md` to be more descriptive of the actual app we've created.
 
 Code for this entire project can be found on GitHub below.
 [**travishorn/photo-gallery**

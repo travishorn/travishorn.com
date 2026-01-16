@@ -8,11 +8,11 @@ tags: ["python", "sql", "mariadb", "geojson", "geospatial"]
 
 
 
-One of the most common yet complex challenges in application development is the "zone lookup" problem. It’s used in processes like managing school district boundaries, defining exclusive sales territories for a CRM, and determining shipping costs based on delivery regions. In any case, you have a specific location (an address), and you need to know exactly which organizational "bucket" it falls into.
+One of the most common yet complex challenges in application development is the "zone lookup" problem. It's used in processes like managing school district boundaries, defining exclusive sales territories for a CRM, and determining shipping costs based on delivery regions. In any case, you have a specific location (an address), and you need to know exactly which organizational "bucket" it falls into.
 
 In an ideal world, this geographic data would be handed to you in a clean, query-ready format. However, in the real world, the starting point is often much messier. You might be staring at a PDF map on a manager's desktop, a JPEG image on a legacy website, or even a physical map pinned to an office wall. You have the visual representation of the boundaries, but you lack the actual coordinate data required for a computer to make a decision. You cannot run a SQL query against a JPEG.
 
-Let’s bridge the gap between a visual map and a functional database. We are going to build a system where a user can enter an address, and the application instantly returns the correct zone.
+Let's bridge the gap between a visual map and a functional database. We are going to build a system where a user can enter an address, and the application instantly returns the correct zone.
 
 To achieve this, we will move through a complete spatial data pipeline:
 
@@ -20,12 +20,12 @@ To achieve this, we will move through a complete spatial data pipeline:
     
 * Automating the transformation of that data using Python.
     
-* Leveraging MariaDB’s native spatial features to store the boundaries.
+* Leveraging MariaDB's native spatial features to store the boundaries.
     
 * Writing the SQL logic to determine where a point exists within a polygon.
     
 
-Let’s get started by turning those imaginary lines into real data.
+Let's get started by turning those imaginary lines into real data.
 
 ## Creating the Spatial Data
 
@@ -62,7 +62,7 @@ To bridge the gap between the image on our screen and the code in our editor, we
 
 Once you have defined all your zones, click the **Copy** button in the editor pane. Paste this data into your code editor and save it as a file named `zones-geo.json`.
 
-You now have a structured `FeatureCollection`, which is a machine-readable text file representing the physical shapes of your zones. In the next step, we’ll prepare the database to receive it.
+You now have a structured `FeatureCollection`, which is a machine-readable text file representing the physical shapes of your zones. In the next step, we'll prepare the database to receive it.
 
 ## Preparing the Database (MariaDB)
 
@@ -236,7 +236,7 @@ WHERE
   ST_Contains(z.boundary, ST_GeomFromText('POINT(-90.19364 38.62273)', 4326));
 ```
 
-Here’s what the query is doing:
+Here's what the query is doing:
 
 1. `z.boundary` is the `MultiPolygon` column we created earlier.
     
@@ -329,13 +329,13 @@ By adding this simple column, you transform a simple lookup tool into a multi-di
 
 We have traveled a long way from a static PDF map pinned to an office wall. We have now transformed a purely visual resource into a high-performance data asset.
 
-Let’s recap the journey:
+Let's recap the journey:
 
 1. We used **GeoJSON.io** to digitize abstract boundaries into coordinate data.
     
 2. We used **Python** to normalize that data and prepare it for storage.
     
-3. We leveraged **MariaDB’s** native spatial columns to index the shapes efficiently.
+3. We leveraged **MariaDB's** native spatial columns to index the shapes efficiently.
     
 4. We combined **SQL** and **Geocoding** to answer user questions in real-time.
     

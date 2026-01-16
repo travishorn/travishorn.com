@@ -67,7 +67,7 @@ v4.4.7
 
 ### 3. Using npm packages in Node
 
-Once you start breaking your apps into smaller modular packages, you will find that, in so many cases, someone has already had the same need as you and has already written a package for it. In the JavaScript world, the main repository for all of these packages is [npm](https://npmjs.com/). First, let’s see how to use these packages in Node, then we’ll see how you can also use them in the browser.
+Once you start breaking your apps into smaller modular packages, you will find that, in so many cases, someone has already had the same need as you and has already written a package for it. In the JavaScript world, the main repository for all of these packages is [npm](https://npmjs.com/). First, let's see how to use these packages in Node, then we'll see how you can also use them in the browser.
 
 **Setup**
 
@@ -164,7 +164,7 @@ var myObj = _.assign({ 'a': 1 }, { 'b': 2 }, { 'c': 3 });
 
 ### 4. Using npm packages in the browser
 
-Using packaged modules like that in Node is great. But what about the browser? Like everything else I’ve mentioned, there are *many* ways to get this done. One simple option is **browserify**.
+Using packaged modules like that in Node is great. But what about the browser? Like everything else I've mentioned, there are *many* ways to get this done. One simple option is **browserify**.
 
 **Setup**
 
@@ -175,7 +175,7 @@ npm install -g browserify
 ```
 
 
-This will install browserify globally. Meaning that it’s not tied to a specific project, but rather a utility that you can use anywhere.
+This will install browserify globally. Meaning that it's not tied to a specific project, but rather a utility that you can use anywhere.
 
 **Installing a package**
 
@@ -203,13 +203,13 @@ You now have access to the `_` object, which contains all the code downloaded an
 
 ### 5. Creating your own modules (npm packages)
 
-There may not be a module out there that does what you want to do. In this case, it’s a good idea to write your own module that you can re-use any time you need it. You can even publish it to the world (using npm) and help other people if you wish.
+There may not be a module out there that does what you want to do. In this case, it's a good idea to write your own module that you can re-use any time you need it. You can even publish it to the world (using npm) and help other people if you wish.
 
-A good module is well tested, so I’ll show you how to write a module with tests.
+A good module is well tested, so I'll show you how to write a module with tests.
 
 1. Open the **GitHub** desktop app and create a new repository by clicking the **plus icon**, entering a project **Name** and **Local path**, choosing **Node** from the **Git ignore** dropdown box, and clicking **Create repository**
 
-1. Open a **Command Prompt** and `cd` into the repository’s directory
+1. Open a **Command Prompt** and `cd` into the repository's directory
 
 1. Run `npm init` and answer each question about your project
 

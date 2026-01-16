@@ -9,9 +9,9 @@ tags: ["web-design", "web-development"]
 
 
 
-Bootstrap is an awesome toolkit for front-end development. One of it’s biggest advantages is that when you start to build your app, instead of starting from scratch, you can start building your app using Bootstrap’s styles. You include Bootstrap’s CSS, and use its classes throughout your HTML.
+Bootstrap is an awesome toolkit for front-end development. One of it's biggest advantages is that when you start to build your app, instead of starting from scratch, you can start building your app using Bootstrap's styles. You include Bootstrap's CSS, and use its classes throughout your HTML.
 
-But once you’ve got the prototype for your app, you will probably want to customize these styles to give your app its own branding. Sounds simple enough, but there are many ways to do this. Some of them can get complex.
+But once you've got the prototype for your app, you will probably want to customize these styles to give your app its own branding. Sounds simple enough, but there are many ways to do this. Some of them can get complex.
 
 ![](./images/em5P5jKpm.webp)
 
@@ -55,13 +55,13 @@ The problems with this method are:
 
 1. Two stylesheets = two HTTP requests = longer loading times
 
-1. The above code changes the successful *alert*’s color, but what about *other* success classes (such as badges or table rows)? You would have to add CSS rules to change the color for all of them.
+1. The above code changes the successful *alert*'s color, but what about *other* success classes (such as badges or table rows)? You would have to add CSS rules to change the color for all of them.
 
 1. You are including CSS rules to overwrite previous ones. The previous ones are just extra bloat, now.
 
 ### The hard way
 
-Another method would be to edit the Bootstrap source and recompile it yourself. I don’t recommend this method either.
+Another method would be to edit the Bootstrap source and recompile it yourself. I don't recommend this method either.
 
 1. Install [Node.js](https://nodejs.org/)
 
@@ -77,23 +77,23 @@ Another method would be to edit the Bootstrap source and recompile it yourself. 
 
 The main issue I have with this method is that I must install so many heavy development tools that I will never use outside of customizing Bootstrap styles.
 
-Another issue is that when Bootstrap is updated, there is no easy way to merge and resolve conflicts with the custom edits you’ve made.
+Another issue is that when Bootstrap is updated, there is no easy way to merge and resolve conflicts with the custom edits you've made.
 
 ### The recommended way
 
-This method uses [webpack](https://webpack.js.org/). It is especially advantageous if you’re already using webpack, as there would be little setup. If you’re not already using webpack, the setup process might seem a little convoluted, but it will be beneficial in the long run.
+This method uses [webpack](https://webpack.js.org/). It is especially advantageous if you're already using webpack, as there would be little setup. If you're not already using webpack, the setup process might seem a little convoluted, but it will be beneficial in the long run.
 
 In this guide, I will start from scratch.
 
 1. Install [Node.js](https://nodejs.org/)
 
-1. `cd` into your project’s directory
+1. `cd` into your project's directory
 
 1. `npm init -y`
 
 1. Add Bootstrap to your project with `npm i -S bootstrap@4.0.0-beta` (The Bootstrap 4 Beta is the latest version as of this writing)
 
-1. Add webpack and the other development dependencies we’ll need with `npm i -D autoprefixer css-loader node-sass postcss-loader precss sass-loader style-loader webpack`
+1. Add webpack and the other development dependencies we'll need with `npm i -D autoprefixer css-loader node-sass postcss-loader precss sass-loader style-loader webpack`
 
 1. In `package.json`, add a build script to run webpack
 
@@ -141,7 +141,7 @@ module.exports = {
 ```
 
 
-You don’t have to completely understand this file. Bootstrap styles are built using [Sass](http://sass-lang.com/) and most of this config file just tells webpack how to handle Sass files.
+You don't have to completely understand this file. Bootstrap styles are built using [Sass](http://sass-lang.com/) and most of this config file just tells webpack how to handle Sass files.
 
 The important thing to understand is that webpack will process `app.js` and spit out `bundle.js` for us.
 
@@ -152,7 +152,7 @@ import './style.scss';
 ```
 
 
-That’s the only line in this file. In the future, if you want to bundle more modules into your app, whether they be CSS, JavaScript, or something else, you can import them here.
+That's the only line in this file. In the future, if you want to bundle more modules into your app, whether they be CSS, JavaScript, or something else, you can import them here.
 
 9. `app.js` is importing a Sass file called `style.scss`. Create it like so:
 
@@ -173,11 +173,11 @@ $green: #4CFF00;
 ```
 
 
-This is where all the fun happens. You can override [any variable you find in Bootstrap’s `_variables.scss`](https://github.com/twbs/bootstrap/blob/v4-dev/scss/_variables.scss).
+This is where all the fun happens. You can override [any variable you find in Bootstrap's `_variables.scss`](https://github.com/twbs/bootstrap/blob/v4-dev/scss/_variables.scss).
 
 For example, say I think the default green is too dull and I want to use a more vibrant green throughout my app. I just change that one variable (as shown above) and, though the magic of Sass and Bootstrap, every green element will be changed. This includes green text and borders that might actually be a different color, but calculated from this base green.
 
-11. `npm run build`. This creates `bundle.js`, which now contains all your app’s styles.
+11. `npm run build`. This creates `bundle.js`, which now contains all your app's styles.
 
 To use these styles, just include it in your HTML:
 
@@ -266,7 +266,7 @@ $input-border-radius-sm:                $border-radius-sm !default;
 ```
 
 
-Cards can be a huge part of any app. Here’s a sample of the variables that affect cards:
+Cards can be a huge part of any app. Here's a sample of the variables that affect cards:
 
 ```
 $card-spacer-y:                     .75rem !default;

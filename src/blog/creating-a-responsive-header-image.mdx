@@ -9,23 +9,23 @@ tags: ["web-design", "web-development"]
 
 
 
-Sometimes it’s best to load and display different images for different screen sizes. For example, a very large header image that works for a large desktop screen may not be necessary or even look correct on a phone in portrait mode.
+Sometimes it's best to load and display different images for different screen sizes. For example, a very large header image that works for a large desktop screen may not be necessary or even look correct on a phone in portrait mode.
 
 ![](./images/GWw8uYX3h.webp)
 
-Say I want to create a header for my new website. I’m going to start with this high-resolution photo by [Graham Holtshausen](https://unsplash.com/photos/fUnfEz3VLv4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
+Say I want to create a header for my new website. I'm going to start with this high-resolution photo by [Graham Holtshausen](https://unsplash.com/photos/fUnfEz3VLv4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
 
 ![](./images/ToasdUsf5.webp)
 
-The first thing I’m going to do is shrink the image down so the width is 2560 pixels. Most screens won’t go higher than this so this is a good maximum.
+The first thing I'm going to do is shrink the image down so the width is 2560 pixels. Most screens won't go higher than this so this is a good maximum.
 
-Since this is a header image, I’m going to crop it so it’s short and wide. I’m cropping on center with the height at 100 pixels.
+Since this is a header image, I'm going to crop it so it's short and wide. I'm cropping on center with the height at 100 pixels.
 
 ![](./images/gvAMp-H08.webp)
 
 *Note that the image may appear less than 2560 x 100 on this blog post.*
 
-Finally, I’ll darken the center, add a logo, and add text in Photoshop to create the header.
+Finally, I'll darken the center, add a logo, and add text in Photoshop to create the header.
 
 ![](./images/4-ufESE1P.webp)
 
@@ -54,7 +54,7 @@ Now I can create a page using this header at the top.
 ```
 
 
-Notice I’m using [Normalize.css](https://necolas.github.io/normalize.css/) (to make browsers render all elements more consistently). And I’ve included another stylesheet. Right now the styles are pretty minimal.
+Notice I'm using [Normalize.css](https://necolas.github.io/normalize.css/) (to make browsers render all elements more consistently). And I've included another stylesheet. Right now the styles are pretty minimal.
 
 ```
 html { font-size: 22px; }
@@ -70,7 +70,7 @@ The site looks like this.
 
 ![](./images/AAzs7McDj.webp)
 
-Oh no. The main part of the header isn’t visible. Plus, the huge width makes the site scroll horizontally. We can fix it with a little bit of HTML…
+Oh no. The main part of the header isn't visible. Plus, the huge width makes the site scroll horizontally. We can fix it with a little bit of HTML…
 
 ```
 <header>
@@ -118,7 +118,7 @@ I replace the `&lt;img&gt;` in the `&lt;header&gt;` with a `&lt;picture&gt;` ele
 ```
 
 
-Inside the `&lt;picture&gt;`, we’ll place a couple `&lt;sources&gt;`.
+Inside the `&lt;picture&gt;`, we'll place a couple `&lt;sources&gt;`.
 
 ```
 <header>
@@ -134,7 +134,7 @@ Inside the `&lt;picture&gt;`, we’ll place a couple `&lt;sources&gt;`.
 
 You can see that `header-576.webp` will be displayed on screens up to 576 maximum width. The other image — `header-2560.webp` — will be shown on devices 577 pixels and up.
 
-In addition to these two sources, I’ll also add the big original header as a fallback in an `&lt;img&gt;` element.
+In addition to these two sources, I'll also add the big original header as a fallback in an `&lt;img&gt;` element.
 
 ```
 <header>
@@ -149,11 +149,11 @@ In addition to these two sources, I’ll also add the big original header as a f
 ```
 
 
-I add this fallback because `&lt;picture&gt;` isn’t quite supported across the board. Here’s the compatibility table at the time of this writing.
+I add this fallback because `&lt;picture&gt;` isn't quite supported across the board. Here's the compatibility table at the time of this writing.
 
 ![Can I use… compatibility table for &lt;picture&gt; element](./images/1_Ix6ozcuhu5k0I7NFIvXQKQ.webp)*[Can I use… compatibility table for &lt;picture&gt; element](https://caniuse.com/#feat=picture)*
 
-Now that we’ve made our header more responsive, here’s how it looks on extra small devices.
+Now that we've made our header more responsive, here's how it looks on extra small devices.
 
 ![](./images/T5SJwEBaD.webp)
 
@@ -161,7 +161,7 @@ On larger devices it still looks good.
 
 ![](./images/XnXhL0eX5.webp)
 
-How about medium devices (up to 922 pixels)? Simple. It’s the same process.
+How about medium devices (up to 922 pixels)? Simple. It's the same process.
 
 Create a 922 x 100 pixel header.
 
@@ -182,9 +182,9 @@ And add the `&lt;source&gt;`.
 ```
 
 
-Note the additional change to the `min-width` of the largest `&lt;source&gt;`. It’s always 1 pixel higher than the previous `max-width`.
+Note the additional change to the `min-width` of the largest `&lt;source&gt;`. It's always 1 pixel higher than the previous `max-width`.
 
-The images are dynamic, too. If the user’s viewport changes, the image automatically changes.
+The images are dynamic, too. If the user's viewport changes, the image automatically changes.
 
 ![](./images/ulF01f1Xw.webp)
 
@@ -202,7 +202,7 @@ Your needs will dictate which breakpoints you should include; In general, you mi
 
 These are the same [breakpoints used by Bootstrap 4](http://getbootstrap.com/docs/4.1/layout/overview/#responsive-breakpoints).
 
-Finally, there is another benefit to using responsive images in this way: The only image(s) that get downloaded are the ones that meets the breakpoint media rules. This means that, on extra small devices, only `header-576.webp` gets downloaded. In my case, it’s five times smaller than the original `header-2560.webp`; A savings of 465 kilobytes!
+Finally, there is another benefit to using responsive images in this way: The only image(s) that get downloaded are the ones that meets the breakpoint media rules. This means that, on extra small devices, only `header-576.webp` gets downloaded. In my case, it's five times smaller than the original `header-2560.webp`; A savings of 465 kilobytes!
 
 See the pen below for a live version of this project that you can play around with.
 

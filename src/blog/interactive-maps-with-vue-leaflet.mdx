@@ -10,13 +10,13 @@ tags: ["javascript", "web-development", "data-visualisation-1"]
 
 This post will cover the basics of interactive maps using Vue.js and Leaflet.
 
-If you’ve never heard of Vue, it’s a popular front-end framework for building user interfaces. If you’ve never heard of Leaflet, it’s a modern JavaScript library that makes working with maps easy.
+If you've never heard of Vue, it's a popular front-end framework for building user interfaces. If you've never heard of Leaflet, it's a modern JavaScript library that makes working with maps easy.
 
-Today, we’ll use those frameworks to build a web app with a couple components:
+Today, we'll use those frameworks to build a web app with a couple components:
 
 * An interactive geographic map that users can pan and zoom
     
-* A collection of “layer” checkboxes that users can toggle to view markers and polygons on the map
+* A collection of "layer" checkboxes that users can toggle to view markers and polygons on the map
     
 
 ![](./images/5fVRBsZi0.webp)
@@ -37,7 +37,7 @@ To start, create a file called `index.html` with the following boilerplate code:
 </html>
 ```
 
-As far as CSS goes, we’ll simply use [Bootstrap 4](http://getbootstrap.com/docs/4.0). Add this line to the `head` section.
+As far as CSS goes, we'll simply use [Bootstrap 4](http://getbootstrap.com/docs/4.0). Add this line to the `head` section.
 
 ```svelte
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
@@ -64,7 +64,7 @@ All libraries are now loaded! We can begin coding our app. Again, in the `body` 
 </div>
 ```
 
-We gave this `div` an `id` so we can bind our Vue app to it and we gave it the `container` `class` so we can use Bootstrap’s grid system within it.
+We gave this `div` an `id` so we can bind our Vue app to it and we gave it the `container` `class` so we can use Bootstrap's grid system within it.
 
 Inside that `div`, set up a row and two columns.
 
@@ -94,9 +94,9 @@ The first column will contain the map. Add a new `div` inside it to indicate whe
 <div id="map" class="map"></div>
 ```
 
-This `div` has an `id` that we’ll use to bind our Leaflet map. It also contains a `class` that we can reference in CSS.
+This `div` has an `id` that we'll use to bind our Leaflet map. It also contains a `class` that we can reference in CSS.
 
-We’ll leave this template as it is for right now and come back to it later.
+We'll leave this template as it is for right now and come back to it later.
 
 Leaflet requires our map element to have a height. We can do this three ways:
 
@@ -119,9 +119,9 @@ Then, link it in the `head` section below Bootstrap.
 <link rel="stylesheet" href="styles.css">
 ```
 
-That’s really the only custom style we need for the basic setup. But feel free to add additional styles in this file later.
+That's really the only custom style we need for the basic setup. But feel free to add additional styles in this file later.
 
-Now we’re ready to write some JavaScript. Create a new file called `app.js`.
+Now we're ready to write some JavaScript. Create a new file called `app.js`.
 
 ```svelte
 new Vue({
@@ -195,7 +195,7 @@ The tiles we use here are a free services of [Carto](https://carto.com/). First 
 
 * maxZoom — specifies how far the user should be able to zoom in.
     
-* attribution — When using Carto’s tiles, you must give attribution. Basically this adds a description of the copyrights associated with these tiles.
+* attribution — When using Carto's tiles, you must give attribution. Basically this adds a description of the copyrights associated with these tiles.
     
 
 For the first time, our app should actually look like something. If you load `index.html` in your browser, you should see a map of Saint Louis, MO.
@@ -251,7 +251,7 @@ Each feature will have…
     
 * `name` — The name of the feature (a restaurant in this case) to display in the app
     
-* `type` — In this app, features can either be markers or polygons. A marker will appear as a “tack” on the map. A polygon will appear as a semi-transparent colored shape.
+* `type` — In this app, features can either be markers or polygons. A marker will appear as a "tack" on the map. A polygon will appear as a semi-transparent colored shape.
     
 * `coords` — The latitude and longitude for the feature
     
@@ -315,7 +315,7 @@ Below you will find a collection of restaurant feature objects that you can copy
 },
 ```
 
-The second layer we’ll add is the boundaries for the City of Saint Louis and St. Louis County. Add this new layer.
+The second layer we'll add is the boundaries for the City of Saint Louis and St. Louis County. Add this new layer.
 
 ```svelte
 layers: [
@@ -495,7 +495,7 @@ features: [
 ],
 ```
 
-Back in our HTML template, we’ll create a checkbox for each layer. This code goes inside that second column ( `div class="col-md-3"`)
+Back in our HTML template, we'll create a checkbox for each layer. This code goes inside that second column ( `div class="col-md-3"`)
 
 ```svelte
 <div
@@ -523,13 +523,13 @@ This div contains a `label` and an `input` element.
 </label>
 ```
 
-In the code above, `v-model` binds the `active` property to the checkbox’s value. This means that when `active === true` the checkbox will be checked and vice-versa.
+In the code above, `v-model` binds the `active` property to the checkbox's value. This means that when `active === true` the checkbox will be checked and vice-versa.
 
-Also, when the value of the checkbox is changed, `layerChanged()` is called with the `id` of the layer and whether is it now active or not. We haven’t created this function, yet, but we’ll get to it.
+Also, when the value of the checkbox is changed, `layerChanged()` is called with the `id` of the layer and whether is it now active or not. We haven't created this function, yet, but we'll get to it.
 
-Finally, we use Vue’s text interpolation to place the name of the layer inside the label.
+Finally, we use Vue's text interpolation to place the name of the layer inside the label.
 
-That’s it for the HTML template. Back in JavaScript, add a `layerChanged()` function to the `methods` object.
+That's it for the HTML template. Back in JavaScript, add a `layerChanged()` function to the `methods` object.
 
 ```svelte
 methods: {
@@ -543,7 +543,7 @@ At this point, if you save and load the page, there should be a checkbox for eac
 
 ![](./images/nuUU7GptC.webp)
 
-Before we can write the code to toggle the layers, we have to initialize them. It’s time to code the `initLayers()` method. The basic idea behind this method is to add Leaflet objects for each feature.
+Before we can write the code to toggle the layers, we have to initialize them. It's time to code the `initLayers()` method. The basic idea behind this method is to add Leaflet objects for each feature.
 
 Loop through each layer.
 
@@ -581,7 +581,7 @@ polygonFeatures.forEach((feature) => {
 });
 ```
 
-All features in all layers now contain a `leafletObject` that we can use. With all layers “initialized,” we can finally code the `layerChanged()` method.
+All features in all layers now contain a `leafletObject` that we can use. With all layers "initialized," we can finally code the `layerChanged()` method.
 
 ```svelte
 layerChanged(layerId, active) {
@@ -613,7 +613,7 @@ if (active) {
 }
 ```
 
-That’s it! When you check the Restaurants checkbox, markers appear for each restaurant.
+That's it! When you check the Restaurants checkbox, markers appear for each restaurant.
 
 ![](./images/USP2CB4Bi.webp)
 

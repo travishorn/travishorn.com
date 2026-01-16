@@ -9,20 +9,20 @@ tags: ["javascript", "web-development", "immutable"]
 
 
 
-RJ Zaworski wrote an excellent introduction to Composition in JavaScript. I highly recommend it and it is a prerequisite to this article. I’m taking RJ’s article and extending it to use immutability.
+RJ Zaworski wrote an excellent introduction to Composition in JavaScript. I highly recommend it and it is a prerequisite to this article. I'm taking RJ's article and extending it to use immutability.
 
 On top of [composition](https://en.wikipedia.org/wiki/Function_composition_(computer_science)), immutability can further simplify application development on complex projects.
 
-In this post, we’ll build a SortedList object to which you can add items. It will include a `display()` function that will always display the list sorted using whatever custom sorting function we describe.
+In this post, we'll build a SortedList object to which you can add items. It will include a `display()` function that will always display the list sorted using whatever custom sorting function we describe.
 
-JavaScript’s immutability support is limited. To extend it, we’ll use Facebook’s fantastic [Immutable.js](https://facebook.github.io/immutable-js/). Before any of the code below, make sure to include it.
+JavaScript's immutability support is limited. To extend it, we'll use Facebook's fantastic [Immutable.js](https://facebook.github.io/immutable-js/). Before any of the code below, make sure to include it.
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.1/immutable.js"></script
 ```
 
 
-To start off, we’ll make a whole assortment of [pure functions](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976#.v01hvs4fr) that will be the building blocks of our SortedList.
+To start off, we'll make a whole assortment of [pure functions](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976#.v01hvs4fr) that will be the building blocks of our SortedList.
 
 The first one is a function that accepts a list and a string. It will then return the same list with addition of the string.
 
@@ -42,7 +42,7 @@ function sort(items) {
 ```
 
 
-Conversely, we’ll make another function that returns a list in reverse-alphabetical order.
+Conversely, we'll make another function that returns a list in reverse-alphabetical order.
 
 ```javascript
 function reverseSort(items) {
@@ -60,7 +60,7 @@ function displayList(items) {
 ```
 
 
-With all those building block functions out of the way, we’ll make the actual SortedList constructor function. It will accept an object containing pure functions for adding, sorting, and displaying items in the sorted list. It exposes functions for doing these three operations.
+With all those building block functions out of the way, we'll make the actual SortedList constructor function. It will accept an object containing pure functions for adding, sorting, and displaying items in the sorted list. It exposes functions for doing these three operations.
 
 ```javascript
 function SortedList(components) {
@@ -85,7 +85,7 @@ function SortedList(components) {
 ```
 
 
-Now let’s actually use the SortedList constructor to make an instance that will display items in alphabetical order.
+Now let's actually use the SortedList constructor to make an instance that will display items in alphabetical order.
 
 ```javascript
 var list = new SortedList({
@@ -107,7 +107,7 @@ var rlist = new SortedList({
 ```
 
 
-To test these two functions out, let’s add five items to them each. Notice the random order.
+To test these two functions out, let's add five items to them each. Notice the random order.
 
 ```javascript
 list.add('Kilo')
@@ -124,7 +124,7 @@ rlist.add('Charlie');
 ```
 
 
-That’s it, you can display each list’s items with the `display()` function.
+That's it, you can display each list's items with the `display()` function.
 
 ```javascript
 list.display();

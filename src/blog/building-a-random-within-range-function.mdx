@@ -9,7 +9,7 @@ tags: ["javascript"]
 
 
 
-Let’s walk through building a function in JavaScript that returns a random number within a given range.
+Let's walk through building a function in JavaScript that returns a random number within a given range.
 
 JavaScript provides an object called `Math` that contains objects and methods for working with mathematics. The particular method we are interested in today is `Math.random()`. It returns a pseudo-random number from 0 (inclusive) to 1, but not including 1.
 
@@ -74,7 +74,7 @@ getRandomIntMax(10);
 ```
 
 
-Now let’s add a minimum. One way to make sure we are always above our minimum to to add the minimum before returning.
+Now let's add a minimum. One way to make sure we are always above our minimum to to add the minimum before returning.
 
 ```javascript
 var getRandomIntRange = function(min, max) {
@@ -87,7 +87,7 @@ getRandomIntRange(5, 10);
 ```
 
 
-Uh oh. We will never drop below our minimum, but we could rise above our maximum. But this is an easy fix. Just subtract the minimum from the maximum and we’re good!
+Uh oh. We will never drop below our minimum, but we could rise above our maximum. But this is an easy fix. Just subtract the minimum from the maximum and we're good!
 
 ```javascript
 var getRandomIntRange = function(min, max) {
@@ -100,7 +100,7 @@ getRandomIntRange(5, 10);
 ```
 
 
-Excellent. Our function works as expected… unless you don’t give it one or both of the expected arguments. If you’d like, you can add some sensible defaults. These defaults might depend on the context of what you’re building. In our case, I’ll just make the default minimum 0 and the maximum 100. However, another good option would be to return an error if any argument is missing.
+Excellent. Our function works as expected… unless you don't give it one or both of the expected arguments. If you'd like, you can add some sensible defaults. These defaults might depend on the context of what you're building. In our case, I'll just make the default minimum 0 and the maximum 100. However, another good option would be to return an error if any argument is missing.
 
 ```javascript
 var getRandomIntRange = function(min, max) {
@@ -125,7 +125,7 @@ getRandomIntRange(5, 'a');
 ```
 
 
-Oops. Let’s put in some checks to make sure our arguments are integers.
+Oops. Let's put in some checks to make sure our arguments are integers.
 
 ### The Finished Function
 
@@ -160,7 +160,7 @@ function isInteger(num) {
 ```
 
 
-That’s all I have for now. There are undoubtedly ways to improve this function to make it more efficient and robust. But this will work for 99% of use-cases.
+That's all I have for now. There are undoubtedly ways to improve this function to make it more efficient and robust. But this will work for 99% of use-cases.
 
 [See a demo of this function in action.](https://codepen.io/travishorn/pen/bZKyGP)
 

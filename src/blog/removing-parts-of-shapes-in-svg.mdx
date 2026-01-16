@@ -13,13 +13,13 @@ Recently, I needed to remove part of a shape in SVG for a project I was working 
 
 ![](./images/SVEtXBRVa.webp)
 
-This is the desired end result. Notice the black circle has a stripe taken out of it and you can see everything “underneath” it.
+This is the desired end result. Notice the black circle has a stripe taken out of it and you can see everything "underneath" it.
 
 ![](./images/-UUM65T4O.webp)
 
 ### Setup
 
-First, let’s start with a basic SVG canvas and a circle.
+First, let's start with a basic SVG canvas and a circle.
 
 ```
 <svg viewBox="0 0 500 500">
@@ -53,7 +53,7 @@ And it works.
 
 But only if your background is pure white. If you have any other shapes, this method becomes a problem.
 
-For example, if we had another circle “below” the first one…
+For example, if we had another circle "below" the first one…
 
 ```
 <circle cx="150"
@@ -86,7 +86,7 @@ But you could never get it perfect.
 
 Instead what you need is a mask.
 
-First, remove the stripe. Here’s the full HTML without it:
+First, remove the stripe. Here's the full HTML without it:
 
 ```
 <svg viewBox="0 0 500 500">
@@ -114,7 +114,7 @@ Next add a `&lt;defs&gt;` section inside the `&lt;svg&gt;` and place a `&lt;mask
 ```
 
 
-It’s not set up yet, but go ahead and add the mask to the black circle.
+It's not set up yet, but go ahead and add the mask to the black circle.
 
 ```
 <circle cx="250"
@@ -128,7 +128,7 @@ The circle disappeared!
 
 ![](./images/Qn7swmMot.webp)
 
-That’s because the mask cuts out everything that’s not white *in the mask*.
+That's because the mask cuts out everything that's not white *in the mask*.
 
 Add a white rectangle to the entire canvas **inside the mask**.
 
@@ -147,11 +147,11 @@ The circle is back now.
 
 ![](./images/ODTegpRWL.webp)
 
-The big white rectangle doesn’t show up because it’s not actually on the canvas, it’s inside a mask.
+The big white rectangle doesn't show up because it's not actually on the canvas, it's inside a mask.
 
-The circle still has the mask applied to it, but the mask is simply showing *everything* because it’s just a big white rectangle. Masks show everything white and hide everything black.
+The circle still has the mask applied to it, but the mask is simply showing *everything* because it's just a big white rectangle. Masks show everything white and hide everything black.
 
-With that knowledge, let’s add a black stripe to the mask.
+With that knowledge, let's add a black stripe to the mask.
 
 ```
 <rect x="225"
@@ -161,7 +161,7 @@ With that knowledge, let’s add a black stripe to the mask.
 ```
 
 
-This rectangle is very similar to our first approach. Except it’s black instead of white and inside a mask instead of being a regular shape.
+This rectangle is very similar to our first approach. Except it's black instead of white and inside a mask instead of being a regular shape.
 
 The black circle now has the stripe taken out of it! Just as we wanted. And this time, everything behind it is still visible.
 
@@ -189,7 +189,7 @@ If you change the rectangle in the mask to be filled with gray…
 
 ![](./images/FdjgD4iM8.webp)
 
-And it’s not just one gray either. Every gray between white and black lets more or less of the masked shape through.
+And it's not just one gray either. Every gray between white and black lets more or less of the masked shape through.
 
 Less opacity:
 
@@ -217,7 +217,7 @@ More opacity:
 
 ![](./images/VQjRwpusb.webp)
 
-Even gradient’s work.
+Even gradient's work.
 
 ```
 <mask id="stripe">

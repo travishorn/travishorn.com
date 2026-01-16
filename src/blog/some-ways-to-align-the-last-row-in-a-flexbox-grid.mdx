@@ -8,7 +8,7 @@ tags: ["flexbox", "css", "web-design", "web-development", "frontend-development"
 
 
 
-Using flexbox doesn’t always produce the expected alignment, especially on the last row of a grid. When you use justify-content: space-between it will place a large gap in the last row unless there are a square number of items.
+Using flexbox doesn't always produce the expected alignment, especially on the last row of a grid. When you use justify-content: space-between it will place a large gap in the last row unless there are a square number of items.
 
 ![](./images/5_vbuZsa1.webp)
 
@@ -71,7 +71,7 @@ Many times, you will want to avoid that big gap on the right and justify each ro
 
 ![](./images/lEHNgjcKl.webp)
 
-Now we have a new issue. There is space between each item in the row just like we defined, but it doesn’t exactly look like what we might expect. It’s a common design pattern to have the last row aligned to the left when there aren’t enough items to fill it.
+Now we have a new issue. There is space between each item in the row just like we defined, but it doesn't exactly look like what we might expect. It's a common design pattern to have the last row aligned to the left when there aren't enough items to fill it.
 
 This is exactly the question on this Stack Overflow question and its many duplicates.
 
@@ -86,7 +86,7 @@ The accepted answer uses `::after`.
 }
 ```
 
-But this doesn’t look good at all when you’re using fixed widths like we are here.
+But this doesn't look good at all when you're using fixed widths like we are here.
 
 ![](./images/83vUZryrH.webp)
 
@@ -125,7 +125,7 @@ This technique works well when you know how many items there are or you can calc
 
 One of my favorite approaches is to replace flexbox with grid.
 
-Delete the empty items so we’re left with the original set.
+Delete the empty items so we're left with the original set.
 
 ```bash
 <div class="container">

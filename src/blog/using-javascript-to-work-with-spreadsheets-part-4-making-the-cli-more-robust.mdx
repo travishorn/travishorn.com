@@ -9,17 +9,17 @@ tags: ["javascript", "nodejs", "excel"]
 
 
 
-This is the fourth article in a series where we’ll be learning to use the powerful logic of a programming language like JavaScript to manipulate spreadsheet data.
+This is the fourth article in a series where we'll be learning to use the powerful logic of a programming language like JavaScript to manipulate spreadsheet data.
 
-In this article, we’ll talk about how to add a dependency from the npm registry and we’ll add some robustness to our interface.
+In this article, we'll talk about how to add a dependency from the npm registry and we'll add some robustness to our interface.
 
 ![](./images/0pR0tEwfI.webp)
 
 Being able to accept arguments from the command line already places our program in the command-line interface (CLI) category. That is, our program is run by typing commands on the command line AKA terminal.
 
-Right now, our CLI has no documentation and no ability accept options. It’s entirely possible to build your own system for looking at `process.argv` and parsing out options, adding commands for getting help with the program, etc. However, some very smart people have already written code which handles this and they’ve shared it with the world on Node.js’s npm registry.
+Right now, our CLI has no documentation and no ability accept options. It's entirely possible to build your own system for looking at `process.argv` and parsing out options, adding commands for getting help with the program, etc. However, some very smart people have already written code which handles this and they've shared it with the world on Node.js's npm registry.
 
-There are many options on the registry for managing CLI’s. In this project, we’ll use the very popular [Commander](https://www.npmjs.com/package/commander). Installing it is easy.
+There are many options on the registry for managing CLI's. In this project, we'll use the very popular [Commander](https://www.npmjs.com/package/commander). Installing it is easy.
 
 In VS Code, with your project folder opened, run the following command in the Terminal ( `Ctrl + `` ).
 
@@ -28,7 +28,7 @@ npm i commander
 ```
 
 
-This tells npm (Node Package Manager) to install the package by the name of “commander.” Now that it’s installed, we can use it in our project. Our project now “depends” on Commander and therefor Commander is considered a “dependency” of our project.
+This tells npm (Node Package Manager) to install the package by the name of "commander." Now that it's installed, we can use it in our project. Our project now "depends" on Commander and therefor Commander is considered a "dependency" of our project.
 
 If you open up `package.json`, you can even see Commander listed in the `dependencies` section.
 
@@ -42,7 +42,7 @@ And finally you will notice a new file called `package-lock.json`. This file hel
 
 ![](./images/rpp9SekQW.webp)
 
-Before we implement Commander into our file, let’s do a small bit of housekeeping. At the moment, `fs.readFile()` will be called every time we run the program. Instead, we want to move this process into a function that we can call later.
+Before we implement Commander into our file, let's do a small bit of housekeeping. At the moment, `fs.readFile()` will be called every time we run the program. Instead, we want to move this process into a function that we can call later.
 
 Create a new function called `logAction` which accepts a file path as an argument.
 
@@ -76,7 +76,7 @@ function logAction(path) {
 ```
 
 
-Since our `readFileCallback` function isn’t used anywhere but inside this `logAction` function, we can actually nest it inside. Structuring the code this way keeps everything tidy.
+Since our `readFileCallback` function isn't used anywhere but inside this `logAction` function, we can actually nest it inside. Structuring the code this way keeps everything tidy.
 
 ```
 // Function for taking a file path and logging the contents
@@ -96,7 +96,7 @@ function logAction(path) {
 ```
 
 
-I know that this new `logAction()` function isn’t being used yet. But it will be shortly.
+I know that this new `logAction()` function isn't being used yet. But it will be shortly.
 
 The last bit of housekeeping is to remove the line where we define `inputPath`. It is no longer used at all.
 
@@ -123,7 +123,7 @@ commander.program.parse(process.argv);
 ```
 
 
-NOTE: It’s very important to keep this line at the very bottom of the file. This is the code that tells Commander to actually parse the command at the very end after we’ve described what we want it to do.
+NOTE: It's very important to keep this line at the very bottom of the file. This is the code that tells Commander to actually parse the command at the very end after we've described what we want it to do.
 
 If you save the file and run it now, nothing happens because we move the file reading component inside a function that never gets called.
 
@@ -169,7 +169,7 @@ If we try to run it without a path, a friendly error appears.
 
 ![](./images/_gYuL46Pn.webp)
 
-One thing we haven’t tied up yet is what happens when a path is given, but the path doesn’t actually exist. What if someone tries…
+One thing we haven't tied up yet is what happens when a path is given, but the path doesn't actually exist. What if someone tries…
 
 ```
 node index log 'C:\i-dont-exist.txt'
@@ -178,7 +178,7 @@ node index log 'C:\i-dont-exist.txt'
 
 ![](./images/TaBPq1PpL.webp)
 
-That’s not a very friendly error. It’s telling us that the method `toString()` can’t be read from `undefined`. Since we are trying to do `data.toString()` that must mean `data` is undefined. `data` should be defined when `fs.readFile()` calls the `readFileCallback()` function. Here’s another look at that function again.
+That's not a very friendly error. It's telling us that the method `toString()` can't be read from `undefined`. Since we are trying to do `data.toString()` that must mean `data` is undefined. `data` should be defined when `fs.readFile()` calls the `readFileCallback()` function. Here's another look at that function again.
 
 ```
 // Used as a callback when a file is read
@@ -192,7 +192,7 @@ function readFileCallback(err, data) {
 ```
 
 
-Aha. `readFileCallback()` takes two arguments: `err` and `data`. `data` isn’t defined, but I bet `err` is. Let’s write logic to handle this case.
+Aha. `readFileCallback()` takes two arguments: `err` and `data`. `data` isn't defined, but I bet `err` is. Let's write logic to handle this case.
 
 ```
 // Used as a callback when a file is read
@@ -210,7 +210,7 @@ function readFileCallback(err, data) {
 ```
 
 
-This code says that if `err` isn’t `null`, log the `err` object to the console. I’m using `console.error` here instead of `console.log`. They mostly do the same thing, but `console.error` is more correct and it can behave differently depending on the environment.
+This code says that if `err` isn't `null`, log the `err` object to the console. I'm using `console.error` here instead of `console.log`. They mostly do the same thing, but `console.error` is more correct and it can behave differently depending on the environment.
 
 Else, if `err` is `null`, run the code just as before.
 
@@ -220,7 +220,7 @@ Now we can see what error `fs.readFile` is giving us.
 
 Code `ENOENT`, which means the file we were trying to access does not exist.
 
-We can actually make this error a little more friendly. If an error exists, execute some `switch` logic based on the code. If the code is `ENOENT`, log a friendly error message we wrote ourselves. Otherwise if it’s some other code we haven’t encountered, just show the ugly error message.
+We can actually make this error a little more friendly. If an error exists, execute some `switch` logic based on the code. If the code is `ENOENT`, log a friendly error message we wrote ourselves. Otherwise if it's some other code we haven't encountered, just show the ugly error message.
 
 ```
 if (err !== null) {
@@ -243,4 +243,4 @@ Running the program on a nonexistent file now produces a better error message.
 
 Now that we know how to add commands to our program using Commander, we can keep extending our program to do different things depending on our needs.
 
-In the next article, we’ll go over how to read and parse XLSX files.
+In the next article, we'll go over how to read and parse XLSX files.

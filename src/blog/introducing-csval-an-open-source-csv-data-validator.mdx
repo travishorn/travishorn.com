@@ -45,7 +45,7 @@ csval mydata.csv
 ```
 
 
-Since no rules were specified above, the file is only checked to make sure it can be parsed correctly. As long as it’s a valid CSV file, it will pass validation. The CLI will show errors if they exist. Otherwise, it will display a success message.
+Since no rules were specified above, the file is only checked to make sure it can be parsed correctly. As long as it's a valid CSV file, it will pass validation. The CLI will show errors if they exist. Otherwise, it will display a success message.
 
 If you pass in a rules file, the CSV file will be validated against the rules.
 
@@ -58,7 +58,7 @@ Again, the CLI will show parsing errors if they exist. When a rules file is spec
 
 ### The rules file
 
-Rules files should follow the [JSON Schema](https://json-schema.org/understanding-json-schema/reference/index.html) format. It describes what you should expect in each row. Here’s an example.
+Rules files should follow the [JSON Schema](https://json-schema.org/understanding-json-schema/reference/index.html) format. It describes what you should expect in each row. Here's an example.
 
 ```
 {
@@ -74,7 +74,7 @@ Rules files should follow the [JSON Schema](https://json-schema.org/understandin
 
 Note that the line `"type": "object"` above is implied and can be left out if desired. I only included it here to demonstrate that this file should follow the JSON Schema format.
 
-The rules above state that the “salary” field on each row must be a number.
+The rules above state that the "salary" field on each row must be a number.
 
 This CSV file would pass:
 
@@ -96,7 +96,7 @@ Jane,idk
 
 ### Another rules file example
 
-Here’s another example of a rules file.
+Here's another example of a rules file.
 
 ```
 {
@@ -225,7 +225,7 @@ csval is open source and I welcome all pull requests. The code is hosted on GitH
 %[https://github.com/travishorn/csval]
 
 
-If you’d like to fork or contribute, simply clone the git repository.
+If you'd like to fork or contribute, simply clone the git repository.
 
 ```
 git clone https://github.com/travishorn/csval.git

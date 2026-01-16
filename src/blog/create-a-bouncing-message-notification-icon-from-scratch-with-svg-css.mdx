@@ -9,7 +9,7 @@ tags: ["css", "web-development", "animation", "svg", "css-animation"]
 
 
 
-Let’s see how easy it is to create a simple icon with SVG and animate it with CSS.
+Let's see how easy it is to create a simple icon with SVG and animate it with CSS.
 
 ![The end result will look similar to this. Just imagine it bouncing up and down.](./images/n8t69myM-j.webp)*The end result will look similar to this. Just imagine it bouncing up and down.*
 
@@ -64,9 +64,9 @@ d="M   0   0
 ```
 
 
-If you’ve done everything correctly so far, you should see a black page with a thin white horizontal line at the top.
+If you've done everything correctly so far, you should see a black page with a thin white horizontal line at the top.
 
-Now for the right edge, create a **line** down to 800, 500. The reason we stop at 500 instead of going all the way to the bottom (600) is because we want our notification icon to have a “callout” style tail on the bottom, so we leave room for that.
+Now for the right edge, create a **line** down to 800, 500. The reason we stop at 500 instead of going all the way to the bottom (600) is because we want our notification icon to have a "callout" style tail on the bottom, so we leave room for that.
 
 ```
 d="M   0   0
@@ -75,7 +75,7 @@ d="M   0   0
 ```
 
 
-Normally, to complete a rectangle, you would **line** to the bottom left corner. But we’re not creating a perfect rectangle. We want the middle third to come down to a point. Dividing 800 / 3 gives us 267 (I rounded). So what you really want at this point is to draw a horizontal line that stops at two thirds (2 * 267 = 534) along the bottom.
+Normally, to complete a rectangle, you would **line** to the bottom left corner. But we're not creating a perfect rectangle. We want the middle third to come down to a point. Dividing 800 / 3 gives us 267 (I rounded). So what you really want at this point is to draw a horizontal line that stops at two thirds (2 * 267 = 534) along the bottom.
 
 ```
 d="M   0   0
@@ -114,7 +114,7 @@ At this point, we have a nice notification icon!
 
 ![](./images/EvE3Nr48P.webp)
 
-But it looks a little empty. To give it some substance, add three stacked horizontal lines. I’ll skip the math required to place them exactly, but the basic idea is to **move** the cursor to the start of the line, then **line** to the end of the line. Repeat for the other two lines. The final `&lt;path&gt;` looks like this:
+But it looks a little empty. To give it some substance, add three stacked horizontal lines. I'll skip the math required to place them exactly, but the basic idea is to **move** the cursor to the start of the line, then **line** to the end of the line. Repeat for the other two lines. The final `&lt;path&gt;` looks like this:
 
 ```
 d="M   0   0
@@ -177,7 +177,7 @@ The code above basically says that…
 
 This gives the `&lt;g&gt;` a bouncing effect. The icon bounces now!
 
-But there’s a problem. When it moves downward, the tail on the bottom is cut off. An easy fix is to wrap everything in another `&lt;g&gt;` that will scale down the icon.
+But there's a problem. When it moves downward, the tail on the bottom is cut off. An easy fix is to wrap everything in another `&lt;g&gt;` that will scale down the icon.
 
 ```
 <g transform="scale(.96)>
@@ -188,15 +188,15 @@ But there’s a problem. When it moves downward, the tail on the bottom is cut o
 ```
 
 
-The `[transform` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform) `scale`s everything in the `&lt;g&gt;` to 96% it’s original size, leaving room for the icon to bounce without cutting it off.
+The `[transform` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform) `scale`s everything in the `&lt;g&gt;` to 96% it's original size, leaving room for the icon to bounce without cutting it off.
 
 Now you have a great looking bouncing notification icon made purely in SVG & CSS.
 
 ### Bonus!
 
-You can create the illusion of the icon being “drawn” on the screen in front of you by using a trick with the `[stroke-dasharray`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) and `[stroke-dashoffset`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset) attributes.
+You can create the illusion of the icon being "drawn" on the screen in front of you by using a trick with the `[stroke-dasharray`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray) and `[stroke-dashoffset`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset) attributes.
 
-For the first part of the trick, you’ll need to know the total length of the path. Use JavaScript to find out:
+For the first part of the trick, you'll need to know the total length of the path. Use JavaScript to find out:
 
 ```
 > document.querySelector('.icon').getTotalLength();
@@ -204,7 +204,7 @@ For the first part of the trick, you’ll need to know the total length of the p
 ```
 
 
-`stroke-dasharray` controls the pattern of dashes and gaps on the line. In CSS, set the path’s `stroke-dasharray` to the total length of itself.
+`stroke-dasharray` controls the pattern of dashes and gaps on the line. In CSS, set the path's `stroke-dasharray` to the total length of itself.
 
 ```
 .icon {
@@ -251,6 +251,6 @@ This animation will have one keyframe.
 ```
 
 
-It moves the `stroke-dashoffset` from it’s default value of 4467 all the way to 0, which reveals the icon. Pretty tricky!
+It moves the `stroke-dashoffset` from it's default value of 4467 all the way to 0, which reveals the icon. Pretty tricky!
 
 The end result looks like this:

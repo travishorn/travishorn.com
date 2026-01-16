@@ -9,7 +9,7 @@ tags: ["jquery", "javascript", "web-development"]
 
 
 
-I often use jQuery to modify the DOM. The simplest way to do this is to use jQuery’s query selector and a modifier function.
+I often use jQuery to modify the DOM. The simplest way to do this is to use jQuery's query selector and a modifier function.
 
 ```javascript
 $('#intro').css('background-color', 'green');
@@ -52,7 +52,7 @@ var footer = $('#footer');
 ```
 
 
-it may be wise to put them all into a “dictionary” object.
+it may be wise to put them all into a "dictionary" object.
 
 ```javascript
 var dom = {
@@ -78,7 +78,7 @@ dom['alert'].show();
 ```
 
 
-Writing the dictionary seems inefficient because there’s a lot of duplicated words. As long as your element IDs are also valid JavaScript variable names, we can automatically convert the IDs into variables with a small function.
+Writing the dictionary seems inefficient because there's a lot of duplicated words. As long as your element IDs are also valid JavaScript variable names, we can automatically convert the IDs into variables with a small function.
 
 ### The idsToJqObjects function
 

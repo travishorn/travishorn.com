@@ -9,15 +9,15 @@ tags: ["web-development", "html", "html5"]
 
 
 
-The HTML5 specification is still in working draft, but as web development is currently shifting towards an “agile” process, browsers already implement many of these features, with more support coming everyday. Please note that this document does not cover 100% of the new elements and attributes in the new specification, but I do want to highlight some interesting parts.
+The HTML5 specification is still in working draft, but as web development is currently shifting towards an "agile" process, browsers already implement many of these features, with more support coming everyday. Please note that this document does not cover 100% of the new elements and attributes in the new specification, but I do want to highlight some interesting parts.
 
 ## Structure Elements
 
-These elements are meant to give more semantic meaning to the structure of a web page. Rather than using `<div>`s with classes, the most commonly used components of a page’s structure have been given their own tag.
+These elements are meant to give more semantic meaning to the structure of a web page. Rather than using `<div>`s with classes, the most commonly used components of a page's structure have been given their own tag.
 
 ### section
 
-Represents a generic document or application section. Use this versus the div element when your document has clear “sections” within it.
+Represents a generic document or application section. Use this versus the div element when your document has clear "sections" within it.
 
 ```html
 <section>High School</section>
@@ -66,7 +66,7 @@ This one should be pretty obvious. The header of a page usually contains informa
 
 ### footer
 
-Another obvious one. Many sites have footer information about the site or page near the bottom of the page. This information doesn’t necessarily relate to the content of the page, so it should be semantically sectioned off with `<footer>`.
+Another obvious one. Many sites have footer information about the site or page near the bottom of the page. This information doesn't necessarily relate to the content of the page, so it should be semantically sectioned off with `<footer>`.
 
 ```html
 <footer>Copyright 2012</footer>
@@ -103,7 +103,7 @@ There are many new form elements and input types in this latest version of HTML5
 
 ### datalist
 
-This element enables you to create a list that can then be used with an &lt;input&gt; to provide “autocomplete” functionality. Write your datalist and link it with &lt;input list=””&gt;. The browser will allow the user to write in his own answer and/or select from the datalist.
+This element enables you to create a list that can then be used with an &lt;input&gt; to provide "autocomplete" functionality. Write your datalist and link it with &lt;input list=""&gt;. The browser will allow the user to write in his own answer and/or select from the datalist.
 
 ```html
 <datalist id="levels">
@@ -118,7 +118,7 @@ This element enables you to create a list that can then be used with an &lt;inpu
 
 ### keygen
 
-An interesting element that’s been around since Netscape, but it now supported under the HTML5 specification. It will basically request the browser to generate a public key, which your server can use to create and sign a certificate to give back to the browser. With the certificate signed by your server, the user can access secure parts of your site where you’re requiring a valid certificate.
+An interesting element that's been around since Netscape, but it now supported under the HTML5 specification. It will basically request the browser to generate a public key, which your server can use to create and sign a certificate to give back to the browser. With the certificate signed by your server, the user can access secure parts of your site where you're requiring a valid certificate.
 
 ```html
 <keygen name="key">
@@ -331,4 +331,4 @@ A long-overdue feature of HTML. You can assign custom attributes to any element,
 ```
 
 
-I wouldn’t use any of these features without having relevent fallbacks in place due to how new they are and how sporadic the support may be. However, many of these have workarounds and shivs to simulate support even if the browser doesn’t natively support them yet.
+I wouldn't use any of these features without having relevent fallbacks in place due to how new they are and how sporadic the support may be. However, many of these have workarounds and shivs to simulate support even if the browser doesn't natively support them yet.

@@ -13,7 +13,7 @@ D3 is a great data visualization library. I often find myself coding the same ty
 
 ![](./images/8Iw0O6_eg.webp)
 
-This post is the second in a series where I write a function for each chart type. In this post, we’ll be writing a pie chart function. [In the last one, we wrote a bar chart function.](https://travishorn.com/self-contained-d3-bar-chart-function-a41417beda8a)
+This post is the second in a series where I write a function for each chart type. In this post, we'll be writing a pie chart function. [In the last one, we wrote a bar chart function.](https://travishorn.com/self-contained-d3-bar-chart-function-a41417beda8a)
 
 ### The Goal
 
@@ -34,7 +34,7 @@ And we want to visualize it like this.
 
 ### The Function
 
-Just like the bar chart, let’s write a function that accepts two arguments.
+Just like the bar chart, let's write a function that accepts two arguments.
 
 ```
 const pieChart = (selector, data) => {
@@ -57,9 +57,9 @@ const container = d3.select(selector);
 ```
 
 
-This is very similar to the constants in the previous post. Although they’re not exactly the same, we set some sizing constants first. These are `size`, `fourth`, `half`, and `labelOffset`.
+This is very similar to the constants in the previous post. Although they're not exactly the same, we set some sizing constants first. These are `size`, `fourth`, `half`, and `labelOffset`.
 
-The `total` constant simply sums up the data values. We’ll reference this number later.
+The `total` constant simply sums up the data values. We'll reference this number later.
 
 The `container` constant uses a D3 selector to select the passed in element.
 
@@ -82,7 +82,7 @@ const plotArea = chart.append('g')
 
 ### Scales
 
-There’s only one scale this time: the color scale. We use this to color each slice based on the data names.
+There's only one scale this time: the color scale. We use this to color each slice based on the data names.
 
 ```
 const color = d3.scaleOrdinal()
@@ -108,17 +108,17 @@ const arc = d3.arc()
 ```
 
 
-`d3.pie` is the base of the calculations. By default, D3 sorts our data from largest to smallest. In my case, I want to keep data points in the order they’re defined, so I pass `.sort(null)`. Then I define where the data values come from.
+`d3.pie` is the base of the calculations. By default, D3 sorts our data from largest to smallest. In my case, I want to keep data points in the order they're defined, so I pass `.sort(null)`. Then I define where the data values come from.
 
 Next we tie in our pie function with our data.
 
-Finally we create an `arc` function which we’ll use to calculate the SVG [path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path)s. The inner radius is 0 so our slices start in the center of the chart. The outer radius goes out to a fourth of the total chart size.
+Finally we create an `arc` function which we'll use to calculate the SVG [path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path)s. The inner radius is 0 so our slices start in the center of the chart. The outer radius goes out to a fourth of the total chart size.
 
 To understand the concept of the pie going out the a fourth the chart size, it may be helpful to visualize the chart broken into 4 pieces.
 
 ![](./images/X5fdripvT.webp)
 
-We’ll position the labels with arcs, too.
+We'll position the labels with arcs, too.
 
 ```
 const arcLabel = d3.arc()
@@ -191,7 +191,7 @@ labels.append('tspan')
 
 The values appear first, then the percentage is calculated inside of parenthesis.
 
-That’s it! Our pie chart is complete.
+That's it! Our pie chart is complete.
 
 ![](./images/qtsCSsbr1.webp)
 

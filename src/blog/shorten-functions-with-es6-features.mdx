@@ -42,11 +42,11 @@ var sayHello = name => `Hello, ${name}.`;
 
 Using this syntax, the function is shortened drastically, without losing any code clarity.
 
-The function above looks nice, but there’s one last change I would personally make to make the code even easier to reason about.
+The function above looks nice, but there's one last change I would personally make to make the code even easier to reason about.
 
 ```
 const sayHello = name => `Hello, ${name}.`;
 ```
 
 
-I swapped `var` for `const`. Constants cannot be re-assigned, so this function will always do the same thing no matter when it’s called during run-time.
+I swapped `var` for `const`. Constants cannot be re-assigned, so this function will always do the same thing no matter when it's called during run-time.

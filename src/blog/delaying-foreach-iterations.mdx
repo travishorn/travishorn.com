@@ -9,20 +9,20 @@ tags: ["javascript", "web-development", "functional-programming"]
 
 
 
-I recently ran into the problem of having to loop over an array, but with a delay between iterations. This functionality isn’t built in to JavaScript and I couldn’t find any libraries that provided it out-of-the-box. So I decided to code my own solution. Keep reading and we’ll build it together.
+I recently ran into the problem of having to loop over an array, but with a delay between iterations. This functionality isn't built in to JavaScript and I couldn't find any libraries that provided it out-of-the-box. So I decided to code my own solution. Keep reading and we'll build it together.
 
 ![](./images/nxUNuTxxF.webp)
 
 I want to loop through an array of strings and display one string at a time on the page.
 
-We’ll start with a basic HTML template.
+We'll start with a basic HTML template.
 
 ```
 <p id="output"></p>
 ```
 
 
-First, let’s create a function which displays text in this `<p>`.
+First, let's create a function which displays text in this `<p>`.
 
 ```
 const output = document.querySelector("#output");
@@ -34,7 +34,7 @@ Text can be displayed on the page by calling `display("Hello World");`.
 
 ![](./images/3q0HD4m6y.webp)
 
-Next, let’s define an array of strings.
+Next, let's define an array of strings.
 
 ```
 const names = [
@@ -121,7 +121,7 @@ And it works!
 
 ![](./images/UEQFMxNca.webp)
 
-We’ve reached our goal so we *could* stop here. But we’re *really* smart so let’s make this more re-usable and functional by moving the function into a delayed-loop factory function.
+We've reached our goal so we *could* stop here. But we're *really* smart so let's make this more re-usable and functional by moving the function into a delayed-loop factory function.
 
 Start with a blank function that accepts two arguments:
 
@@ -151,7 +151,7 @@ const delayLoop = (fn, delay) => {
 ```
 
 
-Instead of the hard-coded `display()` function call, let’s call whatever function was passed in.
+Instead of the hard-coded `display()` function call, let's call whatever function was passed in.
 
 ```
 const delayLoop = (fn, delay) => {

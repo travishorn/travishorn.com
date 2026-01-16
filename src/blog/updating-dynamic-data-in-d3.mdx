@@ -30,21 +30,21 @@ Somewhere on your page, make sure to include D3.js.
 ```
 
 
-For the sake of this simple example, let’s say we have an array, and want to display a circle for each value in the array.
+For the sake of this simple example, let's say we have an array, and want to display a circle for each value in the array.
 
 ```
 const data = [1, 1, 1]; // We want to visualize this as 3 circles
 ```
 
 
-Each circle’s radius will be 60 pixels.
+Each circle's radius will be 60 pixels.
 
 ```
 const circleRadius = 60;
 ```
 
 
-Later on, we’ll need to get the circle diameter. Rather than use a magic number, we’ll define it explicitly.
+Later on, we'll need to get the circle diameter. Rather than use a magic number, we'll define it explicitly.
 
 ```
 const circleDiameter = circleRadius * 2;
@@ -60,7 +60,7 @@ const plot = (data, svg) => {
 ```
 
 
-Inside the `plot()` function, use D3 to store a reference to all `&lt;circle&gt;`s in our chart (even if there aren’t any currently) and bind our data to them.
+Inside the `plot()` function, use D3 to store a reference to all `&lt;circle&gt;`s in our chart (even if there aren't any currently) and bind our data to them.
 
 ```
 const circle = svg
@@ -85,9 +85,9 @@ Breaking down the code above… when a piece of data enters the dataset:
 
 1. Append a new circle
 
-1. Set it’s position on the Y axis to match it’s radius
+1. Set it's position on the Y axis to match it's radius
 
-1. Set it’s position on the X axis to match it’s radius, plus it’s diameter multiplied by where it appears in the array. This effectively shifts it to the right so no circles overlap
+1. Set it's position on the X axis to match it's radius, plus it's diameter multiplied by where it appears in the array. This effectively shifts it to the right so no circles overlap
 
 1. Set the radius to the defined constant we set earlier
 
@@ -102,7 +102,7 @@ circle
 
 Just remove the `&lt;circle&gt;` it represents.
 
-The `plot()` function is done. Let’s use it to plot our data to our svg element.
+The `plot()` function is done. Let's use it to plot our data to our svg element.
 
 ```
 const svg = d3.select('svg');
@@ -114,7 +114,7 @@ You should see three circles.
 
 ![](./images/42hmx6eiD.webp)
 
-The buttons don’t do anything right now. But it’s easy to wire them up in JavaScript. First, define the buttons’ actions.
+The buttons don't do anything right now. But it's easy to wire them up in JavaScript. First, define the buttons' actions.
 
 ```
 const addCircle = () => {
@@ -144,9 +144,9 @@ document.getElementById('removeCircle')
 ```
 
 
-Clicking “Add circle” adds a new value to the array, thus a new circle to our chart.
+Clicking "Add circle" adds a new value to the array, thus a new circle to our chart.
 
-Clicking “Remove circle” removes a value from the array, thus removing a circle from our chart.
+Clicking "Remove circle" removes a value from the array, thus removing a circle from our chart.
 
 The result (with some extra styles and a little code cleanup) looks like this:
 

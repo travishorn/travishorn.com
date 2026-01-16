@@ -11,7 +11,7 @@ tags: ["web-development", "time", "data-visualisation-1"]
 
 I came up with the idea for a digital clock where the background was divided into 1,440 blocks — one for each minute of the day. Initially all blocks are shaded, but as each minute passes, the block representing that minute would brighten up.
 
-I ended up building it and giving the blocks a sunrise-like gradient look. I call it the **Sunrise Block Clock**. Follow along and I’ll show you how it’s made.
+I ended up building it and giving the blocks a sunrise-like gradient look. I call it the **Sunrise Block Clock**. Follow along and I'll show you how it's made.
 
 ![](./images/sQrg-teEd.webp)
 
@@ -106,7 +106,7 @@ new Vue({
 ```
 
 
-The `&lt;svg&gt;` element will get it’s `width` and `height` from Vue. In `app.js`:
+The `&lt;svg&gt;` element will get it's `width` and `height` from Vue. In `app.js`:
 
 ```
 data: {
@@ -128,7 +128,7 @@ And in `index.html`:
 ```
 
 
-The entire `&lt;svg&gt;` element’s background gets filled with a sunrise-like gradient.
+The entire `&lt;svg&gt;` element's background gets filled with a sunrise-like gradient.
 
 ```
 <svg <!-- snip --> >
@@ -156,7 +156,7 @@ Inside the `&lt;svg&gt;` and after this background`&lt;rect&gt;`, I created a `&
 ```
 
 
-Inside that, I created a `&lt;rect&gt;` for each minute in the hour. These will be the “blocks”. They all have a semi-transparent outline (`stroke`).
+Inside that, I created a `&lt;rect&gt;` for each minute in the hour. These will be the "blocks". They all have a semi-transparent outline (`stroke`).
 
 ```
 <g v-for="hIndex in 24">
@@ -207,7 +207,7 @@ The blocks are all drawn, but stacked on top of each other in the upper left cor
 
 ![](./images/YGSaeJuIb4.webp)
 
-Looking good so far. The blocks are positioned correctly. At this moment, they are all filled with a black color. Now it’s just a matter of setting that fill color to be more transparent.
+Looking good so far. The blocks are positioned correctly. At this moment, they are all filled with a black color. Now it's just a matter of setting that fill color to be more transparent.
 
 Since the transparency of each block depends on the time, I needed to figure out how many minutes have passed since the beginning of the day. This was easy with a computed property.
 
@@ -309,4 +309,4 @@ mounted() { setInterval(this.updateNow, 1000); },
 ```
 
 
-That’s it! The finished product looks like this:
+That's it! The finished product looks like this:

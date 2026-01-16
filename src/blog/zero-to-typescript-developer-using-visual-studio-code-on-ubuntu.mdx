@@ -9,11 +9,11 @@ tags: ["ubuntu", "javascript", "typescript"]
 
 
 
-Let’s start from scratch, or rather — with a running installation of Ubuntu. From there, I’ll walk you through installing and setting up an environment to code with TypeScript. In a future post, I’ll walk though some of the basics of TypeScript that build upon JavaScript.
+Let's start from scratch, or rather — with a running installation of Ubuntu. From there, I'll walk you through installing and setting up an environment to code with TypeScript. In a future post, I'll walk though some of the basics of TypeScript that build upon JavaScript.
 
-The bare minimum for this tutorial is a computer running Ubuntu. If you don’t yet have that, I’ll point you to [the official installation documentation](http://www.ubuntu.com/download/desktop/install-ubuntu-desktop).
+The bare minimum for this tutorial is a computer running Ubuntu. If you don't yet have that, I'll point you to [the official installation documentation](http://www.ubuntu.com/download/desktop/install-ubuntu-desktop).
 
-The first thing you’ll need is Node.js. Obviously, if you already have it, you can skip this section. Otherwise…
+The first thing you'll need is Node.js. Obviously, if you already have it, you can skip this section. Otherwise…
 
 1. Press Ctrl + Alt + T to bring up a **Terminal** window
 
@@ -21,13 +21,13 @@ The first thing you’ll need is Node.js. Obviously, if you already have it, you
 
 1. Type **sudo apt-get install -y nodejs** and press **Enter**
 
-Node will be installed. When it completes, you can check by typing **node -v**. Now let’s install the TypeScript compiler.
+Node will be installed. When it completes, you can check by typing **node -v**. Now let's install the TypeScript compiler.
 
 1. In the same **Terminal** window, type **sudo npm install -g typescript** and press **Enter**
 
-This single line is all that’s required to install the TypeScript compiler. When it completes, you can also check this by typing **tsc -v**. You may now close the **Terminal** window.
+This single line is all that's required to install the TypeScript compiler. When it completes, you can also check this by typing **tsc -v**. You may now close the **Terminal** window.
 
-Node and the TypeScript compiler are installed now. Let’s install Visual Studio Code.
+Node and the TypeScript compiler are installed now. Let's install Visual Studio Code.
 
 1. On the left side of your screen, click on the icon for **Firefox Web Browser**
 
@@ -47,9 +47,9 @@ Node and the TypeScript compiler are installed now. Let’s install Visual Studi
 
 1. Click the icon for **Visual Studio Code** to launch it
 
-Everything we need is installed. Let’s set up the development environment.
+Everything we need is installed. Let's set up the development environment.
 
-You’ll want a clean working directory. The following steps are a strong recommendation, but if you already have a location or a specific process for structuring your code, you can skip them.
+You'll want a clean working directory. The following steps are a strong recommendation, but if you already have a location or a specific process for structuring your code, you can skip them.
 
 1. In Visual Studio Code, press Ctrl + Shift + E to bring up the **Explorer** panel
 
@@ -67,7 +67,7 @@ You’ll want a clean working directory. The following steps are a strong recomm
 
 1. Click the **OK** button
 
-At this point, you have created a new folder for developing your first TypeScript project and you have it open in VS Code. Let’s continue setting up the development environment. To take full advantage of VS Code’s benefits, you’ll need to put it in **Explicit Project** mode. This is as simple as adding a configuration file.
+At this point, you have created a new folder for developing your first TypeScript project and you have it open in VS Code. Let's continue setting up the development environment. To take full advantage of VS Code's benefits, you'll need to put it in **Explicit Project** mode. This is as simple as adding a configuration file.
 
 1. In the **Explorer** panel, hover over the **HELLO-WORLD** folder
 
@@ -87,13 +87,13 @@ At this point, you have created a new folder for developing your first TypeScrip
 ```
 
 
-As you start typing the above code, you’ll notice that IntelliSense is available to help you remember and choose available options.
+As you start typing the above code, you'll notice that IntelliSense is available to help you remember and choose available options.
 
 This configuration file simply tells the compiler that, during building, the TypeScript code we write should be transpiled to ECMAScript 5 (the most widely-supported version of JavaScript) and to include a source map that will help any debuggers map the compiled code to our original TypeScript.
 
 5. Press Ctrl + S to save the file
 
-Setting up the compile task (Task Runner) in VS Code will make our lives easier. This way, we won’t have to leave VS Code to build the project.
+Setting up the compile task (Task Runner) in VS Code will make our lives easier. This way, we won't have to leave VS Code to build the project.
 
 1. Press **F1**
 
@@ -122,15 +122,15 @@ console.log(speak.hello(user));
 ```
 
 
-The code above creates a new [class](https://www.typescriptlang.org/docs/handbook/classes.html) called **speak**. The only thing in this class is a function called **hello**. This function accepts a single argument called **person**, which must be a string. The output is the string “Hello, ” plus the value of the **person** argument, plus a period at the end. We then set a variable** **called **user** with the value “World”. Finally, we log the returned value of speak.hello(user) to the console.
+The code above creates a new [class](https://www.typescriptlang.org/docs/handbook/classes.html) called **speak**. The only thing in this class is a function called **hello**. This function accepts a single argument called **person**, which must be a string. The output is the string "Hello, " plus the value of the **person** argument, plus a period at the end. We then set a variable** **called **user** with the value "World". Finally, we log the returned value of speak.hello(user) to the console.
 
-The result should be that “Hello, World.” is logged to the console.
+The result should be that "Hello, World." is logged to the console.
 
-Now, let’s build — or, transpile our TypeScript code to JavaScript.
+Now, let's build — or, transpile our TypeScript code to JavaScript.
 
 Press Ctrl + Shift + B
 
-After a moment, you will see two new files in the working folder. One of them is called **hello.js**. If you peek at the contents of this file, you’ll see that it is similar to our original TypeScript, but some functionality has been re-written to be compliant with ECMAScript 5. You’ll also notice that the last line references the source map (the other file that was created during the build process). This line and the source map itself are important to the debugging process.
+After a moment, you will see two new files in the working folder. One of them is called **hello.js**. If you peek at the contents of this file, you'll see that it is similar to our original TypeScript, but some functionality has been re-written to be compliant with ECMAScript 5. You'll also notice that the last line references the source map (the other file that was created during the build process). This line and the source map itself are important to the debugging process.
 
 This code will run in a browser or other common environment that runs JavaScript. In fact, we can test that now, right from within VS Code.
 
@@ -152,7 +152,7 @@ By default, two configuration objects are written here. We are interested in the
 
 Finally, press F5 to start debugging.
 
-After a moment, the **DEBUG CONSOLE** should appear, and “Hello, World.” should be written to it.
+After a moment, the **DEBUG CONSOLE** should appear, and "Hello, World." should be written to it.
 
 Press Shift + F5 to stop debugging.
 
@@ -164,9 +164,9 @@ What happens when we introduce an error?
 
 1. On the last line, remove a character from the call to **hello()**. Make it read something like **helo(…**
 
-The first thing you will notice is that IntelliSense is already underlining that function call with a red squiggly line, indicating that something is wrong. If you hover over it, you’ll see the exact error.
+The first thing you will notice is that IntelliSense is already underlining that function call with a red squiggly line, indicating that something is wrong. If you hover over it, you'll see the exact error.
 
-We could correct the error now, but let’s see what happens when we try to build and launch the code.
+We could correct the error now, but let's see what happens when we try to build and launch the code.
 
 1. Press Ctrl + S to save the file
 

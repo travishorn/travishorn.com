@@ -462,7 +462,7 @@ In a true production environment, you would likely put a dedicated load balancer
 
 If all nodes go down (a **full outage**), you must follow a specific procedure to re-bootstrap and bring everything back up.
 
-When the cluster crashes, Galera attempts to mark the last node that was running as “safe” to restart from. check the state file on **all** nodes:
+When the cluster crashes, Galera attempts to mark the last node that was running as "safe" to restart from. check the state file on **all** nodes:
 
 ```bash
 cat /var/lib/mysql/grastate.dat

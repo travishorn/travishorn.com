@@ -9,7 +9,7 @@ tags: ["javascript", "json", "html5"]
 
 
 
-Today we’ll build a dependency-free function that accepts…
+Today we'll build a dependency-free function that accepts…
 
 * Data in a JSON array
 
@@ -43,7 +43,7 @@ function json2table(json, classes) {
 ```
 
 
-First we’ll set up some variables.
+First we'll set up some variables.
 
 ```
 var cols = Object.keys(json[0]);
@@ -52,16 +52,16 @@ var bodyRows = '';
 ```
 
 
-We want one table column per property. Since it can be assumed (or error-checked later) that each object has the same properties, the first line above grabs the the property names (keys) from the first object in the array and stores it in a variable called `cols`. The other two variables are empty strings for now and we’ll build them out in a minute.
+We want one table column per property. Since it can be assumed (or error-checked later) that each object has the same properties, the first line above grabs the the property names (keys) from the first object in the array and stores it in a variable called `cols`. The other two variables are empty strings for now and we'll build them out in a minute.
 
-Next, we’ll make sure that if no `classes` argument is passed, that the `classes` variable contains an empty string. This will be important later when we build the HTML string.
+Next, we'll make sure that if no `classes` argument is passed, that the `classes` variable contains an empty string. This will be important later when we build the HTML string.
 
 ```
 classes = classes || '';
 ```
 
 
-Now I’m going to define a utility function that capitalizes the first letter of a string.
+Now I'm going to define a utility function that capitalizes the first letter of a string.
 
 ```
 function capitalizeFirstLetter(string) {
@@ -118,7 +118,7 @@ return '<table class=" +
 ```
 
 
-That’s it! If we pass our example arrow of objects from earlier…
+That's it! If we pass our example arrow of objects from earlier…
 
 ```
 var data= [

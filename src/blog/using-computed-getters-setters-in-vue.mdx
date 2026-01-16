@@ -9,14 +9,14 @@ tags: ["javascript", "web-development", "vuejs", "frontend-development"]
 
 
 
-Vue.js supports getters and setters on computed variables. You can use these variables to provide 2-way data binding. Let’s use this feature to write an app that converts a set of checkboxes (true/false selected values) to binary and vice-versa.
+Vue.js supports getters and setters on computed variables. You can use these variables to provide 2-way data binding. Let's use this feature to write an app that converts a set of checkboxes (true/false selected values) to binary and vice-versa.
 
-### What we’ll be building
+### What we'll be building
 
-[Look at this CodePen demo](https://codepen.io/travishorn/pen/YVQEKJ). Check the boxes and watch the text input at the bottom change. You can also change the text input directly to check/uncheck the boxes. This type of conversion could be used to allow users to “import” and “export” options via their clipboard. You could also use this method to store the binary version in localStorage (and retrieve it later to restore checked options).
+[Look at this CodePen demo](https://codepen.io/travishorn/pen/YVQEKJ). Check the boxes and watch the text input at the bottom change. You can also change the text input directly to check/uncheck the boxes. This type of conversion could be used to allow users to "import" and "export" options via their clipboard. You could also use this method to store the binary version in localStorage (and retrieve it later to restore checked options).
 
 
-I’ll be using [Bootstrap 4](https://v4-alpha.getbootstrap.com/) for styling so we won’t have to write any CSS. The HTML setup looks like this:
+I'll be using [Bootstrap 4](https://v4-alpha.getbootstrap.com/) for styling so we won't have to write any CSS. The HTML setup looks like this:
 
 ```html
 <!DOCTYPE html>
@@ -39,7 +39,7 @@ I’ll be using [Bootstrap 4](https://v4-alpha.getbootstrap.com/) for styling so
 ```
 
 
-Inside the `<div id="app">` let’s build our app template.
+Inside the `<div id="app">` let's build our app template.
 
 ```html
 <div class="form-check" v-for="pet in pets">
@@ -53,11 +53,11 @@ Inside the `<div id="app">` let’s build our app template.
 ```
 
 
-That’s it for the template! The first block loops through a `pets` array and creates a checkbox for each one. By setting the `v-model` to `pet.selected`, Vue will set the checkbox to be selected if the `pet.selected` value is `true`.
+That's it for the template! The first block loops through a `pets` array and creates a checkbox for each one. By setting the `v-model` to `pet.selected`, Vue will set the checkbox to be selected if the `pet.selected` value is `true`.
 
 The second block (line) is a text input bound to the `binary` variable. This binary variable will actually be a [computed property](https://vuejs.org/v2/guide/computed.html). Normally, computed properties in Vue are read-only. But we can use a setter (and getter) to support 2-way binding.
 
-We’ll build our app in `main.js`:
+We'll build our app in `main.js`:
 
 ```javascript
 new Vue({
@@ -130,6 +130,6 @@ binary: {
 
 The app is done! [Check out the finished product.](https://codepen.io/travishorn/pen/YVQEKJ). Check the boxes and watch the binary representation change. Change the binary and watch the boxes check/uncheck themselves.
 
-### Here’s an interesting idea
+### Here's an interesting idea
 
 Binary numbers can be converted to decimal. For example, `101101110` (binary, 9 characters in a JS string) can also be expressed as `366` (decimal, 3 characters in a JS string). As a form of compression, you could convert the binary to decimal before displaying it to the user. Then, convert it back when they paste it in the text input. In fact, you could convert it to higher bases as well for even more compression. What about base 64?

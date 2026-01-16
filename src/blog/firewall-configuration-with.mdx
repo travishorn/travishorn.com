@@ -8,7 +8,7 @@ tags: ["security", "debian", "networking", "firewall", "nftables"]
 
 
 
-Firewalls are an essential part of network security, and [nftables](https://www.nftables.org/projects/nftables/index.html) is a powerful tool for configuring them. In this article, we’ll explore how to configure nftables. We’ll cover everything from enabling the service to adding new rules and allowing common ports. This guide has everything you need to get started.
+Firewalls are an essential part of network security, and [nftables](https://www.nftables.org/projects/nftables/index.html) is a powerful tool for configuring them. In this article, we'll explore how to configure nftables. We'll cover everything from enabling the service to adding new rules and allowing common ports. This guide has everything you need to get started.
 
 There is no shortage of firewall configuration guides online for Linux. But most of them use the older (albeit more widespread) [iptables](https://www.nftables.org/projects/iptables/index.html) or the front-end [firewalld](https://firewalld.org/) that uses some other firewall software behind the scenes. I am using a Debian Linux server which comes with nftables installed by default. Rather than installing extra tools, I have had a great experience using this service supported by the official distribution.
 
@@ -112,6 +112,6 @@ Here are some common ports on which you may want to enable incoming traffic:
 * MySQL/MariaDB, port `3306`, alias `mysql`
     
 
-Configuring a firewall can be a daunting task, but using this guide as a starting point, it doesn’t have to be. We’ve covered everything you need to know to get started with nftables. From enabling it to adding new rules and allowing common ports, you now have the knowledge to configure your firewall with confidence. So if nftables comes installed by default in your Linux distribution, why not give it a try before you decide to install additional tools? If you're like me, it may be all you need.
+Configuring a firewall can be a daunting task, but using this guide as a starting point, it doesn't have to be. We've covered everything you need to know to get started with nftables. From enabling it to adding new rules and allowing common ports, you now have the knowledge to configure your firewall with confidence. So if nftables comes installed by default in your Linux distribution, why not give it a try before you decide to install additional tools? If you're like me, it may be all you need.
 
 Cover photo by [Don Kaveen](https://unsplash.com/@donkaveen?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/F0CTHqaZth0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).

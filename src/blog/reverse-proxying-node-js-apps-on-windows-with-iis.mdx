@@ -9,21 +9,21 @@ tags: ["javascript", "server", "web-development", "nodejs"]
 
 
 
-You can run Node.js apps on Windows with the added layer of a reverse-proxy with the built-in web service manager IIS. Together with a process manager like PM2, it’s a viable strategy to run apps for production.
+You can run Node.js apps on Windows with the added layer of a reverse-proxy with the built-in web service manager IIS. Together with a process manager like PM2, it's a viable strategy to run apps for production.
 
 ![](./images/cygUJIQDa.webp)
 
 ### Why use a reverse proxy?
 
-Having a dedicated web server like IIS fielding your HTTP requests makes things more manageable and enables standard web server features like SSL termination, compression, and load balancing. For more information, I recommend Thomas Hunter II’s post “[Why should I use a Reverse Proxy if Node.js is Production-Ready?](https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca)”
+Having a dedicated web server like IIS fielding your HTTP requests makes things more manageable and enables standard web server features like SSL termination, compression, and load balancing. For more information, I recommend Thomas Hunter II's post "[Why should I use a Reverse Proxy if Node.js is Production-Ready?](https://medium.com/intrinsic/why-should-i-use-a-reverse-proxy-if-node-js-is-production-ready-5a079408b2ca)"
 
-Another big benefit is being able to redirect traffic to appropriate web services by using URL rules. Let’s explore this last benefit further.
+Another big benefit is being able to redirect traffic to appropriate web services by using URL rules. Let's explore this last benefit further.
 
 ### Run a Node.js web service
 
-If you already have a running Node.js app that you want to use, you can skip this step. Otherwise, let’s create a really simple Node.js web server that will reply to HTTP requests.
+If you already have a running Node.js app that you want to use, you can skip this step. Otherwise, let's create a really simple Node.js web server that will reply to HTTP requests.
 
-1. Create a new directory and initialize an npm project within it. Make sure the name of the directory makes sense in relation to the name of the app. In this case, we’re just making a simple test app.
+1. Create a new directory and initialize an npm project within it. Make sure the name of the directory makes sense in relation to the name of the app. In this case, we're just making a simple test app.
 
 ```
 mkdir testapp
@@ -72,7 +72,7 @@ node server
 
 ### Manage your Node.js web services with PM2
 
-Again, if you already have this part taken care of, you can skip this step. Otherwise, let’s manage our service(s) with PM2. PM2 is an advanced process manager for production Node.js applications.
+Again, if you already have this part taken care of, you can skip this step. Otherwise, let's manage our service(s) with PM2. PM2 is an advanced process manager for production Node.js applications.
 
 1. Make sure you kill any running Node.js processes, such as the one we started in the last section.
 
@@ -100,7 +100,7 @@ module.exports = {
 ```
 
 
-You can put as many apps in here as necessary. Make sure they all have different `PORT` values. I recommend naming each app something useful that matches the app’s directory name. This makes management easier.
+You can put as many apps in here as necessary. Make sure they all have different `PORT` values. I recommend naming each app something useful that matches the app's directory name. This makes management easier.
 
 4. Run PM2 and start the apps by using the ecosystem configuration.
 
@@ -115,7 +115,7 @@ With the app up and running, head back to your web browser and make sure everyth
 
 ![](./images/6WFmJ4TR-W.webp)
 
-It’s worth noting that any time you make a change to `ecosystem.config.js`, such as when you create a new Node.js app and you add it to the list, you can reload the configuration.
+It's worth noting that any time you make a change to `ecosystem.config.js`, such as when you create a new Node.js app and you add it to the list, you can reload the configuration.
 
 ```
 pm2 reload ecosystem.config.js
@@ -124,11 +124,11 @@ pm2 reload ecosystem.config.js
 
 ### Turn on Internet Information Services
 
-Running the application like this works great, but you’d ideally want a dedicated web server like IIS fielding your HTTP requests for all of the reasons mentioned earlier in this post. Here, we’ll set up directing traffic to appropriate Node.js web services by using URL rules.
+Running the application like this works great, but you'd ideally want a dedicated web server like IIS fielding your HTTP requests for all of the reasons mentioned earlier in this post. Here, we'll set up directing traffic to appropriate Node.js web services by using URL rules.
 
 IIS is a web server product from Microsoft that you can turn on in Windows 10.
 
-1. Click the **Start** button or press the **Windows** key. Type “**Turn Windows features on or off**” and press **Enter**. The **Windows Features** window appears.
+1. Click the **Start** button or press the **Windows** key. Type "**Turn Windows features on or off**" and press **Enter**. The **Windows Features** window appears.
 
 ![](./images/p2ByOHpG4.webp)
 
@@ -136,7 +136,7 @@ IIS is a web server product from Microsoft that you can turn on in Windows 10.
 
 ![](./images/6freOuBvx.webp)
 
-Make sure IIS is up and running by starting your web browser and navigating to [http://localhost](http://localhost). If a site appears similar to the one below, you’re in business.
+Make sure IIS is up and running by starting your web browser and navigating to [http://localhost](http://localhost). If a site appears similar to the one below, you're in business.
 
 ![](./images/sC1x6aSY2.webp)
 
@@ -144,7 +144,7 @@ Make sure IIS is up and running by starting your web browser and navigating to [
 
 These two products from Microsoft are essential to using IIS as a reverse proxy.
 
-1. Click the **Start** button or press the **Windows** key. Type “**Microsoft Web Platform Installer**” and press **Enter**.
+1. Click the **Start** button or press the **Windows** key. Type "**Microsoft Web Platform Installer**" and press **Enter**.
 
 Note: If you do not have it installed, you can download  [Web Platform Installer from Microsoft](https://www.microsoft.com/web/downloads/platform.aspx) .
 
@@ -152,11 +152,11 @@ Note: If you do not have it installed, you can download  [Web Platform Installer
 
 ![](./images/I7m1WX4Hr.webp)
 
-3. In the search box in the upper right corner, type “**Application Request Routing**” and press **Enter**.
+3. In the search box in the upper right corner, type "**Application Request Routing**" and press **Enter**.
 
-4. Click the **Add** button in the row labeled **Application Request Routing 2.5 with KB2589179**. If there’s a newer version, you could choose that one instead, but this is the one I’m familiar with.
+4. Click the **Add** button in the row labeled **Application Request Routing 2.5 with KB2589179**. If there's a newer version, you could choose that one instead, but this is the one I'm familiar with.
 
-5. Back in the search box, type “**URL Rewrite**” and press **Enter**.
+5. Back in the search box, type "**URL Rewrite**" and press **Enter**.
 
 6. Click the **Add** button in the row labeled **URL Rewrite 2.1**.
 
@@ -164,11 +164,11 @@ Note: If you do not have it installed, you can download  [Web Platform Installer
 
 ### Set up a URL Rewrite rule
 
-1. Open IIS Manager by clicking **Start** or pressing the **Windows** key, typing “Internet Information Services” and pressing **Enter**. The manager window appears.
+1. Open IIS Manager by clicking **Start** or pressing the **Windows** key, typing "Internet Information Services" and pressing **Enter**. The manager window appears.
 
 ![](./images/1hCay_rXn.webp)
 
-2. In the **Connections** pane, click the arrow next to your PC’s name, then the arrow next to **Sites**. Finally, click on **Default Web Site** to select it.
+2. In the **Connections** pane, click the arrow next to your PC's name, then the arrow next to **Sites**. Finally, click on **Default Web Site** to select it.
 
 ![](./images/sf5ziDd0kS.webp)
 
@@ -188,19 +188,19 @@ You may see a message about enabling **Application Request Routing**. Go ahead a
 
 ![](./images/89_1lvsG_t.webp)
 
-We’re almost done. With that rule saved, IIS will proxy any traffic heading towards `localhost` to `localhost:3000`. You can test that in your web browser.
+We're almost done. With that rule saved, IIS will proxy any traffic heading towards `localhost` to `localhost:3000`. You can test that in your web browser.
 
 ![](./images/htkHle3KP9.webp)
 
-Notice we didn’t have to specify the port this time.
+Notice we didn't have to specify the port this time.
 
 This is great, except when you have multiple Node.js apps running and you want to direct users to the correct one based on the URL they are visiting. In our case, we want any user who visits [http://localhost/testapp](http://localhost/testapp) to see our Node.js test app.
 
-7. To make management easier, let’s give this rule a name. Click to select the newly created rule, then click **Rename** under **Inbound Rules** on the right.
+7. To make management easier, let's give this rule a name. Click to select the newly created rule, then click **Rename** under **Inbound Rules** on the right.
 
 ![](./images/r5er2UIDl.webp)
 
-Name it “**Test App**” or something else appropriate. I recommend naming it exactly the same as the name in your PM2 configuration.
+Name it "**Test App**" or something else appropriate. I recommend naming it exactly the same as the name in your PM2 configuration.
 
 8. With the rule still selected, click **Edit…** under **Inbound Rules** on the right.
 

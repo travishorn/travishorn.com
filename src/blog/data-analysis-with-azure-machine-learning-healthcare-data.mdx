@@ -8,7 +8,7 @@ tags: ["azure", "machine-learning", "data-analysis", "healthcare", "model-evalua
 
 
 
-Data is the lifeblood driving innovation in many industries, including healthcare. Machine learning algorithms are being used to predict patient outcomes, optimize treatment plans, and more. Azure Machine Learning is a popular platform for machine learning. Let’s take a look at some of Azure's tools. I’ll guide you through a hands-on demonstration of how to harness machine learning to analyze some synthetic healthcare data.
+Data is the lifeblood driving innovation in many industries, including healthcare. Machine learning algorithms are being used to predict patient outcomes, optimize treatment plans, and more. Azure Machine Learning is a popular platform for machine learning. Let's take a look at some of Azure's tools. I'll guide you through a hands-on demonstration of how to harness machine learning to analyze some synthetic healthcare data.
 
 ## Obtain and Prepare Source Data
 
@@ -16,7 +16,7 @@ On your development machine, create a new directory called `healthcare_azure`.
 
 Go to the [Kaggle Healthcare Dataset by Prasad Patil](https://www.kaggle.com/datasets/prasad22/healthcare-dataset). It is a synthetic healthcare dataset designed to mimic real-world healthcare data.
 
-Click the **Download** button, then **Download dataset as zip**. You may need to create an account or sign in to Kaggle (don’t worry, it’s free).
+Click the **Download** button, then **Download dataset as zip**. You may need to create an account or sign in to Kaggle (don't worry, it's free).
 
 ![](./images/18659880-106d-4949-81ee-a2d9bea8db42.webp)
 
@@ -42,35 +42,35 @@ transformations:
       header: all_files_same_headers # First row contains column names
 ```
 
-This is a kind of definition file that describes the data in the directory. For this project, it’s simple because there’s only one CSV file.
+This is a kind of definition file that describes the data in the directory. For this project, it's simple because there's only one CSV file.
 
 ## Launch Azure Machine Learning Studio
 
-Go to the [Microsoft Azure Portal](https://portal.azure.com/). You may need to create or sign in to your Microsoft account. If this is your first time using Azure services, you’ll be set up with a 1-month free trial account and $200 in credits.
+Go to the [Microsoft Azure Portal](https://portal.azure.com/). You may need to create or sign in to your Microsoft account. If this is your first time using Azure services, you'll be set up with a 1-month free trial account and $200 in credits.
 
-Once you’re in, under **Azure services**, click on **More Services**.
+Once you're in, under **Azure services**, click on **More Services**.
 
-You’ll see many sections. Find the **AI + machine learning** section and click on **Azure Machine Learning** under it.
+You'll see many sections. Find the **AI + machine learning** section and click on **Azure Machine Learning** under it.
 
 ![](./images/f3c94d35-7efd-490e-a3ae-1cdf6a04e1ad.webp)
 
-You’ll need to create a workspace. Workspaces are dedicated spaces where you build, train, and deploy your models. Click on **Create**, then **New workspace**.
+You'll need to create a workspace. Workspaces are dedicated spaces where you build, train, and deploy your models. Click on **Create**, then **New workspace**.
 
-Now you’ll need to assign the workspace to a resource group, which in our case means creating a new one. Resource groups are used for management, billing, and lifecycle control. Under **Resource group**, click **Create new**.
+Now you'll need to assign the workspace to a resource group, which in our case means creating a new one. Resource groups are used for management, billing, and lifecycle control. Under **Resource group**, click **Create new**.
 
 Enter a name for the resource group, like `default` and click **OK**.
 
-It’s time to name the workspace. Put something like `healthcare_demo` in the **Name** box. The rest of the default on this screen are fine.
+It's time to name the workspace. Put something like `healthcare_demo` in the **Name** box. The rest of the default on this screen are fine.
 
 Click on **Review + create**, then **Create**.
 
 Once the deployment is complete, click on **Go to resource**.
 
-Finally, click on **Launch studio**. We’re ready to work on some machine learning tasks.
+Finally, click on **Launch studio**. We're ready to work on some machine learning tasks.
 
 ## Uploading Your Data
 
-Data is at the heart of any machine learning project. In this step, you’ll get your data into Azure Studio.
+Data is at the heart of any machine learning project. In this step, you'll get your data into Azure Studio.
 
 From the sidebar on the left, under **Assets**, click **Data**.
 
@@ -148,7 +148,7 @@ Click **Submit training job**.
 
 The job could take minutes, hours, or days depending on the source data, configuration, and compute resources requisitioned.
 
-Auto ML will train and validate several models on the input data. When it’s complete, you’ll be able to evaluate all models.
+Auto ML will train and validate several models on the input data. When it's complete, you'll be able to evaluate all models.
 
 ## Exploring the Results
 
@@ -160,9 +160,9 @@ Click the **Display name** of the recently completed job.
 
 Click the **Models + child jobs** tab.
 
-Look at all the algorithms Auto ML created and validated. In this table, you can see the **AUC weighted** for each one. AUC weighted measures the model’s ability to distinguish between classes. Higher is better.
+Look at all the algorithms Auto ML created and validated. In this table, you can see the **AUC weighted** for each one. AUC weighted measures the model's ability to distinguish between classes. Higher is better.
 
-Click the name of the algorithm with the highest AUC weighted (the one at the top of the table). That’s the best model.
+Click the name of the algorithm with the highest AUC weighted (the one at the top of the table). That's the best model.
 
 Click **Metrics**.
 
@@ -182,6 +182,6 @@ Azure Machine Learning gives you the ability to deploy a real-time endpoint, whi
 
 However, you can also deploy a batch endpoint, which is what you want if you have a large dataset you want to score periodically. You provide the input dataset, then the endpoint processes it in the background, and saves the predictions to storage.
 
-Deployment is outside the scope of this article, but perhaps I’ll write about it in the future!
+Deployment is outside the scope of this article, but perhaps I'll write about it in the future!
 
-Hopefully you’ve learned a bit about how to prepare, upload, and analyze synthetic healthcare data to gain valuable insights. Azure’s capabilities, including Automated ML, allow for efficient model training and evaluation, helping to identify the best-performing algorithms. As I continue to explore the tools, I’m finding many opportunities to enhance data-driven decision-making. Hopefully you will, too.
+Hopefully you've learned a bit about how to prepare, upload, and analyze synthetic healthcare data to gain valuable insights. Azure's capabilities, including Automated ML, allow for efficient model training and evaluation, helping to identify the best-performing algorithms. As I continue to explore the tools, I'm finding many opportunities to enhance data-driven decision-making. Hopefully you will, too.

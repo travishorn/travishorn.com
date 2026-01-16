@@ -9,11 +9,11 @@ tags: ["css", "animation", "google", "css-animation"]
 
 
 
-Google uses many different loading animations. The one we’ll be recreating today has four differently colored balls, bouncing in a horizontal line.
+Google uses many different loading animations. The one we'll be recreating today has four differently colored balls, bouncing in a horizontal line.
 
 ![](./images/iz155mcPT.webp)
 
-First we’ll need some `&lt;div&gt;`s to manipulate.
+First we'll need some `&lt;div&gt;`s to manipulate.
 
 ```
 <div class="wrapper">
@@ -25,9 +25,9 @@ First we’ll need some `&lt;div&gt;`s to manipulate.
 ```
 
 
-That’s all the HTML that’s needed. Everything else is in CSS.
+That's all the HTML that's needed. Everything else is in CSS.
 
-For the sake of example, I want the animation to appear centered on the page. I’ll use the [flexbox model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout) for this.
+For the sake of example, I want the animation to appear centered on the page. I'll use the [flexbox model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout) for this.
 
 ```
 .wrapper {
@@ -63,7 +63,7 @@ Each of the balls will have a different color. Here they are:
 ```
 
 
-We want all the balls to bounce, so we’ll define the keyframes (or keyframe, actually) for an animation called “bounce”.
+We want all the balls to bounce, so we'll define the keyframes (or keyframe, actually) for an animation called "bounce".
 
 ```
 @keyframes bounce {
@@ -74,9 +74,9 @@ We want all the balls to bounce, so we’ll define the keyframes (or keyframe, a
 ```
 
 
-This single keyframe states that the ball should be translated (moved) 25 pixels down on the Y (vertical) axis 50% through the animation. Because there are no other keyframes, it can be inferred that each ball will be sitting at it’s original position at 0% at 100% through the animation. This gives the bouncing effect.
+This single keyframe states that the ball should be translated (moved) 25 pixels down on the Y (vertical) axis 50% through the animation. Because there are no other keyframes, it can be inferred that each ball will be sitting at it's original position at 0% at 100% through the animation. This gives the bouncing effect.
 
-Let’s apply the animation to the all four balls.
+Let's apply the animation to the all four balls.
 
 ```
 .ball {
@@ -92,7 +92,7 @@ Let’s apply the animation to the all four balls.
 
 The balls will bounce every 2 seconds indefinitely. They will be [eased](http://easings.net/) in and out.
 
-There’s one problem: all four balls bounce at the same time. We can fix this by applying a different [animation-delay](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-delay) on each one.
+There's one problem: all four balls bounce at the same time. We can fix this by applying a different [animation-delay](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-delay) on each one.
 
 ```
 .red {
@@ -112,9 +112,9 @@ There’s one problem: all four balls bounce at the same time. We can fix this b
 ```
 
 
-Why is `.blue` missing in the code above? Because we don’t want to delay that ball. It should start bouncing immediately.
+Why is `.blue` missing in the code above? Because we don't want to delay that ball. It should start bouncing immediately.
 
-That’s it. The complete code looks like this:
+That's it. The complete code looks like this:
 
 ```
 <!-- HTML -->

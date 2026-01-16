@@ -9,9 +9,9 @@ tags: ["javascript", "web-development"]
 
 
 
-There’s no shortage of slideshow plugins and frameworks for JavaScript. But how simple would it be to code one using plain old JavaScript? Warning: This slideshow will be pretty bare-bones. I didn’t spend any time styling it or adding any extra features. However, there is a list of possible feature enhancement ideas at the end of this article.
+There's no shortage of slideshow plugins and frameworks for JavaScript. But how simple would it be to code one using plain old JavaScript? Warning: This slideshow will be pretty bare-bones. I didn't spend any time styling it or adding any extra features. However, there is a list of possible feature enhancement ideas at the end of this article.
 
-Let’s assume we have three images:
+Let's assume we have three images:
 
 * butterfly.jpg
 * ship.jpg
@@ -19,7 +19,7 @@ Let’s assume we have three images:
 
 While not required, the slideshow will look the best if each of these images have the same dimensions.
 
-Using the principle of progressive enhancement, let’s make sure all our images look nice before adding any JS.
+Using the principle of progressive enhancement, let's make sure all our images look nice before adding any JS.
 
 **slideshow.html**
 
@@ -58,7 +58,7 @@ Using the principle of progressive enhancement, let’s make sure all our images
 ```
 
 
-Even with an empty **slideshow.js**, the images are displayed in a neat column for viewing. Now let’s add a little JavaScript.
+Even with an empty **slideshow.js**, the images are displayed in a neat column for viewing. Now let's add a little JavaScript.
 
 **slideshow.js**
 
@@ -76,7 +76,7 @@ slideshow(myImageList);
 ```
 
 
-Inside the `slideshow()` function, let’s start by setting up some variables.
+Inside the `slideshow()` function, let's start by setting up some variables.
 
 ```javascript
 var count = imageList.children.length; // Number of images
@@ -107,14 +107,14 @@ window.setInterval(nextSlide, ONE_SECOND);
 ```
 
 
-We’re all done except for defining the `nextSlide()` function. It does most of the heavy lifting here. Inside the `nextSlide()` function, let’s set up any variables we’ll need later.
+We're all done except for defining the `nextSlide()` function. It does most of the heavy lifting here. Inside the `nextSlide()` function, let's set up any variables we'll need later.
 
 ```javascript
 var next; // Used as an index on the next image to be shown
 ```
 
 
-That’s the only variable in this function’s scope. We can begin with the logic. We want to set `next` to the index of the next image to be shown. Usually, it will just be the current image’s index + 1. But we have to handle getting to the end of the list. In that case, we’ll set the next image back to index 0.
+That's the only variable in this function's scope. We can begin with the logic. We want to set `next` to the index of the next image to be shown. Usually, it will just be the current image's index + 1. But we have to handle getting to the end of the list. In that case, we'll set the next image back to index 0.
 
 ```javascript
 if (current + 1 > count - 1) {
@@ -125,7 +125,7 @@ if (current + 1 > count - 1) {
 ```
 
 
-Now we’ll actually hide the current image and show the next one.
+Now we'll actually hide the current image and show the next one.
 
 ```javascript
 imageList.children[current].style.display = 'none';
@@ -133,14 +133,14 @@ imageList.children[next].style.display = 'block';
 ```
 
 
-Finally, since we’ve just advanced our slide, we need to update the current image index;
+Finally, since we've just advanced our slide, we need to update the current image index;
 
 ```javascript
 current = next;
 ```
 
 
-We’re done. The whole **slideshow.js** looks like this:
+We're done. The whole **slideshow.js** looks like this:
 
 ```javascript
 var myImageList = document.getElementById('myImageList');
@@ -178,7 +178,7 @@ slideshow(myImageList);
 ```
 
 
-If you load up **slideshow.html** in your browser, you’ll see the first image in the list, followed by the next one a second later, and so on.
+If you load up **slideshow.html** in your browser, you'll see the first image in the list, followed by the next one a second later, and so on.
 
 [See a demo of the slideshow we just created.](https://codepen.io/travishorn/pen/rLvQEE)
 

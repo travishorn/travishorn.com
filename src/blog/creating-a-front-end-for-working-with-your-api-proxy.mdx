@@ -9,13 +9,13 @@ tags: ["javascript", "nodejs", "apis"]
 
 
 
-This is part two of a two-part series on working with a third-party API with private keys. If you haven’t already, you may want to read part one.
+This is part two of a two-part series on working with a third-party API with private keys. If you haven't already, you may want to read part one.
 
 Now that the proxy is running, we can create a front-end form for posting data to it. This form can be on any server, as we have used CORS to make the service available to any entry point.
 
 ### The HTML
 
-We’ll start with a simple boilerplate in HTML.
+We'll start with a simple boilerplate in HTML.
 
 ```html
 <!DOCTYPE html>
@@ -52,7 +52,7 @@ In the container, add a header.
 ```
 
 
-Below that, we’ll add a single “row” and single “column” that will use breakpoints for styling the form. It will show up full-width on small screens, and centered on larger ones.
+Below that, we'll add a single "row" and single "column" that will use breakpoints for styling the form. It will show up full-width on small screens, and centered on larger ones.
 
 ```html
 <div class="row">
@@ -63,7 +63,7 @@ Below that, we’ll add a single “row” and single “column” that will use
 ```
 
 
-Inside this “column,” we’ll add a couple alert boxes that are hidden by default. These boxes will display error and success messages.
+Inside this "column," we'll add a couple alert boxes that are hidden by default. These boxes will display error and success messages.
 
 ```html
 <div id="errorDiv" class="alert alert-danger" style="display:none;">
@@ -76,7 +76,7 @@ Inside this “column,” we’ll add a couple alert boxes that are hidden by de
 ```
 
 
-Below those alert boxes, let’s add the form. It’s a simple form with one input (for email address) and a submit button. You may need to change the action attribute depending on what address and port your proxy server is running on.
+Below those alert boxes, let's add the form. It's a simple form with one input (for email address) and a submit button. You may need to change the action attribute depending on what address and port your proxy server is running on.
 
 ```html
 <form id="signupForm" action="http://127.0.0.1:3000/contacts" method="post">
@@ -89,7 +89,7 @@ Below those alert boxes, let’s add the form. It’s a simple form with one inp
 </form>
 ```
 
-With the form set up, we’ll need to add some JavaScript to handle submitting the for through AJAX. We’ll use the help of jQuery here. Include these two script tags just before the closing &lt;/body&gt; tag.
+With the form set up, we'll need to add some JavaScript to handle submitting the for through AJAX. We'll use the help of jQuery here. Include these two script tags just before the closing &lt;/body&gt; tag.
 
 ```html
 <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
@@ -99,7 +99,7 @@ With the form set up, we’ll need to add some JavaScript to handle submitting t
 
 ### The JavaScript
 
-Create a new file called mailing-list-signup.js. We’ll start with a jQuery document ready function and put the parser in strict mode.
+Create a new file called mailing-list-signup.js. We'll start with a jQuery document ready function and put the parser in strict mode.
 
 ```javascript
 $(function() {
@@ -110,7 +110,7 @@ $(function() {
 });
 ```
 
-I always like to store the DOM elements that I’ll be using in variables. Add the following variables:
+I always like to store the DOM elements that I'll be using in variables. Add the following variables:
 
 ```javascript
 var signupForm = $('#signupForm');
@@ -119,7 +119,7 @@ var errorList = $('#errorList');
 var successDiv = $('#successDiv');
 ```
 
-We’re going to need a few functions for showing and hiding the alert boxes.
+We're going to need a few functions for showing and hiding the alert boxes.
 
 ```javascript
 function showErrors(errors) {
@@ -144,7 +144,7 @@ function hideSuccess() {
 }
 ```
 
-We’ll also write a function to clear our form. Since the form only contains one input (and it’s a text input), we can write a short line to just set the value to blank.
+We'll also write a function to clear our form. Since the form only contains one input (and it's a text input), we can write a short line to just set the value to blank.
 
 ```javascript
 function clearForm(form) {
@@ -160,14 +160,14 @@ signupForm.on('submit', function(e) {
 });
 ```
 
-Inside the form submission event, we’ll set up some variables for later use.
+Inside the form submission event, we'll set up some variables for later use.
 
 ```javascript
 var emailAddress = $('#emailAddress').val();
 var errors = [];
 ```
 
-Next, we’ll prevent default form submission and hide any shown alert boxes.
+Next, we'll prevent default form submission and hide any shown alert boxes.
 
 ```javascript
 e.preventDefault();
@@ -175,13 +175,13 @@ hideErrors();
 hideSuccess();
 ```
 
-We still need some error checking. There are many possibilities here, but for the sake of simplicity, I’ll just check for a blank email address.
+We still need some error checking. There are many possibilities here, but for the sake of simplicity, I'll just check for a blank email address.
 
 ```javascript
 if (!emailAddress) { errors.push('Please enter your email address.'); }
 ```
 
-You can add more error checks and keep pushing errors into the errors variable, but I’ll just leave it for now. The next step is to see whether there were errors. If so, we need to display them.
+You can add more error checks and keep pushing errors into the errors variable, but I'll just leave it for now. The next step is to see whether there were errors. If so, we need to display them.
 
 ```javascript
 if (errors.length) {
@@ -191,7 +191,7 @@ if (errors.length) {
 }
 ```
 
-As long as there aren’t any errors we can submit the form through AJAX.
+As long as there aren't any errors we can submit the form through AJAX.
 
 ```javascript
 $.ajax({
@@ -214,7 +214,7 @@ errors.push(errThrown);
 showErrors(errors);
 ```
 
-If the AJAX request goes through, the server may still throw an error, so we’ll handle that as well. This code should go in the .done function:
+If the AJAX request goes through, the server may still throw an error, so we'll handle that as well. This code should go in the .done function:
 
 ```javascript
 if (res.code !== 201) {
@@ -226,7 +226,7 @@ if (res.code !== 201) {
 }
 ```
 
-So if no errors were returned, let’s let the user know by showing the success alert and clearing the form for another possible use.
+So if no errors were returned, let's let the user know by showing the success alert and clearing the form for another possible use.
 
 ```javascript
 showSuccess();

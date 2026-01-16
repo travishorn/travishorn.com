@@ -9,13 +9,13 @@ tags: ["javascript", "d3js", "web-development", "data-visualisation-1"]
 
 
 
-In this post, we’ll build a function for predicting data using linear regression and the least-squares method. Then we’ll plot the forecasted data on a line chart using JavaScript and D3 — Data Driven Documents.
+In this post, we'll build a function for predicting data using linear regression and the least-squares method. Then we'll plot the forecasted data on a line chart using JavaScript and D3 — Data Driven Documents.
 
 ![](./images/i1kmswSMR.webp)
 
 ### Setup
 
-Start with a basic HTML page — `index.html `— that references D3 and a main JavaScript file we’ll write in a minute.
+Start with a basic HTML page — `index.html `— that references D3 and a main JavaScript file we'll write in a minute.
 
 ```
 <!doctype html>
@@ -38,7 +38,7 @@ Start with a basic HTML page — `index.html `— that references D3 and a main 
 
 ### Formatting and calculating the data
 
-Let’s start with a set of data. The Hass Avocado Board provides [retail volume and prices for avocados in the United States](http://www.hassavocadoboard.com/retail/volume-and-price-data). I downloaded this data and summarized it by month. What you see below is the total avocados sold in the US by month from January 2015 to March 2018.
+Let's start with a set of data. The Hass Avocado Board provides [retail volume and prices for avocados in the United States](http://www.hassavocadoboard.com/retail/volume-and-price-data). I downloaded this data and summarized it by month. What you see below is the total avocados sold in the US by month from January 2015 to March 2018.
 
 ```
 let history = [
@@ -85,7 +85,7 @@ let history = [
 ```
 
 
-Let’s say we want to forecast the next six months. Create a placeholder array like so.
+Let's say we want to forecast the next six months. Create a placeholder array like so.
 
 ```
 let forecast = [
@@ -118,9 +118,9 @@ history = history.map((d) => {
 ```
 
 
-We need to do the same thing for `forecast`. But as we’re mapping over this array, we might as well add the **predicted volume** for each date while we’re at it.
+We need to do the same thing for `forecast`. But as we're mapping over this array, we might as well add the **predicted volume** for each date while we're at it.
 
-We need to create a `predict()` function first. We’ll base our prediction on a linear regression following the formula `y = mx + b`.
+We need to create a `predict()` function first. We'll base our prediction on a linear regression following the formula `y = mx + b`.
 
 This function should accept two arguments:
 
@@ -143,7 +143,7 @@ const predict = (data, newX) => {
 ```
 
 
-Inside this function, we’ll need a helper function that will round numbers to two decimal places (hundredths). You could place this outside `predict()` if you need it elsewhere, but for now, let’s just put it inside to keep things cleaner.
+Inside this function, we'll need a helper function that will round numbers to two decimal places (hundredths). You could place this outside `predict()` if you need it elsewhere, but for now, let's just put it inside to keep things cleaner.
 
 ```
 const round = n => Math.round(n * 100) / 100;
@@ -172,7 +172,7 @@ const sum = data.reduce((acc, pair) => {
 ```
 
 
-Inside the `reduce()` call, we’ll first break down the X & Y value pair.
+Inside the `reduce()` call, we'll first break down the X & Y value pair.
 
 ```
 const x = pair[0];
@@ -222,7 +222,7 @@ const sum = data.reduce((acc, pair) => {
 
 Ultimately, we want our predict function to return a new Y value for a given X. Basically, it should return `mx + b`, or `gradient * x + intercept`. When the function is called, it will be given the `x`, but we need to calculate the `gradient` and the `intercept`.
 
-The gradient is `rise` over `run`. So first, let’s calculate those.
+The gradient is `rise` over `run`. So first, let's calculate those.
 
 ```
 const rise = (sum.len * sum.product) - (sum.x * sum.y);
@@ -314,9 +314,9 @@ forecast = forecast.map((d, i) => {
 ```
 
 
-Notice how we’re passing `historyIndex.length - 1 + i` as the second argument to `predict()`. This part may be a little tricky to understand.
+Notice how we're passing `historyIndex.length - 1 + i` as the second argument to `predict()`. This part may be a little tricky to understand.
 
-The X values in our `historyIndex` array go from 0 to 38. So the first prediction should be for index 39. To get this number, we simply look at `historyIndex`’s length (39) and subtract 1 to get 38. Then, since we’re on the **first** forecasted month, add **1** to get 39. On the **next** iteration of the `map` loop, it will add **2** to get 40 and so on.
+The X values in our `historyIndex` array go from 0 to 38. So the first prediction should be for index 39. To get this number, we simply look at `historyIndex`'s length (39) and subtract 1 to get 38. Then, since we're on the **first** forecasted month, add **1** to get 39. On the **next** iteration of the `map` loop, it will add **2** to get 40 and so on.
 
 So far, we have two arrays of data that looks very similar.
 
@@ -373,7 +373,7 @@ const y = d3.scaleLinear().rangeRound([height, 0]);
 ```
 
 
-We’re going to create two lines in a moment. Before we can do that, we have to tell D3 how to build the lines. Do that by creating a `line` function. The dates will become X values and the volumes will become Y values.
+We're going to create two lines in a moment. Before we can do that, we have to tell D3 how to build the lines. Do that by creating a `line` function. The dates will become X values and the volumes will become Y values.
 
 ```
 const line = d3.line()
@@ -382,7 +382,7 @@ const line = d3.line()
 ```
 
 
-The X domain will be the smallest X value to the largest X value. In our case it this means the earliest date (in history) to the latest date (in forecast). Get this programmatically with D3’s `min` and `max` functions.
+The X domain will be the smallest X value to the largest X value. In our case it this means the earliest date (in history) to the latest date (in forecast). Get this programmatically with D3's `min` and `max` functions.
 
 ```
 x.domain([
@@ -399,7 +399,7 @@ y.domain([0, d3.max(history, d => d.volume)]);
 ```
 
 
-We’re ready to start adding visible elements to the chart. First, the X axis.
+We're ready to start adding visible elements to the chart. First, the X axis.
 
 ```
 innerChart.append('g')
@@ -456,9 +456,9 @@ innerChart.append('path')
 
 ![](./images/093g5Y6Mx.webp)
 
-Notice how the forecast line is colored differently and has a dashed appearance. This is to help clarify that these aren’t real data points, but merely a prediction along a trend line.
+Notice how the forecast line is colored differently and has a dashed appearance. This is to help clarify that these aren't real data points, but merely a prediction along a trend line.
 
-Everything looks good, except there’s a break in the line chart. We can easily fill this in by giving our `forecast` array another data point that matches the last `history` data point exactly.
+Everything looks good, except there's a break in the line chart. We can easily fill this in by giving our `forecast` array another data point that matches the last `history` data point exactly.
 
 This situation is perfect for `[array.prototype.unshift`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift), which adds new items to the beginning of an array. Simply add the last `history` data point to the beginning of the `forecast` array.
 

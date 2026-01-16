@@ -9,7 +9,7 @@ tags: ["javascript", "asynchronous", "web-development", "nodejs", "promises"]
 
 
 
-Writing non-blocking, asynchronous code is a staple of Node.js development and the broader JavaScript world. JavaScript itself uses an event loop which makes writing asynchronous functions more difficult by default. Let’s look at examples of synchronous and asynchronous code; as well as some methods for programming asynchronously.
+Writing non-blocking, asynchronous code is a staple of Node.js development and the broader JavaScript world. JavaScript itself uses an event loop which makes writing asynchronous functions more difficult by default. Let's look at examples of synchronous and asynchronous code; as well as some methods for programming asynchronously.
 
 ![](./images/d3QhMesKu.webp)
 
@@ -32,10 +32,10 @@ button.addEventListener('click', () => {
 ```
 
 
-When the button is clicked, the output message temporarily becomes “Loading…” and then **immediately** becomes “Hello, World!”.
+When the button is clicked, the output message temporarily becomes "Loading…" and then **immediately** becomes "Hello, World!".
 
 
-`greet()` is a synchronous function. When it’s called, the parser steps into the function and immediately returns the resulting string.
+`greet()` is a synchronous function. When it's called, the parser steps into the function and immediately returns the resulting string.
 
 But what about cases where the result cannot be returned immediately? A good example of this would be a call to an external API. Another way to simulate this would be setting a timeout so the result is **not returned right away**.
 
@@ -69,7 +69,7 @@ This is because the `greet()` call is looking for a result to be returned immedi
 
 ### Callbacks
 
-So how do we fix it? One method is using a callback. We modify our function to accept a second argument. This second argument is expected to be a function that our function will call when it’s ready.
+So how do we fix it? One method is using a callback. We modify our function to accept a second argument. This second argument is expected to be a function that our function will call when it's ready.
 
 ```
 const greet = (subject**, callback**) => {
@@ -80,9 +80,9 @@ const greet = (subject**, callback**) => {
 ```
 
 
-*One interesting thing to note about the function above is that, when calling the callback, the first argument we’re passing is `null`. If our function encountered an error while executing, we would pass an error message in place of this `null` value. This isn’t necessarily required but it is a strong convention, so I definitely recommend it.*
+*One interesting thing to note about the function above is that, when calling the callback, the first argument we're passing is `null`. If our function encountered an error while executing, we would pass an error message in place of this `null` value. This isn't necessarily required but it is a strong convention, so I definitely recommend it.*
 
-Now that we’ve modified our function, we have to modify how we call it.
+Now that we've modified our function, we have to modify how we call it.
 
 ```
 button.addEventListener('click', () => {
@@ -97,7 +97,7 @@ button.addEventListener('click', () => {
 
 In addition to the first `subject` argument, `greet()` now takes a second argument, which is a function. This function is the callback that gets called when `greet()` is done. *That* is where we set the output message.
 
-It’s also where you’d handle any errors that occurred. This can be done with a simple `if` statement.
+It's also where you'd handle any errors that occurred. This can be done with a simple `if` statement.
 
 ```
 greet('World', (error, message) => {
@@ -118,7 +118,7 @@ Now, our code works as expected. Callbacks are a tried and true pattern for asyn
 ### Promises
 
 Another popular method for dealing with asynchronous code is called **promises**. [MDN web docs defines a promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) as…
-> …a proxy for a value not necessarily known when the promise is created. It allows you to associate handlers with an asynchronous action’s eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of immediately returning the final value, the asynchronous method returns a *promise* to supply the value at some point in the future.
+> …a proxy for a value not necessarily known when the promise is created. It allows you to associate handlers with an asynchronous action's eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of immediately returning the final value, the asynchronous method returns a *promise* to supply the value at some point in the future.
 
 We can re-write our function to use promises like so.
 
@@ -135,7 +135,7 @@ const greet = (subject) => {
 
 The function is back to only needing one argument. And instead of returning a value, we return a `new Promise` that can `resolve()` to a value (or `reject()` to an error).
 
-Of course, this means we must change how it’s called.
+Of course, this means we must change how it's called.
 
 ```
 button.addEventListener('click', () => {
@@ -168,7 +168,7 @@ button.addEventListener('click', () => {
 Testing our code, it does indeed work with this pattern.
 
 
-Promises have several advantages over callbacks, which you can read about in [Oscar Paz’s answer to the StackOverflow question “Aren’t promises just callbacks?”](https://stackoverflow.com/a/22540276/307338)
+Promises have several advantages over callbacks, which you can read about in [Oscar Paz's answer to the StackOverflow question "Aren't promises just callbacks?"](https://stackoverflow.com/a/22540276/307338)
 
 ### Async/await
 
@@ -204,4 +204,4 @@ asyncButton.addEventListener('click', async () => {
 
 
 
-This is the latest and most trendy way to use asynchronous functions. It has advantages over previous methods you can read about in Mostafa Gaafar’s post titled [6 Reasons Why JavaScript’s Async/Await Blows Promises Away](https://hackernoon.com/6-reasons-why-javascripts-async-await-blows-promises-away-tutorial-c7ec10518dd9).
+This is the latest and most trendy way to use asynchronous functions. It has advantages over previous methods you can read about in Mostafa Gaafar's post titled [6 Reasons Why JavaScript's Async/Await Blows Promises Away](https://hackernoon.com/6-reasons-why-javascripts-async-await-blows-promises-away-tutorial-c7ec10518dd9).

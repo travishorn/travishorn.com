@@ -45,7 +45,7 @@ ORDER BY
 
 This is where the problem becomes obvious. Student #1 appears twice. They started at Washington Elementary, left in September, and moved to Central Elementary.
 
-If you send the report in this state, the student count would be inflated. You need a way to tell SQL: *"Look at this student's history, sort it by date, and pick the top one.”*
+If you send the report in this state, the student count would be inflated. You need a way to tell SQL: *"Look at this student's history, sort it by date, and pick the top one."*
 
 ## The Window Function
 
@@ -111,4 +111,4 @@ WHERE
   re.rn = 1;
 ```
 
-That’s it. By filtering `WHERE rn = 1`, you strip out the historical duplicates and deliver exactly what was asked for: a clean list containing only the most recent status for every student.
+That's it. By filtering `WHERE rn = 1`, you strip out the historical duplicates and deliver exactly what was asked for: a clean list containing only the most recent status for every student.

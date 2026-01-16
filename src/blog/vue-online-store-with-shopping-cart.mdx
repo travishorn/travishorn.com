@@ -8,13 +8,13 @@ tags: ["javascript", "ecommerce", "vuejs"]
 
 
 
-Today we’ll be building the basic framework for an online store and shopping cart with Vue.js single file components.
+Today we'll be building the basic framework for an online store and shopping cart with Vue.js single file components.
 
 ![](./images/XcoThZ1K6.webp)
 
 ### Setup
 
-Before you begin, you will need [Node.js](https://nodejs.org/en/) installed. Node.js comes packaged with [npm](https://www.npmjs.com/), which we’ll use to install packages. The first package we’ll install is `vue-cli`. We want to install it globally. In the terminal/command prompt:
+Before you begin, you will need [Node.js](https://nodejs.org/en/) installed. Node.js comes packaged with [npm](https://www.npmjs.com/), which we'll use to install packages. The first package we'll install is `vue-cli`. We want to install it globally. In the terminal/command prompt:
 
 ```bash
 > npm i -g vue-cli
@@ -50,7 +50,7 @@ After a moment, your browser should automatically open to [http://localhost:8080
 
 *The default app when using vue-cli*
 
-For ease of design, let’s pull in [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/). Download Bootstrap and its dependencies, jQuery & popper. Place them in the `src/assets` directory. Add these lines to `index.html` (in bold):
+For ease of design, let's pull in [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/). Download Bootstrap and its dependencies, jQuery & popper. Place them in the `src/assets` directory. Add these lines to `index.html` (in bold):
 
 ```bash
 <!DOCTYPE html>
@@ -74,7 +74,7 @@ For ease of design, let’s pull in [Bootstrap 4](https://getbootstrap.com/docs/
 
 The first added line makes sure our app will utilize Bootstraps responsive utilities, and the other lines actually pull in Bootstrap & its dependencies. Note that you may want to use a CDN for these instead, or at the very least at them to your build pipeline so they get pulled into the `dist` directory on build.
 
-Clear out the sample app and let’s start building our store’s UI. Edit `src/App.vue`:
+Clear out the sample app and let's start building our store's UI. Edit `src/App.vue`:
 
 ```bash
 <template>
@@ -99,11 +99,11 @@ export default {
 </style>
 ```
 
-In the template, I’ve added couple classes to the root element and replaced everything inside of it with a single `&lt;h1&gt;` element.
+In the template, I've added couple classes to the root element and replaced everything inside of it with a single `&lt;h1&gt;` element.
 
-In the script, I’ve replaced the (now unnecessary) `msg` property of the returned `data` object. Also note that I’ve made some small code style changes. The reason is because I’m following [AirBnB’s popular JavScript Style Guide](https://github.com/airbnb/javascript). If you use a different style guide, or don’t want to follow the same conventions I do, no worries. Just ignore those small changes and code the way you want.
+In the script, I've replaced the (now unnecessary) `msg` property of the returned `data` object. Also note that I've made some small code style changes. The reason is because I'm following [AirBnB's popular JavScript Style Guide](https://github.com/airbnb/javascript). If you use a different style guide, or don't want to follow the same conventions I do, no worries. Just ignore those small changes and code the way you want.
 
-In the style portion, I’ve removed everything. I want to stick with using Bootstrap classes as much as possible for the sake of this tutorial, but feel free to modify the style any way you see fit.
+In the style portion, I've removed everything. I want to stick with using Bootstrap classes as much as possible for the sake of this tutorial, but feel free to modify the style any way you see fit.
 
 If you save the file, your browser will automatically reload with the changes.
 
@@ -113,7 +113,7 @@ If you save the file, your browser will automatically reload with the changes.
 
 ### Displaying items
 
-What good is an online store if it’s not selling anything? Let’s create an array of items for sale. Place it in the return object for the `data` function.
+What good is an online store if it's not selling anything? Let's create an array of items for sale. Place it in the return object for the `data` function.
 
 ```bash
 data() {
@@ -128,7 +128,7 @@ data() {
 },
 ```
 
-In a real world example, you would probably pull in this array from a database. I won’t go in-depth with it here, but the basic idea in that case would be that you use an HTTP client such as [axios](https://github.com/mzabriskie/axios) to query an API that interfaces with your database when the Vue app is `[created()`\](https://vuejs.org/v2/api/#created).
+In a real world example, you would probably pull in this array from a database. I won't go in-depth with it here, but the basic idea in that case would be that you use an HTTP client such as [axios](https://github.com/mzabriskie/axios) to query an API that interfaces with your database when the Vue app is `[created()`\](https://vuejs.org/v2/api/#created).
 
 The `forSale` array we just created is a list of objects with the following properties:
 
@@ -136,9 +136,9 @@ The `forSale` array we just created is a list of objects with the following prop
     
 * name: The name of the item for sale.
     
-* image: An image of the item. For now, we’re just using a 200 x 200 pixel placeholder image.
+* image: An image of the item. For now, we're just using a 200 x 200 pixel placeholder image.
     
-* price: The price of the item. Best practice says to store this as the lowest unit of measure that you’ll use. In this case, we’re storing the price as cents.
+* price: The price of the item. Best practice says to store this as the lowest unit of measure that you'll use. In this case, we're storing the price as cents.
     
 
 In the template, we can display these items with a [v-for loop](https://vuejs.org/v2/guide/list.html#Mapping-an-Array-to-Elements-with-v-for).
@@ -159,13 +159,13 @@ In the template, we can display these items with a [v-for loop](https://vuejs.or
 
 First, we create a new row to contain all the items, then we create a new column for each item. Bootstrap divides rows into columns of 12. So by using `col-md-3`, on medium (and larger) screens, each item for sale will take up 3 / 12 columns = 4 items per row. On a smaller screen, each item will take up the whole width of the row.
 
-Inside each column, we’re just displaying the name of the item.
+Inside each column, we're just displaying the name of the item.
 
 ![Looking better. Our items are displayed.](./images/CVPIpzJi8.webp)
 
 *Looking better. Our items are displayed.*
 
-We can make it look prettier by taking advantage of Bootstrap’s [card component](https://getbootstrap.com/docs/4.0/components/card/). Instead of just displaying the bare name, we want to display the image, name, price, and a button to “add to cart”. Inside the looping col, replace `{{ item.name }}` with:
+We can make it look prettier by taking advantage of Bootstrap's [card component](https://getbootstrap.com/docs/4.0/components/card/). Instead of just displaying the bare name, we want to display the image, name, price, and a button to "add to cart". Inside the looping col, replace `{{ item.name }}` with:
 
 ```bash
 <div class="col-md-3" v-for="item in forSale">
@@ -182,7 +182,7 @@ We can make it look prettier by taking advantage of Bootstrap’s [card componen
 </div>
 ```
 
-The `src` and `alt` attributes that start with a colon (:) are dynamic properties set by Vue. They are set to the item’s `image` and `name` property, respectively. The title of the card is the item’s `name`. The card’s text is the item’s `price` divided by 100 to display it in dollars instead of cents.
+The `src` and `alt` attributes that start with a colon (:) are dynamic properties set by Vue. They are set to the item's `image` and `name` property, respectively. The title of the card is the item's `name`. The card's text is the item's `price` divided by 100 to display it in dollars instead of cents.
 
 Save the file and watch the app hot-reload.
 
@@ -225,7 +225,7 @@ In the template, cut & paste the item col from `src/App.vue`. Also, remove the `
 </template>
 ```
 
-Our component will accept the item’s properties as Vue [props](https://vuejs.org/v2/guide/components.html#Props). Set that up in the script.
+Our component will accept the item's properties as Vue [props](https://vuejs.org/v2/guide/components.html#Props). Set that up in the script.
 
 ```bash
 <script>
@@ -275,7 +275,7 @@ Back in `src/App.vue`, we can place a single `&lt;Item&gt;` component where our 
 </template>
 ```
 
-We use `v-for` to loop over our `forSale` items and display an `&lt;Item&gt;`for each one, passing the `invId`, `name`, `image`, and `price` to the component. Take note of the `key` attribute here. It is required when rendering components with `v-for`. It gives Vue a hint so that it can track each node’s identity, and thus reuse and reorder existing elements. It needs to be uniquely tied to the item, so `item.invId` works perfectly.
+We use `v-for` to loop over our `forSale` items and display an `&lt;Item&gt;`for each one, passing the `invId`, `name`, `image`, and `price` to the component. Take note of the `key` attribute here. It is required when rendering components with `v-for`. It gives Vue a hint so that it can track each node's identity, and thus reuse and reorder existing elements. It needs to be uniquely tied to the item, so `item.invId` works perfectly.
 
 We still need to register the `Item` component with our app. Add these lines to the script portion (in bold):
 
@@ -297,7 +297,7 @@ export default {
 
 The first added line imports our newly created `Item` single file component. The other added lines register it with our main app.
 
-In case you didn’t already know…
+In case you didn't already know…
 
 ```bash
 {
@@ -317,11 +317,11 @@ Save those files. The browser hot-reloads the app. Nothing has visibly changed, 
 
 ### Adding vuex to manage state
 
-We’ve got a problem. The “Add to cart” buttons do nothing.
+We've got a problem. The "Add to cart" buttons do nothing.
 
-We’ve got a bigger problem. Those buttons are in a child component of our main app, but the state of our app is contained in the main component. Furthermore, we’ll be building a cart component which will also share this state, as well. Many components of our app need access to view and mutate the same state.
+We've got a bigger problem. Those buttons are in a child component of our main app, but the state of our app is contained in the main component. Furthermore, we'll be building a cart component which will also share this state, as well. Many components of our app need access to view and mutate the same state.
 
-At this point, the state management library [vuex](https://vuex.vuejs.org/en/intro.html) becomes attractive. Let’s take a step back again and add it in. In your terminal/command prompt:
+At this point, the state management library [vuex](https://vuex.vuejs.org/en/intro.html) becomes attractive. Let's take a step back again and add it in. In your terminal/command prompt:
 
 ```bash
 > npm i -S vuex
@@ -368,7 +368,7 @@ new Vue({
 
 With vuex in place, all current and future components we build have access to the `$store` variable.
 
-Right now, we only have one piece of state in our app: the `forSale` variable. Let’s move that to `src/store.js`. Cut and paste the array from `src/App.vue`. While we’re here, let’s also add an `inCart` array. It will be empty by default.
+Right now, we only have one piece of state in our app: the `forSale` variable. Let's move that to `src/store.js`. Cut and paste the array from `src/App.vue`. While we're here, let's also add an `inCart` array. It will be empty by default.
 
 ```bash
 import Vue from 'vue';
@@ -436,7 +436,7 @@ export default {
 };
 ```
 
-Let’s also output the `inCart` property in the template. This is just temporary so we can see what’s in the array.
+Let's also output the `inCart` property in the template. This is just temporary so we can see what's in the array.
 
 ```bash
 <template>
@@ -458,11 +458,11 @@ Switching back to our live web app, everything besides the `{{ inCart }}` output
 
 *The UI is unchanged besides the empty inCart array in the lower left corner.*
 
-As a side note, I stopped my dev server in the terminal earlier to use it to install vuex. If you did the same, you’ll need to run `npm run dev` again to restart the dev server. Otherwise, continue on.
+As a side note, I stopped my dev server in the terminal earlier to use it to install vuex. If you did the same, you'll need to run `npm run dev` again to restart the dev server. Otherwise, continue on.
 
-### The “Add to cart” buttons
+### The "Add to cart" buttons
 
-Now, let’s make those “Add to cart” buttons do something. In `src/Item.vue`, bind this method to the `@click` handler on the button:
+Now, let's make those "Add to cart" buttons do something. In `src/Item.vue`, bind this method to the `@click` handler on the button:
 
 ```bash
 <button class="btn btn-primary" **@click="addToCart(invId)"**>Add to cart</button>
@@ -492,7 +492,7 @@ actions: {
 },
 ```
 
-An action’s purpose is to perform arbitrary asynchronous operations, if any, and commit a mutation to the state. In this case, we have no async code to perform, so we just commit the mutation.
+An action's purpose is to perform arbitrary asynchronous operations, if any, and commit a mutation to the state. In this case, we have no async code to perform, so we just commit the mutation.
 
 And now we write the [mutation](https://vuex.vuejs.org/en/mutations.html).
 
@@ -504,11 +504,11 @@ mutations: {
 
 The mutation actually changes the state.
 
-Save the this file and click any “Add to cart” button any number of times. Watch as the `inCart` array is filled with item inventory ID numbers.
+Save the this file and click any "Add to cart" button any number of times. Watch as the `inCart` array is filled with item inventory ID numbers.
 
-![The array shows the values of those items for which I clicked “Add to cart”.](./images/diqyAjYfT.webp)
+![The array shows the values of those items for which I clicked "Add to cart".](./images/diqyAjYfT.webp)
 
-*The array shows the values of those items for which I clicked “Add to cart”.*
+*The array shows the values of those items for which I clicked "Add to cart".*
 
 ### Displaying the cart
 
@@ -533,18 +533,18 @@ Add the button to the template. In `src/App.vue`, replace the header with the fo
 </template>
 ```
 
-We’ve added a new row with a margin on bottom. In that row there are two columns:
+We've added a new row with a margin on bottom. In that row there are two columns:
 
 * Our header, from before.
     
 * The cart button, which shows the length of the `inCart` array (number of items in cart) in parenthesis.
     
 
-![The “Cart” button appears in the upper right corner.](./images/rt4hpZWv0.webp)
+![The "Cart" button appears in the upper right corner.](./images/rt4hpZWv0.webp)
 
-*The “Cart” button appears in the upper right corner.*
+*The "Cart" button appears in the upper right corner.*
 
-Since we’re going to be adding quite a bit more functionality to the shopping cart, now would be a good time to move it into its own component.
+Since we're going to be adding quite a bit more functionality to the shopping cart, now would be a good time to move it into its own component.
 
 1. Create `src/ShoppingCart.vue`
     
@@ -693,13 +693,13 @@ The full modal itself looks like…
 
 Back on our live web app, clicking on the cart button pops up the modal.
 
-![The modal appears when the “Cart” button is clicked.](./images/1Ogc-xgAD.webp)
+![The modal appears when the "Cart" button is clicked.](./images/1Ogc-xgAD.webp)
 
-*The modal appears when the “Cart” button is clicked.*
+*The modal appears when the "Cart" button is clicked.*
 
 ### A table of items
 
-There are no items displayed right now. Let’s write code to display them. We need a new computed property that returns more than just an array of inventory ID numbers. We need one that returns an array of whole items so we can display the name and price. The new computed property will be called `cart()`.
+There are no items displayed right now. Let's write code to display them. We need a new computed property that returns more than just an array of inventory ID numbers. We need one that returns an array of whole items so we can display the name and price. The new computed property will be called `cart()`.
 
 ```bash
 export default {
@@ -719,7 +719,7 @@ export default {
 
 This one is a little complex, but follow along. The new `cart()` property uses `[.map()`\](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Array/map) to loop over the `inCart` state array (an array containing the inventory ID numbers of items in the cart). During each iteration of the loop, it uses `[.find()`\](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Array/find) to filter through the `forSale` state array. `.find()` picks out the item whose `invId` matches the ID in the cart. Basically, it takes a list of item IDs and returns the list of items they represent.
 
-Now, in the template, we want to display this computed property in a tabular format. Thus, a `&lt;table&gt;` works nicely here. We can use `v-for` to display one row per item in the cart. In the `&lt;div class="modal-body"&gt;` div, replace “Shopping cart items will go here” with:
+Now, in the template, we want to display this computed property in a tabular format. Thus, a `&lt;table&gt;` works nicely here. We can use `v-for` to display one row per item in the cart. In the `&lt;div class="modal-body"&gt;` div, replace "Shopping cart items will go here" with:
 
 ```bash
 <table class="table">
@@ -732,7 +732,7 @@ Now, in the template, we want to display this computed property in a tabular for
 </table>
 ```
 
-Notice we’re using the `dollars` filter again. But it won’t work right now! We put that filter in the `Item` component, and we’re working in the `ShoppingCart` component.
+Notice we're using the `dollars` filter again. But it won't work right now! We put that filter in the `Item` component, and we're working in the `ShoppingCart` component.
 
 ### Keep the code [DRY](https://www.lynda.com/WordPress-tutorials/Introducing-Dont-Repeat-Yourself-DRY-practice/174281/360333-4.html)
 
@@ -764,7 +764,7 @@ export default {
 };
 ```
 
-It’s not necessary here, but if you want to import all filters, you *could* do…
+It's not necessary here, but if you want to import all filters, you *could* do…
 
 ```bash
 **import filters from './filters';**
@@ -795,7 +795,7 @@ export default {
 };
 ```
 
-The nice part is that if you ever decide to change the dollars filter for any reason (e.g. you want to add “USD” before the dollar sign), you only have to do it once in `src/filters.js` and it will be updated throughout your app.
+The nice part is that if you ever decide to change the dollars filter for any reason (e.g. you want to add "USD" before the dollar sign), you only have to do it once in `src/filters.js` and it will be updated throughout your app.
 
 Going back to the live web app, the modal now displays the contents of the shopping cart.
 
@@ -805,7 +805,7 @@ Going back to the live web app, the modal now displays the contents of the shopp
 
 ### The total row
 
-What about a total? That’s an easy job for a computed property using the `[.reduce()`\](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Array/Reduce?v=b) method.
+What about a total? That's an easy job for a computed property using the `[.reduce()`\](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Array/Reduce?v=b) method.
 
 Add a new row to our table. The first cell is blank, the second cell contains the total.
 
@@ -839,7 +839,7 @@ export default {
 };
 ```
 
-`.reduce()` applies a function against an accumulator and each element in the array to reduce it to a single value. In this case, the function starts at 0 and adds the accumulator + the next item’s `price` on each iteration.
+`.reduce()` applies a function against an accumulator and each element in the array to reduce it to a single value. In this case, the function starts at 0 and adds the accumulator + the next item's `price` on each iteration.
 
 ![The total is displayed on its own row at the bottom of the table](./images/7w55s5Qao.webp)
 
@@ -868,7 +868,7 @@ Only a few basic features remain. What if the user wants to remove an item from 
 </table>
 ```
 
-Don’t forget to add another blank cell in the column row, as well. It’s not a necessity, but it’s semantically correct.
+Don't forget to add another blank cell in the column row, as well. It's not a necessity, but it's semantically correct.
 
 Removing an item from the cart is a mutation of the state. Therefor, the button should fire a method that dispatches an action to remove an item from the `inCart` store array. We can reference the item to remove by its index in the array. Modify the `v-for` loop and the button to include the index.
 
@@ -891,9 +891,9 @@ Removing an item from the cart is a mutation of the state. Therefor, the button 
 </table>
 ```
 
-Note that we’re changing the code in two places above.
+Note that we're changing the code in two places above.
 
-Now add the `removeFromCart()` method. It `dispatch`es an event to our store with the item’s array index as the payload.
+Now add the `removeFromCart()` method. It `dispatch`es an event to our store with the item's array index as the payload.
 
 ```bash
 export default {
@@ -921,7 +921,7 @@ export default new Vuex.Store({
 });
 ```
 
-Again, since there’s no async operation here, we can just commit the mutation. Here’s the mutation:
+Again, since there's no async operation here, we can just commit the mutation. Here's the mutation:
 
 ```bash
 export default new Vuex.Store({
@@ -944,8 +944,8 @@ Our app now has red buttons next to each item in the shopping cart. Clicking on 
 
 ### Keep developing
 
-That’s as far as we’ll go in this tutorial. But there are many more features that could or should be added. For example, what about adding a quantity column?
+That's as far as we'll go in this tutorial. But there are many more features that could or should be added. For example, what about adding a quantity column?
 
-I’ll end by saying that the “Check out” button would be handled by a `checkOut()` method that would move the application state into a “checkout” mode, POST to a checkout API, or something similar. No matter the actual operation, just remember that the inventory ID for every item the user wants to purchase is contained in `$store.getters.inCart`.
+I'll end by saying that the "Check out" button would be handled by a `checkOut()` method that would move the application state into a "checkout" mode, POST to a checkout API, or something similar. No matter the actual operation, just remember that the inventory ID for every item the user wants to purchase is contained in `$store.getters.inCart`.
 
 The code for this tutorial can be found online at [https://github.com/travishorn/vue-online-store-demo/tree/vue2](https://github.com/travishorn/vue-online-store-demo/tree/vue2) . Feel free to fork and modify for your own purposes.

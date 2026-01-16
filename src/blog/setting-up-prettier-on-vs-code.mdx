@@ -8,15 +8,15 @@ tags: ["javascript", "web-development", "styleguide", "eslint", "prettier"]
 
 
 
-Prettier is an opinionated code formatter. It is fundamentally different than a style linter. Prettier doesn’t care how you write your JavaScript. It simply comes in after you’re done and formats all your code in a standard way.
+Prettier is an opinionated code formatter. It is fundamentally different than a style linter. Prettier doesn't care how you write your JavaScript. It simply comes in after you're done and formats all your code in a standard way.
 
-I posted a very similar tutorial on [how to set up ESLint on VS Code with Airbnb JavaScript Style Guide](https://travishorn.com/setting-up-eslint-on-vs-code-with-airbnb-javascript-style-guide-6eb78a535ba6). Many people found it useful. I figured I’d do something similar with Prettier.
+I posted a very similar tutorial on [how to set up ESLint on VS Code with Airbnb JavaScript Style Guide](https://travishorn.com/setting-up-eslint-on-vs-code-with-airbnb-javascript-style-guide-6eb78a535ba6). Many people found it useful. I figured I'd do something similar with Prettier.
 
-Some may find it useful to install a linting configuration that obeys Prettier’s recommended rules so they can write code in the style that Prettier already expects. Following these rules will ensure your code has a level of clarity that makes reading and maintaining your code easier for anyone who has to work on it. For the linting step, you can use [ESLint](https://eslint.org/), which is a tool for “[linting](https://stackoverflow.com/questions/8503559/what-is-linting)” your code. It can analyze your code and warn you of potential errors. For it to work, you need to configure it with specific rules. Luckily, Prettier provides an ESLint configuration that anyone can use.
+Some may find it useful to install a linting configuration that obeys Prettier's recommended rules so they can write code in the style that Prettier already expects. Following these rules will ensure your code has a level of clarity that makes reading and maintaining your code easier for anyone who has to work on it. For the linting step, you can use [ESLint](https://eslint.org/), which is a tool for "[linting](https://stackoverflow.com/questions/8503559/what-is-linting)" your code. It can analyze your code and warn you of potential errors. For it to work, you need to configure it with specific rules. Luckily, Prettier provides an ESLint configuration that anyone can use.
 
 [VS Code](https://code.visualstudio.com/) is a popular code editor created by Microsoft. One of the nice features is that you can enable extensions that make your life as a developer easier. There is an extension for ESLint which will integrate its formatting and linting features right in your editor. You will be warned of potential problems on the fly as you write code and you can auto-format your code on save.
 
-Many developers consider setting up linting in this way essential. In this post, I’ll show you how to set it all up.
+Many developers consider setting up linting in this way essential. In this post, I'll show you how to set it all up.
 
 ![](./images/8HJ4P5Zp9.webp)
 
@@ -79,7 +79,7 @@ Open VS Code and press `Ctrl + Shift + X` to open the **Extensions** panel.
 
 Type `ESLint` in the search bar. Find the ESLint extension in the search results and click the blue **Install** button next to it.
 
-Congratulations! ESLint and Prettier are enabled. If you open up any `.js` file in your project, ESLint will check your code against Prettier’s recommended rules and warn you of any conflicts.
+Congratulations! ESLint and Prettier are enabled. If you open up any `.js` file in your project, ESLint will check your code against Prettier's recommended rules and warn you of any conflicts.
 
 To automatically fix the problems it finds, open the command pallet with Ctrl + Shift + P and search for "ESLint: Fix all auto-fixable Problems". You can also automatically format your code every time you save with the `editor.codeActionsOnSave` option in your `settings.json`.
 
