@@ -2,5 +2,5 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  --font-sans: 'Open Sans Variable', 'sans-serif';
+  --font-mono: "Source Code Pro Variable", "monospace";
 }

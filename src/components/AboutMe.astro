@@ -4,15 +4,15 @@ import IconMail from "../components/IconMail.astro";
 import { siteDescription } from "../site";
 ---
 
-<div class="flex flex-col gap-12 text-center">
-    <p>{siteDescription}</p>
+<div class="flex flex-col gap-12">
+  <p>{siteDescription}</p>
 
-    <div class="flex justify-center gap-12">
-        <a class="hover:text-zinc-600 dark:hover:text-zinc-300" href="https://github.com/travishorn">
-            <IconGitHub />
-        </a>
-        <a class="hover:text-zinc-600 dark:hover:text-zinc-300" href="mailto:travis@travishorn.com">
-            <IconMail />
-        </a>
-    </div>
+  <p>
+    <a class="underline" href="https://github.com/travishorn"
+      >See my work on GitHub</a
+    > or
+    <a class="underline" href="mailto:travis@travishorn.com"
+      >contact me via email</a
+    >.
+  </p>
 </div>

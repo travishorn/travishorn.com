@@ -1,38 +1,29 @@
 ---
 import { getCollection } from "astro:content";
-import { getImage } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import AboutMe from "../components/AboutMe.astro";
 import PostCard from "../components/PostCard.astro";
-import { siteTitle } from '../site';
-import defaultCover from '../blog/images/default-cover.jpg';
 import type { CollectionEntry } from "astro:content";
 
 const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 
-const latestPosts = posts.sort(
-  (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf()
-).slice(0, 3);
-
-const pageDescription = "Travis Horn's personal website featuring blog posts on web development, programming, and technology.";
-const optimizedCover = await getImage({ src: defaultCover });
-const pageOgImage = optimizedCover.src;
+const latestPosts = posts
+  .sort(
+    (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
+  )
+  .slice(0, 3);
 ---
 
 <Layout>
-	<main class="flex flex-col gap-12">
-		<AboutMe />
-		
-		<div class="flex flex-col gap-6">
-			{
-			latestPosts.map((post) => (
-				<PostCard post={post} />
-			))
-			}
-		</div>
+  <main class="flex flex-col gap-12">
+    <AboutMe />
 
-		<a class="underline hover:text-zinc-600 dark:hover:text-zinc-300" href="/blog">
-			See more posts
-		</a>
-	</main>
+    <p>Here are some of the latest articles I've written:</p>
+
+    <div class="flex flex-col gap-6">
+      {latestPosts.map((post) => <PostCard post={post} />)}
+    </div>
+
+    <a class="underline" href="/blog">See more articles</a>
+  </main>
 </Layout>

@@ -12,10 +12,9 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.1",
-    "@fontsource-variable/open-sans": "^5.2.7",
+    "@fontsource-variable/source-code-pro": "^5.2.7",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.9",
-    "astro-pagefind": "^1.8.5",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {

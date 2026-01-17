@@ -1,31 +1,29 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
-import mdx from '@astrojs/mdx';
-import tailwindcss from '@tailwindcss/vite';
-import pagefind from "astro-pagefind";
-import { redirectMapping } from './src/redirects.js';
-
+import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
+import mdx from "@astrojs/mdx";
+import tailwindcss from "@tailwindcss/vite";
+import { redirectMapping } from "./src/redirects.js";
 
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
   },
 
-  site: 'https://travishorn.com',
+  site: "https://travishorn.com",
 
-  integrations: [mdx(), sitemap(), pagefind()],
+  integrations: [mdx(), sitemap()],
 
   build: {
-    inlineStylesheets: 'always',
+    inlineStylesheets: "always",
   },
-  
+
   markdown: {
     shikiConfig: {
-      theme: 'github-dark-high-contrast',
+      theme: "github-dark-high-contrast",
     },
   },
 
-  redirects: redirectMapping
+  redirects: redirectMapping,
 });

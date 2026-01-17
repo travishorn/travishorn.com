@@ -1,19 +1,19 @@
 ---
-import { getCollection, render } from 'astro:content';
-import { Image, getImage } from 'astro:assets';
-import Layout from '../layouts/Layout.astro';
-import ProseImage from '../components/ProseImage.astro';
-import RelatedPosts from '../components/RelatedPosts.astro';
-import Footer from '../components/Footer.astro';
-import { siteTitle } from '../site';
-import defaultCover from '../blog/images/default-cover.jpg';
+import { getCollection, render } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import ProseImage from "../components/ProseImage.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
+import Footer from "../components/Footer.astro";
+import { siteTitle } from "../site";
+import defaultCover from "../blog/images/default-cover.jpg";
 
-import type { CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts: CollectionEntry<'blog'>[] = await getCollection('blog');
+  const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 
-  return posts.map(post => ({
+  return posts.map((post) => ({
     params: { id: post.id },
     props: { post },
   }));
@@ -25,17 +25,17 @@ const { Content } = await render(post);
 const cover = post.data.cover ?? defaultCover;
 const optimizedCover = await getImage({ src: cover });
 const pageTitle = `${post.data.title} - ${siteTitle}`;
-const pageDescription = post.body?.slice(0, 150).replace(/\n/g, ' ') + '…';
+const pageDescription = post.body?.slice(0, 150).replace(/\n/g, " ") + "…";
 const pageOgImage = optimizedCover.src;
 
 const schema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": post.data.title,
-  "description": pageDescription,
-  "image": optimizedCover.src,
-  "author": { "@type": "Person", "name": "Travis Horn" },
-  "datePublished": post.data.datePublished.toISOString(),
+  headline: post.data.title,
+  description: pageDescription,
+  image: optimizedCover.src,
+  author: { "@type": "Person", name: "Travis Horn" },
+  datePublished: post.data.datePublished.toISOString(),
 });
 ---
 
@@ -43,26 +43,41 @@ const schema = JSON.stringify({
 
 <Layout title={pageTitle} description={pageDescription} ogImage={pageOgImage}>
   <article class="flex flex-col gap-12">
-    <div class="flex flex-col gap-6 text-center">
-        <h2 class="text-3xl font-bold" data-pagefind-meta="title">{post.data.title}</h2>
-        <div class="text-zinc-500 dark:text-zinc-400">{post.data.datePublished.toISOString().slice(0, 10)}</div>
-        <Image 
-            src={cover} 
-            alt={post.data.title} 
-            class="rounded mx-auto" 
-            width={800} 
-            densities={[1.5, 2]}
-        />
+    <div class="flex flex-col gap-6">
+      <h2 class="text-3xl font-bold" data-pagefind-meta="title">
+        {post.data.title}
+      </h2>
+      <div class="text-zinc-500 dark:text-zinc-400">
+        {post.data.datePublished.toISOString().slice(0, 10)}
+      </div>
+      <Image
+        src={cover}
+        alt={post.data.title}
+        class="rounded mx-auto"
+        width={800}
+        densities={[1.5, 2]}
+      />
     </div>
 
     <div class="prose prose-zinc dark:prose-invert w-full mx-auto">
-        <Content components={{ img: ProseImage }} />
+      <Content components={{ img: ProseImage }} />
 
-        {cover === defaultCover && <p>Cover photo by <a href="https://unsplash.com/@space_parts">Olli Kilpi</a> on <a href="https://unsplash.com/photos/abstract-white-mesh-wave-pattern-with-soft-lighting-K7EEEPFFjh0">Unsplash</a>.</p> }
+      {
+        cover === defaultCover && (
+          <p>
+            Cover photo by{" "}
+            <a href="https://unsplash.com/@space_parts">Olli Kilpi</a> on{" "}
+            <a href="https://unsplash.com/photos/abstract-white-mesh-wave-pattern-with-soft-lighting-K7EEEPFFjh0">
+              Unsplash
+            </a>
+            .
+          </p>
+        )
+      }
     </div>
   </article>
 
   <RelatedPosts currentPost={post} />
 
-  <Footer />
+  <Footer creationYear={post.data.datePublished.getFullYear()} />
 </Layout>
