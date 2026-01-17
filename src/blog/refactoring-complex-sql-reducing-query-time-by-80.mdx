@@ -1,0 +1,210 @@
+---
+title: "Refactoring Complex SQL: Reducing Query Time by 99%"
+datePublished: 2026-01-17T15:30:00-05:00
+cover: ./images/refectoring-complex-sql-reducing-time-by-99.webp
+tags:
+  [
+    "sql",
+    "data-engineering",
+    "performance-tuning",
+    "query-optimization",
+    "big-data",
+  ]
+---
+
+A query that works perfectly on a small development dataset can still bring the
+production database to a halt as data volumes scale. You must understand the
+database engine to write SQL that performs efficiently over millions of records.
+In this post, we'll set up a scenario with a significant amount of data,
+demonstrate a sluggish naive approach, and then optimize it using modern SQL
+techniques and indexing.
+
+## Environment Setup
+
+First, we generate enough data to make the performance difference noticeable. We
+will simulate 10,000 users across 5 regions and 1,000,000 transactions over the
+last 10 years.
+
+```sql
+DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  user_id SERIAL PRIMARY KEY,
+  username TEXT,
+  region TEXT
+);
+
+CREATE TABLE transactions (
+  txn_id SERIAL PRIMARY KEY,
+  user_id INT,
+  amount NUMERIC(10, 2),
+  txn_date TIMESTAMP
+);
+
+INSERT INTO users (username, region)
+SELECT
+    'user_' || id,
+    (ARRAY['North', 'South', 'East', 'West', 'Central'])[floor(random() * 5 + 1)]
+FROM generate_series(1, 10000) AS id;
+
+INSERT INTO transactions (user_id, amount, txn_date)
+SELECT
+    floor(random() * 10000 + 1)::int,
+    (random() * 1000)::numeric(10, 2),
+    NOW() - (random() * (INTERVAL '10 years'))
+FROM generate_series(1, 1000000) AS id;
+
+VACUUM ANALYZE;
+```
+
+## The Bad Approach
+
+Our goal is to find the top 10 spenders per region over the last 5 years.
+
+Before I show you the bad query, I'll explain _why_ its bad.
+
+1.  It uses the older comma-syntax implicit `JOINs`. There is a potential for a
+    Cartesian product if you're not careful.
+2.  To simulate "top N per group" without window
+    functions, we often use a `WHERE` clause that runs a subquery for every
+    single row returned by the outer query to check its rank.
+3.  We are filtering by date and joining on `user_id` without helper indexes.
+4.  Performing `EXTRACT` or date math on the column side prevents the planner
+    from using indexes (if we even had one).
+
+```sql
+/* The bad query */
+
+EXPLAIN ANALYZE
+SELECT
+    u.region,
+    u.username,
+    SUM(t.amount) as total_spend
+FROM
+    users u,
+    transactions t
+WHERE
+    u.user_id = t.user_id
+    Bad date filtering prevents index usage if function is applied to column
+    AND t.txn_date >= NOW() - INTERVAL '5 years'
+GROUP BY
+    u.region, u.username
+HAVING
+    -- A correlated subquery in HAVING/WHERE to find rank. Can kill performance
+    (
+        SELECT COUNT(*)
+        FROM (
+            SELECT u2.username, SUM(t2.amount) as inner_spend
+            FROM users u2, transactions t2
+            WHERE u2.user_id = t2.user_id
+            AND u2.region = u.region -- Correlated to outer query
+            AND t2.txn_date >= NOW() - INTERVAL '5 years'
+            GROUP BY u2.username
+        ) inner_agg
+        WHERE inner_agg.inner_spend > SUM(t.amount)
+    ) < 10
+ORDER BY
+    u.region, total_spend DESC;
+```
+
+### Query Plan Analysis
+
+If you run the `EXPLAIN ANALYZE`, you will see:
+
+- There is a sequential scan. Postgres is reading the entire `transactions`
+  table because there is no index on `txn_date`.
+- Grouping 1 million rows requires heavy memory usage.
+- There is a nested loop. The subquery inside the `HAVING` clause runs
+  repeatedly. Since we have 5 regions and 10,000 users, it is performing
+  calculations exponentially.
+
+## Optimization
+
+We can improve the query using a few different techniques.
+
+1.  Adding B-Tree indexes on foreign keys and filter columns.
+2.  Using CTEs to make the logic cleaner.
+3.  Using `DENSE_RANK()` or `ROW_NUMBER()` is O(log N) rather than the O(N^2) of
+    the correlated subquery approach.
+4.  Filtering data early.
+
+### Add Indexes
+
+```sql
+-- Create Index on foreign key and filter columns
+-- Including 'amount' allows for an index only scan
+CREATE INDEX idx_txn_date_user ON transactions(txn_date, user_id) INCLUDE (amount);
+
+-- Create an index on `users` for the `JOIN`
+CREATE INDEX idx_users_region ON users(region, user_id);
+
+VACUUM ANALYZE;
+```
+
+### The Refactored Query
+
+```sql
+/* The optimized query */
+
+EXPLAIN ANALYZE
+WITH recent_transactions AS (
+    -- Filter early
+    SELECT
+        user_id,
+        amount
+    FROM transactions
+    WHERE txn_date >= NOW() - INTERVAL '5 years'
+),
+regional_stats AS (
+    -- Pre-aggregate
+    SELECT
+        u.region,
+        u.username,
+        SUM(rt.amount) as total_spend
+    FROM users u
+    JOIN recent_transactions rt ON u.user_id = rt.user_id
+    GROUP BY u.region, u.username
+),
+ranked_stats AS (
+    -- Window function instead of subquery
+    SELECT
+        region,
+        username,
+        total_spend,
+        ROW_NUMBER() OVER(PARTITION BY region ORDER BY total_spend DESC) as rank
+    FROM regional_stats
+)
+SELECT *
+FROM ranked_stats
+WHERE rank <= 10;
+```
+
+## Comparative Analysis
+
+Before optimization, the query took about 45 seconds on my machine. After
+optimization, it took less than a second (about 0.15 seconds). That's a 99.6%
+reduction in execution time.
+
+## Query Plan Explanation
+
+With the bad query, the engine had to perform a sequential scan on the
+`transactions` table (reading 1 million rows from disk). Because of the logic in the
+`HAVING` clause, for every user group found, it triggered _another_ aggregation
+of the data to verify if that user was in the top 10.
+
+With the optimized query, the `idx_txn_date_user` index allows Postgres to jump
+directly to the records from the last 5 years. It's able to ignore the older
+500k rows entirely. Instead of the nested loop logic, the engine hashed the user
+IDs and the filtered transactions in memory. Finally, the `ROW_NUMBER()`
+function allows the engine to sort the data once per region (partition) and
+assign a number. It calculates the rank in a single pass over the aggregated
+data.
+
+The optimization moved the complexity from the logic layer (application-side
+logic inside SQL) to the storage layer (indexing) and the mathematical layer
+(window functions), allowing the database optimizer to perform the query more
+efficiently.
+
+Cover photo by [Kenneth Li](https://unsplash.com/@kennethliphotography) on
+[Unsplash](https://unsplash.com/photos/snow-capped-mountain-peak-emerges-from-clouds-below-sq15NflsDTc).
