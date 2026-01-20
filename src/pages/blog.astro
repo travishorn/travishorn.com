@@ -9,9 +9,11 @@ import type { CollectionEntry } from "astro:content";
 
 const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 
-const sortedPosts = posts.sort(
-  (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf()
-);
+const sortedPosts = posts
+	.filter((post) => !post.data.draft)
+	.sort(
+	(a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf()
+	);
 
 const pageTitle = `Blog - ${siteTitle}`;
 const pageDescription = "Explore my blog posts on web development, programming, and technical topics.";
