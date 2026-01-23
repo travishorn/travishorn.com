@@ -3,22 +3,23 @@ title: "Stacked Bar Chart with Chart.js"
 datePublished: 2017-09-07T22:01:00+00:00
 cover: ./images/DyizwE6lt.webp
 tags: ["charts", "chartjs", "javascript", "data-visualisation-1"]
-
 ---
 
+This is a simple example of using Chart.js to create a stacked bar chart
+(sometimes called a stacked column chart).
 
+> Chart.js provides simple yet flexible JavaScript charting for designers & developers.
 
-
-This is a simple example of using Chart.js to create a stacked bar chart (sometimes called a stacked column chart).
-> # Chart.js provides simple yet flexible JavaScript charting for designers & developers.
-
-It allows you to create all types of bar, line, area, and other charts in HTML. It uses the [canvas](https://developer.mozilla.org/en-US/docs/Glossary/Canvas) standard. While I do prefer using [SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG) when working with data visualization on the web, Chart.js is a popular option, so it's worth checking out.
-
-![](./images/AG-RbxjGp.webp)
+It allows you to create all types of bar, line, area, and other charts in HTML.
+It uses the [canvas](https://developer.mozilla.org/en-US/docs/Glossary/Canvas)
+standard. While I do prefer using
+[SVG](https://developer.mozilla.org/en-US/docs/Glossary/SVG) when working with
+data visualization on the web, Chart.js is a popular option, so it's worth
+checking out.
 
 Starting with a basic `index.html`:
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -32,40 +33,39 @@ Starting with a basic `index.html`:
 </html>
 ```
 
+In the body, we'll need a `<canvas>` element to bind to. This is where the
+chart will appear.
 
-In the body, we'll need a `&lt;canvas&gt;` element to bind to. This is where the chart will appear.
-
-```
+```html
 <canvas id="chart"></canvas>
 ```
 
-
 And we'll pull in the Chart.js library.
 
-```
-<script src="[https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js](https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js)"></script>
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
 ```
 
+The rest of the chart will be coded with JavaScript. So another `<script>`
+tag is necessary.
 
-The rest of the chart will be coded with JavaScript. So another `&lt;script&gt;` tag is necessary.
-
-```
+```html
 <script>
   // Chart code will go here.
 </script>
 ```
 
+We'll first need a reference to the `<canvas>` element we wrote earlier.
 
-We'll first need a reference to the `&lt;canvas&gt;` element we wrote earlier.
-
-```
+```javascript
 var ctx = document.getElementById('chart');
 ```
 
+And we'll instantiate a new chart on this element. The first argument is the
+bound element, and the second is a definition of our chart. The definition will
+have three properties: type, data, and options.
 
-And we'll instantiate a new chart on this element. The first argument is the bound element, and the second is a definition of our chart. The definition will have three properties: type, data, and options.
-
-```
+```javascript
 var myChart = new Chart(ctx, {
   type: 'bar',
   data: {},
@@ -73,12 +73,12 @@ var myChart = new Chart(ctx, {
 });
 ```
 
-
 Notice we've told Chart.js that this will be a `bar` type chart.
 
-In the `data` property, we'll define datasets and their labels. In my example, I have three datasets — all with the same label.
+In the `data` property, we'll define datasets and their labels. In my example, I
+have three datasets — all with the same label.
 
-```
+```javascript
 data: {
   labels: ['Risk Level'],
   datasets: [
@@ -89,10 +89,10 @@ data: {
 }
 ```
 
+Each dataset will have a label, data array, and backgroundColor. In a stacked
+bar chart, each dataset will have only one point of data.
 
-Each dataset will have a label, data array, and backgroundColor. In a stacked bar chart, each dataset will have only one point of data.
-
-```
+```javascript
 datasets: [
   {
     label: 'Low',
@@ -112,10 +112,11 @@ datasets: [
 ]
 ```
 
+We've told Chart.js that we want a bar chart, we've told it about our data, the
+last step is to tell it that this is chart should be stacked. We do this in the
+`options` property.
 
-We've told Chart.js that we want a bar chart, we've told it about our data, the last step is to tell it that this is chart should be stacked. We do this in the `options` property.
-
-```
+```javascript
 options: {
   scales: {
     xAxes: [{ stacked: true }],
@@ -124,11 +125,12 @@ options: {
 }
 ```
 
-
 The end result is a stacked bar chart.
 
-![](./images/9nl8dHcbA.webp)
+![A stacked bar chart showing one stacked bar labeled Risk Level. The legend
+shows 3 colors: green for Low, yellow for Moderate, and red for High. The bar is
+filled green to about 70, yellow from about 70 to 90, and red from about 90 to
+100.](./images/9nl8dHcbA.webp)
 
-And here's the complete code:
-
-%[https://codepen.io/travishorn/pen/kkVKJG]
+[See the complete code and a live demo on this
+CodePen.](https://codepen.io/travishorn/pen/kkVKJG).
