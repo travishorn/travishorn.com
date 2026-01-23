@@ -3,11 +3,11 @@ title: "How I Used Spark Broadcast Joins to Speed Up Cross-Border Analysis"
 datePublished: 2026-01-23T06:00:00-05:00
 cover: ./images/spark-sql.webp
 tags: ["pyspark", "data-engineering", "spark-sql", "big-data", "fintech"]
-draft: true
 ---
 
-Efficiency is the name of the game when you're talking about massive fintech
-data volumes that include cross-border and regional aggregations.
+Efficiency is the name of the game when you've got massive data volumes that
+include cross-border and regional aggregations like those you might find in
+fintech.
 
 As part of a project to simulate the data challenges faced by major payment
 processors, I built a local data pipeline using **PySpark**. My goal: Ingest 1
@@ -26,21 +26,21 @@ from datetime import datetime, timedelta
 
 def generate_data(num_rows=1_000_000):
     countries = ['USA', 'GBR', 'FRA', 'DEU', 'AUS', 'JPN', 'CAN', 'BRA', 'IND', 'CHN']
-    currencies = {'USA': 'USD', 'GBR': 'GBP', 'FRA': 'EUR', 'DEU': 'EUR', 
+    currencies = {'USA': 'USD', 'GBR': 'GBP', 'FRA': 'EUR', 'DEU': 'EUR',
                   'AUS': 'AUD', 'JPN': 'JPY', 'CAN': 'CAD', 'BRA': 'BRL', 'IND': 'INR', 'CHN': 'CNY'}
-    
+
     # Generate random card IDs (10 digit numbers)
     card_ids = np.random.randint(1000000000, 9999999999, size=num_rows, dtype=np.int64)
-    
+
     # Randomly select issuer countries
     issuer_countries = np.random.choice(countries, size=num_rows)
-    
+
     # Randomly select merchant countries
     merchant_countries = np.random.choice(countries, size=num_rows)
-    
+
     # Random amounts between 5 and 500
     amounts = np.round(np.random.uniform(5, 500, size=num_rows), 2)
-    
+
     # Random date within the last year
     start_date = datetime.now() - timedelta(days=365)
     random_days = np.random.randint(0, 365, size=num_rows)
@@ -106,8 +106,8 @@ Next, I ingested the CSV data into a Spark DataFrame.
 ```python
 # Read the CSV
 df = spark.read.csv(
-    "transactions.csv", 
-    header=True, 
+    "transactions.csv",
+    header=True,
     inferSchema=True
 )
 
@@ -140,18 +140,18 @@ analysis_df = df.groupBy("issuer_country") \
 analysis_df.select("issuer_country", format_number("total_amount", 2).alias("formatted_total")).show(10)
 ```
 
-|issuer_country|formatted_total|
-|--------------|---------------|
-|           CHN|  25,372,065.99|
-|           GBR|  25,315,401.06|
-|           AUS|  25,310,252.68|
-|           USA|  25,224,832.77|
-|           DEU|  25,224,543.69|
-|           JPN|  25,215,778.19|
-|           CAN|  25,198,698.23|
-|           FRA|  25,128,502.91|
-|           BRA|  25,109,452.75|
-|           IND|  25,073,186.29|
+| issuer_country | formatted_total |
+| -------------- | --------------- |
+| CHN            | 25,372,065.99   |
+| GBR            | 25,315,401.06   |
+| AUS            | 25,310,252.68   |
+| USA            | 25,224,832.77   |
+| DEU            | 25,224,543.69   |
+| JPN            | 25,215,778.19   |
+| CAN            | 25,198,698.23   |
+| FRA            | 25,128,502.91   |
+| BRA            | 25,109,452.75   |
+| IND            | 25,073,186.29   |
 
 ## Implementing Business Logic with Spark SQL
 
@@ -170,7 +170,7 @@ which is the path from Country A to Country B.
 
 ```python
 cross_border_query = """
-    SELECT 
+    SELECT
         issuer_country as origin,
         merchant_country as destination,
         count(*) as transaction_count,
@@ -186,13 +186,13 @@ cross_border_df = spark.sql(cross_border_query)
 cross_border_df.show(5)
 ```
 
-|origin|destination|transaction_count|total_volume|
-|------|-----------|-----------------|------------|
-|   CAN|        AUS|            10260|  2602635.12|
-|   GBR|        CAN|            10224|  2584589.64|
-|   CHN|        IND|            10097|   2580652.0|
-|   CHN|        BRA|            10186|  2574164.64|
-|   CHN|        GBR|            10096|  2572917.47|
+| origin | destination | transaction_count | total_volume |
+| ------ | ----------- | ----------------- | ------------ |
+| CAN    | AUS         | 10260             | 2602635.12   |
+| GBR    | CAN         | 10224             | 2584589.64   |
+| CHN    | IND         | 10097             | 2580652.0    |
+| CHN    | BRA         | 10186             | 2574164.64   |
+| CHN    | GBR         | 10096             | 2572917.47   |
 
 ## Optimizing with Broadcast Joins
 
@@ -211,18 +211,18 @@ WITH regional_data AS (
             WHEN issuer_country IN ('USA', 'CAN', 'MEX') THEN 'NAM'
             WHEN issuer_country IN ('GBR', 'FRA', 'DEU', 'ITA', 'ESP') THEN 'EMEA'
             WHEN issuer_country IN ('CHN', 'IND', 'AUS', 'JPN', 'SGP') THEN 'AP'
-            ELSE 'Other' 
+            ELSE 'Other'
         END as region,
         amount
     FROM transactions
 )
-SELECT 
-    region,        
+SELECT
+    region,
     count(*) as TxnCount,
     round(sum(amount), 2) as total_volume
-    
+
 FROM regional_data
-GROUP BY 
+GROUP BY
     region
 ORDER BY total_volume DESC
 ```
@@ -271,8 +271,8 @@ from pyspark.sql.functions import broadcast
 
 # Use 'left' join in case a country in the transactions isn't in our lookup table
 enriched_df = df.join(
-    broadcast(region_lookup_df), 
-    df.issuer_country == region_lookup_df.country_code, 
+    broadcast(region_lookup_df),
+    df.issuer_country == region_lookup_df.country_code,
     "left"
 )
 
@@ -284,12 +284,12 @@ result_df = enriched_df.groupBy("region_name") \
 result_df.show()
 ```
 
-|region_name|        total_volume|
-|-----------|--------------------|
-|       NULL| 2.510945275000003E7|
-|        NAM|5.0423531000000134E7|
-|       EMEA| 7.566844766000012E7|
-|         AP| 1.009712831499999E8|
+| region_name | total_volume         |
+| ----------- | -------------------- |
+| NULL        | 2.510945275000003E7  |
+| NAM         | 5.0423531000000134E7 |
+| EMEA        | 7.566844766000012E7  |
+| AP          | 1.009712831499999E8  |
 
 ### Verification via The Execution Plan
 
