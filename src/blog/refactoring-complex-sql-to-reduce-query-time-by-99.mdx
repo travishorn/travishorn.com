@@ -86,7 +86,7 @@ FROM
     transactions t
 WHERE
     u.user_id = t.user_id
-    Bad date filtering prevents index usage if function is applied to column
+    -- Bad date filtering prevents index usage if function is applied to column
     AND t.txn_date >= NOW() - INTERVAL '5 years'
 GROUP BY
     u.region, u.username
