@@ -2,7 +2,9 @@
 import "@fontsource-variable/source-code-pro";
 import sourceCodeProWoff2 from "@fontsource-variable/source-code-pro/files/source-code-pro-latin-wght-normal.woff2?url";
 import "../styles/global.css";
+import { getImage } from "astro:assets";
 import { siteTitle, siteDescription } from "../site";
+import defaultCover from "../blog/images/default-cover.webp";
 
 interface Props {
   title?: string;
@@ -11,9 +13,11 @@ interface Props {
 }
 const { title, description, ogImage } = Astro.props as Props;
 
+const optimizedDefaultCover = await getImage({ src: defaultCover });
+
 const pageTitle = title ?? siteTitle;
 const pageDescription = description ?? siteDescription;
-const pageOgImage = ogImage || "/images/default-cover.jpg";
+const pageOgImage = ogImage || optimizedDefaultCover.src;
 ---
 
 <html lang="en">

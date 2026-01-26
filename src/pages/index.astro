@@ -4,8 +4,13 @@ import Layout from "../layouts/Layout.astro";
 import AboutMe from "../components/AboutMe.astro";
 import PostCard from "../components/PostCard.astro";
 import type { CollectionEntry } from "astro:content";
+import { getImage } from "astro:assets";
+import homeCover from "../blog/images/travis-horn-og.webp";
 
 const posts: CollectionEntry<"blog">[] = await getCollection("blog");
+
+const optimizedHomeCover = await getImage({ src: homeCover });
+const pageOgImage = optimizedHomeCover.src;
 
 const latestPosts = posts
   .filter((post) => !post.data.draft)
@@ -15,7 +20,7 @@ const latestPosts = posts
   .slice(0, 3);
 ---
 
-<Layout>
+<Layout ogImage={pageOgImage}>
   <main class="flex flex-col gap-12">
     <AboutMe />
 

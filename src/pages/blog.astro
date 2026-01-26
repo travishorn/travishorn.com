@@ -1,34 +1,32 @@
 ---
 import { getCollection } from "astro:content";
-import { getImage } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
-import { siteTitle } from '../site';
-import defaultCover from '../blog/images/default-cover.jpg';
+import { siteTitle } from "../site";
 import type { CollectionEntry } from "astro:content";
+import { getImage } from "astro:assets";
+import homeCover from "../blog/images/travis-horn-og.webp";
 
 const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 
+const optimizedHomeCover = await getImage({ src: homeCover });
+const pageOgImage = optimizedHomeCover.src;
+
 const sortedPosts = posts
-	.filter((post) => !post.data.draft)
-	.sort(
-	(a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf()
-	);
+  .filter((post) => !post.data.draft)
+  .sort(
+    (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
+  );
 
 const pageTitle = `Blog - ${siteTitle}`;
-const pageDescription = "Explore my blog posts on web development, programming, and technical topics.";
-const optimizedCover = await getImage({ src: defaultCover });
-const pageOgImage = optimizedCover.src;
+const pageDescription =
+  "Explore my blog posts on web development, programming, and technical topics.";
 ---
 
 <Layout title={pageTitle} description={pageDescription} ogImage={pageOgImage}>
-	<main class="flex flex-col gap-12">
-		<div class="flex flex-col gap-6">
-			{
-			sortedPosts.map((post) => (
-				<PostCard post={post} />
-			))
-			}
-		</div>
-	</main>
+  <main class="flex flex-col gap-12">
+    <div class="flex flex-col gap-6">
+      {sortedPosts.map((post) => <PostCard post={post} />)}
+    </div>
+  </main>
 </Layout>
