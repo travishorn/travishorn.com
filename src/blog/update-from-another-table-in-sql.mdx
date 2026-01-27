@@ -3,25 +3,42 @@ title: "Update from Another Table in SQL"
 datePublished: 2017-10-26T22:01:00+00:00
 cover: ./images/D-9Gc1akf.webp
 tags: ["programming", "databases", "sql"]
-
 ---
 
+I'm always finding myself in the same position: I have a table with two or more
+columns. I need to fill in one of those columns based on another one. However,
+the data I need is in a separate table.
 
+Here is an example of this scenario. Say we have two tables with two columns
+each.
 
+Table: **people**
 
-I'm always finding myself in the same position: I have a table with two or more columns. I need to fill in one of those columns based on another one. However, the data I need is in a separate table.
+| id  | name          |
+| --- | ------------- |
+| 0   | Donald Smith  |
+| 1   | Louis Clark   |
+| 2   | Henry Curtin  |
+| 3   | Jeffrey Odell |
+| 4   | Thelma Logan  |
 
-![](./images/ZC7BXBMVO.webp)
+Table: **scores**
 
-Here is an example of this scenario. Say we have two tables with two columns each.
+| personId | score |
+| -------- | ----- |
+| 2        | 77    |
+| 3        | 78    |
+| 1        | 99    |
+| 4        | 79    |
+| 0        | 88    |
 
-![Two tables in our database](./images/RiHLJeTn_.webp)*Two tables in our database*
+Each record in the `people` table has an `id` and a `name`. Each record in the
+`scores` table has a `personId` which is linked `people.id` and a `score`.
 
-Each record in the `people` table has an `id` and a `name`. Each record in the `scores` table has a `personId` which is linked `people.id` and a `score`.
+If we wanted to retrieve data containing `name`s next to `score`s, we could do
+this easily with a `JOIN`:
 
-If we wanted to retrieve data containing `name`s next to `score`s, we could do this easily with a `JOIN`:
-
-```
+```sql
 SELECT    p.name,
           s.score
 FROM      people p
@@ -29,18 +46,32 @@ JOIN      scores s
 ON        p.id = s.personId
 ```
 
+| name          | score |
+| ------------- | ----- |
+| Donald Smith  | 88    |
+| Louis Clark   | 99    |
+| Henry Curtin  | 77    |
+| Jeffrey Odell | 78    |
+| Thelma Logan  | 79    |
 
-![The query result showing names and scores](./images/7YrNHxFWp.webp)*The query result showing names and scores*
+But what happens when our project calls for a change: names are now required to
+be stored in the `scores` table. After adding the new column, how do we insert
+the data?
 
-But what happens when our project calls for a change: names are now required to be stored in the `scores` table. After adding the new column, how do we insert the data?
+| personId | score | name |
+| -------- | ----- | ---- |
+| 2        | 77    | NULL |
+| 3        | 78    | NULL |
+| 1        | 99    | NULL |
+| 4        | 79    | NULL |
+| 0        | 88    | NULL |
 
-![All names are null](./images/0W4HRKKXo.webp)*All names are null*
-
-We need to update one table based on another. This can be solved using an `UPDATE` with a `JOIN`.
+We need to update one table based on another. This can be solved using an
+`UPDATE` with a `JOIN`.
 
 ### MSSQL
 
-```
+```sql
 UPDATE        scores
 SET           scores.name = p.name
 FROM          scores s
@@ -48,26 +79,31 @@ INNER JOIN    people p
 ON            s.personId = p.id
 ```
 
-
 ### MySQL
 
-```
+```sql
 UPDATE    scores s,
           people p
 SET       scores.name = people.name
 WHERE     s.personId = p.id
 ```
 
-
 And our `scores` table is complete!
 
-![Scores table with person names](./images/2HHZiW8ND.webp)*Scores table with person names*
+| personId | score | name          |
+| -------- | ----- | ------------- |
+| 2        | 77    | Henry Curtin  |
+| 3        | 78    | Jeffrey Odell |
+| 1        | 99    | Louis Clark   |
+| 4        | 79    | Thelma Logan  |
+| 0        | 88    | Donald Smith  |
 
-The commands above work for this specific scenario. For more generic versions of the same command, see below.
+The commands above work for this specific scenario. For more generic versions of
+the same command, see below.
 
 ### Generic MSSQL
 
-```
+```sql
 UPDATE        targetTable
 SET           targetTable.targetColumn = s.sourceColumn
 FROM          targetTable t
@@ -75,10 +111,9 @@ INNER JOIN    sourceTable s
 ON            t.matchingColumn = s.matchingColumn
 ```
 
-
 ### Generic MySQL
 
-```
+```sql
 UPDATE    targetTable t,
           sourceTable s
 SET       targetTable.targetColumn = sourceTable.sourceColumn

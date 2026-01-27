@@ -6,10 +6,11 @@ My personal profile and blog.
 
 ## To Do
 
-- Old article cleanup (start with "Vue Online Store..." and work your way newer)
+- Old article cleanup (start with "Customizing Bootstrap Styles..." and work your way newer)
   - Remove extra cover photo (move credit to end, delete duplicate webp file)
   - Add alt text to images
   - Add language to code blocks
   - Replace previews (unsupported `%[]` synax) with links.
   - Replace &gt; and &lt; with `<` and `>` (make sure they're wrapped in
     backticks)
+- Resize cover images to 1200 x 630
