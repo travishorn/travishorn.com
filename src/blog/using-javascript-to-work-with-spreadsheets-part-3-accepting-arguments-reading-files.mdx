@@ -254,7 +254,7 @@ Save and run the file.
 
 ![](./images/V6Ekj3DPt.webp)
 
-Okay getting closer, but we were expecting the text in the file, not `&lt;Buffer 42 65 20 6e 6f...&gt;`. It looks like the data returned is a Buffer.
+Okay getting closer, but we were expecting the text in the file, not `<Buffer 42 65 20 6e 6f...>`. It looks like the data returned is a Buffer.
 
 We can check [the Node.js documentation to see what a Buffer is](https://nodejs.org/docs/latest-v14.x/api/buffer.html). It is a type of object used to represent sequences of bytes. I see in the documentation that buffers have a method called `toString()` which will decode the buffer into a string.
 

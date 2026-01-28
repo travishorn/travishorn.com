@@ -13,13 +13,13 @@ title: Getting Started with Vue Single File Components
 
 If you're just starting out with Vue and you've followed along with the official guide, it begins by detailing how to use Vue in the easiest way possible: including the library directly using the `<script>` tag. This is a very fast way to get started. It's effective for new users.
 
-Eventually, you'll discover a need for components. While you *can* still use the direct`&lt;script&gt;` method with components, it would be wise to start thinking about switching over to [Single File Components](https://vuejs.org/v2/guide/single-file-components.html) — or SFCs.
+Eventually, you'll discover a need for components. While you *can* still use the direct`<script>` method with components, it would be wise to start thinking about switching over to [Single File Components](https://vuejs.org/v2/guide/single-file-components.html) — or SFCs.
 
 ![](./images/lWm7EFU5z.webp)
 
 ### First, what is a component?
 
-Components are a powerful way to write re-usable code with Vue. If you're adding Vue to your page via direct `&lt;script&gt;` include, you define a component like this:
+Components are a powerful way to write re-usable code with Vue. If you're adding Vue to your page via direct `<script>` include, you define a component like this:
 
 ```
 Vue.component('person-greeter', {
@@ -51,13 +51,13 @@ SFCs are components (just like above) except they are self-contained in their ow
 
 ### Why should I use SFCs over the method above?
 
-* **More naming flexibility **— As you can see above, components built using direct `&lt;script&gt;` include must be registered using `Vue.component`. They are all *globally* registered. This forces all component names to be unique. Single file components are registered using a different method that allows you can name them however you wish. For example: If you are using two libraries that share component names, you have a way to handle that with SFCs.
+* **More naming flexibility **— As you can see above, components built using direct `<script>` include must be registered using `Vue.component`. They are all *globally* registered. This forces all component names to be unique. Single file components are registered using a different method that allows you can name them however you wish. For example: If you are using two libraries that share component names, you have a way to handle that with SFCs.
 
 * **Prettier templates **— Components registered using `Vue.component` must have a `template` property which is a string that describes the template. With SFCs, you can code the template more naturally in your editor instead of using a single string. Most modern editors can even syntax highlight templates just as if you were writing regular HTML.
 
 * **Component styling** — Take another look at the component above. You can see the HTML and JavaScript that make up the component. But CSS, if you wanted to add any, would have to be included separately. SFCs provide a method to code the component's CSS with the component itself.
 
-* **Pre-processor support** —It's not so easy to use pre-processors like Babel, Pug, or SASS with the direct `&lt;script&gt;` method. This problem is solved with SFCs.
+* **Pre-processor support** —It's not so easy to use pre-processors like Babel, Pug, or SASS with the direct `<script>` method. This problem is solved with SFCs.
 
 ### What does an SFC look like?
 
@@ -155,7 +155,7 @@ When serving and building our site, the Vue CLI service will look for an HTML fi
 ```
 
 
-Take note of the `&lt;div id="app"&gt;`. This will be our root element.
+Take note of the `<div id="app">`. This will be our root element.
 
 Now for the Vue app itself. Create a new directory called `src` alongside `public` (**not** inside it). The first file in this directory will be `main.js`. Create it now.
 
@@ -169,7 +169,7 @@ new Vue({
 ```
 
 
-When building our app, the build tool will look at this file first to figure out how to build the rest of the app. You can see here that we're pulling in Vue and another file (`App.vue` — which we'll create in a moment). Then, we're instantiating a new Vue instance which will render our app and place it in the root `&lt;div id="app"&gt;` element we wrote earlier in HTML.
+When building our app, the build tool will look at this file first to figure out how to build the rest of the app. You can see here that we're pulling in Vue and another file (`App.vue` — which we'll create in a moment). Then, we're instantiating a new Vue instance which will render our app and place it in the root `<div id="app">` element we wrote earlier in HTML.
 
 Since `main.js` is looking for `App.vue`, let's create that.
 

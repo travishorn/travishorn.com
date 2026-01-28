@@ -348,14 +348,14 @@ And `forecast` looks like this:
 
 ### Plot the data on a line chart
 
-In your HTML `&lt;body&gt;`, add an `&lt;svg&gt;` element to attach the chart to.
+In your HTML `<body>`, add an `<svg>` element to attach the chart to.
 
 ```
 <svg id="chart" viewBox="0 0 1000 500"></svg>
 ```
 
 
-Back in JavaScript, grab the `&lt;svg&gt;` element, set margins and other dimensions, and append an inner `&lt;g&gt;` element within the margins.
+Back in JavaScript, grab the `<svg>` element, set margins and other dimensions, and append an inner `<g>` element within the margins.
 
 ```
 const chart = d3.select('#chart');

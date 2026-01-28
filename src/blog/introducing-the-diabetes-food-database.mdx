@@ -305,9 +305,9 @@ The chart is probably the trickiest part to understand. It's made up of three el
 
 * the indicator text ("Avoid", "Caution", etc)
 
-The rectangle uses a linear gradient defined in the SVG's `&lt;defs&gt;`.
+The rectangle uses a linear gradient defined in the SVG's `<defs>`.
 
-The indicator triangle and text are simple to understand until it comes to positioning them. For that, I grouped them up with a `&lt;g&gt;` and `translate`d it based on an equation.
+The indicator triangle and text are simple to understand until it comes to positioning them. For that, I grouped them up with a `<g>` and `translate`d it based on an equation.
 
 ```
 indicatorTranslation() {

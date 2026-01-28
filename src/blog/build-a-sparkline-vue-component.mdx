@@ -64,9 +64,9 @@ export default {
 ```
 
 
-Notice the root element of the component is an `&lt;svg&gt;`. This is the element we'll bind D3 to when creating the chart. You can also see that the `&lt;svg&gt;` has a `viewBox` of `0 0 200 40`. This gives it the dimensions of 200 pixels wide by 40 pixels tall. The actual width and height are determined by the element's container, but the 200 x 40 `viewBox` gives it a good height to width ratio for a sparkline chart.
+Notice the root element of the component is an `<svg>`. This is the element we'll bind D3 to when creating the chart. You can also see that the `<svg>` has a `viewBox` of `0 0 200 40`. This gives it the dimensions of 200 pixels wide by 40 pixels tall. The actual width and height are determined by the element's container, but the 200 x 40 `viewBox` gives it a good height to width ratio for a sparkline chart.
 
-Finally, there is a `&lt;path&gt;` inside the `&lt;svg&gt;`. This is our actual line. For right now, it's just a hard-coded, perfectly straight, horizontal line.
+Finally, there is a `<path>` inside the `<svg>`. This is our actual line. For right now, it's just a hard-coded, perfectly straight, horizontal line.
 
 We can see our progress so far by putting our component in the main `App.vue`. In that file, replace everything in the template with…
 
@@ -99,7 +99,7 @@ export default {
 
 You may notice how we just changed `HelloWorld` to `SparkLine`. Everything else is the same.
 
-Since we cleared out the template, we no longer need the default styles. So feel free to remove everything from the `&lt;style&gt;` section.
+Since we cleared out the template, we no longer need the default styles. So feel free to remove everything from the `<style>` section.
 
 Now run the development server.
 
@@ -142,7 +142,7 @@ We can pass data into the component back in `App.vue` like so:
 ```
 
 
-Note that the line above replaces the existing `&lt;SparkLine /&gt;`. Also note that these are just random values I made up. Feel free to use whatever you like.
+Note that the line above replaces the existing `<SparkLine />`. Also note that these are just random values I made up. Feel free to use whatever you like.
 
 Now it's time to use [D3.js](https://d3js.org/) to bind data to the line. First, install D3.
 
@@ -151,7 +151,7 @@ npm i d3
 ```
 
 
-Then, in `SparkLine.vue`, import it at the top of the `&lt;script&gt;` section.
+Then, in `SparkLine.vue`, import it at the top of the `<script>` section.
 
 ```
 import * as d3 from "d3";
@@ -273,9 +273,9 @@ export default {
 
 And now our component can react to data changes!
 
-While all of this works as a single component, there's one important bug that we have to fix if we want to re-use this component more than once on the same page. Right now, we have D3 selecting the sole `&lt;svg&gt;` element on the page. If you have more than one `&lt;svg&gt;` on the same page, D3 is just going to select the first one it finds. This is no good. We want to select the `&lt;svg&gt;` in *this* component.
+While all of this works as a single component, there's one important bug that we have to fix if we want to re-use this component more than once on the same page. Right now, we have D3 selecting the sole `<svg>` element on the page. If you have more than one `<svg>` on the same page, D3 is just going to select the first one it finds. This is no good. We want to select the `<svg>` in *this* component.
 
-To do that, we can assign our `&lt;svg&gt;` a unique ID.
+To do that, we can assign our `<svg>` a unique ID.
 
 First, install [nanoid](https://github.com/ai/nanoid).
 
@@ -284,7 +284,7 @@ npm i nanoid
 ```
 
 
-Import it into our component at the top of the `&lt;script&gt;` section.
+Import it into our component at the top of the `<script>` section.
 
 ```
 import { nanoid } from "nanoid";
@@ -310,7 +310,7 @@ export default {
 
 We use the template string ``chart-${nanoid()}`` so that our random id is in the format `chart-kHM_8K1yz8GGq6MVBwfoG` or `chart-VG5J13fYZIdMBrSDRuEBX` for example. It's always random.
 
-In the template, set the `&lt;svg&gt;`'s `id` to this new id.
+In the template, set the `<svg>`'s `id` to this new id.
 
 ```
 <svg :id="id" viewBox="0 0 200 40">

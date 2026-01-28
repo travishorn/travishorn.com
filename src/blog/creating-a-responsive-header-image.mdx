@@ -105,9 +105,9 @@ The header is cut off. On extra small devices like this (portrait phones) with a
 
 ![](./images/UPicdatP3.webp)
 
-To get *this* image to show on extra small devices, but the *other* image on larger screens, we can use the `&lt;picture&gt;` and `&lt;source&gt;` elements.
+To get *this* image to show on extra small devices, but the *other* image on larger screens, we can use the `<picture>` and `<source>` elements.
 
-I replace the `&lt;img&gt;` in the `&lt;header&gt;` with a `&lt;picture&gt;` element.
+I replace the `<img>` in the `<header>` with a `<picture>` element.
 
 ```
 <header>
@@ -118,7 +118,7 @@ I replace the `&lt;img&gt;` in the `&lt;header&gt;` with a `&lt;picture&gt;` ele
 ```
 
 
-Inside the `&lt;picture&gt;`, we'll place a couple `&lt;sources&gt;`.
+Inside the `<picture>`, we'll place a couple `<sources>`.
 
 ```
 <header>
@@ -134,7 +134,7 @@ Inside the `&lt;picture&gt;`, we'll place a couple `&lt;sources&gt;`.
 
 You can see that `header-576.webp` will be displayed on screens up to 576 maximum width. The other image — `header-2560.webp` — will be shown on devices 577 pixels and up.
 
-In addition to these two sources, I'll also add the big original header as a fallback in an `&lt;img&gt;` element.
+In addition to these two sources, I'll also add the big original header as a fallback in an `<img>` element.
 
 ```
 <header>
@@ -149,9 +149,9 @@ In addition to these two sources, I'll also add the big original header as a fal
 ```
 
 
-I add this fallback because `&lt;picture&gt;` isn't quite supported across the board. Here's the compatibility table at the time of this writing.
+I add this fallback because `<picture>` isn't quite supported across the board. Here's the compatibility table at the time of this writing.
 
-![Can I use… compatibility table for &lt;picture&gt; element](./images/1_Ix6ozcuhu5k0I7NFIvXQKQ.webp)*[Can I use… compatibility table for &lt;picture&gt; element](https://caniuse.com/#feat=picture)*
+![Can I use… compatibility table for <picture> element](./images/1_Ix6ozcuhu5k0I7NFIvXQKQ.webp)*[Can I use… compatibility table for <picture> element](https://caniuse.com/#feat=picture)*
 
 Now that we've made our header more responsive, here's how it looks on extra small devices.
 
@@ -167,7 +167,7 @@ Create a 922 x 100 pixel header.
 
 ![](./images/AYpNlMdXl.webp)
 
-And add the `&lt;source&gt;`.
+And add the `<source>`.
 
 ```
 <picture>
@@ -182,7 +182,7 @@ And add the `&lt;source&gt;`.
 ```
 
 
-Note the additional change to the `min-width` of the largest `&lt;source&gt;`. It's always 1 pixel higher than the previous `max-width`.
+Note the additional change to the `min-width` of the largest `<source>`. It's always 1 pixel higher than the previous `max-width`.
 
 The images are dynamic, too. If the user's viewport changes, the image automatically changes.
 

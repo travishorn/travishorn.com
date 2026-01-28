@@ -12,15 +12,18 @@ tags:
 title: Sunrise Block Clock
 ---
 
-I came up with the idea for a digital clock where the background was divided into 1,440 blocks — one for each minute of the day. Initially all blocks are shaded, but as each minute passes, the block representing that minute would brighten up.
+I came up with the idea for a digital clock where the background was divided
+into 1,440 blocks — one for each minute of the day. Initially all blocks are
+shaded, but as each minute passes, the block representing that minute would
+brighten up.
 
-I ended up building it and giving the blocks a sunrise-like gradient look. I call it the **Sunrise Block Clock**. Follow along and I'll show you how it's made.
-
-![](./images/sQrg-teEd.webp)
+I ended up building it and giving the blocks a sunrise-like gradient look. I
+call it the **Sunrise Block Clock**. Follow along and I'll show you how it's
+made.
 
 I started out by creating `index.html` with boilerplate HTML.
 
-```
+```html
 <!doctype html>
 <html lang="en">
   <head>
@@ -35,14 +38,12 @@ I started out by creating `index.html` with boilerplate HTML.
 </html>
 ```
 
-
-In the `&lt;head&gt;` section, I added…
+In the `<head>` section, I added…
 
 * the Roboto font from Google
-
 * A custom stylesheet
 
-```
+```html
 <head>
   <!-- snip -->
 
@@ -51,16 +52,13 @@ In the `&lt;head&gt;` section, I added…
 </head>
 ```
 
+In the `<body>` section, I added…
 
-In the `&lt;body&gt;` section, I added…
-
-* An `&lt;svg&gt;` element to build the clock upon
-
+* An `<svg>` element to build the clock upon
 * Vue.js
-
 * A custom JS file
 
-```
+```html
 <body>
   <svg id="chart"></svg>
 
@@ -69,10 +67,9 @@ In the `&lt;body&gt;` section, I added…
 </body>
 ```
 
-
 Then, I created `app.css` with some basic styles.
 
-```
+```css
 body {
   text-align: center;
   padding: 50px;
@@ -89,10 +86,9 @@ p {
 }
 ```
 
-
 Next, I created `app.js` with a Vue app skeleton.
 
-```
+```javascript
 new Vue({
   el: '#chart',
 
@@ -108,10 +104,10 @@ new Vue({
 });
 ```
 
+The `<svg>` element will get it's `width` and `height` from Vue. In
+`app.js`:
 
-The `&lt;svg&gt;` element will get it's `width` and `height` from Vue. In `app.js`:
-
-```
+```javascript
 data: {
   width: 600,
 },
@@ -121,19 +117,19 @@ computed: {
 },
 ```
 
-
 And in `index.html`:
 
-```
+```html
 <svg id="chart"
      :width="width"
      :height="height">
 ```
 
 
-The entire `&lt;svg&gt;` element's background gets filled with a sunrise-like gradient.
+The entire `<svg>` element's background gets filled with a sunrise-like
+gradient.
 
-```
+```html
 <svg <!-- snip --> >
   <defs>
     <linearGradient id="sunrise" x1="0" y1="0" x2="0" y2="1">
@@ -149,19 +145,20 @@ The entire `&lt;svg&gt;` element's background gets filled with a sunrise-like gr
 </svg>
 ```
 
+![A gradient moving from sky blue, to peach, to more reddish peach from top to
+bottom](./images/aExfjlKKI.webp)
 
-![](./images/aExfjlKKI.webp)
+Inside the `<svg>` and after this background`<rect>`, I created a
+`<g>` for each hour of the day.
 
-Inside the `&lt;svg&gt;` and after this background`&lt;rect&gt;`, I created a `&lt;g&gt;` for each hour of the day.
-
-```
+```svg
 <g v-for="hIndex in 24"></g>
 ```
 
+Inside that, I created a `<rect>` for each minute in the hour. These will
+be the "blocks". They all have a semi-transparent outline (`stroke`).
 
-Inside that, I created a `&lt;rect&gt;` for each minute in the hour. These will be the "blocks". They all have a semi-transparent outline (`stroke`).
-
-```
+```svg
 <g v-for="hIndex in 24">
   <rect stroke="rgba(0, 0, 0, 0.05)"
         v-for="mIndex in 60" />
@@ -169,13 +166,16 @@ Inside that, I created a `&lt;rect&gt;` for each minute in the hour. These will 
 ```
 
 
-In order to position the blocks, I needed a way to get the width and height for each block.
+In order to position the blocks, I needed a way to get the width and height for
+each block.
 
-There will be 24 rows of 60 blocks each. Basically, the width should be the total width divided by 60 and the height should be the total height divided by 24.
+There will be 24 rows of 60 blocks each. Basically, the width should be the
+total width divided by 60 and the height should be the total height divided by
+24.
 
 We can get these values with computed properties.
 
-```
+```javascript
 computed: {
   /* snip */
 
@@ -184,22 +184,23 @@ computed: {
 },
 ```
 
-
 Now the width and height can be set.
 
-```
+```svg
 <rect stroke="rgba(0, 0, 0, 0.05)"
       v-for="mIndex in 60"
       :width="minuteWidth"
       :height="minuteHeight" />
 ```
 
+![The same gradient, but with a black rectangle in the upper left corner. The
+rectangle is slightly taller than it is wide](./images/5TpRfPtoU.webp)
 
-![](./images/5TpRfPtoU.webp)
+The blocks are all drawn, but stacked on top of each other in the upper left
+corner. I had to use a little bit of math to position them along the x and y
+grid.
 
-The blocks are all drawn, but stacked on top of each other in the upper left corner. I had to use a little bit of math to position them along the x and y grid.
-
-```
+```svg
 <rect
   <!-- snip -->
 
@@ -207,14 +208,18 @@ The blocks are all drawn, but stacked on top of each other in the upper left cor
   :y="(hIndex - 1) * minuteHeight" />
 ```
 
+![An almost completely black image with some lighter lines indicating that the
+solid black is actually a grid of black rectangles](./images/YGSaeJuIb4.webp)
 
-![](./images/YGSaeJuIb4.webp)
+Looking good so far. The blocks are positioned correctly. At this moment, they
+are all filled with a black color. Now it's just a matter of setting that fill
+color to be more transparent.
 
-Looking good so far. The blocks are positioned correctly. At this moment, they are all filled with a black color. Now it's just a matter of setting that fill color to be more transparent.
+Since the transparency of each block depends on the time, I needed to figure out
+how many minutes have passed since the beginning of the day. This was easy with
+a computed property.
 
-Since the transparency of each block depends on the time, I needed to figure out how many minutes have passed since the beginning of the day. This was easy with a computed property.
-
-```
+```javascript
 data: {
   /* snip */
 
@@ -236,28 +241,37 @@ computed: {
 },
 ```
 
+The `now` property is set to the current timestamp (when the app is loaded).
+Inside `minutesPassed()`, the `beginningOfDay` date is set to midnight of the
+current day.
 
-The `now` property is set to the current timestamp (when the app is loaded). Inside `minutesPassed()`, the `beginningOfDay` date is set to midnight of the current day.
-
-Subtracting `beginningOfDay` from `this.now` gives us the number of milliseconds that have passed since the beginning of the day. Dividing this by 1000 and then again by 60 gives us the number of minutes that have passed since the beginning of the day.
+Subtracting `beginningOfDay` from `this.now` gives us the number of milliseconds
+that have passed since the beginning of the day. Dividing this by 1000 and then
+again by 60 gives us the number of minutes that have passed since the beginning
+of the day.
 
 Now we can set the `fill` value on each block based on this value.
 
-```
+```svg
 <rect
   <!-- snip -->
 
   :fill="((hIndex * 60) + mIndex) > minutesPassed ? 'rgba(0, 0, 0, 0.33)' : 'none'" />
 ```
 
+This line is a little complex but it basically means that if the current blocks
+minute representation is greater than the number of minutes that have passed
+since the beginning of the day, make it semi-transparent. Otherwise, make it
+fully transparent.
 
-This line is a little complex but it basically means that if the current blocks minute representation is greater than the number of minutes that have passed since the beginning of the day, make it semi-transparent. Otherwise, make it fully transparent.
+![The black rectangles have been made more transparent so the gradient appears
+through them. In the top half of the image, the black rectangles are more
+transparent. On the bottom half, they are less transparent, appearing
+darker](./images/gYkSDEKKY.webp)
 
-![](./images/gYkSDEKKY.webp)
+To actually display the time in the middle, I used a `<text>` element.
 
-To actually display the time in the middle, I used a `&lt;text&gt;` element.
-
-```
+```html
 <svg <!-- snip --> >
   <!-- snip -->
 
@@ -269,47 +283,48 @@ To actually display the time in the middle, I used a `&lt;text&gt;` element.
 </svg>
 ```
 
+![A very long timestamp in ISO 8601 format, so long that it is cut off on the
+left and right, appears over the entire page](./images/ruqAU2dwD.webp)
 
-![](./images/ruqAU2dwD.webp)
-
-It works, but shows the time in ISO 8601 Extended Format. To make it more usable, I want to show a locally sensitive representation.
+It works, but shows the time in ISO 8601 Extended Format. To make it more
+usable, I want to show a locally sensitive representation.
 
 For this, I used a filter. In `app.js`:
 
-```
+```javascript
 filters: {
   localeTime(d) { return d.toLocaleTimeString(); },
 },
 ```
 
-
 And then in `index.html`:
 
-```
+```html
 <text
   :x="width / 2"
   :y="height / 2"
   text-anchor="middle"
-  alignment-baseline="middle">{{ now **| localeTime** }}</text>
+  alignment-baseline="middle">{{ now | localeTime }}</text>
 ```
 
+![The same timestamp, but now formatted for better human readability. Showing
+"12:32:05 PM"](./images/zntaR5FkW.webp)
 
-![](./images/zntaR5FkW.webp)
+The clock works great, but is static. To make it update automatically, I first
+created an `updateNow()` method.
 
-The clock works great, but is static. To make it update automatically, I first created an `updateNow()` method.
-
-```
+```javascript
 methods: {
   updateNow() { this.now = new Date(); },
 },
 ```
 
+And then set an interval to call this method every second once the app is
+mounted.
 
-And then set an interval to call this method every second once the app is mounted.
-
-```
+```javascript
 mounted() { setInterval(this.updateNow, 1000); },
 ```
 
-
-That's it! The finished product looks like this:
+That's it! The finished product and all code can be found in [this
+CodePen](https://codepen.io/travishorn/pen/MErBeg).

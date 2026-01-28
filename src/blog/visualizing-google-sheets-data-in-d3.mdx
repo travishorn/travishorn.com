@@ -21,7 +21,7 @@ Maybe you already have data in Google Sheets. If so, you may skip this section. 
 
 First, go to [Google Drive](https://drive.google.com) and log in if necessary.
 
-Click **New** &gt; **Google Sheets**
+Click **New** > **Google Sheets**
 
 Enter some data. Do not worry about formatting. In fact, the less formatting there is, the easier it will be understand the shape of the data. Keep it simple.
 
@@ -33,7 +33,7 @@ For my example, I typed in some random data about fake organizations.
 
 In order to pick it up using D3, we're going to have to "publish" the data in Google Sheets.
 
-Click **File** &gt; **Publish to web**
+Click **File** > **Publish to web**
 
 In the first dropdown menu, select the name of the sheet which contains your data. In my case, I didn't set a custom name, so my sheet is simply called **Sheet1**.
 
@@ -71,14 +71,14 @@ On an HTML page, create an SVG element to contain our chart. Make sure to give i
 ```
 
 
-At the bottom of the `&lt;body&gt;` element, below the `&lt;svg&gt;` element, include D3.
+At the bottom of the `<body>` element, below the `<svg>` element, include D3.
 
 ```
 <script src="https://d3js.org/d3.v5.min.js"></script>
 ```
 
 
-And below that, create a new `&lt;script&gt;` element that will hold all the rest of our visualization code.
+And below that, create a new `<script>` element that will hold all the rest of our visualization code.
 
 ```
 <script>
@@ -196,7 +196,7 @@ xAxis.selectAll(".domain, .tick line").remove();
 
 ![](./images/Zq0TFhp3D.webp)
 
-Let's "D3 join" our data with some container `&lt;g&gt;` elements.
+Let's "D3 join" our data with some container `<g>` elements.
 
 ```
 const value = chart.selectAll(".value")
@@ -207,7 +207,7 @@ const value = chart.selectAll(".value")
 ```
 
 
-Notice each `&lt;g&gt;` element is translated along the chart according to the x and y scales.
+Notice each `<g>` element is translated along the chart according to the x and y scales.
 
 Now we can append a rectangle to each value container.
 

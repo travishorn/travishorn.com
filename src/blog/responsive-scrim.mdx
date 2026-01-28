@@ -6,68 +6,95 @@ tags: ["css", "design-ui"]
 
 ---
 
-
-
-
-Overlaying text on an image, or even a solid color, can get tricky. The text can very easily become too difficult to read. Scrim is one technique used for applying text over any color or image.
-
-![Photo by Matthew Kane](./images/1_C7JLQvyfc6HEVQqNbrFeRA.webp)*Photo by [Matthew Kane](https://unsplash.com/@matthewkane)*
+Overlaying text on an image, or even a solid color, can get tricky. The text can
+very easily become too difficult to read. Scrim is one technique used for
+applying text over any color or image.
 
 ## The problem, illustrated
 
-![](./images/QYp6Yf3fu.webp)
+![A photo of a tiger with "lorem ipsum" sample text overlaid. The text is white
+and hard to read on the lighter parts of the tiger background
+image](./images/QYp6Yf3fu.webp)
 
-The text on the image above is hard to read. Especially over the light areas of the photo.
+The text on the image above is hard to read. Especially over the light areas of
+the photo.
 
 ## So just darken the text!
 
-![](./images/jagevQt-U.webp)
+![The text has been changed from white to black. It is still hard to read,
+especially on the darker parts of the tiger background
+image](./images/jagevQt-U.webp)
 
-Uhh, no. That's even worse. The font shows up great on the light parts of the photo, but not on the dark parts.
+Uhh, no. That's even worse. The font shows up great on the light parts of the
+photo, but not on the dark parts.
 
 ## A color in the middle
 
-![Yellow?](./images/vWCJ1hth9.webp)*Yellow?*
+![The text has been changed to yellow, but is still hard to read in
+places](./images/vWCJ1hth9.webp)*Yellow?*
 
-![Red?](./images/v0MrBxFpVH.webp)*Red?*
+![The text has been changed to red, but yet again is still hard to
+read](./images/v0MrBxFpVH.webp)*Red?*
 
-No color seems to work here. And even if we found one, that color wouldn't work for **all** images. So if you were trying to build a site that displays captions over thumbnails automatically, your only option would be to manually choose a color for each new thumbnail. Not to mention this eliminates nice, consistent design colors.
+No color seems to work here. And even if we found one, that color wouldn't work
+for **all** images. So if you were trying to build a site that displays captions
+over thumbnails automatically, your only option would be to manually choose a
+color for each new thumbnail. Not to mention this eliminates nice, consistent
+design colors.
 
 ## Another approach: solid text background
 
-![](./images/vceRgF5fR.webp)
+![A black rectangle has been added behind the white text, making it extremely
+visible, but blocking much of the tiger background
+image](./images/vceRgF5fR.webp)
 
-This actually works. The image is still there, and the text is readable. However, the text covers a huge portion of the photo. If the photo is important, this is a problem.
+This actually works. The image is still there, and the text is readable.
+However, the text covers a huge portion of the photo. If the photo is important,
+this is a problem.
 
 ## Crude scrim
 
 Scrim is using any device to reduce intensity and/or harshness of light.
 
-The black background color *really *reduces the intensity of light from the photo. It makes it non-existent. What about making that background half-transparent?
+The black background color *really *reduces the intensity of light from the
+photo. It makes it non-existent. What about making that background
+half-transparent?
 
-![](./images/S7Q9tn2y2.webp)
+![The black rectangle is now semi-transparent, allowing some of the tiger
+background image to show through, but still keeping the text
+legible](./images/S7Q9tn2y2.webp)
 
 This looks good and many web designers might stop here. But we can do better.
 
 ## Problem solved
 
-![](./images/Hg_0-hxSb.webp)
+![The black rectangle is gone, and replaced with a subtle darkening of the image
+in the middle around where the text appears](./images/Hg_0-hxSb.webp)
 
-This looks similar to our original image, except the text is somehow readable! What we did here is turn the blocky dark text background into an oval, reduced the opacity even further, and added a deep blur around it (blur of the dark text background, not the photo).
+This looks similar to our original image, except the text is somehow readable!
+What we did here is turn the blocky dark text background into an oval, reduced
+the opacity even further, and added a deep blur around it (blur of the dark text
+background, not the photo).
 
 And this works for almost any photo and color.
 
-![](./images/zkt6ZCtul.webp)
+![A composite set of images of various colors, patterns, and subjects, all with
+the same lorem ipsum text in white and shadowed with a subtle scrim for
+legibility](./images/zkt6ZCtul.webp)
 
 ## So how do I use it?
 
-Say we have a panel that uses the tiger photo as its background, and white text in the foreground.
+Say we have a panel that uses the tiger photo as its background, and white text
+in the foreground.
 
-```
+```html
 <div class="panel panel-tiger">
   Lorem ipsum dolor sit amet.
 </div>
 
+```
+
+```css
 .panel {
   background-position: center;
   background-size: cover;
@@ -79,10 +106,9 @@ Say we have a panel that uses the tiger photo as its background, and white text 
 }
 ```
 
+The first step is to place the text inside an inner `<div>`.
 
-The first step is to place the text inside an inner `&lt;div&gt;`.
-
-```
+```html
 <div class="panel panel-tiger">
   <div class="scrim">
     Lorem ipsum dolor sit amet.
@@ -90,10 +116,9 @@ The first step is to place the text inside an inner `&lt;div&gt;`.
 </div>
 ```
 
-
 Now we can apply the scrim styles to this inner element.
 
-```
+```css
 .scrim {
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2);
@@ -101,21 +126,27 @@ Now we can apply the scrim styles to this inner element.
 }
 ```
 
+Setting that `border-radius` rounds the corners to much that the background
+forms an oval (or circle, if the panel is square).
 
-Setting that `border-radius` rounds the corners to much that the background forms an oval (or circle, if the panel is square).
+Setting that `background-color` makes the background completely black, but only
+20% opaque.
 
-Setting that `background-color` makes the background completely black, but only 20% opaque.
-
-Finally, the `box-shadow` creates a deep blur around the edges so the scrim appears as a gradient.
+Finally, the `box-shadow` creates a deep blur around the edges so the scrim
+appears as a gradient.
 
 ## Responsiveness
 
-The best part of all? Coding it this way makes it look good no matter if the screen and/or photo is large or small, wide or narrow.
+The best part of all? Coding it this way makes it look good no matter if the
+screen and/or photo is large or small, wide or narrow.
 
-![](./images/rv2gSn7ZS.webp)
+![A composite image. The top shows the tiger image again, but resized to be
+narrow and tall. The bottom is a solid red-orange background. In both, the text
+is still legible](./images/rv2gSn7ZS.webp)
 
 ## See it in action
 
-Take a look at the code below for live examples.
+[Take a look at this CodePen for live
+examples.](https://codepen.io/travishorn/pen/pZpaeE)
 
-%[https://codepen.io/travishorn/pen/pZpaeE]
+Cover photo by [Matthew Kane](https://unsplash.com/@matthewkane).

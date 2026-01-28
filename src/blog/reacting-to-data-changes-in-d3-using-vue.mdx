@@ -22,7 +22,7 @@ Follow along and we'll build something like this:
 
 ![A chart with three buttons to add, modify, and remove data points. (random data is used here)](./images/rfVON-MrMt.webp)*A chart with three buttons to add, modify, and remove data points. (random data is used here)*
 
-To get started, let's make a tiny page with some bare-bones HTML and an `&lt;svg&gt;` element. Make sure the `&lt;svg&gt;` has an `id`.
+To get started, let's make a tiny page with some bare-bones HTML and an `<svg>` element. Make sure the `<svg>` has an `id`.
 
 ```
 <!doctype html>
@@ -38,9 +38,9 @@ To get started, let's make a tiny page with some bare-bones HTML and an `&lt;svg
 ```
 
 
-Since we'll be using [Vue.js](https://vuejs.org/) and [D3.js](https://d3js.org/), let's make sure to include them. Ideally, you'd be using a build step to pull in these dependencies and bundle them. But for now, simple `&lt;script&gt;` tags will work.
+Since we'll be using [Vue.js](https://vuejs.org/) and [D3.js](https://d3js.org/), let's make sure to include them. Ideally, you'd be using a build step to pull in these dependencies and bundle them. But for now, simple `<script>` tags will work.
 
-Below the `&lt;svg&gt;` tag, add the scripts.
+Below the `<svg>` tag, add the scripts.
 
 ```
 <script src="[https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js](https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js)"></script>
@@ -79,7 +79,7 @@ const margin = {
 ```
 
 
-Use these dimensions to place a `&lt;g&gt;` element that respects our margins. All other chart elements will be placed inside this `&lt;g&gt;`, so we'll call it our `chart`.
+Use these dimensions to place a `<g>` element that respects our margins. All other chart elements will be placed inside this `<g>`, so we'll call it our `chart`.
 
 ```
 const chart = d3.select("#chart")
@@ -112,7 +112,7 @@ const y = d3.scaleLinear()
 
 Notice the first value of the y scale is the height, and the second value is 0. We want heavier weights at the top of the chart, and zero at the bottom.
 
-Now let's make some elements into which we can place the axes. We wont actually be placing the axes on the chart at this point, just the placeholder `&lt;g&gt;`s for them. Axes are another element that react to changes in data. If a new data point gets added where the age is older than any existing age in the chart, the x axis will have to adjust. Likewise for the y axis with weights.
+Now let's make some elements into which we can place the axes. We wont actually be placing the axes on the chart at this point, just the placeholder `<g>`s for them. Axes are another element that react to changes in data. If a new data point gets added where the age is older than any existing age in the chart, the x axis will have to adjust. Likewise for the y axis with weights.
 
 ```
 const xAxis = chart.append("g")
@@ -167,7 +167,7 @@ plot();
 
 There's only one more declaration we have to make in order to place dots on this chart.
 
-Back inside the `plot()` function, add the code for appending `&lt;circle&gt;` elements.
+Back inside the `plot()` function, add the code for appending `<circle>` elements.
 
 ```
 chart.selectAll(".point")
@@ -182,7 +182,7 @@ chart.selectAll(".point")
 
 If you are not familiar with D3.js and you're confused by the code above, you may consider reading up on [D3 data joins](https://observablehq.com/@d3/selection-join).
 
-Basically, we're binding all elements with a `class` of `point` to our data. The `.join()` here takes care of adding the appropriate elements if they don't yet exist, modifying elements if they do, and removing extra elements if there's more of them than there are data points. Once the elements and data are bound, we add a `&lt;circle&gt;` with an `r` (radius) of 5 pixels for each one.
+Basically, we're binding all elements with a `class` of `point` to our data. The `.join()` here takes care of adding the appropriate elements if they don't yet exist, modifying elements if they do, and removing extra elements if there's more of them than there are data points. Once the elements and data are bound, we add a `<circle>` with an `r` (radius) of 5 pixels for each one.
 
 The chart is now mostly usable.
 
@@ -194,7 +194,7 @@ The way we've coded this chart makes it easy to update when data changes. Every 
 
 This chart is great and all, but how is it usable in Vue.js?
 
-Just to get started, let's wrap our `&lt;svg&gt;` in a new `&lt;div&gt;` to which we can bind a Vue component.
+Just to get started, let's wrap our `<svg>` in a new `<div>` to which we can bind a Vue component.
 
 ```
 <div id="app">
@@ -351,7 +351,7 @@ To test this out, you can add a button that adds a new whale.
 ```
 
 
-Make sure the button is a child of `&lt;div id="app"&gt;` so it's part of the Vue app.
+Make sure the button is a child of `<div id="app">` so it's part of the Vue app.
 
 Now add a method that pushes a new randomly generated whale data point.
 

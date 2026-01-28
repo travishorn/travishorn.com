@@ -10,23 +10,25 @@ tags:
 title: Google-style gauge charts using D3
 ---
 
-Google provides a free charting library to display live charts on your site. It works pretty well but has some disadvantages:
+Google provides a free charting library to display live charts on your site. It
+works pretty well but has some disadvantages:
 
 * The library must be loaded from Google's servers
-
 * Loading can be slow at times
-
 * Limited customization
 
-All of their charts can be re-created using an open-source library like [D3.js](https://d3js.org/) but some of them are easier to re-create than others. Recently, I wanted to switch over a site that was using Google Charts's gauge chart. I didn't want to rely on Google anymore.
+All of their charts can be re-created using an open-source library like
+[D3.js](https://d3js.org/) but some of them are easier to re-create than others.
+Recently, I wanted to switch over a site that was using Google Charts's gauge
+chart. I didn't want to rely on Google anymore.
 
-![](./images/GPP7cZD01.webp)
+I was successful in re-creating the gauge chart with basic functionality using
+D3.js. Here's how to do it from start to finish.
 
-I was successful in re-creating the gauge chart with basic functionality using D3.js. Here's how to do it from start to finish.
+First, let's add some styles. These will mostly be colors, as sizes will be
+defined in JavaScript based on the container element's dimensions.
 
-First, let's add some styles. These will mostly be colors, as sizes will be defined in JavaScript based on the container element's dimensions.
-
-```
+```html
 <style>
   .gaugeChart-bezel-outer {
     fill: none;
@@ -62,35 +64,35 @@ First, let's add some styles. These will mostly be colors, as sizes will be defi
 </style>
 ```
 
+These colors resemble the Google chart, but feel free to modify them any way
+you'd like.
 
-These colors resemble the Google chart, but feel free to modify them any way you'd like.
+With styles out of the way, we can work on the JavaScript. The first order of
+business is to include D3.js.
 
-With styles out of the way, we can work on the JavaScript. The first order of business is to include D3.js.
-
-```
+```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
 ```
 
+Then, write an `<svg>` element that our chart will bind to. This element
+must have a `width` and `height`. For best results, make it square.
 
-Then, write an `&lt;svg&gt;` element that our chart will bind to. This element must have a `width` and `height`. For best results, make it square.
-
-```
+```html
 <svg id="memChart" width="110" height="110"></svg>
 ```
 
+Everything will be contained in a single function that accepts an options
+object.
 
-Everything will be contained in a single function that accepts an options object.
-
-```
+```javascript
 const gaugeChart = (o) => {
   /* Build the chart here */
 };
 ```
 
-
 This is how the function is called:
 
-```
+```javascript
 gaugeChart({
   el: '#memChart',
   label: 'Memory',
@@ -98,24 +100,23 @@ gaugeChart({
 });
 ```
 
+Inside the `gaugeChart()` function, use D3.js to select the `<svg>`
+element.
 
-Inside the `gaugeChart()` function, use D3.js to select the `&lt;svg&gt;` element.
-
-```
+```javascript
 const chart = d3.select(o.el);
 ```
 
-
 Now, get the width of this chart.
 
-```
+```javascript
 const width = chart.attr('width');
 ```
 
+We will now set a plethora of heights, widths, and spacing relative to this
+width.
 
-We will now set a plethora of heights, widths, and spacing relative to this width.
-
-```
+```javascript
 const center = width / 2;
 const outerBezelWidth = width * 0.009;
 const outerBezelRadius = center - outerBezelWidth;
@@ -131,45 +132,46 @@ const needleWidth = width * 0.054;
 const needleCapRadius = width * 0.059;
 ```
 
-
-Feel free to customize these numbers to change the sizing on any of the chart's components.
+Feel free to customize these numbers to change the sizing on any of the chart's
+components.
 
 Before we move on, we will also set some values for the ticks.
 
-```
+```javascript
 const tickSpacing = 13.5;
 const lastTickAngle = 135;
 let angle = -135;
 ```
 
-
-You may notice the last value is a variable rather than a constant. This is because we'll use it later in a loop to build the ticks around the gauge.
+You may notice the last value is a variable rather than a constant. This is
+because we'll use it later in a loop to build the ticks around the gauge.
 
 Next, we need a linear scale.
 
-The domain should be the min & max of the input data. By default, I made it 0 and 100, but this can also be set as an option when calling the function.
+The domain should be the min & max of the input data. By default, I made it 0
+and 100, but this can also be set as an option when calling the function.
 
-The range is going to be the angle of the first tick and the angle of the last tick.
+The range is going to be the angle of the first tick and the angle of the last
+tick.
 
-```
+```javascript
 const needleScale = d3.scaleLinear()
   .domain([o.min || 0, o.max || 100])
   .range([angle, lastTickAngle]);
 ```
 
-
 Using this scale, we can get the angle the corresponds to the input value.
 
-```
+```javascript
 const needleAngle = needleScale(o.value);
 ```
 
-
-With all of that out of the way, we can start adding elements to build the gauge.
+With all of that out of the way, we can start adding elements to build the
+gauge.
 
 First is the outer bezel (the thin black circle).
 
-```
+```javascript
 const outerBezel = chart.append('circle')
   .attr('class', 'gaugeChart-bezel-outer')
   .attr('cx', center)
@@ -178,10 +180,9 @@ const outerBezel = chart.append('circle')
   .attr('r', outerBezelRadius);
 ```
 
-
 Next is the face of the gauge (a white circle) inside the bezel.
 
-```
+```javascript
 const face = chart.append('circle')
   .attr('class', 'gaugeChart-face')
   .attr('cx', center)
@@ -189,10 +190,9 @@ const face = chart.append('circle')
   .attr('r', outerBezelRadius - 1);
 ```
 
-
 Next is the inner bezel (the gray circle) inside the outer bezel.
 
-```
+```javascript
 const innerBezel = chart.append('circle')
   .attr('class', 'gaugeChart-bezel-inner')
   .attr('cx', center)
@@ -201,10 +201,11 @@ const innerBezel = chart.append('circle')
   .attr('r', innerBezelRadius);
 ```
 
+Now, we can use a `while` loop to create the ticks. We loop until the angle is
+equal to or greater than the last tick angle, adding a tick mark during each
+iteration.
 
-Now, we can use a `while` loop to create the ticks. We loop until the angle is equal to or greater than the last tick angle, adding a tick mark during each iteration.
-
-```
+```javascript
 while (angle <= lastTickAngle) {
   chart.append('line')
     .attr('class', 'gaugeChart-tick')
@@ -219,12 +220,14 @@ while (angle <= lastTickAngle) {
 }
 ```
 
+You may notice that the tick marks are lines that extend from the center of the
+gauge to the outer edge.
 
-You may notice that the tick marks are lines that extend from the center of the gauge to the outer edge.
+We only want the tips of these lines showing, so add a new circle of the same
+color as the gauge face. This circle will be placed on top of the ticks to hide
+most of each of them. Only the outer tips will still be visible.
 
-We only want the tips of these lines showing, so add a new circle of the same color as the gauge face. This circle will be placed on top of the ticks to hide most of each of them. Only the outer tips will still be visible.
-
-```
+```javascript
 const tickHider = chart.append('circle')
   .attr('class', 'gaugeChart-tickHider')
   .attr('cx', center)
@@ -232,10 +235,9 @@ const tickHider = chart.append('circle')
   .attr('r', tickHiderRadius);
 ```
 
-
 Now the label.
 
-```
+```javascript
 const label = chart.append('text')
   .attr('class', 'gaugeChart-label')
   .attr('x', center)
@@ -246,10 +248,10 @@ const label = chart.append('text')
   .text(o.label);
 ```
 
+And the value label (the actual number that will appear near the bottom of the
+gauge).
 
-And the value label (the actual number that will appear near the bottom of the gauge).
-
-```
+```javascript
 const valueLabel = chart.append('text')
   .attr('class', 'gaugeChart-label-value')
   .attr('x', center)
@@ -260,10 +262,11 @@ const valueLabel = chart.append('text')
   .text(o.value);
 ```
 
+The needle itself is the most complex part of the drawing. It is a triangle made
+using a `<path>`. By default, it is pointing straight up (0 degrees). But
+then we rotate it based on the `needleAngle` set earlier.
 
-The needle itself is the most complex part of the drawing. It is a triangle made using a `&lt;path&gt;`. By default, it is pointing straight up (0 degrees). But then we rotate it based on the `needleAngle` set earlier.
-
-```
+```javascript
 const needle = chart.append('path')
   .attr('class', 'gaugeChart-needle')
   .attr('stroke-width', outerBezelWidth)
@@ -273,10 +276,9 @@ const needle = chart.append('path')
   .attr('transform', `rotate(${needleAngle} ${center} ${center})`);
 ```
 
-
 Finally, we add the "cap" that covers the base of the needle.
 
-```
+```javascript
 const needleCap = chart.append('circle')
   .attr('class', 'gaugeChart-needle-cap')
   .attr('cx', center)
@@ -285,10 +287,9 @@ const needleCap = chart.append('circle')
   .attr('r', needleCapRadius);
 ```
 
-
 The entire function looks like this:
 
-```
+```javascript
 const gaugeChart = (o) => {
   const chart = d3.select(o.el);
   const width = chart.attr('width');
@@ -389,17 +390,15 @@ const gaugeChart = (o) => {
 };
 ```
 
+Once again, if we have an `<svg>` container like this:
 
-Once again, if we have an `&lt;svg&gt;` container like this:
-
-```
+```html
 <svg id="memChart" width="110" height="110"></svg>
 ```
 
-
 We can call the function like this:
 
-```
+```javascript
 gaugeChart({
   el: '#memChart',
   label: 'Memory',
@@ -407,9 +406,13 @@ gaugeChart({
 });
 ```
 
-
 The result is a nice gauge chart.
 
-![](./images/thPwKzEKj.webp)
+![A data visualization in the style of a physical circular gauge. The text label
+"Memory" appears. The value label "73" is below it, inside the gauge. The gauge
+is outlined in gray with black tickmarks marking the boundary of the needle. An
+orange needle is pointing the approximate location of where 73 would be on a
+scale from 0 to 100 across the tickmarks](./images/thPwKzEKj.webp)
 
-Here is an example pen with all of the code contained in this post:
+[See this example CodePen with all of the code contained in this
+post.](https://codepen.io/travishorn/pen/ZaXzQe)

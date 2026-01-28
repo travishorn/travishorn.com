@@ -3,87 +3,81 @@ title: "Visualizing SVG Elements"
 datePublished: 2018-01-04T23:01:06+00:00
 cover: ./images/5harach0s.webp
 tags: ["data-visualization", "svg", "web-development"]
-
 ---
 
+Scalable Vector Graphics, or SVG, is a language for creating vector graphics.
+Vector graphics are awesome because they have excellent browser support and can
+be used to show illustrations and data visualizations.
 
-
-
-Scalable Vector Graphics, or SVG, is a language for creating vector graphics. Vector graphics are awesome because they have excellent browser support and can be used to show illustrations and data visualizations.
-
-There are a number of elements that SVG provides to display shapes on a screen. Some of these include
+There are a number of elements that SVG provides to display shapes on a screen.
+Some of these include
 
 * Circles
-
 * Rectangles
-
 * Lines
-
 * Paths
-
 * and many more
 
 Keep reading to get a better understanding of how these elements work.
 
-![](./images/8gDns4X16.webp)
+### `<circle>`
 
-### &lt;circle&gt;
+The simplest `<circle>` includes three attributes:
 
-The simplest `&lt;circle&gt;` includes three attributes:
+* `cx` — The position of the center of the circle along the X axis
 
-* cx — The position of the center of the circle along the X axis
+* `cy` — The position of the center of the circle along the Y axis
 
-* cy — The position of the center of the circle along the Y axis
+* `r` — The radius of the circle
 
-* r — The radius of the circle
+[Check out this CodePen to visualize a
+`<circle>`](https://codepen.io/travishorn/pen/LOjGwB). You can adjust the range
+input sliders to change the values of the attributes described above.
 
-Run the pen below to visualize a `&lt;circle&gt;`. You can adjust the range input sliders to change the values of the attributes described above.
+### `<rect>`
 
-%[https://codepen.io/travishorn/pen/LOjGwB]
+The simplest `<rect>` includes four attributes:
 
-### &lt;rect&gt;
+* `x` — The position of the upper-left corner of the rectangle along the X axis
 
-The simplest `&lt;rect&gt;` includes four attributes:
+* `y` — The position of the upper-left corner of the rectangle along the Y axis
 
-* x — The position of the upper-left corner of the rectangle along the X axis
+* `width` — The width of the rectangle
 
-* y — The position of the upper-left corner of the rectangle along the Y axis
+* `height` — The height of the rectangle
 
-* width — The width of the rectangle
+[Check out this CodePen to visualize a
+`<rect>`](https://codepen.io/travishorn/pen/zPdvXv). You can adjust the range
+input sliders to change the values of the attributes described above.
 
-* height — The height of the rectangle
-
-Run the pen below to visualize a `&lt;rect&gt;`. You can adjust the range input sliders to change the values of the attributes described above.
-
-%[https://codepen.io/travishorn/pen/zPdvXv]
-
-### &lt;path&gt;
+### `<path>`
 
 Paths are like lines that you direct around the SVG canvas.
 
-The simplest `&lt;path&gt;` includes one attribute:
+The simplest `<path>` includes one attribute:
 
-* d — Defines a path to follow
+* `d` — Defines a path to follow
 
 Within the `d` attribute, you can direct the path to…
 
-* move (M)— "Jump" to a point without drawing a line
+* move (`M`)— "Jump" to a point without drawing a line
 
-* line (L)— Draw a line to the point described
+* line (`L`)— Draw a line to the point described
 
-* curve (C or Q)— Draw a curved line to the point described
+* curve (`C` or `Q`)— Draw a curved line to the point described
 
-* arc (A)— Another method of drawing a curved line to the point described
+* arc (`A`)— Another method of drawing a curved line to the point described
 
-* close (Z) — Draw a line from the current point to the first point
+* close (`Z`) — Draw a line from the current point to the first point
 
-Run the pen below to visualize a `&lt;path&gt;`. You can adjust the range input sliders to change the `d` attribute.
+[Check out this CodePen to visualize a
+`<path>`](https://codepen.io/travishorn/pen/LOjoOX). You can adjust the range
+input sliders to change the `d` attribute.
 
-%[https://codepen.io/travishorn/pen/LOjoOX]
+### Bezier curves in `<path>`
 
-### Bezier curves in &lt;path&gt;
-
-You can describe a curve in a path using the bezier method. Inside the `d` attribute, after giving the `C` command, you write numbers describing the curve:
+You can describe a curve in a path using the bezier method. Inside the `d`
+attribute, after giving the `C` command, you write numbers describing the curve:
 
 * The X value of the first control point
 
@@ -97,13 +91,15 @@ You can describe a curve in a path using the bezier method. Inside the `d` attri
 
 * The Y value of the curve destination
 
-Run the pen below to visualize a `&lt;path&gt;` with a bezier curve. You can adjust the range input sliders to change the values of the curve described above.
+[Check out this CodePen to visualize a `<path>` with a bezier
+curve](https://codepen.io/travishorn/pen/xPrrPV). You can adjust the range input
+sliders to change the values of the curve described above.
 
-%[https://codepen.io/travishorn/pen/xPrrPV]
+### Quadratic curves in `<path>`
 
-### Quadratic curves in &lt;path&gt;
-
-Another way you can describe a bezier curve in a path is by using the quadratic method. Inside the `d` attribute, after giving the `Q` command, you write numbers describing the curve:
+Another way you can describe a bezier curve in a path is by using the quadratic
+method. Inside the `d` attribute, after giving the `Q` command, you write
+numbers describing the curve:
 
 * The X value of the control point
 
@@ -113,8 +109,11 @@ Another way you can describe a bezier curve in a path is by using the quadratic 
 
 * The Y value of the curve destination
 
-Run the pen below to visualize a `&lt;path&gt;` with a quadratic curve. You can adjust the range input sliders to change the values of the curve described above.
+[Check out this CodePen to visualize a `<path>` with a quadratic
+curve](https://codepen.io/travishorn/pen/bYRRax). You can adjust the range input
+sliders to change the values of the curve described above.
 
-%[https://codepen.io/travishorn/pen/bYRRax]
-
-You can combine all of these elements to create an illustration or data visualization on the web. Additionally, there are many more elements and features SVG provides to facilitate drawings like this. You can learn more in [MDN's SVG Tutorial](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial).
+You can combine all of these elements to create an illustration or data
+visualization on the web. Additionally, there are many more elements and
+features SVG provides to facilitate drawings like this. You can learn more in
+[MDN's SVG Tutorial](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial).
