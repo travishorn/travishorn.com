@@ -3,69 +3,84 @@ title: "Rapid prototyping with CSS keyword colors"
 datePublished: 2019-01-17T11:01:02+00:00
 cover: ./images/ZbCapefLh.webp
 tags: ["css", "data-visualization", "design-ui"]
-
 ---
 
-
-
-
-When quickly creating prototypes, color may play an important role. Especially for things like data visualization. However, choosing colors can be a time consuming processes. In the case of prototyping, one may pick colors quickly and tweak them later. One method of choosing colors quickly is to use CSS keyword colors.
-
-![](./images/_aGTlpBl_.webp)
+When quickly creating prototypes, color may play an important role. Especially
+for things like data visualization. However, choosing colors can be a time
+consuming processes. In the case of prototyping, one may pick colors quickly and
+tweak them later. One method of choosing colors quickly is to use CSS keyword
+colors.
 
 Colors in CSS can be described a few different ways:
 
 * Hexadecimal string notation: `#FF6347`
-
 * RGB functional notation: `rgb(255, 99, 71)`
-
 * HSL functional notation: `hsl(9, 72, 64)`
-
 * Keyword: `tomato`
 
-![All of the methods above describe the same color](./images/q3f9MYKpB.webp)*All of the methods above describe the same color*
+All of these formats describe the same color.
+
+![A solid block of "tomato" color](./images/q3f9MYKpB.webp)
 
 Let's focus on the last method: keyword.
 
-MDN web docs [define CSS keyword colors](https://developer.mozilla.org/en-US/docs/Web/HTML/Applying_color#Keywords) as…
-> A set of standard color names have been defined, letting you use these keywords instead of numeric representations of colors if you choose to do so and there's a keyword representing the exact color you want to use.
+MDN web docs [define CSS keyword
+colors](https://developer.mozilla.org/en-US/docs/Web/HTML/Applying_color#Keywords)
+as…
 
-David Bau hosts [an awesome resource for finding these keyword colors](http://davidbau.com/colors/).
+> A set of standard color names have been defined, letting you use these
+> keywords instead of numeric representations of colors if you choose to do so
+> and there's a keyword representing the exact color you want to use.
 
-![](./images/19ZqK8fGv.webp)
+David Bau hosts [an awesome resource for finding these keyword
+colors](http://davidbau.com/colors/).
 
-I love how his list is sorted by lightness and hue so you can find like colors quickly.
+![A screenshot from David Bau's "CSS Color Names Sorted by Lightness and Hue". A
+7 by 20 grid of color blocks, each labeled with their CSS Keyword
+name](./images/19ZqK8fGv.webp)
+
+I love how his list is sorted by lightness and hue so you can find like colors
+quickly.
 
 If I'm designing a simple bar chart…
 
-![](./images/RajGJnJ3w.webp)
+![A black & white bar chart showing two bars: one for Cats and one for
+Dogs](./images/RajGJnJ3w.webp)
 
-…and I want to give it some color right away, I can look over the keyword list and find a couple I think might work.
+…and I want to give it some color right away, I can look over the keyword list
+and find a couple I think might work.
 
-```
+```css
 .bar-cats { fill: tomato; }
 .bar-dogs { fill: blue; }
 ```
 
+![The same bar chart, but the Cats bar is tomato colored and Dogs is
+blue.](./images/KFtGrM5Wi.webp)
 
-![](./images/KFtGrM5Wi.webp)
+Just taking a quick glance at this, I think the blue is too harsh and I'd like
+to soften it. So I can look at the list and see a nearby blue I think might
+work.
 
-Just taking a quick glance at this, I think the blue is too harsh and I'd like to soften it. So I can look at the list and see a nearby blue I think might work.
-
-```
+```css
 .bar-cats { fill: tomato; }
 .bar-dogs { fill: dodgerblue; }
 ```
 
+![The same chart, but the Dogs bar has been changed to Dodgerblue, a less harsh
+blue](./images/c2jN5_LP0.webp)
 
-![](./images/c2jN5_LP0.webp)
+Later, I may tweak these even further using more specific hex codes but for now
+the prototype looks good.
 
-Later, I may tweak these even further using more specific hex codes but for now the prototype looks good.
+Besides some of the basic colors like black, white, red, etc. I've memorized a
+few keyword colors in different hues that I like to reuse when prototyping a new
+design. Some of these include:
 
-%[https://codepen.io/travishorn/pen/dqxaXW]
+![Color blocks representing Dodgerblue, Firebrick, Gainsboro, Mediumseagreen,
+Mediumslateblue, and Tomato](./images/1gsDU9R9D.webp)
 
-Besides some of the basic colors like black, white, red, etc. I've memorized a few keyword colors in different hues that I like to reuse when prototyping a new design. Some of these include:
-
-![](./images/1gsDU9R9D.webp)
-
-These allow me to get up and running quickly with a colorful design. Which keyword colors do you think look good when quickly prototyping a design? Or do you use another system like memorizing hex codes or using a color picker in your IDE?
+These allow me to get up and running quickly with a colorful design. Which
+keyword colors do you think look good when quickly prototyping a design? Or do
+you use another system like memorizing hex codes or using a color picker in your
+IDE?

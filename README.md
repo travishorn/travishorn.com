@@ -6,8 +6,8 @@ My personal profile and blog.
 
 ## To Do
 
-- Old article cleanup (start with "Setting up ESLint on VS Code with JavaScript
-  Standard Style" and work your way newer)
+- Old article cleanup (start with "D3 Line Chart with Forecast" and work your
+  way newer)
   - Remove extra cover photo (move credit to end, delete duplicate webp file)
   - Add alt text to images
   - Add language to code blocks
