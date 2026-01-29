@@ -480,11 +480,12 @@ module.exports = **async** (ctx) => {
 Perfect! The `auth` route only returns a signed token if the username and
 password are correct. Otherwise an error is given.
 
-![Correct username and password = JWT](./images/uZuAXGUrKi.webp)*Correct
-username and password = JWT*
+![A screenshot of Postman where the `username` and `password` are `travis` and
+`mypassword`. The response is a JWT](./images/uZuAXGUrKi.webp)
 
-![Incorrect password = error](./images/5iClaHI30.webp)*Incorrect password =
-error*
+![A similar screenshot of Postman but the `password` is `some-other-password`
+and the response is `Incorrect username and/or
+password.`](./images/5iClaHI30.webp)
 
 … except there are a couple glaring issues.
 
@@ -494,17 +495,15 @@ It is generally considered best practice to display the same error regardless of
 whether the username or password (or both) are incorrect. We can fix this
 easily. Create an error message constant.
 
-```
+```javascript
 const wrongUserPassMsg = 'Incorrect username and/or password.';
 ```
 
-
 And replace all 401 error throws with this:
 
-```
+```javascript
 ctx.throw(401, wrongUserPassMsg);
 ```
-
 
 ### Issue #2: Plaintext passwords
 
@@ -513,10 +512,9 @@ idea](https://security.stackexchange.com/questions/120540/why-shouldnt-i-store-p
 Avoid it at all costs. Instead, hash your passwords with something like
 [bcrypt](http://bcrypt.sourceforge.net/).
 
+```console
+npm i bcrypt-nodejs
 ```
-> npm i bcrypt-nodejs
-```
-
 
 This library uses callbacks, which just don't play nice with Koa. Since we're
 only going to need three functions from this library, we can pretty quickly wrap
@@ -527,7 +525,7 @@ going to show the whole file here. We are basically wrapping `getSalt`, `hash`,
 and `compare` in Promises. It's not too exciting, but necessary to use this
 library with Koa.
 
-```
+```javascript
 const bcrypt = require('bcrypt-nodejs');
 
 const saltRounds = process.env.SALT_ROUNDS || 20000;
@@ -570,7 +568,6 @@ module.exports = {
 };
 ```
 
-
 You may notice that, at the end, we're only exporting `hash` and `compare`. We
 don't need to export `genSalt` because it's only useful *inside* `hash`, which
 we *are* exporting.
@@ -586,20 +583,19 @@ already using. In this case, I'll simply use the [Node
 REPL](https://hackernoon.com/know-node-repl-better-dbd15bca0af6) to access my
 bcrypt utility library and hash the password directly.
 
-```
-> node
-> const bcrypt = require('./utilities/bcrypt');
-> bcrypt.hash('mypassword').then(hash => console.log(hash));
+```console
+node
+const bcrypt = require('./utilities/bcrypt');
+bcrypt.hash('mypassword').then(hash => console.log(hash));
 
 $2a$10$3pwJNVCM6NKzBOD1HPZHjuFdjX2Dg771aPZNbbBw9jTUbEMS919Te
 ```
-
 
 The output there is what we really want to store in our database.
 
 Let's modify the `users` table in `db.sqlite`. The new table has this structure:
 
-```
+```sql
 CREATE TABLE `users` (
  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
  `username` TEXT NOT NULL UNIQUE,
@@ -607,13 +603,14 @@ CREATE TABLE `users` (
 );
 ```
 
-
 Notice `password` is gone and `passwordHash` is in it's place.
 
 Now I'll simply copy & paste the generated hash into the `passwordHash` field
 and write changes.
 
-![](./images/WGmKr-BiG.webp)
+![A screenshot of DB Browser for SQLite similar to the one from before, but the
+column `password` has been replaced with `passwordHash`. The password hash above
+has been pasted into the `passwordHash` column](./images/WGmKr-BiG.webp)
 
 ### Comparing hashes
 
@@ -621,31 +618,28 @@ With these changes in place in the database, we need to modify the `auth` route.
 
 First, `require` the bcrypt utility library.
 
-```
+```javascript
 const bcrypt = require('../utilities/bcrypt');
 ```
 
-
 Second, instead of grabbing the password, we want to grab the password *hash*.
 
-```
+```javascript
 const dbUser = await db.first(['id', **'passwordHash'**])
   .from('users')
   .where({ username });
 ```
 
-
 Third, instead of manually checking to see if the entered password equals the
 database password, we'll use the `bcrypt.compare()` function.
 
-```
+```javascript
 if (await bcrypt.compare(password, dbUser.passwordHash)) {
   /* Snip.. return token like before */
 } else {
   ctx.throw(401, wrongUserPassMsg);
 }
 ```
-
 
 We `await bcrypt.compare()` and pass it two arguments: the entered password and
 the password hash from the database. This function hashes the entered password
@@ -663,7 +657,7 @@ users should be able to see the pets *they* own.
 
 Create a table called `pets` in the database.
 
-```
+```sql
 CREATE TABLE `pets` (
  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
  `user_id` INTEGER NOT NULL,
@@ -672,31 +666,14 @@ CREATE TABLE `pets` (
 );
 ```
 
-
 I'm just going to insert a couple rows into this table.
 
+```sql
+INSERT INTO `pets`
+(`user_id`, `name`,  `species`) VALUES
+(        1, 'Bunny', 'dog'),
+(        1, 'Ru',    'cat');
 ```
-INSERT INTO `pets` (
-  `user_id`,
-  `name`,
-  `species`
-) VALUES (
-  1,
-  'Bunny',
-  'dog'
-)
-
-INSERT INTO `pets` (
-  `user_id`,
-  `name`,
-  `species`
-) VALUES (
-  1,
-  'Ru',
-  'cat'
-)
-```
-
 
 Remember that our user "travis" has an id of `1`. So these two pets are
 associated with him because they have `1` as their `user_id`.
@@ -709,25 +686,23 @@ directory, create `authenticated.js`.
 
 The main function of this — and most other middlewares — looks like this.
 
-```
+```javascript
 module.exports = async (ctx, next) => {
   await next();
 };
 ```
-
 
 Right now, the middleware effectively does nothing. It simply moves on to the
 next middleware.
 
 In our case, we want to check for the existence of a JWT here.
 
-```
+```javascript
 module.exports = async (ctx, next) => {
   if (!ctx.headers.authorization) ctx.throw(403, 'No token.');
   await next();
 };
 ```
-
 
 If no token is present, we throw a 403 error. Otherwise, continue on to the next
 middleware.
@@ -736,17 +711,15 @@ But it's not actually enough to check for the existence of the token. We need to
 verify our server signed it. We need to use `jwt.verify()`. That means we'll
 have to `require` the package first. At the top…
 
-```
+```javascript
 const jwt = require('jsonwebtoken');
 ```
 
-
 Then get another reference to our secret.
 
-```
+```javascript
 const secret = process.env.JWT_SECRET || 'secret';
 ```
-
 
 This secret has to match the one that the token was signed with. Again, only
 your server should have knowledge of this secret.
@@ -758,13 +731,12 @@ Typically, it will look something like this:
 Bearer eyJhbGcizI1NInRVCJ9.eyJz..SNIP..OjEsImzOKnGk-edQsP9QV1INJmZA
 ```
 
-
 Notice the value of the header starts with `Bearer`, then there's a space, then
 the actual token. So after we check for the existence of the token, we capture
 the actual token by splitting the string into two and getting the second part,
 as indicated in bold below.
 
-```
+```javascript
 const jwt = require('jsonwebtoken');
 
 const secret = process.env.JWT_SECRET || 'secret';
@@ -778,19 +750,17 @@ module.exports = async (ctx, next) => {
 };
 ```
 
-
 Remember, arrays start at 0, so 1 is the *second* value.
 
 After acquiring the actual token, we can verify its signature.
 
-```
+```javascript
 try {
   ctx.request.jwtPayload = jwt.verify(token, secret);
 } catch (err) {
   ctx.throw(err.status || 403, err.text);
 }
 ```
-
 
 The function `jwt.verify` returns the token's payload (which includes our user
 id in the `sub` property). We set the `ctx.request.jwtPayload` variable to this
@@ -805,34 +775,31 @@ Now it's time to see how our `authenticated` middleware works.
 
 Back in `index.js`, `require` it after the `errorHandler` middleware.
 
-```
+```javascript
 const authenticated = require('./middleware/authenticated');
 ```
 
-
 Now define a new route for getting the pets.
 
-```
+```javascript
 router.get('/my-pets', authenticated, petsRoute);
 ```
 
-
 When a user accesses
-[http://localhost:3000/my-pets,](http://localhost:3000/my-pets,) their request
+[http://localhost:3000/my-pets](http://localhost:3000/my-pets), their request
 first goes through the `authenticated` middleware that we just wrote, then to
 the `petsRoute`.
 
 The `petsRoute` route doesn't exist on our server yet. We have to `require` it
 first — underneath the `require` for `authRoute`.
 
-```
+```javascript
 const petsRoute = require('./routes/pets');
 ```
 
-
 Now create `pets.js` in the `routes` directory.
 
-```
+```javascript
 const db = require('../db');
 
 module.exports = async (ctx) => {
@@ -845,7 +812,6 @@ module.exports = async (ctx) => {
   ctx.body = pets;
 };
 ```
-
 
 The first thing we do in this route is `require` the database.
 
@@ -862,15 +828,15 @@ Finally, we send those pet objects to the client.
 ### Basic summary of the API server
 
 1. Client `POST`s a `username` and `password` to
-   [http://localhost:3000/auth.](http://localhost:3000/auth.)
+   [http://localhost:3000/auth](http://localhost:3000/auth).
+2. If the credentials are correct, server returns a signed JWT
+3. Client makes `GET` requests with the JWT in the `Authorization` header
+4. If JWT exists and can be verified, server returns protected information
 
-1. If the credentials are correct, server returns a signed JWT
-
-1. Client makes `GET` requests with the JWT in the `Authorization` header
-
-1. If JWT exists and can be verified, server returns protected information
-
-![](./images/YpmvLu7m_.webp)
+![A screenshot of Postman issuing a GET request to
+http://localhost:3000/my-pets. The headers contain an `Authorization` key set to
+`Bearer eyjh...`. The response is a JSON array with two objects representing
+pets, including their `name` and `species`](./images/YpmvLu7m_.webp)
 
 There is one last thing we need to take care of.
 
@@ -879,32 +845,28 @@ domains. We need to enable our server to accept requests from anywhere. This is
 done with [CORS](https://enable-cors.org/) and the
 [@koa/cors](https://github.com/koajs/cors) middleware. Install the package.
 
+```console
+npm i @koa/cors@2
 ```
-> npm i @koa/cors@2
-```
-
 
 `require` it in `index.js`
 
-```
+```javascript
 const cors = require('@koa/cors');
 ```
-
 
 And tell the server to use it. I recommend calling it *just* below the
 `errorHandler` middleware.
 
-```
+```javascript
 app.use(cors());
 ```
-
 
 With that in place, our server will serve requests from any domain.
 
 Source code for this article can be found on GitHub. Feel free to fork it and
-modify for your needs. [**travishorn/koa-sqlite-jwt-server** *An API server with
-JWT-authenticated routes. Uses Koa and Knex. -
-travishorn/koa-sqlite-jwt-server*github.com](https://github.com/travishorn/koa-sqlite-jwt-server)
+modify for your needs:
+[travishorn/koa-sqlite-jwt-server](https://github.com/travishorn/koa-sqlite-jwt-server)
 
 A server like this can be used with a de-coupled JavaScript front-end —
 typically built with some framework like Angular, React, or Vue.

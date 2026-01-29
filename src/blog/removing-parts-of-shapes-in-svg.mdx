@@ -3,25 +3,24 @@ title: "Removing parts of shapes in SVG"
 datePublished: 2019-05-09T11:01:01+00:00
 cover: ./images/kmRR_8t6B.webp
 tags: ["design-ui", "svg", "web-development"]
-
 ---
 
+Recently, I needed to remove part of a shape in SVG for a project I was working
+on. Using clipping paths and masks are not as intuitive as I had first hoped. I
+figured it out and documented the process here.
 
+This is the desired end result. Notice the black circle has a stripe taken out
+of it and you can see everything "underneath" it.
 
-
-Recently, I needed to remove part of a shape in SVG for a project I was working on. Using clipping paths and masks are not as intuitive as I had first hoped. I figured it out and documented the process here.
-
-![](./images/SVEtXBRVa.webp)
-
-This is the desired end result. Notice the black circle has a stripe taken out of it and you can see everything "underneath" it.
-
-![](./images/-UUM65T4O.webp)
+![A filled black circle slightly overlapping a filled blue circle. The black
+circle has a vertical stripe "cut out" from the middle of it, revealing part of
+the blue circle and the white background behind it](./images/-UUM65T4O.webp)
 
 ### Setup
 
 First, let's start with a basic SVG canvas and a circle.
 
-```
+```html
 <svg viewBox="0 0 500 500">
   <circle cx="250"
           cy="250"
@@ -29,14 +28,14 @@ First, let's start with a basic SVG canvas and a circle.
 </svg>
 ```
 
-
-![](./images/QVKSLrpDQ.webp)
+![A filled black circle on a white background](./images/QVKSLrpDQ.webp)
 
 ### First attempt
 
-Say you want to remove a vertical stripe in the middle of this circle. Your first thought may be to layer a white rectangle over the top.
+Say you want to remove a vertical stripe in the middle of this circle. Your
+first thought may be to layer a white rectangle over the top.
 
-```
+```html
 <rect x="225"
         y="0"
         width="50"
@@ -44,32 +43,35 @@ Say you want to remove a vertical stripe in the middle of this circle. Your firs
         fill="white" />
 ```
 
-
 And it works.
 
-![](./images/Mz_XCwon4.webp)
+![A filled black circle on a white background. The circle has a vertical stripe
+"cut out" in the center of it, revealing the white background behind
+it](./images/Mz_XCwon4.webp)
 
 ### A problem
 
-But only if your background is pure white. If you have any other shapes, this method becomes a problem.
+But only if your background is pure white. If you have any other shapes, this
+method becomes a problem.
 
 For example, if we had another circle "below" the first one…
 
-```
+```html
 <circle cx="150"
         cy="150"
         r="150"
         fill="dodgerblue" />
 ```
 
-
 …the white stripe would cover that circle up as well.
 
-![](./images/nFDA4lKK_.webp)
+![A filled black circle slightly overlapping a filled blue circle. A white
+rectangle overlays both, making the appearance of cutting through them and
+revealing the white background behind them](./images/nFDA4lKK_.webp)
 
 You could try to adjust the stripe.
 
-```
+```html
 <rect x="225"
       **y="150"**
       width="50"
@@ -77,10 +79,12 @@ You could try to adjust the stripe.
       fill="white" />
 ```
 
-
 But you could never get it perfect.
 
-![](./images/W5KJU3CEa.webp)
+![A filled black circle slightly overlapping a filled blue circle. A white
+vertical rectangle cuts all the way through the black circle, but also bleeds
+into the blue circle, as the rectangle has a flat top in contrast with the black
+circle's curved top](./images/W5KJU3CEa.webp)
 
 ### Solution
 
@@ -88,7 +92,7 @@ Instead what you need is a mask.
 
 First, remove the stripe. Here's the full HTML without it:
 
-```
+```html
 <svg viewBox="0 0 500 500">
   <circle cx="150"
           cy="150"
@@ -100,12 +104,12 @@ First, remove the stripe. Here's the full HTML without it:
 </svg>
 ```
 
-
-![](./images/4HG-QbCSA.webp)
+![A filled black circle slightly overlapping a filled blue
+circle](./images/4HG-QbCSA.webp)
 
 Next add a `<defs>` section inside the `<svg>` and place a `<mask>` inside that.
 
-```
+```html
 <defs>
   <mask id="stripe">
     
@@ -113,26 +117,24 @@ Next add a `<defs>` section inside the `<svg>` and place a `<mask>` inside that.
 </defs>
 ```
 
-
 It's not set up yet, but go ahead and add the mask to the black circle.
 
-```
+```html
 <circle cx="250"
         cy="250"
         r="100"
         mask="url(#stripe)" />
 ```
 
-
 The circle disappeared!
 
-![](./images/Qn7swmMot.webp)
+![A filled blue circle](./images/Qn7swmMot.webp)
 
 That's because the mask cuts out everything that's not white *in the mask*.
 
 Add a white rectangle to the entire canvas **inside the mask**.
 
-```
+```html
 <mask id="stripe">
   <rect x="0"
         y="0"
@@ -142,41 +144,48 @@ Add a white rectangle to the entire canvas **inside the mask**.
 </mask>
 ```
 
-
 The circle is back now.
 
-![](./images/ODTegpRWL.webp)
+![A filled black circle slightly overlaps a filled blue
+circle](./images/ODTegpRWL.webp)
 
-The big white rectangle doesn't show up because it's not actually on the canvas, it's inside a mask.
+The big white rectangle doesn't show up because it's not actually on the canvas,
+it's inside a mask.
 
-The circle still has the mask applied to it, but the mask is simply showing *everything* because it's just a big white rectangle. Masks show everything white and hide everything black.
+The circle still has the mask applied to it, but the mask is simply showing
+*everything* because it's just a big white rectangle. Masks show everything
+white and hide everything black.
 
 With that knowledge, let's add a black stripe to the mask.
 
-```
+```html
 <rect x="225"
-**      **y="150"
+      y="150"
       width="50"
       height="200" />
 ```
 
+This rectangle is very similar to our first approach. Except it's black instead
+of white and inside a mask instead of being a regular shape.
 
-This rectangle is very similar to our first approach. Except it's black instead of white and inside a mask instead of being a regular shape.
+The black circle now has the stripe taken out of it! Just as we wanted. And this
+time, everything behind it is still visible.
 
-The black circle now has the stripe taken out of it! Just as we wanted. And this time, everything behind it is still visible.
-
-![](./images/IYgqGyxHG.webp)
+![A filled black circle slightly overlapping a filled blue circle. The black
+circle has a vertical stripe "cut out" from the middle of it, revealing part of
+the blue circle and the white background behind it](./images/IYgqGyxHG.webp)
 
 The full code and demonstration can be found in the pen below.
 
 
 ### Varying opacity
 
-There is another feature of masks. Not only do they show everything white and hide everything black, they show everything gray with 50% opacity.
+There is another feature of masks. Not only do they show everything white and
+hide everything black, they show everything gray with 50% opacity.
 
 If you change the rectangle in the mask to be filled with gray…
 
-```
+```html
 <rect x="225"
       y="150"
       width="50"
@@ -184,16 +193,20 @@ If you change the rectangle in the mask to be filled with gray…
       fill="gray" />
 ```
 
-
 …the black circle shows up with a stripe of 50% opacity.
 
-![](./images/FdjgD4iM8.webp)
+![A filled black circle slightly overlapping a filled blue circle. The black
+circle has a vertical stripe "cut out" from the middle of it, revealing part of
+the blue circle and the white background behind it. The cutout is not completely
+transparent, though, showing a bit of what the black circle looks like in the
+cutout](./images/FdjgD4iM8.webp)
 
-And it's not just one gray either. Every gray between white and black lets more or less of the masked shape through.
+And it's not just one gray either. Every gray between white and black lets more
+or less of the masked shape through.
 
 Less opacity:
 
-```
+```html
 <rect x="225"
       y="150"
       width="50"
@@ -201,12 +214,12 @@ Less opacity:
       fill="#BBBBBB" />
 ```
 
-
-![](./images/neiCX6azU.webp)
+![The same image, but more of the black circle is visible in the cutout because
+its less transparent now](./images/neiCX6azU.webp)
 
 More opacity:
 
-```
+```html
 <rect x="225"
       y="150"
       width="50"
@@ -214,18 +227,18 @@ More opacity:
       fill="#444444" />
 ```
 
-
-![](./images/VQjRwpusb.webp)
+![The same image, but less of the black circle is visible in the cutout because
+its more transparent now](./images/VQjRwpusb.webp)
 
 Even gradient's work.
 
-```
+```html
 <mask id="stripe">
-  **<linearGradient id="grayscale">
+  <linearGradient id="grayscale">
      <stop offset="0%" stop-color="white" />
      <stop offset="50%" stop-color="black" />
      <stop offset="100%" stop-color="white" />
-   </linearGradient>**
+   </linearGradient>
    <rect x="0"
          y="0"
          width="500"
@@ -235,15 +248,16 @@ Even gradient's work.
          y="150"
          width="50"
          height="200"
-         fill="**url(#grayscale)**" />
+         fill="url(#grayscale)" />
     </mask>
 ```
 
+Notice I defined the gradient at the top, then referenced it in the `fill`
+attribute of the stripe.
 
-Notice I defined the gradient at the top, then referenced it in the `fill` attribute of the stripe.
+![The same image, but the cutout doesn't have clear cut edges, but instead a
+smooth horizontal transition from black to transparent and back to
+black](./images/8vQmfHRxh.webp)
 
-![](./images/8vQmfHRxh.webp)
-
-The final code with gradient is in the pen below.
-
-https://codepen.io/travishorn/pen/dQbrPE
+The final code with gradient is in [this
+CodePen](https://codepen.io/travishorn/pen/dQbrPE).

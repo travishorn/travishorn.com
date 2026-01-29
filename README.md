@@ -6,7 +6,7 @@ My personal profile and blog.
 
 ## To Do
 
-- Old article cleanup (start with line 480 on the "API server..." post and work your
+- Old article cleanup (start with "Creating a Photo Gallery..." and work your
   way newer)
   - Remove extra cover photo (move credit to end, delete duplicate webp file)
   - Add alt text to images

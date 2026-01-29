@@ -10,13 +10,20 @@ tags:
 title: Responsive grid in 2 minutes with CSS Grid Layout
 ---
 
-Are you trying to build a grid of elements? If so, you've probably noticed one size doesn't fit every screen size. The modern solution is a responsive grid that changes based on the size of the screen viewing it. Many developers jump to a web design framework for their responsive grid needs. But it might not be as hard as you think to code your own.
-
-![](./images/SKuEldQoU.webp)
+Are you trying to build a grid of elements? If so, you've probably noticed one
+size doesn't fit every screen size. The modern solution is a responsive grid
+that changes based on the size of the screen viewing it. Many developers jump to
+a web design framework for their responsive grid needs. But it might not be as
+hard as you think to code your own.
 
 In a few lines of code, you can create something like this:
 
-![](./images/dOhJg5KKw.webp)
+![A 3 by 4 grid of blue filled rectanges with white text. The rectangle in the
+upper left is labeled "ONE", the rectangle to its right is labeled "TWO", and
+the last rectangle on the top row is labeled "THREE". Then the numbered labels
+wrap to the second row where the first rectangle on that row is labeled "FOUR"
+and so on, all the way to the last rectangle in the grid which is labeled
+"TWELVE"](./images/dOhJg5KKw.webp)
 
 Let's start with 12 "cards".
 
@@ -35,8 +42,8 @@ Let's start with 12 "cards".
 <div class="card">TWELVE</div>
 ```
 
-
-![](./images/Mc2aHw8mk.webp)
+![Black text on a white background. The numbers ONE through TWELVE are listed
+vertically, one word per line.](./images/Mc2aHw8mk.webp)
 
 Add some basic styles.
 
@@ -52,8 +59,10 @@ body { padding: 1rem; }
 }
 ```
 
+![A tall skinny blue filled rectangle with the words ONE, TWO, and THREE in
+white spaced evenly and stacked vertically.](./images/gWzQD71Sz.webp)
 
-![I cropped the rest out, but you get the idea.](./images/gWzQD71Sz.webp)*I cropped the rest out, but you get the idea.*
+*I cropped the rest out, but you get the idea.*
 
 Add a parent element to contain the cards.
 
@@ -74,8 +83,9 @@ Add a parent element to contain the cards.
 </div>
 ```
 
-
-Add a width, margin, and some [CSS Grid Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout) styles to the parent. The only change you'll notice so far is the gap between elements.
+Add a width, margin, and some [CSS Grid
+Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout) styles
+to the parent. The only change you'll notice so far is the gap between elements.
 
 ```css
 .cards {
@@ -86,10 +96,14 @@ Add a width, margin, and some [CSS Grid Layout](https://developer.mozilla.org/en
 }
 ```
 
+![Three blue filled rectangles with white text stacked vertically with some
+spacing between them. They are labeled ONE, TWO, and
+THREE.](./images/uMnhcsN1_.webp)
 
-![And so on.](./images/uMnhcsN1_.webp)*And so on.*
+*And so on.*
 
-We're coding for mobile first so we assume the user is using a small screen. That's why the cards take up a whole row each (one column).
+We're coding for mobile first so we assume the user is using a small screen.
+That's why the cards take up a whole row each (one column).
 
 Now let's make the cards responsive for larger screen sizes.
 
@@ -101,8 +115,8 @@ Is the screen larger than 600 pixels? Make it two columns.
 }
 ```
 
-
-![](./images/zyM1utTv5.webp)
+![A 2 by 3 grid of rectangles labeled with word numbers ONE through
+SIX.](./images/zyM1utTv5.webp)
 
 Is the screen larger than 900 pixels? Make it three columns.
 
@@ -112,26 +126,30 @@ Is the screen larger than 900 pixels? Make it three columns.
 }
 ```
 
+![A 3 by 4 grid of rectangles labeled ONE through
+TWELVE.](./images/5N2m_6jvO.webp)
 
-![](./images/5N2m_6jvO.webp)
+And it transforms as the screen size changes! The 3x4 grid will become a 2x6
+grid or a 1x12 grid as the viewport gets smaller.
 
-And it transforms as the screen size changes!
+As you may have noticed, once the parent has `display: grid`, all the magic
+comes from adjusting `grid-template-columns: repeat(NUM_COLUMNS, 1fr)` for
+different media breakpoints (`@media (min-width: SOME_WIDTH){}`).
 
-![](./images/D4WqJ7d9c.webp)
-
-As you may have noticed, once the parent has `display: grid`, all the magic comes from adjusting `grid-template-columns: repeat(NUM_COLUMNS, 1fr)` for different media breakpoints (`@media (min-width: SOME_WIDTH){}`).
-
-%[https://codepen.io/travishorn/pen/bzXEjd]
+[See a demonstration on CodePen.](https://codepen.io/travishorn/pen/bzXEjd)
 
 ### Bonus! Eliminating media queries with minmax()
 
-In some cases, you may be able to avoid writing media queries by using [minmax()](https://developer.mozilla.org/en-US/docs/Web/CSS/minmax). To see it in action, remove the media queries and add the following line to the `.cards` selector.
+In some cases, you may be able to avoid writing media queries by using
+[`minmax()`](https://developer.mozilla.org/en-US/docs/Web/CSS/minmax). To see it
+in action, remove the media queries and add the following line to the `.cards`
+selector.
 
 ```css
 grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 ```
 
-
 The columns will automatically break when each one gets below 300px.
 
-%[https://codepen.io/travishorn/pen/RdPLwj]
+[See a demonstration of the automatic breakpoints on
+CodePen.](https://codepen.io/travishorn/pen/RdPLwj)
