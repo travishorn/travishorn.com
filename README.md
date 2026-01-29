@@ -6,10 +6,8 @@ My personal profile and blog.
 
 ## To Do
 
-- Old article cleanup (start with "Creating a Photo Gallery..." and work your
+- Old article cleanup (start with L210 of "Building a Telegram..." and work your
   way newer)
-  - Remove extra cover photo (move credit to end, delete duplicate webp file)
   - Add alt text to images
   - Add language to code blocks
-  - Replace previews (unsupported `%[]` synax) with links.
 - Resize cover images to 1200 x 630

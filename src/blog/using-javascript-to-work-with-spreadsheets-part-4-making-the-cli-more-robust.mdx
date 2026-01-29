@@ -9,54 +9,92 @@ tags:
 title: 'Using JavaScript to Work with Spreadsheets, Part 4: Making the CLI More Robust'
 ---
 
-This is the fourth article in a series where we'll be learning to use the powerful logic of a programming language like JavaScript to manipulate spreadsheet data.
+This is the fourth article in a series where we'll be learning to use the
+powerful logic of a programming language like JavaScript to manipulate
+spreadsheet data.
 
-In this article, we'll talk about how to add a dependency from the npm registry and we'll add some robustness to our interface.
+In this article, we'll talk about how to add a dependency from the npm registry
+and we'll add some robustness to our interface.
 
-![](./images/0pR0tEwfI.webp)
+Being able to accept arguments from the command line already places our program
+in the command-line interface (CLI) category. That is, our program is run by
+typing commands on the command line AKA terminal.
 
-Being able to accept arguments from the command line already places our program in the command-line interface (CLI) category. That is, our program is run by typing commands on the command line AKA terminal.
+Right now, our CLI has no documentation and no ability accept options. It's
+entirely possible to build your own system for looking at `process.argv` and
+parsing out options, adding commands for getting help with the program, etc.
+However, some very smart people have already written code which handles this and
+they've shared it with the world on Node.js's npm registry.
 
-Right now, our CLI has no documentation and no ability accept options. It's entirely possible to build your own system for looking at `process.argv` and parsing out options, adding commands for getting help with the program, etc. However, some very smart people have already written code which handles this and they've shared it with the world on Node.js's npm registry.
+There are many options on the registry for managing CLI's. In this project,
+we'll use the very popular [Commander](https://www.npmjs.com/package/commander).
+Installing it is easy.
 
-There are many options on the registry for managing CLI's. In this project, we'll use the very popular [Commander](https://www.npmjs.com/package/commander). Installing it is easy.
+In VS Code, with your project folder opened, run the following command in the
+Terminal (**Ctrl + `**).
 
-In VS Code, with your project folder opened, run the following command in the Terminal ( `Ctrl + `` ).
-
-```
+```console
 npm i commander
 ```
 
+This tells npm (Node Package Manager) to install the package by the name of
+"commander." Now that it's installed, we can use it in our project. Our project
+now "depends" on Commander and therefor Commander is considered a "dependency"
+of our project.
 
-This tells npm (Node Package Manager) to install the package by the name of "commander." Now that it's installed, we can use it in our project. Our project now "depends" on Commander and therefor Commander is considered a "dependency" of our project.
+If you open up `package.json`, you can even see Commander listed in the
+`dependencies` section.
 
-If you open up `package.json`, you can even see Commander listed in the `dependencies` section.
-
-![](./images/Ux8Hp9i_P.webp)
-
-Also you will notice that a new folder was created in your project called `node_modules` . This folder contains all the code for your dependencies.
-
-![](./images/JDdNSao2-.webp)
-
-And finally you will notice a new file called `package-lock.json`. This file helps npm keep track of the exact versions of dependencies that are installed.
-
-![](./images/rpp9SekQW.webp)
-
-Before we implement Commander into our file, let's do a small bit of housekeeping. At the moment, `fs.readFile()` will be called every time we run the program. Instead, we want to move this process into a function that we can call later.
-
-Create a new function called `logAction` which accepts a file path as an argument.
-
+```json
+{
+  "name": "spreadsheets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Travis Horn (https://travishorn.com)",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^6.2.1"
+  }
+}
 ```
+
+Also you will notice that a new folder was created in your project called
+`node_modules` . This folder contains all the code for your dependencies.
+
+![A screenshot of the file explorer inside VS Code. A red annotation circle
+surrounds the `node_modules` directory in the project
+root.](./images/JDdNSao2-.webp)
+
+And finally you will notice a new file called `package-lock.json`. This file
+helps npm keep track of the exact versions of dependencies that are installed.
+
+![A screenshot of the file explorer inside VS Code. A red annotation circle
+surrounds the `package-lock.json` file in the project
+root.](./images/rpp9SekQW.webp)
+
+Before we implement Commander into our file, let's do a small bit of
+housekeeping. At the moment, `fs.readFile()` will be called every time we run
+the program. Instead, we want to move this process into a function that we can
+call later.
+
+Create a new function called `logAction` which accepts a file path as an
+argument.
+
+```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
     // Read file at the path
 }
 ```
 
-
 Move the line of code that reads files into this new function.
 
-```
+```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
     // Read the file at the path
@@ -64,10 +102,10 @@ function logAction(path) {
 }
 ```
 
+Change the line so that `fs.readFile` reads whatever path is passed into the
+function.
 
-Change the line so that `fs.readFile` reads whatever path is passed into the function.
-
-```
+```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
     // Read the file at the path
@@ -75,10 +113,11 @@ function logAction(path) {
 }
 ```
 
+Since our `readFileCallback` function isn't used anywhere but inside this
+`logAction` function, we can actually nest it inside. Structuring the code this
+way keeps everything tidy.
 
-Since our `readFileCallback` function isn't used anywhere but inside this `logAction` function, we can actually nest it inside. Structuring the code this way keeps everything tidy.
-
-```
+```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
     // Used as a callback when a file is read
@@ -95,51 +134,60 @@ function logAction(path) {
 }
 ```
 
+I know that this new `logAction()` function isn't being used yet. But it will be
+shortly.
 
-I know that this new `logAction()` function isn't being used yet. But it will be shortly.
+The last bit of housekeeping is to remove the line where we define `inputPath`.
+It is no longer used at all.
 
-The last bit of housekeeping is to remove the line where we define `inputPath`. It is no longer used at all.
-
-```
+```javascript
 // Delete this line:
 const inputPath = process.argv[2];
 ```
 
-
 Near the top of `index.js`, require Commander.
 
-```
+```javascript
 // Require outside packages
 const fs = require("fs");
 const commander = require("commander");
 ```
 
-
 And at the very bottom of the file, tell Commander to parse our arguments.
 
-```
+```javascript
 // Parse the CLI arguments with Commander
 commander.program.parse(process.argv);
 ```
 
+NOTE: It's very important to keep this line at the very bottom of the file. This
+is the code that tells Commander to actually parse the command at the very end
+after we've described what we want it to do.
 
-NOTE: It's very important to keep this line at the very bottom of the file. This is the code that tells Commander to actually parse the command at the very end after we've described what we want it to do.
+If you save the file and run it now, nothing happens because we move the file
+reading component inside a function that never gets called.
 
-If you save the file and run it now, nothing happens because we move the file reading component inside a function that never gets called.
+However, you can start to see some of the features of Commander if you run `node
+index --help`
 
-![](./images/qK6nSSE3Og.webp)
+```console
+node index --help
+Usage: index [options]
 
-However, you can start to see some of the features of Commander if you run `node index --help`
-
-![](./images/U_VXdbZGo.webp)
-
-This help section will actually automatically fill out as we tell Commander more about our program.
-
-You can tell Commander about commands you want your program to have by using `commander.program.command()`.
-
-Important: Make sure to place this and all further code **above** `commander.program.parse(process.argv);`.
-
+Options:
+  -h, --help  display help for command
 ```
+
+This help section will actually automatically fill out as we tell Commander more
+about our program.
+
+You can tell Commander about commands you want your program to have by using
+`commander.program.command()`.
+
+Important: Make sure to place this and all further code **above**
+`commander.program.parse(process.argv);`.
+
+```javascript
 // A Commander command for reading files and logging the contents
 commander.program
   .command("log <path>")
@@ -147,40 +195,60 @@ commander.program
   .action(logAction);
 ```
 
-
-Notice how the action of this command is calling `logAction`. Commander will automatically pass the value of `<path>` to this function.
+Notice how the action of this command is calling `logAction`. Commander will
+automatically pass the value of `<path>` to this function.
 
 Try viewing the help again.
 
-![](./images/copYctFWr.webp)
+```console
+node index --help
+Usage: index [options]
 
-Commander automatically generated the help command and added information about our new `log` command.
+Options:
+  -h, --help  display help for command
+
+Commands:
+  log <path>      Log a text file to the console
+  help [command]  display help for command
+```
+
+Commander automatically generated the help command and added information about
+our new `log` command.
 
 We can use the `log` command like so:
 
-```
+```console
 node index log 'D:\Development\spreadsheets\Data Files\proverb.txt'
+Be not afraid of growing slowly, be afraid only of standing still.
 ```
-
-
-![](./images/xoagUG7-N.webp)
 
 If we try to run it without a path, a friendly error appears.
 
-![](./images/_gYuL46Pn.webp)
+```console
+node index log
+error: missing require arugment 'path'
+```
 
-One thing we haven't tied up yet is what happens when a path is given, but the path doesn't actually exist. What if someone tries…
+One thing we haven't tied up yet is what happens when a path is given, but the
+path doesn't actually exist. What if someone tries…
 
 ```
 node index log 'C:\i-dont-exist.txt'
+D:\Development\spreadsheets\index.js:10
+        const fileContents = data.toString();
+                                  ^
+
+TypeError: Cannot read property 'toString' of undefined
+    at ReadFileContext...
 ```
 
+That's not a very friendly error. It's telling us that the method `toString()`
+can't be read from `undefined`. Since we are trying to do `data.toString()` that
+must mean `data` is undefined. `data` should be defined when `fs.readFile()`
+calls the `readFileCallback()` function. Here's another look at that function
+again.
 
-![](./images/TaBPq1PpL.webp)
-
-That's not a very friendly error. It's telling us that the method `toString()` can't be read from `undefined`. Since we are trying to do `data.toString()` that must mean `data` is undefined. `data` should be defined when `fs.readFile()` calls the `readFileCallback()` function. Here's another look at that function again.
-
-```
+```javascript
 // Used as a callback when a file is read
 function readFileCallback(err, data) {
     // Convert the file's data buffer to a string
@@ -191,10 +259,10 @@ function readFileCallback(err, data) {
 }
 ```
 
+Aha. `readFileCallback()` takes two arguments: `err` and `data`. `data` isn't
+defined, but I bet `err` is. Let's write logic to handle this case.
 
-Aha. `readFileCallback()` takes two arguments: `err` and `data`. `data` isn't defined, but I bet `err` is. Let's write logic to handle this case.
-
-```
+```javascript
 // Used as a callback when a file is read
 function readFileCallback(err, data) {
     if (err !== null) {
@@ -209,20 +277,33 @@ function readFileCallback(err, data) {
 }
 ```
 
-
-This code says that if `err` isn't `null`, log the `err` object to the console. I'm using `console.error` here instead of `console.log`. They mostly do the same thing, but `console.error` is more correct and it can behave differently depending on the environment.
+This code says that if `err` isn't `null`, log the `err` object to the console.
+I'm using `console.error` here instead of `console.log`. They mostly do the same
+thing, but `console.error` is more correct and it can behave differently
+depending on the environment.
 
 Else, if `err` is `null`, run the code just as before.
 
 Now we can see what error `fs.readFile` is giving us.
 
-![](./images/bnf1BgWA0.webp)
+```console
+node index log 'C:\i-dont-exist.txt'
+[Error: ENOENT: no such file or directory, open 'C:\i-dont-exist.txt'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\i-dont-exist.txt'
+}
+```
 
 Code `ENOENT`, which means the file we were trying to access does not exist.
 
-We can actually make this error a little more friendly. If an error exists, execute some `switch` logic based on the code. If the code is `ENOENT`, log a friendly error message we wrote ourselves. Otherwise if it's some other code we haven't encountered, just show the ugly error message.
+We can actually make this error a little more friendly. If an error exists,
+execute some `switch` logic based on the code. If the code is `ENOENT`, log a
+friendly error message we wrote ourselves. Otherwise if it's some other code we
+haven't encountered, just show the ugly error message.
 
-```
+```javascript
 if (err !== null) {
     switch (err.code) {
         case "ENOENT":
@@ -234,13 +315,20 @@ if (err !== null) {
 }
 ```
 
-
-The reason I used `switch` here was so I can make other friendly error messages later if needed.
+The reason I used `switch` here was so I can make other friendly error messages
+later if needed.
 
 Running the program on a nonexistent file now produces a better error message.
 
-![](./images/Xa5fTL_FH.webp)
+```console
+node index log 'C:\i-dont-exist.txt'
+That file doesn't exist.
+```
 
-Now that we know how to add commands to our program using Commander, we can keep extending our program to do different things depending on our needs.
+Now that we know how to add commands to our program using Commander, we can keep
+extending our program to do different things depending on our needs.
 
 In the next article, we'll go over how to read and parse XLSX files.
+
+[**Part 5: Parsing XLSX
+Files**](https://travishorn.com/using-javascript-to-work-with-spreadsheets-part-5-parsing-xlsx-files/)

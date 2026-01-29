@@ -3,18 +3,15 @@ title: "Some ways to align the last row in a flexbox grid"
 datePublished: 2021-03-18T11:03:35+00:00
 cover: ./images/aOTp9MHet.webp
 tags: ["css", "design-ui", "web-development"]
-
 ---
 
-
-
-Using flexbox doesn't always produce the expected alignment, especially on the last row of a grid. When you use justify-content: space-between it will place a large gap in the last row unless there are a square number of items.
-
-![](./images/5_vbuZsa1.webp)
+Using flexbox doesn't always produce the expected alignment, especially on the
+last row of a grid. When you use justify-content: space-between it will place a
+large gap in the last row unless there are a square number of items.
 
 Say we have a collection of items.
 
-```bash
+```html
 <div class="container">
   <div class="item">One</div>
   <div class="item">Two</div>
@@ -26,7 +23,7 @@ Say we have a collection of items.
 
 Each item has a fixed height and width.
 
-```bash
+```css
 .item {
   width: 100px;
   height: 100px;
@@ -34,11 +31,13 @@ Each item has a fixed height and width.
 }
 ```
 
-![](./images/q8k-pV0Fr.webp)
+![Five white rectangles with black outlines. Each is labeled "One", "Two", etc.
+They are stacked vertically upon each other with no
+spacing.](./images/q8k-pV0Fr.webp)
 
 If you want to arrange them in a grid, you could use flexbox.
 
-```bash
+```css
 .container {
   width: 450px;
   display: flex;
@@ -47,56 +46,73 @@ If you want to arrange them in a grid, you could use flexbox.
 }
 ```
 
-![](./images/ZZDOcnL7y.webp)
+![Five white rectangles with black outlines. Each is labeled "One", "Two", etc.
+They are arranged in a 3 by 2 grid, with the last space empty. There is some
+padding between them.](./images/ZZDOcnL7y.webp)
 
-This actually gives us the effect we are trying to achieve. But each row is too left-aligned. This becomes apparent when you can visualize the container.
+This actually gives us the effect we are trying to achieve. But each row is too
+left-aligned. This becomes apparent when you can visualize the container.
 
-```bash
+```css
 .container {
   /* ... snip ... */
   border: solid red;
 }
 ```
 
-![](./images/e7LpJ95KA.webp)
+![A red rectangle surrounds the set of rectangles. There is no padding on the
+left but there is significant padding on the right, but not enough for there to
+be room for another black-outlined rectangle.](./images/e7LpJ95KA.webp)
 
-Many times, you will want to avoid that big gap on the right and justify each row so the items appear with even space between.
+Many times, you will want to avoid that big gap on the right and justify each
+row so the items appear with even space between.
 
-```bash
+```css
 .container {
   /* ... snip ... */
   justify-content: space-between;
 }
 ```
 
-![](./images/lEHNgjcKl.webp)
+![The padding on the right has been eliminated. The rectangles are evenly spaced
+to take up the entire width. The bottom two rectangles are stuck to the left and
+right side respectively. There is an empty space in the bottom middle with no
+rectangle.](./images/lEHNgjcKl.webp)
 
-Now we have a new issue. There is space between each item in the row just like we defined, but it doesn't exactly look like what we might expect. It's a common design pattern to have the last row aligned to the left when there aren't enough items to fill it.
+Now we have a new issue. There is space between each item in the row just like
+we defined, but it doesn't exactly look like what we might expect. It's a common
+design pattern to have the last row aligned to the left when there aren't enough
+items to fill it.
 
-This is exactly the question on this Stack Overflow question and its many duplicates.
-
-%[https://stackoverflow.com/questions/18744164/flex-box-align-last-row-to-grid/] 
+This is exactly the question on [this Stack Overflow
+question](https://stackoverflow.com/questions/18744164/flex-box-align-last-row-to-grid/)
+and its many duplicates.
 
 The accepted answer uses `::after`.
 
-```bash
+```css
 .container::after {
   content: "";
   flex: auto;
 }
 ```
 
-But this doesn't look good at all when you're using fixed widths like we are here.
+But this doesn't look good at all when you're using fixed widths like we are
+here.
 
-![](./images/83vUZryrH.webp)
+![The empty space in the middle is gone. The last rectangle is shifted to the
+left, but *too far* to the left so the padding between it and the one to the
+left of it is not equal to the rectangles on the first
+row.](./images/83vUZryrH.webp)
 
 ### Adding items to make the grid square
 
 Instead of adding the `::after` block above, we can take another approach.
 
-Add another item (or items) so that the grid is square. Give these items a specific class. See the last item below.
+Add another item (or items) so that the grid is square. Give these items a
+specific class. See the last item below.
 
-```bash
+```css
 <div class="container">
   <div class="item">One</div>
   <div class="item">Two</div>
@@ -107,19 +123,22 @@ Add another item (or items) so that the grid is square. Give these items a speci
 </div>
 ```
 
-![](./images/yeSlGLSXt.webp)
+![A new empty rectangle has been added to the end of the grid. Everything is
+aligned well, but there is one rectangle without a
+label.](./images/yeSlGLSXt.webp)
 
 We can hide the item, too.
 
-```bash
+```css
 .item-empty {
   visibility: hidden;
 }
 ```
 
-![](./images/1n06iS0J4.webp)
+![The empty rectange is gone. The result looks good.](./images/1n06iS0J4.webp)
 
-This technique works well when you know how many items there are or you can calculate it and add items dynamically.
+This technique works well when you know how many items there are or you can
+calculate it and add items dynamically.
 
 ### Use CSS grid
 
@@ -127,7 +146,7 @@ One of my favorite approaches is to replace flexbox with grid.
 
 Delete the empty items so we're left with the original set.
 
-```bash
+```css
 <div class="container">
   <div class="item">One</div>
   <div class="item">Two</div>
@@ -139,7 +158,7 @@ Delete the empty items so we're left with the original set.
 
 Delete the flexbox CSS on `.container`. That means delete all of the following:
 
-```bash
+```css
 display: flex;
 flex-wrap: wrap;
 gap: 20px;
@@ -148,7 +167,7 @@ justify-content: space-between;
 
 And add the following grid CSS.
 
-```bash
+```css
 .container {
   /* ... snip ... */
   display: grid;
@@ -158,18 +177,20 @@ And add the following grid CSS.
 }
 ```
 
-![](./images/1zFaX3mQX.webp)
+![The grid is well aligned, except the last rectangle sticks out to the right
+too far.](./images/1zFaX3mQX.webp)
 
-Since we are defining our columns as `100px` wide here, we can remove the following line from `.item`
+Since we are defining our columns as `100px` wide here, we can remove the
+following line from `.item`
 
-```bash
+```css
 width: 100px;
 ```
 
 That leaves us with a nicely aligned grid with the last row left-aligned.
 
-![](./images/_K_OmalDQ.webp)
+![A perfectly aligned 3 x 2 grid of five rectangles. The last spot is
+empty.](./images/_K_OmalDQ.webp)
 
-The code and live example for this post can be found in the pen below.
-
-%[https://codepen.io/travishorn/pen/MWbzNWm]
+[The code and live example for this post can be found on
+CodePen.](https://codepen.io/travishorn/pen/MWbzNWm)

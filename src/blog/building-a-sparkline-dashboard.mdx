@@ -3,38 +3,42 @@ title: "Building a Sparkline Dashboard"
 datePublished: 2020-08-31T11:01:01+00:00
 cover: ./images/CY7XIoKbB.webp
 tags: ["data-visualization", "javascript", "vue", "web-development"]
-
 ---
 
+Building on the last article, I'll show you how to use the SparkLine component
+we built to create a "dashboard" of data points that anyone can quickly
+understand with sparklines.
 
-
-
-Building on the last article, I'll show you how to use the SparkLine component we built to create a "dashboard" of data points that anyone can quickly understand with sparklines.
-
-![](./images/3JRJ0ZroX.webp)
-
-In [the previous article](https://travishorn.com/build-a-sparkline-vue-component-d3fdec764145), we created a [Vue component](https://vuejs.org/v2/guide/#Composing-with-Components) which accepts an array of numbers and creates a [sparkline chart](https://en.wikipedia.org/wiki/Sparkline).
-[**Build a Sparkline Vue Component**
-*Sparklines can be useful for quickly visualizing data variance. They are small and intuitive to understand.*travishorn.com](https://travishorn.com/build-a-sparkline-vue-component-d3fdec764145)
+In [the previous
+article](https://travishorn.com/build-a-sparkline-vue-component),
+we created a [Vue
+component](https://vuejs.org/v2/guide/#Composing-with-Components) which accepts
+an array of numbers and creates a [sparkline
+chart](https://en.wikipedia.org/wiki/Sparkline).
 
 Now, we can make a dashboard with that component.
 
-![](./images/9xwEwFH35.webp)
+![A 3 by 3 grid of data sparkline data visualizations, each labeled with a
+numeric value and a text label such as "854. Alt
+Volts".](./images/9xwEwFH35.webp)
 
-If you don't already have one created, you should create a Vue project with the [Vue CLI](https://cli.vuejs.org/).
+If you don't already have one created, you should create a Vue project with the
+[Vue CLI](https://cli.vuejs.org/).
 
-```
+```console
 vue create sparkboard
 ```
 
-
 Either choose to use default options or customize to your preference.
 
-Once you have a Vue project created, make sure the `SparkLine.vue` component we created last time is in the `components/` directory. You may choose to [copy it from the repository on GitHub](https://github.com/travishorn/vue-sparkline-component/blob/master/src/components/SparkLine.vue).
+Once you have a Vue project created, make sure the `SparkLine.vue` component we
+created last time is in the `components/` directory. You may choose to [copy it
+from the repository on
+GitHub](https://github.com/travishorn/vue-sparkline-component/blob/master/src/components/SparkLine.vue).
 
 Next, replace the entirety of `App.vue` with the following.
 
-```
+```vue
 <template>
   <div style="width:100px">
     <SparkLine :data="[808, 1475, 1426, 1884, 1396]" />
@@ -55,27 +59,29 @@ export default {
 </script>
 ```
 
-
-Note that the arrays of data here are just random numbers I picked. Feel free to use whatever you'd like. Later we can pull data from external sources.
+Note that the arrays of data here are just random numbers I picked. Feel free to
+use whatever you'd like. Later we can pull data from external sources.
 
 Run the development server.
 
-```
+```console
 npm run serve
 ```
 
-
 You can view the project at [http://localhost:8080/](http://localhost:8080/)
 
-![](./images/5FWVr_sdo.webp)
+![Three mostly horizontal yellow lines, but they rise and fall at different
+rates.](./images/5FWVr_sdo.webp)
 
 Great! There's three tiny sparklines just as the code describes.
 
-I don't like putting the data directly into the template, so the first thing we'll do is move it into the script.
+I don't like putting the data directly into the template, so the first thing
+we'll do is move it into the script.
 
-Let's pretend our data comes from a set of sensors. The updated script looks like this:
+Let's pretend our data comes from a set of sensors. The updated script looks
+like this:
 
-```
+```javascript
 import SparkLine from "./components/SparkLine.vue";
 
 export default {
@@ -95,10 +101,10 @@ export default {
 };
 ```
 
+And the template can be modified to loop over this array of sensor data like
+this:
 
-And the template can be modified to loop over this array of sensor data like this:
-
-```
+```html
 <div style="width:100px">
   <div class="sensor" v-for="sensor in sensors" :key="sensor">
     <SparkLine :data="sensor" />
@@ -106,12 +112,13 @@ And the template can be modified to loop over this array of sensor data like thi
 </div>
 ```
 
+So far, no visual change has been made, but moving the data into the script
+makes it much more flexible.
 
-So far, no visual change has been made, but moving the data into the script makes it much more flexible.
+Right now, our entire app is 100 pixels wide. Instead, we should remove this
+style from the root element.
 
-Right now, our entire app is 100 pixels wide. Instead, we should remove this style from the root element.
-
-```
+```html
 <div>
   <div class="sensor" v-for="sensor in sensors" :key="sensor">
     <SparkLine :data="sensor" />
@@ -119,10 +126,10 @@ Right now, our entire app is 100 pixels wide. Instead, we should remove this sty
 </div>
 ```
 
+And instead add it to individual sensor `<div>`s. This requires us to add a
+`<style scoped>` section to the bottom of `App.vue`.
 
-And instead add it to individual sensor `<div>`s. This requires us to add a `<style scoped>` section to the bottom of `App.vue`.
-
-```
+```vue
 <style scoped>
 .sensor {
   width: 100px;
@@ -130,12 +137,11 @@ And instead add it to individual sensor `<div>`s. This requires us to add a `<st
 </style>
 ```
 
-
 Now that we can style each sensor, it's time to add some basic styles.
 
 Some padding, rounded corners, and color will make a big difference.
 
-```
+```css
 .sensor {
   width: 100px;
   padding: 20px;
@@ -144,23 +150,22 @@ Some padding, rounded corners, and color will make a big difference.
 }
 ```
 
-
-![](./images/wl4KDKpDe.webp)
+![The same three yellow lines from earlier, but each is encapsulated in their
+own dark background rectangle with rounded corners.](./images/wl4KDKpDe.webp)
 
 I'm a fan of CSS grids. So I'm going to add a class to the root element…
 
-```
+```html
 <div class="sensors">
-  <div class="sensor ... snip ...>
-    <!-- ... snip ...>
+  <div class="sensor <!-- snip -->">
+    <!-- snip -->
   </div>
 </div>
 ```
 
-
 …and give it some grid styles.
 
-```
+```css
 .sensors {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -168,12 +173,13 @@ I'm a fan of CSS grids. So I'm going to add a class to the root element…
 }
 ```
 
+These styles make the sensors show up in a grid that will automatically adjust
+for screen size.
 
-These styles make the sensors show up in a grid that will automatically adjust for screen size.
+We'll also need to remove the `width` from each sensor, and instead add a
+`max-width`.
 
-We'll also need to remove the `width` from each sensor, and instead add a `max-width`.
-
-```
+```css
 .sensor {
   max-width: 200px;
   padding: 20px;
@@ -181,19 +187,18 @@ We'll also need to remove the `width` from each sensor, and instead add a `max-w
 }
 ```
 
-
-![](./images/nek3PF0Hu.webp)
+![The same three spark lines, but they are side-by-side horizontally now with a
+bit of spacing between them.](./images/nek3PF0Hu.webp)
 
 The chart itself doesn't need to take up so much of the box. Add a class…
 
-```
+```html
 <SparkLine class="sensor-chart" :data="sensor" />
 ```
 
-
 …and style it accordingly.
 
-```
+```css
 .sensor {
   /* ... snip ... */
   text-align: center;
@@ -204,12 +209,12 @@ The chart itself doesn't need to take up so much of the box. Add a class…
 }
 ```
 
-
-![](./images/zHWyT794_.webp)
+![The same sparklines, but now they only take up half of their containing
+rectangle and are centered within them.](./images/zHWyT794_.webp)
 
 Each of these sensors surely has a name. We can add that in the data.
 
-```
+```javascript
 data() {
     return {
       sensors: [
@@ -221,10 +226,9 @@ data() {
   },
 ```
 
-
 Since we changed the format of our data, we need to update the template.
 
-```
+```html
 <div class="sensors">
   <div class="sensor" v-for="sensor in sensors" :key="sensor.name">
     <SparkLine class="sensor-chart" :data="sensor.data" />
@@ -232,10 +236,9 @@ Since we changed the format of our data, we need to update the template.
 </div>
 ```
 
-
 Now we can add the name below each chart.
 
-```
+```html
 <div class="sensors">
   <div class="sensor" v-for="sensor in sensors" :key="sensor.name">
     <SparkLine class="sensor-chart" :data="sensor.data" />
@@ -244,21 +247,22 @@ Now we can add the name below each chart.
 </div>
 ```
 
-
 The font can be a little smaller, too.
 
-```
+```css
 .sensor-name {
   font-size: 12px;
 }
 ```
 
+![Text labels have been added below each sparkline. But they are black, making
+them hard to read on the dark background rectangle.](./images/vi8XXtOER.webp)
 
-![](./images/vi8XXtOER.webp)
+Oops. It's hard to read. We can change the font and color directly in the
+`.sensor-name` style, but I know we're going to be adding some more text, so I'm
+going to make the change higher up.
 
-Oops. It's hard to read. We can change the font and color directly in the `.sensor-name` style, but I know we're going to be adding some more text, so I'm going to make the change higher up.
-
-```
+```css
 .sensors {
   /* ... snip ... */
   font-family: sans-serif;
@@ -266,40 +270,42 @@ Oops. It's hard to read. We can change the font and color directly in the `.sens
 }
 ```
 
+![The text is now white and easy to read.](./images/cnc15pv3l.webp)
 
-![](./images/cnc15pv3l.webp)
+It's starting to come together. How about we show the most recent data point for
+each sensor? Note the new lines in bold below.
 
-It's starting to come together. How about we show the most recent data point for each sensor? Note the new lines in bold below.
-
-```
+```html
 <div class="sensors">
-    <div class="sensor" v-for="sensor in sensors" :key="sensor.name">
-      <SparkLine class="sensor-chart" :data="sensor.data" />
+  <div class="sensor" v-for="sensor in sensors" :key="sensor.name">
+    <SparkLine class="sensor-chart" :data="sensor.data" />
 
-      <div class="sensor-value">
-        {{ sensor.data[sensor.data.length - 1] }}
-      </div>
-
-      <div class="sensor-name">{{ sensor.name }}</div>
+    <div class="sensor-value">
+      {{ sensor.data[sensor.data.length - 1] }}
     </div>
+
+    <div class="sensor-name">{{ sensor.name }}</div>
   </div>
+</div>
 ```
 
 
-We can make these numbers bigger as you can imagine they might be valuable to see at a glance.
+We can make these numbers bigger as you can imagine they might be valuable to
+see at a glance.
 
-```
+```css
 .sensor-value {
   font-size: 30px;
 }
 ```
 
+![Numeric values now appear between the sparklines and their text
+labels.](./images/cU-CrrPg5M.webp)
 
-![](./images/cU-CrrPg5M.webp)
+Just for personal preference, I'm going to set the entire background to a darker
+color. You can place this right alongside `<style scoped>`.
 
-Just for personal preference, I'm going to set the entire background to a darker color. You can place this right alongside `<style scoped>`.
-
-```
+```html
 <style>
 body {
   background-color: #212124;
@@ -307,43 +313,47 @@ body {
 </style>
 ```
 
+![The dark-backgrounded rectangles are now set upon a darker containing
+background.](./images/qUv6mW1Gh.webp)
 
-![](./images/qUv6mW1Gh.webp)
+And the styles are complete! Let's see what it looks like with many more
+sensors.
 
-And the styles are complete! Let's see what it looks like with many more sensors.
-
-```
+```javascript
 sensors: [
-        { name: "Alt Volts", data: [808, 1475, 1426, 1884, 1396] },
-        { name: "Alt Amps", data: [3246, 1941, 2649, 1633, 1262] },
-        { name: "Aux HP", data: [190, 128, 209, 208, 116] },
-        { name: "Battery Volts", data: [73, 101, 49, 37, 62] },
-        { name: "W/S Derate", data: [5, 4, 1, 2, 3] },
-        { name: "Effort Kbls", data: [61, 74, 48, 52, 35] },
-        { name: "Load Pot%", data: [99, 96, 95, 97, 91] },
-        { name: "Max GTO °C", data: [23, 21, 44, 26, 52] },
-        { name: "Prop Derate", data: [4, 2, 5, 1, 0] },
-        { name: "MPH", data: [18, 20, 21, 23, 26] },
-        { name: "TE", data: [8, 9, 5, 7, 6] },
-        { name: "Read No.", data: [9811, 9812, 9813, 9814, 9815] },
-        { name: "Engine RPM", data: [1096, 598, 661, 777, 1027] },
-        { name: "Gross HP", data: [5959, 2163, 3935, 3443, 4566] },
-        { name: "Water °F", data: [243, 98, 101, 193, 184] },
-        { name: "Oil °F", data: [253, 143, 150, 232, 215] },
-        { name: "MPH/Minute", data: [5, 6, 4, 2, 3] }
-      ]
+  { name: "Alt Volts", data: [808, 1475, 1426, 1884, 1396] },
+  { name: "Alt Amps", data: [3246, 1941, 2649, 1633, 1262] },
+  { name: "Aux HP", data: [190, 128, 209, 208, 116] },
+  { name: "Battery Volts", data: [73, 101, 49, 37, 62] },
+  { name: "W/S Derate", data: [5, 4, 1, 2, 3] },
+  { name: "Effort Kbls", data: [61, 74, 48, 52, 35] },
+  { name: "Load Pot%", data: [99, 96, 95, 97, 91] },
+  { name: "Max GTO °C", data: [23, 21, 44, 26, 52] },
+  { name: "Prop Derate", data: [4, 2, 5, 1, 0] },
+  { name: "MPH", data: [18, 20, 21, 23, 26] },
+  { name: "TE", data: [8, 9, 5, 7, 6] },
+  { name: "Read No.", data: [9811, 9812, 9813, 9814, 9815] },
+  { name: "Engine RPM", data: [1096, 598, 661, 777, 1027] },
+  { name: "Gross HP", data: [5959, 2163, 3935, 3443, 4566] },
+  { name: "Water °F", data: [243, 98, 101, 193, 184] },
+  { name: "Oil °F", data: [253, 143, 150, 232, 215] },
+  { name: "MPH/Minute", data: [5, 6, 4, 2, 3] }
+]
 ```
 
+![The data above is represented with the sparkline grid we
+built.](./images/HN7ohqP1P.webp)
 
-![](./images/HN7ohqP1P.webp)
+It looks good! And the **best** part? Everything is dynamic. You can change the
+data and everything updates.
 
-It looks good! And the **best** part? Everything is dynamic. You can change the data and everything updates.
+Say you poll for updated data via an API. You simply replace or modify any of
+the sensors' `data` properties and the dashboard will update.
 
-Say you poll for updated data via an API. You simply replace or modify any of the sensors' `data` properties and the dashboard will update.
+Here's some code that adds a random data point to the first sensor's array every
+second. It also "caps" the array to the latest 15 values only.
 
-Here's some code that adds a random data point to the first sensor's array every second. It also "caps" the array to the latest 15 values only.
-
-```
+```javascript
 setInterval(() => {
   this
     .sensors[0]
@@ -354,11 +364,10 @@ setInterval(() => {
 }, 1000);
 ```
 
+With that change, the dashboard comes alive!
 
-![](./images/E6gOxAq3Y.webp)
+The code for this article is open source and can be found on GitHub:
+[travishorn/vue-sparkline-component](https://github.com/travishorn/vue-sparkline-component/tree/dashboard).
 
-The code for this article is open source and can be found on GitHub.
-[**travishorn/vue-sparkline-component**
-*Basic sparkline component for Vue.js using D3.js. See how this component was built step-by-step. npm install npm run…*github.com](https://github.com/travishorn/vue-sparkline-component/tree/dashboard)
-
-Most of what was written today is contained in [src/App.vue](https://github.com/travishorn/vue-sparkline-component/blob/dashboard/src/App.vue).
+Most of what was written today is contained in
+[src/App.vue](https://github.com/travishorn/vue-sparkline-component/blob/dashboard/src/App.vue).

@@ -13,53 +13,53 @@ tags:
 title: Creating a Photo Gallery with Vue & CSS Grid
 ---
 
-An interactive gallery of photos is the perfect use-case for Vue and the CSS Grid Layout.
+An interactive gallery of photos is the perfect use-case for Vue and the CSS
+Grid Layout.
 
-![](./images/sHS5kTzU-.webp)
+This article describes every step along the way to building this photo gallery
+app.
 
-This article describes every step along the way to building this photo gallery app.
+![A screenshot of a fully designed photo gallery with a 3 by 6 grid of photos
+with rounded corners.](./images/LLK0qlGb-.webp)
 
-![The finished product](./images/LLK0qlGb-.webp)*The finished product*
-
-If you prefer to look the code itself, you can find the repository on GitHub below.
-[**travishorn/photo-gallery**
-*Grid-based photo gallery with lightbox. Contribute to travishorn/photo-gallery development by creating an account on…*github.com](https://github.com/travishorn/photo-gallery)
+If you prefer to look the code itself, you can find the repository on GitHub:
+[travishorn/photo-gallery](https://github.com/travishorn/photo-gallery).
 
 ### Prerequisites
 
-To follow along, you'll need [Node.js](https://nodejs.org) and version 3 of the [Vue CLI](https://cli.vuejs.org/).
+To follow along, you'll need [Node.js](https://nodejs.org) and version 3 of the
+[Vue CLI](https://cli.vuejs.org/).
 
-To install Node.js, go to [the homepage](https://nodejs.org) and find your download.
+To install Node.js, go to [the homepage](https://nodejs.org) and find your
+download.
 
 Once Node.js is installed, open a terminal and install the Vue CLI.
 
+```console
+npm install -g @vue/cli
 ```
-> npm install -g @vue/cli
-```
-
 
 ### Setup
 
-In a terminal, create a new app with the Vue CLI. This will create a new directory in the current directory.
+In a terminal, create a new app with the Vue CLI. This will create a new
+directory in the current directory.
 
+```console
+vue create photo-gallery
 ```
-> vue create photo-gallery
-```
-
 
 It will ask you to pick a preset. Choose `Manually select features`.
 
-```
+```console
 Vue CLI v3.4.1
 ? Please pick a preset: (Use arrow keys)
   default (babel, eslint)
 > Manually select features
 ```
 
-
 Arrow down to `Router` and press `Space` to select it.
 
-```
+```console
 ? Check the features needed for your project:
  (*) Babel
  ( ) TypeScript
@@ -72,42 +72,56 @@ Arrow down to `Router` and press `Space` to select it.
  ( ) E2E Testing
 ```
 
-
 You can leave all other options as they are and press `Enter`.
 
-For the rest of the options, feel free to accept the defaults by pressing `Enter` at each prompt.
+For the rest of the options, feel free to accept the defaults by pressing
+`Enter` at each prompt.
 
-When the CLI finishes, you'll have a new directory called `photo-gallery` which contains a sample Vue app.
+When the CLI finishes, you'll have a new directory called `photo-gallery` which
+contains a sample Vue app.
 
 Serve the app.
 
+```console
+cd photo-gallery
+npm run serve
 ```
-> cd photo-gallery
-> npm run serve
-```
 
+The sample app will be available at
+[http://localhost:8080/](http://localhost:8080/).
 
-The sample app will be available at [http://localhost:8080/](http://localhost:8080/)
+![A screenshot of the default Vue app. Includes the Vue logo and some links to
+documentation.](./images/V95Uc8cCQ.webp)
 
-![The sample Vue app built by Vue CLI](./images/V95Uc8cCQ.webp)*The sample Vue app built by Vue CLI*
-
-Keep the development server running as we develop the app. It will automatically reload as we update components.
+Keep the development server running as we develop the app. It will automatically
+reload as we update components.
 
 ### The Data
 
-A photo gallery contains photos and information about those photos. You can use your own, or [download the sample photos I used](https://github.com/travishorn/photo-gallery/raw/master/photo-gallery-images.zip).
+A photo gallery contains photos and information about those photos. You can use
+your own, or [download the sample photos I
+used](https://github.com/travishorn/photo-gallery/raw/master/photo-gallery-images.zip).
 
-Create a new directory under `src/` called `images/`. Place all the photo image files in this directory.
+Create a new directory under `src/` called `images/`. Place all the photo image
+files in this directory.
 
-Inside `src/images/` create another directory called `thumbnails/`. This directory should contains image files with the exact same name as the original photo files. The images in this directory should be scaled down and compressed versions of the same photos.
+Inside `src/images/` create another directory called `thumbnails/`. This
+directory should contains image files with the exact same name as the original
+photo files. The images in this directory should be scaled down and compressed
+versions of the same photos.
 
-For best results, I sized all of these thumbnail images to exactly 600 x 600 pixels.
+For best results, I sized all of these thumbnail images to exactly 600 x 600
+pixels.
 
-Finally, inside the `src/` directory, create a file called `photos.json`. This will be our "database" of photos. It should contain all the information about each photo.
+Finally, inside the `src/` directory, create a file called `photos.json`. This
+will be our "database" of photos. It should contain all the information about
+each photo.
 
-Here is a sample of the structure of this file. If you're using my sample photos, you can [download the JSON file](https://raw.githubusercontent.com/travishorn/photo-gallery/master/src/photos.json).
+Here is a sample of the structure of this file. If you're using my sample
+photos, you can [download the JSON
+file](https://raw.githubusercontent.com/travishorn/photo-gallery/master/src/photos.json).
 
-```
+```json
 [
   {
     "id": 0,
@@ -126,14 +140,16 @@ Here is a sample of the structure of this file. If you're using my sample photos
   {
     "id": 1,
     "title": null,
-    ... snip ...
+    // ... snip ...
   },
-  ... snip ...
+  // ... snip ...
 ]
 ```
 
-
-At this point, we have scaffolded a Vue app and added some photo data. The file structure looks something like this. Note that I'm only including the most relevant files and directories here so you can get an idea of where everything important should be.
+At this point, we have scaffolded a Vue app and added some photo data. The file
+structure looks something like this. Note that I'm only including the most
+relevant files and directories here so you can get an idea of where everything
+important should be.
 
 ```
 node_modules/
@@ -158,12 +174,13 @@ src/
 ... a bunch of other project files ...
 ```
 
-
 ### Grid-based Gallery
 
-Let's start by modifying `App.vue`. This is the root component everything else will go into. We can remove basically everything in it and replace it with the following.
+Let's start by modifying `App.vue`. This is the root component everything else
+will go into. We can remove basically everything in it and replace it with the
+following.
 
-```
+```vue
 <template>
   <router-view />
 </template>
@@ -183,14 +200,15 @@ Let's start by modifying `App.vue`. This is the root component everything else w
 </style>
 ```
 
+There's nothing too crazy going here. The template simply contains the router's
+view and nothing else. Then there's some basic font and color styles.
 
-There's nothing too crazy going here. The template simply contains the router's view and nothing else. Then there's some basic font and color styles.
-
-By default, the router points to the `Home` view. This view is defined in `src/views/Home.vue`. Let's edit that now.
+By default, the router points to the `Home` view. This view is defined in
+`src/views/Home.vue`. Let's edit that now.
 
 This is another simple one. Replace everything in the file with the following.
 
-```
+```vue
 <template>
   <Gallery />
 </template>
@@ -207,14 +225,14 @@ export default {
 </script>
 ```
 
-
-This view is simply showing the `Gallery` component. This component doesn't exist, yet. Let's create it.
+This view is simply showing the `Gallery` component. This component doesn't
+exist, yet. Let's create it.
 
 Create `src/components/Gallery.vue`. Here's the first big chunk of our app.
 
 The template looks like this:
 
-```
+```vue
 <template>
   <div class="gallery">
     <div class="gallery-panel"
@@ -226,8 +244,8 @@ The template looks like this:
 </template>
 ```
 
-
-Inside the main `div`, we're using a `v-for` to loop over a `photos` property and create `div`s for each one.
+Inside the main `div`, we're using a `v-for` to loop over a `photos` property
+and create `div`s for each one.
 
 Each of these `div`s contains an image.
 
@@ -235,7 +253,7 @@ Each image's `src` is set by a function we'll define next.
 
 Now for the script.
 
-```
+```vue
 <script>
 import photos from '@/photos.json';
 
@@ -255,20 +273,24 @@ export default {
 </script>
 ```
 
-
 In this file, we import the "database" JSON file from earlier.
 
-We use this JSON data to set the `photos` property in the `data` object. This property is an array of photo data that our template loops over to create `div`s for each photo.
+We use this JSON data to set the `photos` property in the `data` object. This
+property is an array of photo data that our template loops over to create `div`s
+for each photo.
 
-In the `methods` area, we're defining the `thumbUrl()` function we use in the template. The template passes the photo's filename to this function and it returns the URL to the photo's thumbnail.
+In the `methods` area, we're defining the `thumbUrl()` function we use in the
+template. The template passes the photo's filename to this function and it
+returns the URL to the photo's thumbnail.
 
 At this point, the images are displayed on the page.
 
-![The bare-bones image gallery. One thumbnail after another.](./images/JIXt8op-l.webp)*The bare-bones image gallery. One thumbnail after another.*
+![A barebones image gallery. One photo after another stacked vertically with
+little styling.](./images/JIXt8op-l.webp)
 
 Some styling will go a long way here.
 
-```
+```vue
 <style>
   .gallery {
     display: grid;
@@ -289,42 +311,50 @@ Some styling will go a long way here.
 ```
 
 
-On our container `.gallery` we set `display: grid` and set the `grid-template-columns`. With this style, columns are automatically adjusted based on the number of photos and the size of the viewport.
+On our container `.gallery` we set `display: grid` and set the
+`grid-template-columns`. With this style, columns are automatically adjusted
+based on the number of photos and the size of the viewport.
 
-Photos will be displayed in a grid and automatically resize. If the photos get to below `20rem` (about `440px `in our case), a column gets dropped to allow the photos to stay above `20rem`.
+Photos will be displayed in a grid and automatically resize. If the photos get
+to below `20rem` (about `440px `in our case), a column gets dropped to allow the
+photos to stay above `20rem`.
 
-![A grid-based responsive photo gallery](./images/J-6tmHiKH.webp)*A grid-based responsive photo gallery*
+![A 3 by 2 grid-based responsive photo gallery with rounded corners on each
+photo.](./images/J-6tmHiKH.webp)
 
 ### Lightbox
 
-It's looking great so far. Now we want users to be able to click on a photo and see the full image front-and-center.
+It's looking great so far. Now we want users to be able to click on a photo and
+see the full image front-and-center.
 
-For that, we'll wrap each image with a link. Since we're using Vue Router, we'll use `router-link` instead of an `a` tag.
+For that, we'll wrap each image with a link. Since we're using Vue Router, we'll
+use `router-link` instead of an `a` tag.
 
 Update the template.
 
-```
+```vue
 <template>
   <div class="gallery">
     <div class="gallery-panel"
          v-for="photo in photos"
          :key="photo.id">
-      **<router-link :to="`/photo/${photo.id}`">**
+      <router-link :to="`/photo/${photo.id}`">
         <img :src="thumbUrl(photo.filename)">
-      **</router-link>**
+      </router-link>
     </div>
   </div>
 </template>
 ```
 
-
-The link has a dynamic `to` attribute which points it to `/photo/${photo.id}`. For example, the first image — which has an `id` of `0`— will link to `/photo/0`.
+The link has a dynamic `to` attribute which points it to `/photo/${photo.id}`.
+For example, the first image — which has an `id` of `0`— will link to
+`/photo/0`.
 
 We need to set up that route. Open `src/router.js`.
 
 Delete the sample `/about` route so the entire router looks like this.
 
-```
+```javascript
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
@@ -344,10 +374,10 @@ export default new Router({
 });
 ```
 
+At the top, import a photo component which we'll build in a moment. Then, add a
+route that uses it.
 
-At the top, import a photo component which we'll build in a moment. Then, add a route that uses it.
-
-```
+```javascript
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
@@ -373,10 +403,9 @@ export default new Router({
 });
 ```
 
-
 We can now build the view for this route. Create `src/views/Photo.vue`.
 
-```
+```vue
 <template>
   <Photo />
 </template>
@@ -393,14 +422,17 @@ export default {
 </script>
 ```
 
+This is another simple file. The template is just showing one component, which
+we import in the script. Normally, we would just leave this file out and wire
+our route directly to the component, but we'll need to modify this view later to
+add a feature, so it's important.
 
-This is another simple file. The template is just showing one component, which we import in the script. Normally, we would just leave this file out and wire our route directly to the component, but we'll need to modify this view later to add a feature, so it's important.
-
-The `Photo` view is importing a `Photo` component. Create `src/components/Photo.vue`. This is the last big chunk of the app.
+The `Photo` view is importing a `Photo` component. Create
+`src/components/Photo.vue`. This is the last big chunk of the app.
 
 Let's start with a simple template.
 
-```
+```vue
 <template>
   <div class="lightbox">
 
@@ -416,16 +448,18 @@ Let's start with a simple template.
 </template>
 ```
 
+The `.lightbox` `div` is like the container for the image and the info we'll
+display next to it.
 
-The `.lightbox` `div` is like the container for the image and the info we'll display next to it.
+The `img` tag actually displays the image. It's `src` attribute uses another
+function we'll code up in the script.
 
-The `img` tag actually displays the image. It's `src` attribute uses another function we'll code up in the script.
-
-Immediately after the `img` there's a `div` which will contain information about the photo. You may also notice an inner `div` which will be used for styling.
+Immediately after the `img` there's a `div` which will contain information about
+the photo. You may also notice an inner `div` which will be used for styling.
 
 Now for the script.
 
-```
+```vue
 <script>
 import photos from '@/photos.json';
 
@@ -452,18 +486,23 @@ export default {
 </script>
 ```
 
-
 Here again, we're importing `photos.json` to get the photo data.
 
-But this time we're using a computed property which find the photo with the `id` specified in the URL.
+But this time we're using a computed property which find the photo with the `id`
+specified in the URL.
 
-Finally, there's the `photoUrl()` function which returns an image URL based on a filename. This time, instead of the thumbnail, it provides the URL to the full resolution image.
+Finally, there's the `photoUrl()` function which returns an image URL based on a
+filename. This time, instead of the thumbnail, it provides the URL to the full
+resolution image.
 
-Going back to the running app… click on an image and you'll be brought to the photo view. So far, the component displays the image and a small bit of text that just says "info".
+Going back to the running app… click on an image and you'll be brought to the
+photo view. So far, the component displays the image and a small bit of text
+that just says "info".
 
-The photo is way too big and the info text is pushed off the page. We need some styling.
+The photo is way too big and the info text is pushed off the page. We need some
+styling.
 
-```
+```vue
 <style>
   .lightbox {
     position: fixed;
@@ -495,22 +534,34 @@ The photo is way too big and the info text is pushed off the page. We need some 
 </style>
 ```
 
+For the container `.lightbox` we fix it so that it takes up the entire viewport.
+It also has a semi-transparent dark background color. Perhaps most importantly,
+it uses `display: grid` with 3 equal width columns.
 
-For the container `.lightbox` we fix it so that it takes up the entire viewport. It also has a semi-transparent dark background color. Perhaps most importantly, it uses `display: grid` with 3 equal width columns.
+The `.lightbox-img` has automatic margins, putting it in the center of it's
+column. The width is 100% so it always takes up the whole column (and *only* the
+column — no overflow), and it has `grid-column-start: 2` so that it starts in
+the second column of our 3-column grid. This puts it in the center.
 
-The `.lightbox-img` has automatic margins, putting it in the center of it's column. The width is 100% so it always takes up the whole column (and *only* the column — no overflow), and it has `grid-column-start: 2` so that it starts in the second column of our 3-column grid. This puts it in the center.
+`.lightbox-info` has a margin of `auto 2rem auto 0` meaning that the top and
+bottom margins are set automatically, centering it vertically in it's column.
+The right margin is set to `2rem` so it's pushed away from the right edge of the
+screen. The left margin is set to `0` because there will already be space there
+from the `grid-gap` we set on the container element.
 
-`.lightbox-info` has a margin of `auto 2rem auto 0` meaning that the top and bottom margins are set automatically, centering it vertically in it's column. The right margin is set to `2rem` so it's pushed away from the right edge of the screen. The left margin is set to `0` because there will already be space there from the `grid-gap` we set on the container element.
-
-Finally, `.ligthbox-info-inner` uses a light background with a little bit of padding. That's where our photo info will go.
+Finally, `.ligthbox-info-inner` uses a light background with a little bit of
+padding. That's where our photo info will go.
 
 These styles make everything look like a lightbox.
 
-![](./images/QdhdQAinVN.webp)
+![A photo of a deteriorating beached ship centered on a page with a dark
+background. To the right of the photo is a white box with black text reading
+"Info".](./images/QdhdQAinVN.webp)
 
-Right now, there's just placeholder text in the info box. Replace the word "info" with this template HTML.
+Right now, there's just placeholder text in the info box. Replace the word
+"info" with this template HTML.
 
-```
+```html
 <p v-if="photo.title">{{ photo.title }}</p>
 
 <p v-if="photo.location">{{ photo.location }}</p>
@@ -529,7 +580,6 @@ Right now, there's just placeholder text in the info box. Replace the word "info
 </p>
 ```
 
-
 If there's a photo title, show it.
 
 If there's a photo location, show it.
@@ -538,53 +588,62 @@ If there's a photographer, display their name with a link to their URL.
 
 If there's a source, display its name with its URL.
 
-![](./images/zwcXlEHtv.webp)
+![The same page, but the info box is enhanced. Instead of the word "Info", it
+says "Fraser Island Beach Track, Fraser Island, Australia. Andreas Dress. via
+Unsplash."](./images/zwcXlEHtv.webp)
 
-Things are starting to come together. There's a few features that will really complete the app, though.
+Things are starting to come together. There's a few features that will really
+complete the app, though.
 
-For one, we want to close the lightbox and go back to the gallery whenever someone clicks on the dark background. This is as simple as adding a click event that pushes a route to the router.
+For one, we want to close the lightbox and go back to the gallery whenever
+someone clicks on the dark background. This is as simple as adding a click event
+that pushes a route to the router.
 
 In the template, add a click event to the lightbox element.
 
-```
+```html
 <div class="lightbox" @click.self="closeLightbox">
 ```
 
 
-Notice I used the `.self` modifier. Without it, the click event will propagate to sub-elements and the lightbox would close even if you clicked on the photo or info.
+Notice I used the `.self` modifier. Without it, the click event will propagate
+to sub-elements and the lightbox would close even if you clicked on the photo or
+info.
 
-This click event is firing a function called `closeLightbox`. Create that function in the `methods` property.
+This click event is firing a function called `closeLightbox`. Create that
+function in the `methods` property.
 
-```
+```javascript
 closeLightbox() {
   this.$router.push('/');
 }
 ```
 
+Basically, we just redirect the client back to the homepage, which is the
+gallery of images.
 
-Basically, we just redirect the client back to the homepage, which is the gallery of images.
+![A nice looking 2 by 3 photo gallery grid.](./images/EZfi6_Pb9.webp)
 
-![Working gallery with lightbox](./images/EZfi6_Pb9.webp)*Working gallery with lightbox*
-
-One feature that would make this look better is if the gallery stayed in the background when the lightbox was shown.
+One feature that would make this look better is if the gallery stayed in the
+background when the lightbox was shown.
 
 It turns out, this is pretty easy. Open `src/views/Photo.vue`.
 
-Right now, the template contains a single element: a reference to the `Photo` component. We want to show the gallery on this page, too.
+Right now, the template contains a single element: a reference to the `Photo`
+component. We want to show the gallery on this page, too.
 
 To add the gallery, add its tag.
 
-```
+```vue
 <template>
   <Gallery />
   <Photo />
 </template>
 ```
 
-
 Since Vue components must have a single root element, add a parent `div`.
 
-```
+```vue
 <template>
   <div>
     <Gallery />
@@ -593,10 +652,9 @@ Since Vue components must have a single root element, add a parent `div`.
 </template>
 ```
 
-
 Then, in the script, import the `Gallery` component.
 
-```
+```vue
 <script>
 import Gallery from '@/components/Gallery.vue';
 import Photo from '@/components/Photo.vue';
@@ -611,25 +669,27 @@ export default {
 </script>
 ```
 
+Done! When you click on a photo, the lightbox opens, but the gallery stays in
+the background. Clicking the dark area around the lightboxed photo (or clicking
+the back button) returns you to the gallery.
 
-Done! When you click on a photo, the lightbox opens, but the gallery stays in the background. Clicking the dark area around the lightboxed photo (or clicking the back button) returns you to the gallery.
+![A nice looking 3 by 2 image gallery](./images/Ye7lFcqWU.webp)
 
-![The finished product](./images/Ye7lFcqWU.webp)*The finished product*
-
-The URL always reflects the currently open image. If you send someone a URL to a lightboxed photo, it will work as expected: the photo loads in a lightbox with the gallery in the background. Clicking takes them to the gallery itself.
+The URL always reflects the currently open image. If you send someone a URL to a
+lightboxed photo, it will work as expected: the photo loads in a lightbox with
+the gallery in the background. Clicking takes them to the gallery itself.
 
 ### Cleanup
 
-There are some files the Vue CLI created that we don't need anymore. You can safely delete…
+There are some files the Vue CLI created that we don't need anymore. You can
+safely delete…
 
 * `src/views/About.vue`
-
 * `src/components/HelloWorld.vue`
-
 * `src/assets/logo.webp`
 
-You should also consider updating `README.md` to be more descriptive of the actual app we've created.
+You should also consider updating `README.md` to be more descriptive of the
+actual app we've created.
 
-Code for this entire project can be found on GitHub below.
-[**travishorn/photo-gallery**
-*Grid-based photo gallery with lightbox. Contribute to travishorn/photo-gallery development by creating an account on…*github.com](https://github.com/travishorn/photo-gallery)
+Code for this entire project can be found on GitHub:
+[travishorn/photo-gallery](https://github.com/travishorn/photo-gallery).

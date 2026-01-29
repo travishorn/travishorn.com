@@ -11,15 +11,21 @@ title: 'Using JavaScript to Work with Spreadsheets, Part 3: Accepting Arguments 
   Reading Files'
 ---
 
-This is the third article in a series where we'll be learning to use the powerful logic of a programming language like JavaScript to manipulate spreadsheet data.
+This is the third article in a series where we'll be learning to use the
+powerful logic of a programming language like JavaScript to manipulate
+spreadsheet data.
 
-In this article, we'll talk about how to make a Node.js program, have it accept file paths as arguments, and how to read files from your hard drive.
+In this article, we'll talk about how to make a Node.js program, have it accept
+file paths as arguments, and how to read files from your hard drive.
 
-![](./images/mztl8Gfxg.webp)
+In order to make a reusable piece of code that can be used for many Excel files,
+we'll want our project to take the form of a command-line interface (CLI). This
+means that users of our program will "interface" with it (use it) via the
+command line. You may be the sole person who will interface with this program,
+but it's still a good idea to set it up to be as reusable as possible.
 
-In order to make a reusable piece of code that can be used for many Excel files, we'll want our project to take the form of a command-line interface (CLI). This means that users of our program will "interface" with it (use it) via the command line. You may be the sole person who will interface with this program, but it's still a good idea to set it up to be as reusable as possible.
-
-Create a new file in the project root folder called `index.js`. In VS Code, you can do this three different ways:
+Create a new file in the project root folder called `index.js`. In VS Code, you
+can do this three different ways:
 
 1. Click **File** > **New File**
 
@@ -27,119 +33,163 @@ Create a new file in the project root folder called `index.js`. In VS Code, you 
 
 1. Click the **New File** icon in the Explorer
 
-![](./images/GiVEDOmQ1.webp)
+![The VS Code file explorer. A red annotation circle surrounds the "New File"
+icon.](./images/GiVEDOmQ1.webp)
 
 Let's create our first Node.js program by typing the following in `index.js`
 
-```
+```javascript
 console.log("Hello, World!");
 ```
 
-
 Save the file.
 
-Now run it by going back to the Terminal in VS Code ( `Ctrl + `` ) and typing `node index` and pressing Enter. This command tells Node.js to start and run the contents on `index.js`.
+Now run it by going back to the Terminal in VS Code ( `Ctrl + `` ) and typing
+`node index` and pressing Enter. This command tells Node.js to start and run the
+contents on `index.js`.
 
-The contents of `index.js` tell node to simply "log" the words "Hello, World!" to the console (terminal).
+The contents of `index.js` tell node to simply "log" the words "Hello, World!"
+to the console (terminal).
 
-![](./images/_NmZBsOG5.webp)
+![A screenshot of VS Code. The Terminal window is open inside it. A red
+annotation circle surrounds the entered command `node index` and it's output
+`Hello, World!`.](./images/_NmZBsOG5.webp)
 
-We will eventually want our program to accept a parameter where we tell it which Excel file to open. For example, we want to be able to run `node index 'D:\Development\spreadsheets\Data Files\Company Database.xlsx'`. And we want our Node.js program to be able to pick up on the file path we gave it.
+We will eventually want our program to accept a parameter where we tell it which
+Excel file to open. For example, we want to be able to run `node index
+'D:\Development\spreadsheets\Data Files\Company Database.xlsx'`. And we want our
+Node.js program to be able to pick up on the file path we gave it.
 
-Parameters typed in the Terminal like this are called "arguments" in Node.js and can be accessed by the `process.argv` variable.
+Parameters typed in the Terminal like this are called "arguments" in Node.js and
+can be accessed by the `process.argv` variable.
 
-Instead of logging "Hello, World!," let's log the value of `process.argv`. Change `index.js` to the following:
+Instead of logging "Hello, World!," let's log the value of `process.argv`.
+Change `index.js` to the following:
 
-```
+```console.log
 console.log(process.argv);
 ```
 
-
 Save the file. In the Terminal, run `node index` again.
 
-![](./images/GjrYebTMb.webp)
-
-Nice! Node.js logged the value of `process.argv` which is an array of strings. There are two values in this array. The first is the path to `node.exe` and the second is the path to `index.js`. Those are indeed the first and second arguments we typed as part of the command.
-
-Let's try adding an argument and see what Node.js logs. Run the following in the Terminal.
-
+```console
+node index
+[
+  'C:\\Program Files\\nodejs\\node.exe',
+  'D:\\Development\\spreadsheets\\index'
+]
 ```
+
+Nice! Node.js logged the value of `process.argv` which is an array of strings.
+There are two values in this array. The first is the path to `node.exe` and the
+second is the path to `index.js`. Those are indeed the first and second
+arguments we typed as part of the command.
+
+Let's try adding an argument and see what Node.js logs. Run the following in the
+Terminal.
+
+```console
 node index thirdargument
+[
+  'C:\\Program Files\\nodejs\\node.exe',
+  'D:\\Development\\spreadsheets\\index'
+  'thirdargument'
+]
 ```
 
+The array now contains three strings, the third one being the third thing we
+typed as part of the command.
 
-![](./images/BoM_mOxr5.webp)
+How about we pass it a path to our spreadsheet file. Your path may be different
+if your file is in another location.
 
-The array now contains three strings, the third one being the third thing we typed as part of the command.
-
-How about we pass it a path to our spreadsheet file. Your path may be different if your file is in another location.
-
-```
+```console
 node index 'D:\Development\spreadsheets\Data Files\Company Database.xlsx'
+[
+  'C:\\Program Files\\nodejs\\node.exe',
+  'D:\\Development\\spreadsheets\\index'
+  'D:\\Development\\spreadsheets\\Data Files\\Company Database.xlsx'
+]
 ```
 
+What if we wanted to only log the file path without the other arguments? Meaning
+that we only want to log the third argument.
 
-![](./images/2kZq-HdnV.webp)
+Well, in your JavaScript, you can tell Node.js to only print the value of
+`process.argv` at a specific index. Remember that JavaScript is zero-indexed, so
+the first argument can be accessed via `process.argv[0]`.
 
-What if we wanted to only log the file path without the other arguments? Meaning that we only want to log the third argument.
-
-Well, in your JavaScript, you can tell Node.js to only print the value of `process.argv` at a specific index. Remember that JavaScript is zero-indexed, so the first argument can be accessed via `process.argv[0]`.
-
-![](./images/tN9oRbAAJ.webp)
+![A VS Code window with code to log `process.argv[0]`. The Terminal is open and
+the output is `C:\Program Files\nodejs\node.exe`.](./images/tN9oRbAAJ.webp)
 
 The second argument can be accessed via `process.argv[1]`.
 
-![](./images/RoBjWQk02.webp)
+![A VS Code window with code to log `process.argv[1]`. The Terminal is open and
+the output is `D:\Development\spreadsheets\index`.](./images/RoBjWQk02.webp)
 
 And of course, the third argument is accessed at `process.argv[2]`.
 
-![](./images/O4GmftZlZ.webp)
+![A VS Code window with code to log `process.argv[2]`. The Terminal is open and
+the output is `D:\Development\spreadsheets\Data Files\Company
+Database.xlsx`.](./images/O4GmftZlZ.webp)
 
-Now that we can get our file path by itself, let's learn how to read files in Node.js.
+Now that we can get our file path by itself, let's learn how to read files in
+Node.js.
 
-Instead of reading a complex file like one saved in XLSX format, let's start with a simple TXT file.
+Instead of reading a complex file like one saved in XLSX format, let's start
+with a simple TXT file.
 
-Create a file called `proverb.txt` anywhere. I'll place mine in the `Data Files` folder I made.
+Create a file called `proverb.txt` anywhere. I'll place mine in the `Data Files`
+folder I made.
 
-Tip: You might as well create this file using VS Code. There's no reason to switch to another editor like Notepad. Remember to start a new file, you can press `Ctrl + N`.
+Tip: You might as well create this file using VS Code. There's no reason to
+switch to another editor like Notepad. Remember to start a new file, you can
+press `Ctrl + N`.
 
 Inside `proverb.txt`, type whatever proverb you like.
 > Be not afraid of growing slowly, be afraid only of standing still.
 
 Save the file.
 
-Back in `index.js` we're going to "require" the `fs` module. This is a built-in module that comes with Node.js that allows you to access the computer's file system (fs).
+Back in `index.js` we're going to "require" the `fs` module. This is a built-in
+module that comes with Node.js that allows you to access the computer's file
+system (fs).
 
 Delete everything out of `index.js` and type this:
 
-```
+```javascript
 // Require the fs module
 const fs = require("fs");
 ```
 
+Now the variable `fs` is loaded with all the functions is [Node.js's fs
+module](https://nodejs.org/docs/latest-v14.x/api/fs.html).
 
-Now the variable `fs` is loaded with all the functions is [Node.js's fs module](https://nodejs.org/docs/latest-v14.x/api/fs.html).
+Note: I'm saying "variable" here but we're actually using a "constant" (const).
+If you've ever used `var = "something";` in JavaScript before, `const` is very
+similar, but it is "constant" (doesn't change) instead of "variable" (can
+change). I know that I am not going to want to reassign `fs` to any other value,
+so I'm using `const` instead of `var`.
 
-Note: I'm saying "variable" here but we're actually using a "constant" (const). If you've ever used `var = "something";` in JavaScript before, `const` is very similar, but it is "constant" (doesn't change) instead of "variable" (can change). I know that I am not going to want to reassign `fs` to any other value, so I'm using `const` instead of `var`.
+The `fs` module contains a useful function called
+`[readFile`](https://nodejs.org/docs/latest-v14.x/api/fs.html#fs_fs_readfile_path_options_callback)
+that accepts a file path to read. You use it like this:
 
-The `fs` module contains a useful function called `[readFile`](https://nodejs.org/docs/latest-v14.x/api/fs.html#fs_fs_readfile_path_options_callback) that accepts a file path to read. You use it like this:
-
-```
+```javascript
 fs.readFile("path to file");
 ```
 
+How can we get a reference to our file path again? That's right:
+`process.argv[2]`.
 
-How can we get a reference to our file path again? That's right: `process.argv[2]`.
-
-```
+```javascript
 const inputPath = process.argv[2];
 fs.readFile(inputPath);
 ```
 
-
 The whole `index.js` now looks like this:
 
-```
+```javascript
 // Require the fs module
 const fs = require("fs");
 
@@ -150,60 +200,78 @@ const inputPath = process.argv[2];
 fs.readFile(inputPath);
 ```
 
-
 So what happens when we try to run the program and read our proverb?
 
-![](./images/-yobsL4pw.webp)
+```console
+node index
+fs.js:160
+  throw new ERR_INVALID_CALLBACK(cb);
+  ^
+
+TypeError [ERR_INVALID_CALLBACK]: Callback must be a function. Received undefined
+    at maybeCallback (fs.js:160:9)
+    at Object.readFile (fs.js:311:14)
+    at Object<anonymous> (D:\Development\spreadsheets\index.js:8:4)
+    at ...
+```
 
 An error. This part of the error:
 
-```
+```console
 at Object.<anonymous> (D:\Development\spreadsheets\index.js:8:4)
 ```
 
-
 Tells us that something happened in `index.js` on line `8` column `4`.
 
-It looks like that's the `readFile` function throwing the error. `readFile` is erroring out saying:
+It looks like that's the `readFile` function throwing the error. `readFile` is
+erroring out saying:
 
-```
+```console
 Callback must be a function. Received undefined
 ```
 
+If we look at [the documentation for
+fs.readFile](https://nodejs.org/docs/latest-v14.x/api/fs.html#fs_fs_readfile_path_options_callback),
+we see that it is expecting (up to) three arguments.
 
-If we look at [the documentation for fs.readFile](https://nodejs.org/docs/latest-v14.x/api/fs.html#fs_fs_readfile_path_options_callback), we see that it is expecting (up to) three arguments.
+![The official Node.js documentaton for the `fs.readFile()` function. The top
+line reads `fs.readFile(path[, options], callback)`. Red annotations point to
+`path` being "Argument 1", `options` being "Argument 2", and `callback` being
+"Argument 3".](./images/uJvDchQaM.webp)
 
-![](./images/uJvDchQaM.webp)
+The first is the path to the file. The second is optional (notice it's in
+brackets) and the third is a "callback."
 
-The first is the path to the file. The second is optional (notice it's in brackets) and the third is a "callback."
+Look back at our error. It says that `callback` *must* be a function. As our
+code is now, it's undefined. Meaning we didn't even provide a value at all. We
+only gave `readFile` a single argument.
 
-Look back at our error. It says that `callback` *must* be a function. As our code is now, it's undefined. Meaning we didn't even provide a value at all. We only gave `readFile` a single argument.
+Okay, without even going into what a callback is, we know it has to be a
+function. So let's make a new (empty) function.
 
-Okay, without even going into what a callback is, we know it has to be a function. So let's make a new (empty) function.
-
-```
+```javascript
 function readFileCallback() {
     // Something will go in here later
 }
 ```
 
+And let's give `readFile` what it wants: three arguments — a path, options, and
+a callback function.
 
-And let's give `readFile` what it wants: three arguments — a path, options, and a callback function.
-
-```
+```javascript
 fs.readFile(inputPath, "", readFileCallback);
 ```
 
-
 Notice the path is still the same, we're just adding two additional arguments.
 
-The options is simply an empty string since we don't really care to set additional options.
+The options is simply an empty string since we don't really care to set
+additional options.
 
 The callback is a reference to our `readFileCallback` function.
 
 `index.js` now looks like this:
 
-```
+```javascript
 // Require the fs module
 const fs = require("fs");
 
@@ -218,28 +286,37 @@ function readFileCallback() {
 fs.readFile(process.argv[2], "", readFileCallback);
 ```
 
-
-Notice I defined `readFileCallback()` above `fs.readFile()`. I like to define variables and functions *before* they're called. It can prevent issues in complex code.
+Notice I defined `readFileCallback()` above `fs.readFile()`. I like to define
+variables and functions *before* they're called. It can prevent issues in
+complex code.
 
 Save the file and run it again. The result?
 
-![](./images/BfpvTz4Ni.webp)
-
 No more error, but not much else. The program just exits.
 
-So what's happening? `fs.readFile()` reads the file. But when it finishes, we're not *doing* anything with the result. That's what the callback is for.
+So what's happening? `fs.readFile()` reads the file. But when it finishes, we're
+not *doing* anything with the result. That's what the callback is for.
 
-In many Node.js built-in functions, when the function completes it's job, it fires a "callback" function that you provide. In this case, we provided that callback function, but it's just empty and nothing else happens.
+In many Node.js built-in functions, when the function completes it's job, it
+fires a "callback" function that you provide. In this case, we provided that
+callback function, but it's just empty and nothing else happens.
 
-In Node.js there is a strong convention that callback functions have two arguments: the first is always an error object (may be `null`), and the second is the result of the function call. In this case, that result would be the data in the file.
+In Node.js there is a strong convention that callback functions have two
+arguments: the first is always an error object (may be `null`), and the second
+is the result of the function call. In this case, that result would be the data
+in the file.
 
-In fact, you can see [again in the documentation](https://nodejs.org/docs/latest-v14.x/api/fs.html#fs_fs_readfile_path_options_callback) that this is indeed the signature of that callback.
+In fact, you can see [again in the
+documentation](https://nodejs.org/docs/latest-v14.x/api/fs.html#fs_fs_readfile_path_options_callback)
+that this is indeed the signature of that callback.
 
-![](./images/4G9QBerU4.webp)
+![The same screenshot of the Node.js docs for `fs.readFile()`. This time a red
+annotation circle surrounds `callback <Function>` with two arguments: `err
+<Error>` and `data <string> | <Buffer>`.](./images/4G9QBerU4.webp)
 
 So our callback should really look like this:
 
-```
+```javascript
 // Used as a callback when a file is read
 function readFileCallback(err, data) {
     // Log the data
@@ -247,22 +324,31 @@ function readFileCallback(err, data) {
 }
 ```
 
-
-We're not worrying about the `err` argument just yet. We're just going to log the `data`.
+We're not worrying about the `err` argument just yet. We're just going to log
+the `data`.
 
 Save and run the file.
 
-![](./images/V6Ekj3DPt.webp)
+```console
+node index 'D:\Development\spreadsheets\Data Files\proverb.txt'
+<Buffer 42 65 20 6e 6f...>
+```
 
-Okay getting closer, but we were expecting the text in the file, not `<Buffer 42 65 20 6e 6f...>`. It looks like the data returned is a Buffer.
+Okay getting closer, but we were expecting the text in the file, not `<Buffer 42
+65 20 6e 6f...>`. It looks like the data returned is a Buffer.
 
-We can check [the Node.js documentation to see what a Buffer is](https://nodejs.org/docs/latest-v14.x/api/buffer.html). It is a type of object used to represent sequences of bytes. I see in the documentation that buffers have a method called `toString()` which will decode the buffer into a string.
+We can check [the Node.js documentation to see what a Buffer
+is](https://nodejs.org/docs/latest-v14.x/api/buffer.html). It is a type of
+object used to represent sequences of bytes. I see in the documentation that
+buffers have a method called `toString()` which will decode the buffer into a
+string.
 
-![](./images/1tMobXBGp.webp)
+![The offical Node.js documentation for `buf.toString()`. The top line reads
+`buf.toString([encoding[, start[, end]]])`](./images/1tMobXBGp.webp)
 
 This method doesn't have any required arguments. Let's try using it.
 
-```
+```javascript
 // Require the fs module
 const fs = require("fs");
 
@@ -282,9 +368,16 @@ function readFileCallback(err, data) {
 fs.readFile(process.argv[2], "", readFileCallback);
 ```
 
+```console
+node index 'D:\Development\spreadsheets\Data Files\proverb.txt'
+Be not afraid of growing slowly, be afraid only of standing still.
+```
 
-![](./images/4biwewBQR.webp)
+Perfect. Our program can now read and display the contents of any text file we
+point it towards.
 
-Perfect. Our program can now read and display the contents of any text file we point it towards.
+In the next article, we'll learn how to add dependencies from the npm registry
+and we'll add some robustness to our interface.
 
-In the next article, we'll learn how to add dependencies from the npm registry and we'll add some robustness to our interface.
+[**Part 4: Making the CLI More
+Robust**](/using-javascript-to-work-with-spreadsheets-part-4-making-the-cli-more-robust/).

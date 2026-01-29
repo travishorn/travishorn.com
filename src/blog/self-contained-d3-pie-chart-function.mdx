@@ -10,45 +10,53 @@ tags:
 title: Self-contained D3 Pie Chart Function
 ---
 
-D3 is a great data visualization library. I often find myself coding the same types of charts over and over again. I decided that it would be wise to build each basic chart type I use into a single self-contained function that can be included and called on any page. These functions should create a static chart from a set of data and insert it into any element.
+D3 is a great data visualization library. I often find myself coding the same
+types of charts over and over again. I decided that it would be wise to build
+each basic chart type I use into a single self-contained function that can be
+included and called on any page. These functions should create a static chart
+from a set of data and insert it into any element.
 
-![](./images/8Iw0O6_eg.webp)
-
-This post is the second in a series where I write a function for each chart type. In this post, we'll be writing a pie chart function. [In the last one, we wrote a bar chart function.](https://travishorn.com/self-contained-d3-bar-chart-function-a41417beda8a)
+This post is the second in a series where I write a function for each chart
+type. In this post, we'll be writing a pie chart function. [In the last one, we
+wrote a bar chart
+function.](https://travishorn.com/self-contained-d3-bar-chart-function)
 
 ### The Goal
 
 Say we have data in this format.
 
-```
+```json
 [
-  { name: 'Option A', value: 107 },
-  { name: 'Option B', value: 31 },
-  { name: 'Option C', value: 635 },
+  { "name": "Option A", "value": 107 },
+  { "name": "Option B", "value": 31 },
+  { "name": "Option C", "value": 635 }
 ]
 ```
 
-
 And we want to visualize it like this.
 
-![A simple pie chart with three data points.](./images/CLopa2cZoQ.webp)*A simple pie chart with three data points.*
+![A pie chart with 3 slices. The first slice is blue, takes up about 14% of the
+pie, and is labeled "Option A. 107 (14%)". The second slice is orange, takes up
+about 4% of the pie, and is labeled "Option B. 31 (4%)". The last slice is
+green, takes up the remaining 82% of the pie, and is labeled "Option C. 635
+(82%)".](./images/CLopa2cZoQ.webp)
 
 ### The Function
 
 Just like the bar chart, let's write a function that accepts two arguments.
 
-```
+```javascript
 const pieChart = (selector, data) => {
   // All the rest of the code goes here
 };
 ```
 
-
-The first parameter, `selector`, will be the DOM element in which to add the chart. The second parameter, `data`, will be the data to visualize.
+The first parameter, `selector`, will be the DOM element in which to add the
+chart. The second parameter, `data`, will be the data to visualize.
 
 At the top of the function, we need to define some constants.
 
-```
+```javascript
 const size = 500;
 const fourth = size / 4;
 const half = size / 2;
@@ -57,46 +65,48 @@ const total = data.reduce((acc, cur) => acc + cur.value, 0);
 const container = d3.select(selector);
 ```
 
+This is very similar to the constants in the previous post. Although they're not
+exactly the same, we set some sizing constants first. These are `size`,
+`fourth`, `half`, and `labelOffset`.
 
-This is very similar to the constants in the previous post. Although they're not exactly the same, we set some sizing constants first. These are `size`, `fourth`, `half`, and `labelOffset`.
-
-The `total` constant simply sums up the data values. We'll reference this number later.
+The `total` constant simply sums up the data values. We'll reference this number
+later.
 
 The `container` constant uses a D3 selector to select the passed in element.
 
 Next we create the chart element itself inside the container.
 
-```
+```javascript
 const chart = container.append('svg')
   .style('width', '100%')
   .attr('viewBox', `0 0 ${size} ${size}`);
 ```
 
+Now for the plot area. This is a container element that starts exactly in the
+middle of the chart. This is a good reference point for where to place the pie
+slices.
 
-Now for the plot area. This is a container element that starts exactly in the middle of the chart. This is a good reference point for where to place the pie slices.
-
-```
+```javascript
 const plotArea = chart.append('g')
   .attr('transform', `translate(${half}, ${half})`);
 ```
 
-
 ### Scales
 
-There's only one scale this time: the color scale. We use this to color each slice based on the data names.
+There's only one scale this time: the color scale. We use this to color each
+slice based on the data names.
 
-```
+```javascript
 const color = d3.scaleOrdinal()
   .domain(data.map(d => d.name))
   .range(d3.schemeCategory10);
 ```
 
-
 ### Calculating the slices
 
 We calculate the slices using three D3 methods.
 
-```
+```javascript
 const pie = d3.pie()
   .sort(null)
   .value(d => d.value);
@@ -108,33 +118,41 @@ const arc = d3.arc()
   .outerRadius(fourth);
 ```
 
-
-`d3.pie` is the base of the calculations. By default, D3 sorts our data from largest to smallest. In my case, I want to keep data points in the order they're defined, so I pass `.sort(null)`. Then I define where the data values come from.
+`d3.pie` is the base of the calculations. By default, D3 sorts our data from
+largest to smallest. In my case, I want to keep data points in the order they're
+defined, so I pass `.sort(null)`. Then I define where the data values come from.
 
 Next we tie in our pie function with our data.
 
-Finally we create an `arc` function which we'll use to calculate the SVG [path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path)s. The inner radius is 0 so our slices start in the center of the chart. The outer radius goes out to a fourth of the total chart size.
+Finally we create an `arc` function which we'll use to calculate the SVG
+[path](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path)s. The
+inner radius is 0 so our slices start in the center of the chart. The outer
+radius goes out to a fourth of the total chart size.
 
-To understand the concept of the pie going out the a fourth the chart size, it may be helpful to visualize the chart broken into 4 pieces.
+To understand the concept of the pie going out the a fourth the chart size, it
+may be helpful to visualize the chart broken into 4 pieces.
 
-![](./images/X5fdripvT.webp)
+![The same pie chart, but washed out to make it less prominent. Five red
+horizontal lines, evenly spaced and extending across the chart are overlaid
+prominently.](./images/X5fdripvT.webp)
 
 We'll position the labels with arcs, too.
 
-```
+```javascript
 const arcLabel = d3.arc()
   .innerRadius(labelOffset)
   .outerRadius(labelOffset);
 ```
 
-
-We defined `labelOffset` earlier as 1.4 times a fourth of the chart size. This spaces the labels away from the slices a bit. Increase this number for farther-away labels. Decrease it for closer or overlapping labels.
+We defined `labelOffset` earlier as 1.4 times a fourth of the chart size. This
+spaces the labels away from the slices a bit. Increase this number for
+farther-away labels. Decrease it for closer or overlapping labels.
 
 ### Plotting the Slices
 
 Now we can plot the slices by appending `path`s to our chart.
 
-```
+```javascript
 plotArea.selectAll('path')
   .data(arcs)
   .enter()
@@ -144,14 +162,14 @@ plotArea.selectAll('path')
   .attr('d', arc);
 ```
 
-
-![](./images/bg_41mM77m.webp)
+![The same pie chart, with no overlaid red lines and no text labels; just
+colored pie slices.](./images/bg_41mM77m.webp)
 
 ### Labels
 
 It looks good but we still need some labels.
 
-```
+```javascript
 const labels = plotArea.selectAll('text')
   .data(arcs)
   .enter()
@@ -162,14 +180,15 @@ const labels = plotArea.selectAll('text')
   .attr('transform', d => `translate(${arcLabel.centroid(d)})`)
 ```
 
+Each label is positioned based on a D3 arc method called `centroid`. It places
+the label near the center of the arc.
 
-Each label is positioned based on a D3 arc method called `centroid`. It places the label near the center of the arc.
-
-While the code block above does add the `text` elements. They are empty at the moment.
+While the code block above does add the `text` elements. They are empty at the
+moment.
 
 First add the data names by appending a `tspan` to each `text` label.
 
-```
+```javascript
 labels.append('tspan')
   .attr('y', '-0.6em')
   .attr('x', 0)
@@ -177,30 +196,34 @@ labels.append('tspan')
   .text(d => `${d.data.name}`);
 ```
 
-
-![](./images/RrpXxuL6T.webp)
+![The same pie chart, but with slices labeled "Option A", "Option B", and
+"Option C".](./images/RrpXxuL6T.webp)
 
 Then add the data values and percentages by appending another `tspan`.
 
-```
+```javascript
 labels.append('tspan')
   .attr('y', '0.6em')
   .attr('x', 0)
   .text(d => `${d.data.value} (${Math.round(d.data.value / total * 100)}%)`);
 ```
 
-
-The values appear first, then the percentage is calculated inside of parenthesis.
+The values appear first, then the percentage is calculated inside of
+parenthesis.
 
 That's it! Our pie chart is complete.
 
-![](./images/qtsCSsbr1.webp)
+![A pie chart with 3 slices. The first slice is blue, takes up about 14% of the
+pie, and is labeled "Option A. 107 (14%)". The second slice is orange, takes up
+about 4% of the pie, and is labeled "Option B. 31 (4%)". The last slice is
+green, takes up the remaining 82% of the pie, and is labeled "Option C. 635
+(82%)".](./images/CLopa2cZoQ.webp)
 
 ### Putting it all Together
 
 The entire function looks like this.
 
-```
+```javascript
 const pieChart = (selector, data) => {
   const size = 500;
   const fourth = size / 4;
@@ -264,7 +287,4 @@ const pie = d3.pie()
 };
 ```
 
-
 This function has only one dependency: D3.
-
-See the pen below for full code and a demonstration.
