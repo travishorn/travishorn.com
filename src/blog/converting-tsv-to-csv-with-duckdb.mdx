@@ -8,20 +8,21 @@ tags:
 title: Converting TSV to CSV with DuckDB
 ---
 
-DuckDB is an incredibly versatile, in-process database. Its powerful SQL engine and ability to read various file formats make it an excellent tool for data transformation tasks right from your command line. In this post, you'll learn how to use DuckDB to convert one or more TSV files into CSV files.
+DuckDB is an incredibly versatile, in-process database. Its powerful SQL engine
+and ability to read various file formats make it an excellent tool for data
+transformation tasks right from your command line. In this post, you'll learn
+how to use DuckDB to convert one or more TSV files into CSV files.
 
-You can download DuckDB from [https://duckdb.org/#quickinstall](https://duckdb.org/#quickinstall) and then run it from your terminal.
+You can download DuckDB from
+[https://duckdb.org/#quickinstall](https://duckdb.org/#quickinstall) and then
+run it from your terminal.
 
 It can do all kinds of things, like…
 
 * Read and write CSV, Parquet, and JSON
-    
 * Perform SQL operations including window functions and CTEs
-    
 * Query other databases like MySQL and PostgreSQL
-    
 * Guarantee ACID transactions
-    
 
 It's great for querying CSV files:
 
@@ -35,21 +36,25 @@ It can also write to CSV:
 COPY my_data TO 'output.csv';
 ```
 
-In fact, you can combine these statements to read in from and write out to a file:
+In fact, you can combine these statements to read in from and write out to a
+file:
 
 ```sql
 COPY (SELECT * FROM read_csv('input.csv')) TO 'output.csv';
 ```
 
-Reading in data just to write it back out is a little pointless. It's like doing `cp input.csv output.csv` with more steps.
+Reading in data just to write it back out is a little pointless. It's like doing
+`cp input.csv output.csv` with more steps.
 
-The real power comes in when you have differing file formats. For example, you can convert a tab-separated file to a comma-separated file.
+The real power comes in when you have differing file formats. For example, you
+can convert a tab-separated file to a comma-separated file.
 
 ```sql
 COPY (SELECT * FROM read_csv('input.tsv', delim = '\t')) TO 'output.csv';
 ```
 
-From the terminal, DuckDB allows you to execute a command and immediately exit, using the `-c` option:
+From the terminal, DuckDB allows you to execute a command and immediately exit,
+using the `-c` option:
 
 ```bash
 duckdb -c "SELECT 1;"
@@ -61,7 +66,8 @@ So you can perform the conversion without entering into interactive mode:
 duckdb -c "COPY (SELECT * FROM read_csv('input.tsv', delim = '\t')) TO 'output.csv';"
 ```
 
-If you have multiple tab-separated files in the same directory, you can use a Bash script to loop over them:
+If you have multiple tab-separated files in the same directory, you can use a
+Bash script to loop over them:
 
 ```bash
 #!/bin/bash
@@ -171,6 +177,10 @@ else {
 }
 ```
 
-That's all there is to it. By combining DuckDB's file handling capabilities with a simple loop in a script, you can automate the conversion of multiple files at once. This method is fast and scalable, allowing you to handle a large number of files with a single command-line tool.
+That's all there is to it. By combining DuckDB's file handling capabilities with
+a simple loop in a script, you can automate the conversion of multiple files at
+once. This method is fast and scalable, allowing you to handle a large number of
+files with a single command-line tool.
 
-Photo by [Daniel Seßler](https://unsplash.com/@danielsessler?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/duck-standing-on-brown-rock-2qguco4_iaE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
+Photo by [Daniel Seßler](https://unsplash.com/@danielsessler) on
+[Unsplash](https://unsplash.com/photos/duck-standing-on-brown-rock-2qguco4_iaE)

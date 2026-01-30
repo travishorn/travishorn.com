@@ -10,21 +10,30 @@ tags:
 title: Monitoring your Linux Server with Prometheus
 ---
 
-Every system administrator would be wise to keep a close eye on the health and performance of their server infrastructure. Prometheus, an open-source monitoring and alerting toolkit, empowers system administrators to gain deep insights into their Linux servers, ensuring optimal performance and availability. In this article, I'll walk you through the step-by-step process of installing Prometheus, configuring it to monitor various metrics, adding authentication for secure access, and incorporating exporters to enhance its monitoring capabilities.
+Every system administrator would be wise to keep a close eye on the health and
+performance of their server infrastructure. Prometheus, an open-source
+monitoring and alerting toolkit, empowers system administrators to gain deep
+insights into their Linux servers, ensuring optimal performance and
+availability. In this article, I'll walk you through the step-by-step process of
+installing Prometheus, configuring it to monitor various metrics, adding
+authentication for secure access, and incorporating exporters to enhance its
+monitoring capabilities.
 
-## **Installation**
+## Installation
 
 Go to [https://prometheus.io/download/](https://prometheus.io/download/).
 
 In the **Operating System** dropdown menu, choose **linux**.
 
-In the **Architecture** dropdown menu, choose **amd64** (or whichever architecture your server uses).
+In the **Architecture** dropdown menu, choose **amd64** (or whichever
+architecture your server uses).
 
 In the **prometheus** section, find the version that is labeled **LTS**.
 
-Copy the listed URL. It will be labeled something like **prometheus-2.37.6.linux-amd64.tar.gz**.
+Copy the listed URL. It will be labeled something like
+**prometheus-2.37.6.linux-amd64.tar.gz**.
 
-> The exact filename will likely differ depending on when you're reading this.
+*The exact filename will likely differ depending on when you're reading this.*
 
 In your terminal, use `wget` to download the file at the copied URL.
 
@@ -32,7 +41,8 @@ In your terminal, use `wget` to download the file at the copied URL.
 wget https://github.com/prometheus/prometheus/releases/download/v2.37.6/prometheus-2.37.6.linux-amd64.tar.gz
 ```
 
-> The URL in the line above is just an example, use the actual URL you copied earlier.
+*The URL in the line above is just an example, use the actual URL you copied
+earlier.*
 
 The file will be downloaded to your machine. Unzip it.
 
@@ -64,9 +74,10 @@ Set the new user as the owner of `/opt/prometheus`.
 sudo chown -R prometheus:prometheus /opt/prometheus
 ```
 
-Create a new systemd service file called `/etc/systemd/system/prometheus.service`.
+Create a new systemd service file called
+`/etc/systemd/system/prometheus.service`.
 
-```yaml
+```
 [Unit]
 Description=Prometheus Monitoring
 Wants=network-online.target
@@ -104,20 +115,25 @@ sudo systemctl enable prometheus
 
 Verify it works by going to http://\[your server's IP address/hostname\]:9090.
 
-## **Add Authentication**
+## Add Authentication
 
-Right now, anyone who visits the URL will see all monitoring information. This could leak sensitive data. Prometheus has built-in basic authentication available for configuration.
+Right now, anyone who visits the URL will see all monitoring information. This
+could leak sensitive data. Prometheus has built-in basic authentication
+available for configuration.
 
-First, a password hash must be created. There are many methods to do this. I suggest using Python for this as many Linux distributions come preinstalled with Python 3.
+First, a password hash must be created. There are many methods to do this. I
+suggest using Python for this as many Linux distributions come preinstalled with
+Python 3.
 
-Install `python3-bcrypt`. It is a 3rd-party Python package that helps creating bcrypt hashes.
+Install `python3-bcrypt`. It is a 3rd-party Python package that helps creating
+bcrypt hashes.
 
 ```bash
 sudo apt update
 sudo apt install -y python3-bcrypt
 ```
 
-Create a file called [`gen-pass.py`](http://gen-pass.py).
+Create a file called `gen-pass.py`.
 
 ```python
 import getpass
@@ -134,7 +150,8 @@ Run the file with Python.
 python3 gen-pass.py
 ```
 
-You will be prompted for a password. Enter a strong and unique password that you will use to log in to Prometheus's web user interface, then press **Enter**.
+You will be prompted for a password. Enter a strong and unique password that you
+will use to log in to Prometheus's web user interface, then press **Enter**.
 
 The password hash is output. Copy it.
 
@@ -145,13 +162,15 @@ basic_auth_users:
     [username]: [copied password hash]
 ```
 
-For the username, choose any username you like. For the password hash, paste the password hash you copied earlier.
+For the username, choose any username you like. For the password hash, paste the
+password hash you copied earlier.
 
-> The brackets \[\] are only there for demonstration and should not be included in your file.
+*The brackets \[\] are only there for demonstration and should not be included
+in your file.*
 
 Edit `/etc/systemd/system/prometheus.service` to change the `ExecStart` line.
 
-```bash
+```
 ExecStart=/opt/prometheus/prometheus --config.file=/opt/prometheus/prometheus.yml --web.config.file=/opt/prometheus/web.yml
 ```
 
@@ -167,18 +186,18 @@ Restart the Prometheus service.
 sudo systemctl restart prometheus
 ```
 
-Now, when you access Prometheus in your web browser, a username/password prompt will appear. Enter the username and password you chose earlier to gain access.
+Now, when you access Prometheus in your web browser, a username/password prompt
+will appear. Enter the username and password you chose earlier to gain access.
 
-## **Adding an Exporter**
+## Adding an Exporter
 
-Prometheus comes with some basic metrics to monitor by default, but you'll want to use "exporters" which provide access to even more metrics. There are metrics for...
+Prometheus comes with some basic metrics to monitor by default, but you'll want
+to use "exporters" which provide access to even more metrics. There are metrics
+for...
 
 * Your hardware and OS: the "Node exporter" `node_exporter`
-    
 * MySQL/MariaDB: the "MySQL Server Exporter" `mysqld_exporter`
-    
 * Many, many more
-    
 
 Create a directory to store the exporters.
 
@@ -192,9 +211,11 @@ In the **Operating System** dropdown menu, choose **linux**.
 
 In the **Architecture** dropdown menu, choose **amd64**.
 
-Find the exporter you want to install. In this example, we'll go with the Node exporter.
+Find the exporter you want to install. In this example, we'll go with the Node
+exporter.
 
-In the **node\_exporter** section, copy the listed URL. It will be labeled something like **node\_exporter-1.5.0.linux-amd64.tar.gz**.
+In the **node\_exporter** section, copy the listed URL. It will be labeled
+something like **node\_exporter-1.5.0.linux-amd64.tar.gz**.
 
 In your terminal, download the file at the copied URL.
 
@@ -226,15 +247,18 @@ Remove the remaining files.
 rm -rf node_exporter-1.5.0.linux-amd64
 ```
 
-The binary you just copied is still owned by your user account. Change the ownership of it (and all other files in `/opt/prometheus` for good measure) to the `prometheus` user you created earlier.
+The binary you just copied is still owned by your user account. Change the
+ownership of it (and all other files in `/opt/prometheus` for good measure) to
+the `prometheus` user you created earlier.
 
 ```bash
 sudo chown -R prometheus:prometheus /opt/prometheus
 ```
 
-Create a new systemd service file at `/etc/systemd/system/prometheus_node_exporter.service`.
+Create a new systemd service file at
+`/etc/systemd/system/prometheus_node_exporter.service`.
 
-```yaml
+```
 [Unit]
 Description=Prometheus Node Exporter
 Wants=network-online.target
@@ -284,10 +308,21 @@ Restart the Prometheus service.
 sudo systemctl restart prometheus
 ```
 
-Verify it works by going to `http://[your server IP address]:9090/graph?g0.expr=rate(node_disk_io_time_seconds_total[1m])`. That page will show you the rate of I/O operations of your system disks.
+Verify it works by going to `http://[your server IP
+address]:9090/graph?g0.expr=rate(node_disk_io_time_seconds_total[1m])`. That
+page will show you the rate of I/O operations of your system disks.
 
-Repeat the process to add as many exporters as you need to fulfill your server monitoring needs.
+Repeat the process to add as many exporters as you need to fulfill your server
+monitoring needs.
 
-Implementing Prometheus as your Linux server monitoring solution equips you with powerful tools to keep your infrastructure in check. By following the steps outlined in this guide, you have effectively set up Prometheus, configured it to monitor essential metrics, strengthened security through authentication, and expanded monitoring capabilities with exporters. With Prometheus in place, you now have the ability to proactively identify and address issues, optimize performance, and ensure the stability and reliability of your Linux server environment.
+Implementing Prometheus as your Linux server monitoring solution equips you with
+powerful tools to keep your infrastructure in check. By following the steps
+outlined in this guide, you have effectively set up Prometheus, configured it to
+monitor essential metrics, strengthened security through authentication, and
+expanded monitoring capabilities with exporters. With Prometheus in place, you
+now have the ability to proactively identify and address issues, optimize
+performance, and ensure the stability and reliability of your Linux server
+environment.
 
-Cover photo by [Safwan Thottoli](https://unsplash.com/@safwan_thottoli) on [Unsplash](https://unsplash.com/photos/3PGJ17syNfQ).
+Cover photo by [Safwan Thottoli](https://unsplash.com/@safwan_thottoli) on
+[Unsplash](https://unsplash.com/photos/3PGJ17syNfQ).

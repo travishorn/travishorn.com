@@ -6,7 +6,7 @@ My personal profile and blog.
 
 ## To Do
 
-- Old article cleanup (start with "The Simple Guide to Installing..." and work
+- Finish article cleanup (start with L52 on "Building an enrollment..." and work
   your way newer)
   - Add alt text to images
   - Add language to code blocks

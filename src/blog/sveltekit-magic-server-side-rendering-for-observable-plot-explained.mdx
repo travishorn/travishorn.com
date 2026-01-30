@@ -12,21 +12,39 @@ tags:
 title: 'SvelteKit Magic: Server-Side Rendering for Observable Plot Explained'
 ---
 
-Using a web application framework like [SvelteKit](https://kit.svelte.dev/) opens up possibilities to bring your data visualizations to life on the server side before sending them to the client. In this guide, we'll walk through some of the secrets of server-side rendering (SSR) for plots created with [Observable Plot](https://observablehq.com/plot/) inside the SvelteKit framework. If you're looking to enhance the performance and user experience of your web app by seamlessly rendering charts on the server, you're in the right place.
+Using a web application framework like [SvelteKit](https://kit.svelte.dev/)
+opens up possibilities to bring your data visualizations to life on the server
+side before sending them to the client. In this guide, we'll walk through some
+of the secrets of server-side rendering (SSR) for plots created with [Observable
+Plot](https://observablehq.com/plot/) inside the SvelteKit framework. If you're
+looking to enhance the performance and user experience of your web app by
+seamlessly rendering charts on the server, you're in the right place.
 
-Say your web app requires dynamic and interactive data visualizations, but your users are being bogged down by slow load times and poor accessibility. Server-side rendering (SSR) provides a solution to this challenge. By generating plots on the server and sending them as pre-rendered HTML to the client, we can significantly improve the initial page load performance. This not only boosts the speed of your application but also ensures that users with varying device capabilities can access your visualizations easily. Read on to understand the process of integrating Observable Plot into SvelteKit, diving into the world of performant server-side rendering to deliver an enhanced user experience.
+Say your web app requires dynamic and interactive data visualizations, but your
+users are being bogged down by slow load times and poor accessibility.
+Server-side rendering (SSR) provides a solution to this challenge. By generating
+plots on the server and sending them as pre-rendered HTML to the client, we can
+significantly improve the initial page load performance. This not only boosts
+the speed of your application but also ensures that users with varying device
+capabilities can access your visualizations easily. Read on to understand the
+process of integrating Observable Plot into SvelteKit, diving into the world of
+performant server-side rendering to deliver an enhanced user experience.
 
 ## Create a new SvelteKit project
 
-You may be able to skip this section if you already have a SvelteKit project that you're working on. Otherwise, continue reading to create a new project.
+You may be able to skip this section if you already have a SvelteKit project
+that you're working on. Otherwise, continue reading to create a new project.
 
-Make sure you have [Node.js](https://nodejs.org/) installed. Then, open up a terminal and create a new SvelteKit project.
+Make sure you have [Node.js](https://nodejs.org/) installed. Then, open up a
+terminal and create a new SvelteKit project.
 
 ```bash
 npm create svelte@latest plot-ssr
 ```
 
-I called the project **plot-ssr**, but feel free to change the name to anything you wish. The above command will guide you through some prompts to create your new project.
+I called the project **plot-ssr**, but feel free to change the name to anything
+you wish. The above command will guide you through some prompts to create your
+new project.
 
 ```bash
 Need to install the following packages:
@@ -73,17 +91,20 @@ Start the development server
 npm run dev -- --open
 ```
 
-That last command should open the site in your web browser. If not, just go to http://localhost:5173.
+That last command should open the site in your web browser. If not, just go to
+[http://localhost:5173](http://localhost:5173).
 
 ## Install the libraries
 
-Keep the terminal with the development server running. Open up a new terminal and change into the project directory.
+Keep the terminal with the development server running. Open up a new terminal
+and change into the project directory.
 
 ```bash
 cd plot-ssr
 ```
 
-Install Observable Plot and [JSDOM](https://github.com/jsdom/jsdom) (both are necessary for this solution).
+Install Observable Plot and [JSDOM](https://github.com/jsdom/jsdom) (both are
+necessary for this solution).
 
 ```bash
 npm install @observablehq/plot jsdom
@@ -91,7 +112,8 @@ npm install @observablehq/plot jsdom
 
 ## Write the server-side code
 
-Create a new file called `src/routes/+page.server.js`. Note that this file should sit right next to the existing `+page.svelte` in the same directory.
+Create a new file called `src/routes/+page.server.js`. Note that this file
+should sit right next to the existing `+page.svelte` in the same directory.
 
 ```javascript
 // Import the necessary libraries
@@ -124,9 +146,11 @@ export async function load() {
 }
 ```
 
-This file uses [SvelteKit's load function](https://kit.svelte.dev/docs/load) to load data on the server, and then send it to the page for rendering.
+This file uses [SvelteKit's load function](https://kit.svelte.dev/docs/load) to
+load data on the server, and then send it to the page for rendering.
 
-Now, in `+page.svelte`, you can pick up the passed `plot` variable which contains the HTML string for the plot.
+Now, in `+page.svelte`, you can pick up the passed `plot` variable which
+contains the HTML string for the plot.
 
 ```svelte
 <script>
@@ -137,17 +161,25 @@ Now, in `+page.svelte`, you can pick up the passed `plot` variable which contain
 {@html data.plot}
 ```
 
-This file uses `export let data` to get a reference to the data passed in from `+page.server.js`. The `data` object will contain the `plot` variable we generated earlier.
+This file uses `export let data` to get a reference to the data passed in from
+`+page.server.js`. The `data` object will contain the `plot` variable we
+generated earlier.
 
-Use `data.plot` with [Svelte's `{@html ...}` tag](https://svelte.dev/docs/special-tags#html) to write HTML code directly to the page.
+Use `data.plot` with [Svelte's `{@html ...}`
+tag](https://svelte.dev/docs/special-tags#html) to write HTML code directly to
+the page.
 
 ## Result
 
 If you look at the page again (http://localhost:5173), you'll see the plot.
 
-![](./images/c85207a0-6199-454e-b7d1-5ead21b281d4.webp)
+![A bar chart. The X axis runs from 0.0 to 1.0 with tick marks every 0.1. The Y
+axis is labeled Frequency and runs from 0 to 550 with tick marks every
+50.](./images/c85207a0-6199-454e-b7d1-5ead21b281d4.webp)
 
-You can verify the HTML for the plot is sent directly from the server, and not just generated when the component is mounted by looking at the **Network** tab in Chrome's DevTools:
+You can verify the HTML for the plot is sent directly from the server, and not
+just generated when the component is mounted by looking at the **Network** tab
+in Chrome's DevTools:
 
 1. Press **Ctrl** + **Shift** + **I**
     
@@ -155,17 +187,22 @@ You can verify the HTML for the plot is sent directly from the server, and not j
     
 3. Refresh the page
     
-4. Scroll up and click on the row with the name of **localhost**, status of **200**, and type of **document**
+4. Scroll up and click on the row with the name of **localhost**, status of
+   **200**, and type of **document**
     
-5. Look at the **Response** tab. This is the response from the server. In it, you can see the `<svg>` element that makes up the plot.
+5. Look at the **Response** tab. This is the response from the server. In it,
+   you can see the `<svg>` element that makes up the plot.
     
 
-![](./images/24764737-527e-405a-bce9-f181dd6aadf1.webp)
+![Some HTML code. The main focus is an `<svg>` element whose code runs off the
+screenshot.](./images/24764737-527e-405a-bce9-f181dd6aadf1.webp)
 
 ## Conclusion
 
-You can use the knowledge gained here to open up possibilities for performant and dynamic data visualizations. When you adopt SSR, you optimize load times and create easier user experiences. Use this tool to ensure your visualizations shine with both functionality and speed.
+You can use the knowledge gained here to open up possibilities for performant
+and dynamic data visualizations. When you adopt SSR, you optimize load times and
+create easier user experiences. Use this tool to ensure your visualizations
+shine with both functionality and speed.
 
-All of the code for this article can be found on GitHub.
-
-%[https://github.com/travishorn/sveltekit-plot-ssr]
+All of the code for this article can be found on GitHub:
+[travishorn/sveltekit-plot-ssr](https://github.com/travishorn/sveltekit-plot-ssr).
