@@ -3,146 +3,198 @@ title: "Mastering Port Forwarding in VirtualBox: Unlocking Connectivity"
 datePublished: 2023-07-19T11:00:11+00:00
 cover: ./images/a10d34b6-4fa3-4cc6-8cfb-9d615cb478aa.webp
 tags: ["server-management"]
-
 ---
 
+VirtualBox is as a powerful tool to create and manage virtual machines. Using
+it, you may often encounter scenarios where you need to establish communication
+between the host and virtual machines, and this is where port forwarding comes
+into play. In this guide, we will explore the concept of port forwarding in
+VirtualBox. We'll walk step-by-step through the configuration process, learn how
+to connect to your virtual machine, reference a list of commonly forwarded
+ports, and (for an alternative to port forwarding) show how to use a bridged
+adapter. By the end, you'll be equipped with the knowledge to set up and use
+port forwarding on your virtual machines.
 
-
-VirtualBox is as a powerful tool to create and manage virtual machines. Using it, you may often encounter scenarios where you need to establish communication between the host and virtual machines, and this is where port forwarding comes into play. In this guide, we will explore the concept of port forwarding in VirtualBox. We'll walk step-by-step through the configuration process, learn how to connect to your virtual machine, reference a list of commonly forwarded ports, and (for an alternative to port forwarding) show how to use a bridged adapter. By the end, you'll be equipped with the knowledge to set up and use port forwarding on your virtual machines.
-
-By default, virtual machines running inside VirtualBox use a virtual network adapter attached to NAT. This means that the machine is not accessible on your host network, but rather a virtual network inside of the host computer. Any time you need to connect to your virtual machine remotely (whether by SSH, HTTP, or another protocol), you'll need to make sure the appropriate port is forwarded from your host machine. Here's how to do that.
+By default, virtual machines running inside VirtualBox use a virtual network
+adapter attached to NAT. This means that the machine is not accessible on your
+host network, but rather a virtual network inside of the host computer. Any time
+you need to connect to your virtual machine remotely (whether by SSH, HTTP, or
+another protocol), you'll need to make sure the appropriate port is forwarded
+from your host machine. Here's how to do that.
 
 Open **Oracle VM VirtualBox Manager** on the host machine.
 
-![](./images/ac9425df-420a-4872-af4d-1fa11ac19f0c.webp)
+![A screenshot of VirtualBox with a couple Virtual Machines
+listed.](./images/ac9425df-420a-4872-af4d-1fa11ac19f0c.webp)
 
 Click to select the virtual machine from the list on the left.
 
-![](./images/b97f7655-e4a6-4216-8a09-aa0d01e3bf68.webp)
+![Screenshot of VirtualBox. A red annotation circle surrounds the name of a
+virtual machine.](./images/b97f7655-e4a6-4216-8a09-aa0d01e3bf68.webp)
 
 Click the **Settings** button.
 
-![](./images/3a394e14-f810-459e-b5a0-1937fe32190a.webp)
+![Screenshot of VirtualBox. A virtual machine is highlighted. A red annotation
+circle surrounds the Settings
+button.](./images/3a394e14-f810-459e-b5a0-1937fe32190a.webp)
 
 Click **Network** from the pane on the left.
 
-![](./images/cd00b10b-fe85-4301-b942-883b383809c5.webp)
+![The Settings of a VM in VirtualBox. A red annotation circle surrounds the
+Network button.](./images/cd00b10b-fe85-4301-b942-883b383809c5.webp)
 
 Under the **Adapter 1** tab, click **Advanced**.
 
-![](./images/6a74320b-5449-4be4-bbc7-f5f2abd4e582.webp)
+![The network settings in VirtualBox. A red annotation circle surrounds the
+Advanced button.](./images/6a74320b-5449-4be4-bbc7-f5f2abd4e582.webp)
 
 Click **Port Forwarding**.
 
-![](./images/072969a7-c4da-4be0-b64f-9aaaf75af639.webp)
+![The network settings in VirtualBox. A red annotation circle surrounds the Port
+Forwarding button.](./images/072969a7-c4da-4be0-b64f-9aaaf75af639.webp)
 
 Click the **Adds new port forwarding rule.** button. It's on the right side.
 
-![](./images/d72cc229-0c58-4f20-b217-03f9e233e2dd.webp)
+![The Port Forwarding Rules settings in VirtualBox. A red annotation circle
+surrounds the green plus
+icon.](./images/d72cc229-0c58-4f20-b217-03f9e233e2dd.webp)
 
-In the table on the left, double-click **Rule 1**. This will allow you to edit the name of the rule. Type in the name of the service. For example, **SSH**.
+In the table on the left, double-click **Rule 1**. This will allow you to edit
+the name of the rule. Type in the name of the service. For example, **SSH**.
 
-![](./images/10e76a0a-cc76-4e06-9d8e-b5c1a8db466d.webp)
+![The Port Forwarding Rules settings in VirtualBox. A rule named "SSH" has been
+added.](./images/10e76a0a-cc76-4e06-9d8e-b5c1a8db466d.webp)
 
-Under **Host Port**, enter the port number you want the host machine to listen on. This can be anything, but for simplicity, I recommend using the same as the guest port. For SSH, use port **22**.
+Under **Host Port**, enter the port number you want the host machine to listen
+on. This can be anything, but for simplicity, I recommend using the same as the
+guest port. For SSH, use port **22**.
 
-![](./images/b2a05df8-2153-4240-aa18-84dcbd1cf3f1.webp)
+![The Port Forwarding Rules settings in VirtualBox. The Host Port for a rule
+named SSH has been set to
+22.](./images/b2a05df8-2153-4240-aa18-84dcbd1cf3f1.webp)
 
-> If you have multiple virtual machines which you will be SSHing into, or you already have an SSH server running on the host machine itself, you may want to enter a different **Host Port**. In that case, choose any number you like between 1024 and 49152. Just make sure it is not in use by any other service.
+> If you have multiple virtual machines which you will be SSHing into, or you
+> already have an SSH server running on the host machine itself, you may want to
+> enter a different **Host Port**. In that case, choose any number you like
+> between 1024 and 49152. Just make sure it is not in use by any other service.
 
-Under **Guest Port**, enter the port number that your virtual machine is listening on. For SSH, use port **22**.
+Under **Guest Port**, enter the port number that your virtual machine is
+listening on. For SSH, use port **22**.
 
-![](./images/a502d0f9-9da0-4ff0-be77-f84ab221b5f6.webp)
+![The Port Forwarding Rules settings in VirtualBox. The Guest Port for a rule
+named SSH has been set to
+22.](./images/a502d0f9-9da0-4ff0-be77-f84ab221b5f6.webp)
 
 Leave everything else blank.
 
 Click **OK**.
 
-![](./images/ca6ceb4c-791e-449f-9ec0-91da184b30ce.webp)
+![The Port Forwarding Rules settings in VirtualBox. A red annotation circle
+surrounds the OK button.](./images/ca6ceb4c-791e-449f-9ec0-91da184b30ce.webp)
 
 Click **OK** again.
 
-![](./images/83cd6d02-37f7-4f49-a247-c715eac7194e.webp)
+![The Network settings in VirtualBox. A red annotation circle surrounds the OK
+button.](./images/83cd6d02-37f7-4f49-a247-c715eac7194e.webp)
 
 ## Using the Forwarded Port
 
-Now, if you want to SSH into the virtual machine from the host machine, you can use something like this:
+Now, if you want to SSH into the virtual machine from the host machine, you can
+use something like this:
 
 ```bash
 ssh username@localhost
 ```
 
-Make sure to change `username` to the actual username that is set up on your virtual machine.
+Make sure to change `username` to the actual username that is set up on your
+virtual machine.
 
-If you want to connect to the virtual machine from some other machine than the host, try something like this:
+If you want to connect to the virtual machine from some other machine than the
+host, try something like this:
 
 ```bash
 ssh username@host_ip_address
 ```
 
-Change `username` to the actual username and change `host_ip_address` to the host's actual IP address. On Windows, you can determine this from the `ipconfig` command.
+Change `username` to the actual username and change `host_ip_address` to the
+host's actual IP address. On Windows, you can determine this from the `ipconfig`
+command.
 
-![](./images/1a7f1411-beee-449c-99f5-f8f12d75eeba.webp)
+![A screenshot of Windows PowerShell. The command `ipconfig` has been executed.
+Redacted information is shown. A red annotation circle surrounds the redacted
+value for IPv4 Address.](./images/1a7f1411-beee-449c-99f5-f8f12d75eeba.webp)
 
 ## Other Ports to Forward
 
 Some common ports you may consider forwarding are...
 
 * Port 21 for FTP
-    
 * Port 22 for SSH
-    
 * Port 80 for HTTP traffic
-    
 * Port 443 for HTTPS traffic
-    
 * Port 3000 which is a common development port for things like Node.js
-    
 * Port 3306 for MySQL/MariaDB access
-    
 
 ## An Alternate Solution: Setting up a Bridged Adapter
 
-If you want to access the virtual machine but don't want to forward any ports, you could attach the virtual network adapter to a bridged adapter. This places the virtual machine directly on the network with your other devices. It will receive its own IP address via DHCP.
+If you want to access the virtual machine but don't want to forward any ports,
+you could attach the virtual network adapter to a bridged adapter. This places
+the virtual machine directly on the network with your other devices. It will
+receive its own IP address via DHCP.
 
 Open **Oracle VM VirtualBox Manager** on the host machine.
 
-![](./images/ac9425df-420a-4872-af4d-1fa11ac19f0c.webp)
+![A screenshot of VirtualBox.](./images/ac9425df-420a-4872-af4d-1fa11ac19f0c.webp)
 
 Click to select the virtual machine from the list on the left.
 
-![](./images/b97f7655-e4a6-4216-8a09-aa0d01e3bf68.webp)
+![A screenshot of VirtualBox. A red annotation circle surrounds the name of a
+virtual machine.](./images/b97f7655-e4a6-4216-8a09-aa0d01e3bf68.webp)
 
 Click the **Settings** button.
 
-![](./images/3a394e14-f810-459e-b5a0-1937fe32190a.webp)
+![A screenshot of VirtualBox. A virtual machine has been highlighted. A red
+annotation circle surrounds the Settings
+button.](./images/3a394e14-f810-459e-b5a0-1937fe32190a.webp)
 
 Click **Network** from the pane on the left.
 
-![](./images/cd00b10b-fe85-4301-b942-883b383809c5.webp)
+![The settings for a virtual machine. A red annotation circle surrounds the
+Network button.](./images/cd00b10b-fe85-4301-b942-883b383809c5.webp)
 
 Select **Bridged Adapter** from the **Attached to** dropdown menu.
 
-![](./images/f980fab2-ac72-4027-99b4-01119b2657ad.webp)
+![The Network settings in VirtualBox. A red annotation circle surrounds the
+dropdown menu for "Attached to" where "Bridged Adapter" is currently
+selected.](./images/f980fab2-ac72-4027-99b4-01119b2657ad.webp)
 
 Click **OK**.
 
-![](./images/83cd6d02-37f7-4f49-a247-c715eac7194e.webp)
-
 ### Using a Bridged Adapter
 
-First, you need to determine what IP address the virtual machine received via DHCP. This can most easily be done on the virtual machine.
+First, you need to determine what IP address the virtual machine received via
+DHCP. This can most easily be done on the virtual machine.
 
 On Linux, you can use `ip addr show`.
 
-![](./images/2e27d153-db84-4a58-a358-7fb5440d489a.webp)
+![A screenshot of a Linux terminal. The command `ip addr show` has been
+executed. Redacted information is shown. A red annotation circle surrounds the
+redacted value for an inet IP
+address.](./images/2e27d153-db84-4a58-a358-7fb5440d489a.webp)
 
-Now you can connect (via SSH, for example) to the machine using the virtual machine's IP address you just discovered.
+Now you can connect (via SSH, for example) to the machine using the virtual
+machine's IP address you just discovered.
 
 ```bash
 ssh username@vm_ip_address
 ```
 
-Hopefully now you better understand how to connect your virtual machines to the outside world. Through the step-by-step configuration process, we have simplified the process of port forwarding, making it accessible to users of all levels. We also explored some common ports, discovering which services can benefit from port forwarding, and even showed a bridged adapter as an alternative solution.
+Hopefully now you better understand how to connect your virtual machines to the
+outside world. Through the step-by-step configuration process, we have
+simplified the process of port forwarding, making it accessible to users of all
+levels. We also explored some common ports, discovering which services can
+benefit from port forwarding, and even showed a bridged adapter as an
+alternative solution.
 
-Cover photo by [Danielle Suijkerbuijk](https://unsplash.com/@vandaantje?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/a-green-wall-with-a-plant-in-front-of-it-66ydMRXW-b8?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
+Cover photo by [Danielle Suijkerbuijk](https://unsplash.com/@vandaantje) on
+[Unsplash](https://unsplash.com/photos/a-green-wall-with-a-plant-in-front-of-it-66ydMRXW-b8).

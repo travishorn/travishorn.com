@@ -208,11 +208,13 @@ variable.
 While still in the **Site settings** for my bot, I clicked **Build & deploy**
 and then **Environment**.
 
-![image.webp](./images/bi33llswo.webp)
+![The Netlify settings for a project. Red annotation arrows point to Site
+Settings, Build & Deploy, and Environment.](./images/bi33llswo.webp)
 
 I clicked **Edit variables**
 
-![image.webp](./images/yWPYGavDW.webp)
+![The Netlify Environment variables settings for a project. A red annotation
+arrow points to the Edit variables button.](./images/yWPYGavDW.webp)
 
 Under **Key**, I typed **BOT_TOKEN**
 
@@ -220,7 +222,10 @@ Under **Value**, I pasted the bot token given to me by BotFather earlier
 
 I saved the settings by clicking **Save**
 
-![image.webp](./images/fxFI8772I.webp)
+![The Netlify Environment variables settings for a project. Red annotation
+arrows points to the Key input where the value BOT_TOKEN has been entered, the
+Value input where censored text has been entered, and the green Save
+button.](./images/fxFI8772I.webp)
 
 # Setting the Webhook
 
@@ -256,7 +261,7 @@ curl -F "url=https://partiibot-64e989.netlify.app/.netlify/functions/update" htt
 
 Success! I received an OK response
 
-```
+```json
 {"ok":true,"result":true,"description":"Webhook was set"}
 ```
 
@@ -275,7 +280,8 @@ By default, Netlify builds functions that appear in
 `YOUR_BASE_DIRECTORY/netlify/functions`. So I created a new file at
 `netlify/functions/update.js`
 
-![image.webp](./images/9bKGO2XR2.webp)
+![The file exporer in VS Code. A red annotation arrow points to a file called
+`update.js` in the `netlify/functions` directory.](./images/9bKGO2XR2.webp)
 
 I exported an async `handler` function that takes an `event` and returns an
 object with a `statusCode`
@@ -297,12 +303,15 @@ git push
 
 Within seconds, I saw the production deploy automatically on Netlify.
 
-![image.webp](./images/3k4vtlLcO.webp)
+![The Production deploys for a project on Netlify. A red annotation arrow points
+to the Published tag associated with the most recent
+deploy.](./images/3k4vtlLcO.webp)
 
 I found my built **update** function by clicking **Functions**. I viewed its
 logs by clicking its name, **update.js**.
 
-![image.webp](./images/hkqV9mWdR.webp)
+![The Netlify Functions settings for a project. Red annotation arrows point to
+Functions and update.](./images/hkqV9mWdR.webp)
 
 With the logs open, I tried sending a message to my bot. Hint: you can start a
 new conversation by visiting `t.me/<bot name>`. So for me, I visited
@@ -425,7 +434,8 @@ git push
 Once Netlify picked up the push and rebuilt the site, I sent another message to
 my bot. It responded with the hardcoded filler message!
 
-![image.webp](./images/ckxHDD4Ps.webp)
+![A Telegram conversation. The user sent "Hello" and the reply is "I got your
+message!"](./images/ckxHDD4Ps.webp)
 
 # Refactoring sendMessage
 
@@ -516,18 +526,35 @@ netlify login
 
 A new browser window appeared and I clicked **Approve**
 
-![image.webp](./images/GQjLayVWO.webp)
+![Screenshot of a webpage with the title "Authorize Application". An application
+is asking for permission to access Netlify on the user's behalf. A red
+annotation arrow points to the green Authorize button.](./images/GQjLayVWO.webp)
 
 I linked the local code to the Netlify site using the CLI
 
 ```bash
 netlify link
+
+Adding local .netlify folder to .gitignore file...
+
+netlify link will connect this folder to a site on Netlify
+
+? How do you want to link this folder to a site? use current git remote origin (https://github...)
+
+Looking for sites connected to 'https://github...
+
+Directory Linked
+
+Admin url: https...
+Site url: https...
+
+Site id saved to ...
+
+You can now run other `netlify` cli commands in this directory
 ```
 
-It asked me how I wanted to link the folder. I chose **Use current git remote
-origin**
-
-![image.webp](./images/xLnLWzBg9.webp)
+Notice above, when it asked me how I wanted to link the folder. I chose **Use
+current git remote origin**
 
 With that configuration out of the way, I started up the local dev server
 
@@ -552,20 +579,28 @@ I decided to use the REST client [Insomnia](https://insomnia.rest/).
 In Insomnia, I created a new POST request by clicking the **plus icon** on the
 left and then clicking **New Request**.
 
-![image.webp](./images/e4zyxdJcI.webp)
+![A screenshot of the Insomnia REST client. Red annotation arrows point to the
+Plus icon and to New Request in the menu under it.](./images/e4zyxdJcI.webp)
 
 I left the name as is, but changed the type to **POST**
 
-![image.webp](./images/io07HijJXU.webp)
+![The New Request dialog in Insomnia. Red annotation arrows point to the
+dropdown where GET is selected, and to the option POST on the menu that opened
+under it.](./images/io07HijJXU.webp)
 
 I created the request by clicking **Create**
 
-![image.webp](./images/5oYHqPEEK.webp)
+![The New Request dialog in Insomnia. My Request has been entered in the Name.
+POST has been selected. A red annotation arrow points to the Create
+button.](./images/5oYHqPEEK.webp)
 
 I set the URL to the endpoint of my function and then I changed the body type to
 **JSON**
 
-![image.webp](./images/bO9nxNSsq.webp)
+![A screenshot of Insomnia. A POST request to
+http://localhost:8888/.netlify/functions/update is visible. Red annotation
+arrows point to the URL, to the Body button, and to the JSON option in the open
+menu.](./images/bO9nxNSsq.webp)
 
 The data I wanted to send was an emulation of what Telegram sends my bot when
 someone sends it a message. For that, I just copied the data from the message I
@@ -586,11 +621,15 @@ except for the required keys. This left me with:
 
 I clicked send and saw the response was **200 OK** as expected.
 
-![image.webp](./images/cRpxBHkY4.webp)
+![An Insomnia request. Red annotation arrows point to the Send button and to the
+green 200 OK response. JSON with update_id, message, and text has been entered
+into the body.](./images/cRpxBHkY4.webp)
 
 And the bot sent me a message on Telegram!
 
-![image.webp](./images/5TpV7Ol9I.webp)
+![A Telegram conversation. The user has sent /start. The bot has replied "I got
+your message!" twice. The second reply appears unprompted in the conversation
+UI.](./images/5TpV7Ol9I.webp)
 
 Now I could test without having to constantly push to GitHub and Netlify.
 
@@ -782,7 +821,7 @@ I tested it out by using Insomnia to send a POST request to
 
 Since I still have `netlify dev` running, my bot responded as expected!
 
-![image.webp](./images/Z66uRxaew.webp)
+![A Telegram conversation. The bot sent "Hello world".](./images/Z66uRxaew.webp)
 
 Sending an unknown command works, too.
 
@@ -798,7 +837,8 @@ Sending an unknown command works, too.
 }
 ```
 
-![image.webp](./images/jE8d5YHmD.webp)
+![A Telegram conversation. The bot sent "I don't understand that
+command."](./images/jE8d5YHmD.webp)
 
 What happens if someone sends `/echo@partiibot` but doesn't include any extra
 text in the message? The bot sees that as `null` and responds with "null". I
@@ -816,7 +856,7 @@ await sendMessage(message.chat.id, extra || "ECHO!");
 
 If `extra` is `null`, the bot now responds with "ECHO!" instead of "null".
 
-![image.webp](./images/WIThkIaXH.webp)
+![A Telegram conversation. The bot sent "ECHO!".](./images/WIThkIaXH.webp)
 
 With the `switch` statement in place, I can keep adding `case` statements to
 build additional commands into the bot.
@@ -857,7 +897,10 @@ The results look like this:
         },
         "title": "What is Amazon Containerization - An Actionable Guide to Running Containers in AWS"
       },
-... and so on
+      // and so on
+    ]
+  }
+}
 ```
 
 I want to hook into this API with my bot, have it parse the results, and reply
@@ -887,7 +930,6 @@ const featuredPosts = `
 module.exports = {
   getFeaturedPosts: () => get(featuredPosts),
 };
-
 ```
 
 This file exports a method called `getFeaturedPosts()` which will use Axios to
@@ -945,7 +987,11 @@ http://localhost:8888/.netlify/functions/update.
 
 The bot responded with the latest featured posts!
 
-![image.webp](./images/wAXyTNRWH.webp)
+![A Telegram conversation. The bot has sent "What is Amazon
+Containerization...", "How to get started...", "A guide to Pull Requests...",
+and a link to https://hashnode.com/featured all in the same message. Telegram
+has embedded an OG image, title, and description of the featured page to the end
+of the message.](./images/wAXyTNRWH.webp)
 
 # The Final Push
 
@@ -953,7 +999,10 @@ Now that everything is working locally, it's time to make another push to GitHub
 which will trigger a rebuild on Netlify. Within seconds, I was able to chat
 directly with my bot.
 
-![image.webp](./images/jD6U6apTD.webp)
+![A Telegram conversation. The user sent "/echo" and the bot replied "ECHO!".
+The user sent "/echo Hello world" and the bot replied "Hello world". The user
+sent "/hashnodefeatured" and the bot replied with three featured articles and a
+link to Hashnode's Featured page.](./images/jD6U6apTD.webp)
 
 I can also add the bot to groups I administrate. Everyone in those groups will
 be able to use the bot by issuing commands like `/echo Hello world` or
@@ -965,16 +1014,27 @@ While not necessary, it's very helpful to let Telegram know which commands your
 bot knows. To do this, I just talked to BotFather again. I sent him the
 `/setcommands` command and he guided me through it.
 
-![image.webp](./images/94NsFyKpA.webp)
+![A Telegram conversation with the Botfather. The user sent "/setcommands" and
+the bot replied "Choose a bot to change the list of commands." The user sent
+"@partiibot" and the bot replied "OK. Send me a list of commands..." The user
+sent "echo - Repeat whatever you say. hashnodefeatured - Get the latest featured
+posts from Hashnode". The bot replied "Success! Command list
+updated."](./images/94NsFyKpA.webp)
 
 Now whenever someone chats with partiibot, they can issue commands directly with
 the command button.
 
-![image.webp](./images/RJerXNznN.webp)
+![A Telegram conversation with a bot. A red annotation arrow points the menu
+icon near where the user would type a message. A red annotation rectangle
+surrounds a menu that has opened that lists the commands "/echo" and
+"/hashnodefeatured" with their respective
+descriptions.](./images/RJerXNznN.webp)
 
 It will also recommend autocomplete commands as soon as they start typing `/`.
 
-![image.webp](./images/Jp3-XMZaf.webp)
+![A Telegram conversation. The user has typed "/" and a menu has opened with
+options for "/echo" and "hashnodefeatured" and their respective
+descriptions.](./images/Jp3-XMZaf.webp)
 
 # Ideas for the Future
 
@@ -1010,8 +1070,7 @@ or start an individual chat at https://t.me/partiibot . But the real treasure is
 using the knowledge and techniques from my experience in this post to make
 something clever yourself.
 
-The full code for this bot can be found on GitHub.
-
-%[https://github.com/travishorn/partiibot]
+The full code for this bot can be found on GitHub:
+[travishorn/partiibot](https://github.com/travishorn/partiibot).
 
 Get bot-building!

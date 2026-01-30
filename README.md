@@ -6,8 +6,8 @@ My personal profile and blog.
 
 ## To Do
 
-- Old article cleanup (start with L210 of "Building a Telegram..." and work your
-  way newer)
+- Old article cleanup (start with "The Simple Guide to Installing..." and work
+  your way newer)
   - Add alt text to images
   - Add language to code blocks
 - Resize cover images to 1200 x 630
