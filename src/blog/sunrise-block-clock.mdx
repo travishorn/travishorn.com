@@ -151,14 +151,14 @@ bottom](./images/aExfjlKKI.webp)
 Inside the `<svg>` and after this background`<rect>`, I created a
 `<g>` for each hour of the day.
 
-```svg
+```html
 <g v-for="hIndex in 24"></g>
 ```
 
 Inside that, I created a `<rect>` for each minute in the hour. These will
 be the "blocks". They all have a semi-transparent outline (`stroke`).
 
-```svg
+```html
 <g v-for="hIndex in 24">
   <rect stroke="rgba(0, 0, 0, 0.05)"
         v-for="mIndex in 60" />
@@ -186,7 +186,7 @@ computed: {
 
 Now the width and height can be set.
 
-```svg
+```html
 <rect stroke="rgba(0, 0, 0, 0.05)"
       v-for="mIndex in 60"
       :width="minuteWidth"
@@ -200,7 +200,7 @@ The blocks are all drawn, but stacked on top of each other in the upper left
 corner. I had to use a little bit of math to position them along the x and y
 grid.
 
-```svg
+```html
 <rect
   <!-- snip -->
 
@@ -252,7 +252,7 @@ of the day.
 
 Now we can set the `fill` value on each block based on this value.
 
-```svg
+```html
 <rect
   <!-- snip -->
 
