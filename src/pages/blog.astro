@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import PostCard from "../components/PostCard.astro";
-import { siteTitle } from "../site";
 import type { CollectionEntry } from "astro:content";
 import { getImage } from "astro:assets";
 import homeCover from "../blog/images/travis-horn-og.webp";
@@ -18,9 +17,9 @@ const sortedPosts = posts
     (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
   );
 
-const pageTitle = `Blog - ${siteTitle}`;
+const pageTitle = `Articles on Data Science & Web Dev - Travis Horn's Blog`;
 const pageDescription =
-  "Explore my blog posts on web development, programming, and technical topics.";
+  "Explore a collection of technical articles on web development, programming, and data science. Read tutorials, code deep-dives, and industry insights.";
 ---
 
 <Layout title={pageTitle} description={pageDescription} ogImage={pageOgImage}>
