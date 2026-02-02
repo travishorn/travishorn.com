@@ -59,9 +59,9 @@ Before I show you the bad query, I'll explain _why_ its bad.
 
 1.  It uses the older comma-syntax implicit `JOINs`. There is a potential for a
     Cartesian product if you're not careful.
-2.  To simulate "top N per group" without window
-    functions, we often use a `WHERE` clause that runs a subquery for every
-    single row returned by the outer query to check its rank.
+2.  To simulate "top N per group" without window functions, we often use a
+    `WHERE` clause that runs a subquery for every single row returned by the
+    outer query to check its rank.
 3.  We are filtering by date and joining on `user_id` without helper indexes.
 4.  Performing `EXTRACT` or date math on the column side prevents the planner
     from using indexes (if we even had one).
@@ -182,9 +182,9 @@ reduction in execution time.
 ## Query Plan Explanation
 
 With the bad query, the engine had to perform a sequential scan on the
-`transactions` table (reading 1 million rows from disk). Because of the logic in the
-`HAVING` clause, for every user group found, it triggered _another_ aggregation
-of the data to verify if that user was in the top 10.
+`transactions` table (reading 1 million rows from disk). Because of the logic in
+the `HAVING` clause, for every user group found, it triggered _another_
+aggregation of the data to verify if that user was in the top 10.
 
 With the optimized query, the `idx_txn_date_user` index allows Postgres to jump
 directly to the records from the last 5 years. It's able to ignore the older
