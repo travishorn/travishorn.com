@@ -1,0 +1,191 @@
+---
+datePublished: 2026-02-03 06:00:00-05:00
+title: 'Syncing Across Tabs with BroadcastChannel'
+draft: true
+---
+
+Here's a scenario: You have a dashboard open in two windows. In the first, you
+update a record, but when you switch to the second, nothing has changed. It
+breaks the illusion of a cohesive application. The user must manually refresh
+the page just to see their own actions reflected.
+
+Historically, we might solve this using clunky workarounds like aggressive
+polling, complex websocket implementations, or LocalStorage event listeners,
+which all have their limitations.
+
+Modern browsers, however, provide a native API to solve this: the
+BroadcastChannel API. It's a lightweight pub/sub system entirely in the browser.
+It allows windows, tabs, and workers on the same origin to communicate with each
+other. Using this API, we can synchronize state instantly without a network
+round-trip.
+
+## The API
+
+The API is pretty simple. Unlike setting up a websocket server or trying to
+manage shared workers, the BroadcastChannel doesn't require a handshake or much
+configuration. You simply start a connection to a named channel. Any other
+context listening on that channel receives the signal.
+
+The API uses the "structured clone algorithm", which means we can pass complex
+JavaScript objects, blobs, `Map`s, and `Set`s without needing to stringify and
+parse.
+
+Here's how you might implement it in raw JavaScript:
+
+```javascript
+// Connect to a specific channel
+const channel = new BroadcastChannel('dashboard_sync');
+
+// Set up the listener
+channel.onmessage = (event) => {
+  const { type, payload } = event.data;
+  console.log('Received:', { type, payload });
+};
+
+// Broadcast a message
+channel.postMessage({
+  type: 'UPDATE_PET',
+  payload: { id: 0, name: 'Smokey', status: 'Asleep' }
+});
+
+// Cleanup (when unmounting a component or similar)
+channel.close();
+```
+
+## Use with Svelte
+
+To keep things manageable, I'll standardize the messages using an "action"
+pattern. In Svelte, we wrap the logic inside a custom store.
+
+```javascript
+import { writable } from 'svelte/store';
+
+export const pets = writable([
+  { id: 0, name: 'Smokey', status: 'Asleep' },
+  { id: 1, name: 'Bandit', status: 'Awake' }
+]);
+
+const channel = new BroadcastChannel('dashboard_sync');
+
+// Listen for updates from neighboring tabs
+channel.onmessage = ({ data }) => {
+  if (data.type === 'UPDATE_PET') {
+    pets.update(items => {
+       return items.map(p => p.id === data.payload.id ? data.payload : p);
+    });
+  }
+};
+
+// Action to update local state AND broadcast to others
+export function updatePetStatus(id, status) {
+  pets.update(items => {
+    const updated = items.map(p => p.id === id ? { ...p, status } : p);
+    
+    // Find the changed item to broadcast
+    const pet = updated.find(p => p.id === id);
+    channel.postMessage({ type: 'UPDATE_PET', payload: pet });
+
+    // In a real application, you'd also fire off this event to the server so
+    // the change can be persisted.
+    
+    return updated;
+  });
+}
+```
+
+## A Loosely Coupled Helper
+
+Let's abstract some of this logic. Here's a helper we can wrap around a Svelte
+store. It overrides `set` and `update` to automatically broadcast changes. It
+also ensures incoming messages from the channel only update the local state
+without re-broadcasting.
+
+```javascript
+export function createSyncedStore(name, initialValue) {
+  const store = writable(initialValue);
+  const { set, update } = store;
+  const channel = new BroadcastChannel(name);
+
+  let subscribers = 0;
+
+  channel.onmessage = ({ data }) => {
+    // Use *internal* `set()` to avoid rebroadcast.
+    set(data);
+  };
+
+  return {
+    // Override subscribe to add channel closing when no more subscribers are
+    // left.
+    subscribe: (run) => {
+      subscribers++;
+      const unsubscribe = store.subscribe(run);
+
+      return () => {
+        unsubscribe();
+        subscribers--;
+        if (subscribers === 0) {
+          channel.close();
+        }
+      };
+    },
+    // Override set to add posting to the channel
+    set: (value) => {
+      set(value);
+      channel.postMessage(value);
+    },
+    // Override update to add posting to the channel
+    update: (fn) => {
+      update(current => {
+        const next = fn(current);
+        channel.postMessage(next);
+        return next;
+      });
+    }
+  };
+}
+```
+
+Now, any component can write to this wrapped store as per usual, and the changes
+propagate everywhere.
+
+```javascript
+// store.js
+export const pets = createSyncedStore('dashboard_sync', [
+  { id: 0, name: 'Smokey', status: 'Asleep' },
+  { id: 1, name: 'Bandit', status: 'Awake' }
+]);
+```
+
+```svelte
+<!-- Component.svelte -->
+<script>
+    pets.update(items => items.map(p => 
+        p.id === 0 ? { ...p, status: 'Eating' } : p
+    ));
+</script>
+```
+
+## Gotchas
+
+While this API has many upsides, there are a few implementation details to keep
+in mind. First, always call `channel.close()` when a store or component is
+destroyed to prevent memory leaks and dangling listeners. Second, remember that
+BroadcastChannel follows the `same-origin` policy; it won't bridge communication
+between different subdomains. Finally, keep in mind that a tab cannot hear its
+own broadcasts. This feature prevents the infinite feedback loops we'd otherwise
+have to handle in our logic, and it's something to be aware of.
+
+Remember, BroadcastChannel is a **pipe**, not a **bucket**. It's a communication
+layer, not a storage layer. If a user closes all instances of your app, any
+state that hasn't been persisted in some way (LocalStorage, a backend database,
+etc.) is gone forever.
+
+## Low Effort, High Reward
+
+You can implement BroadcastChannel with relatively low effort and receive
+relatively high reward optimization. It provides instant UI consistency with
+zero server overhead. It handles state synchronization locally to avoid stale
+tabs. It can significantly improve the perceived performance of your app.
+
+Take a look at your current apps. Chances are, there is a stale data bug hiding
+there that can be easily fixed with BroadcastChannel.

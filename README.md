@@ -36,6 +36,27 @@ This site is built with:
 - `npm run build` builds the static site to the `dist/` directory.
 - `npm run preview` previews the built site locally.
 
+## Article Ideas
+
+- Parsing Parquet in the browser
+- SQLite production config. WAL mode.
+- Pre-agg dashboard with materialized views
+- Replacing GA with Umami/Plausible
+- Rootless Podman on Linux
+- Explain vector DBs. Embeddings on MariaDB
+- D3 + Svelte 5 runes
+- MakeFiles (opposed to package.json scripts)
+- Why write documentation for self
+- SvelteKit server-side form validation (Zod)
+- When to use flexbox over CSS grid
+- DuckDB & Spark. Scaling up vs out.
+- Data pipeline in Rust
+- Caddy automatic HTTPS
+- NixOS
+- Local RAG
+- Scrape data from PDF invoices
+- Overoptimizing ("good enough")
+
 ## License
 
 All custom code is licensed under the MIT License.
