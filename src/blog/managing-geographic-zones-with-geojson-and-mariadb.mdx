@@ -60,17 +60,16 @@ open-source editor for map data.
 2. Zoom into the geographic area where your zones are located (e.g., a specific
    city or neighborhood).
 3. Draw the Zones:
-    * Select the **Draw Polygon** tool from the toolbar on the right (it looks
-      like a small pentagon). ![An icon of a small black unfilled pentagon with
-        block dots on each
-        corner.](./images/800dbf14-954e-401c-a846-a5dbea13b864.webp)
-    * Looking at your reference map (the PDF or image), click points on the map
-      to trace the outline of your first zone. ![A map of downtown Saint Louis,
-        MO. Part of the geography is outlined with a dashed yellow line and
-        filled with a very light transparent
-        yellow.](./images/9f37ae8e-8dc2-4bf3-a9a5-986a2a0ee395.webp)
-    * To finish the shape, you **must** click back on the very first point you
-      placed to "close the loop."
+    1. Select the **Draw Polygon** tool from the toolbar on the right (it looks
+      like a small pentagon).
+    2. Looking at your reference map (the PDF or image), click points on the map
+      to trace the outline of your first zone.
+    3. To finish the shape, you **must** click back on the very first point you
+      placed to "close the loop." ![An screen recording of geojson.io centered
+      on Saint Louis. The mouse cursor clicks on the button labeled with a
+      pentagon, then clicks various points on the map to draw a boundary,
+      highlighted in yellow. When the first point is clicked for a second time,
+      the shape is finalized and turns gray.](./images/geojson-io-boundary.webp)
 4. A shape without a name isn't very useful in a database. We need to label it.
    In the code editor on the right side of the site, look for the `properties`
    key. Add a new property called `name`. For the value, enter the name of the

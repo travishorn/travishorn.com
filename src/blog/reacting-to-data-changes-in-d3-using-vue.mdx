@@ -21,8 +21,12 @@ data sources.
 Follow along and we'll build a chart that updates when new data points are added
 and when existing data points are modified or removed.
 
-![A chart with three buttons to add, modify, and remove data points. (random
-data is used here)](./images/rfVON-MrMt.webp)
+![An animation. A chart with three buttons to add, modify, and remove data
+points. Three data points are visible. The mouse click on "Add whale" three
+times. Each time, a new dot appears. The mouse then clicks on "Modify whale"
+three times. Each time, one of the dots moves. Finally, the mouse clicks on
+"Remove whale" three times. Each time, one of the dots
+disappears.](./images/d3-add-modify-remove-whale.webp)
 
 To get started, let's make a tiny page with some bare-bones HTML and an `<svg>`
 element. Make sure the `<svg>` has an `id`.
@@ -395,16 +399,16 @@ methods: {
 
 If you click the button, you see another data point added to the chart.
 
-![The same chart, with the additon of another dot around
-25,40.](./images/z_ZUx4R02.webp)
+![An animation. A dot plot shows 3 dots. The mouse cursor clicks on a button
+labeled "Add whale". A new dot appears on the plot.](./images/d3-add-whale.webp)
 
 If you click it enough times, you'll probably get one that has an age or weight
 outside the bounds of our original three. In that case, you can see the chart
 update to accommodate the new maximum values.
 
-![The same chart, many new dots, some outside the original age and weight
-boundaries. The axes have automatically adjusted to go up to 70 (x) and 160
-(y).](./images/yihYiZ0yK.webp)
+![An animation showing the mouse clicking the "Add whale" button many times. The
+axes also change their scale to fit new dots that were outside the original
+range.](./images/d3-add-whale-many.webp)
 
 How about modifying and removing existing data points. You can create two new
 buttons.

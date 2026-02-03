@@ -99,7 +99,7 @@ You can even change the color.
   <circle cx="60"
           cy="60"
           r="60"
-          **fill="#007BFF"** />
+          fill="#007BFF" />
 </svg>
 ```
 
@@ -114,13 +114,13 @@ And you can place text over it.
           r="60"
           fill="#007BFF" />
   
-  **<text x="60"
+  <text x="60"
         y="60"
         fill="#FFFFFF"
         text-anchor="middle"
         alignment-baseline="middle">
     I'm a circle.
-  </text>**
+  </text>
 </svg>
 ```
 
@@ -133,7 +133,7 @@ tag.
 
 ```html
 <svg width="120" height="120">
-  **<a href="#">**
+  <a href="#">
     <circle cx="60"
             cy="60"
             r="60"
@@ -146,17 +146,15 @@ tag.
           alignment-baseline="middle">
       I'm a link.
     </text>
-  **</a>**
+  </a>
 </svg>
 ```
 
 The clickable part of the link is the actual circle (and text) element.
 
-![The same circle, but with a mouse cursor nearby. The cursor is in a place that
-*would be* clickable as a hyperlink, if the hyperlink was completely square
-around the circle, but since the hyperlink hugs the circle, the mouse cursor
-stays in its default form, indicating we are not hovering over a
-link](./images/pfkPwIyAW.webp)
+![An animation of a blue circle labeled "I'm a link". A mouse cursor hovers on
+and off of the link. The cursor changes to the pointer (indicating a link) *only
+when it's over the circle itself*.](./images/svg-circle-link.webp)
 
 You can use CSS to change the style on hover.
 
@@ -186,7 +184,7 @@ element](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).
           fill="#FFFFFF"
           text-anchor="middle"
           alignment-baseline="middle">
-      I'm a link.
+      Bookmark
     </text>
   </a>
 </svg>
@@ -196,10 +194,10 @@ element](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).
 a:hover path { fill: #00B2FF }
 ```
 
-
-![A shape, filled in blue, reminiscent of a classic bookmark with two "tails".
-The text "I'm a link" appears in white inside the
-shape](./images/cvkJJDBC4.webp)
+![An animation. A shape, filled in blue, reminiscent of a classic bookmark with
+two "tails". The text "Bookmark" appears in white inside the shape. A mouse
+cursor hovers on and off of the shape. When on the shape, the cursor changes to
+a pointer (indicating a link).](./images/svg-bookmark-link.webp)
 
 With `<path>` the possibilities really are endless. You can create the
 exact shape you need by defining its points in the `d` attribute.
