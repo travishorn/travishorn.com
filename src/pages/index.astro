@@ -12,12 +12,23 @@ const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 const optimizedHomeCover = await getImage({ src: homeCover });
 const pageOgImage = optimizedHomeCover.src;
 
-const latestPosts = posts
+// Get all published posts sorted by date
+const allPosts = posts
   .filter((post) => !post.data.draft)
   .sort(
     (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
-  )
-  .slice(0, 3);
+  );
+
+// Group into featured and latest (non-featured) posts
+const featuredPosts = allPosts.filter((post) => post.data.featured);
+const latestPosts = allPosts.filter((post) => !post.data.featured);
+
+// If there are less than 3 featured posts, calculate how many latest posts are
+// needed to fill to 3 posts
+const latestNeeded = Math.max(0, 3 - featuredPosts.length);
+
+// Combine. Featured posts first, followed by latest posts to fill to 3 total
+const displayPosts = [...featuredPosts, ...latestPosts.slice(0, latestNeeded)];
 ---
 
 <Layout ogImage={pageOgImage}>
@@ -27,7 +38,7 @@ const latestPosts = posts
     <p>Here are some of the latest articles I've written:</p>
 
     <div class="flex flex-col gap-6">
-      {latestPosts.map((post) => <PostCard post={post} />)}
+      {displayPosts.map((post) => <PostCard post={post} />)}
     </div>
 
     <a class="underline" href="/blog/">See more articles</a>
