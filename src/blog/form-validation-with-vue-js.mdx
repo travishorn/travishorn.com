@@ -2,11 +2,11 @@
 cover: ./images/NC266npE0.webp
 datePublished: 2017-04-10 22:01:01+00:00
 tags:
-- css
-- html
-- javascript
-- vue
-- web-development
+  - css
+  - html
+  - javascript
+  - vue
+  - web-development
 title: Form Validation with Vue.js
 ---
 
@@ -20,11 +20,10 @@ I'll also mention that many modern browsers have client-side validation built-in
 
 ```html
 <form>
-  <input required>
+  <input required />
   <button>Submit</button>
 </form>
 ```
-
 
 If you leave the `input` element empty and click **Submit**, Chrome prevents form submission and warns you:
 
@@ -36,9 +35,9 @@ However, not all browsers support this and all of them behave differently. Let's
 
 We want to build a form with two inputs:
 
-* Name
+- Name
 
-* Number between 1 and 10
+- Number between 1 and 10
 
 Both inputs are required. The number input should only allow numbers between 1 and 10.
 
@@ -50,20 +49,28 @@ Start with a basic HTML file with the [Bootstrap 4 stylesheet](https://getbootst
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+      integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <!-- Content goes here -->
 
     <script src="https://unpkg.com/vue@2.5.3"></script>
-    <script src="main.js"></script> <!-- We'll code this in a later step -->
+    <script src="main.js"></script>
+    <!-- We'll code this in a later step -->
   </body>
 </html>
 ```
-
 
 Our form will go in the content area. Just to get a prettier layout, we'll put it inside a single col, inside a single row, inside a single container. Each of these elements have classes that position them nicely.
 
@@ -74,28 +81,33 @@ Our form will go in the content area. Just to get a prettier layout, we'll put i
       <form id="form" method="post">
         <!-- form elements go here -->
       </form>
-    </div><!-- /col -->
-  </div><!-- /row -->
-</div><!-- /container -->
+    </div>
+    <!-- /col -->
+  </div>
+  <!-- /row -->
+</div>
+<!-- /container -->
 ```
-
 
 Now, our two `input` elements and submit `button` will go inside the form.
 
 ```html
 <div class="form-group">
   <label class="form-control-label" for="name">Name</label>
-  <input id="name" name="name" class="form-control" type="text">
-</div><!-- /form-group -->
+  <input id="name" name="name" class="form-control" type="text" />
+</div>
+<!-- /form-group -->
 
 <div class="form-group">
-  <label class="form-control-label" for="number">Enter a number between 1 and 10</label>
-  <input id="number" name="number" class="form-control" type="text">
-</div><!-- /form-group -->
+  <label class="form-control-label" for="number"
+    >Enter a number between 1 and 10</label
+  >
+  <input id="number" name="number" class="form-control" type="text" />
+</div>
+<!-- /form-group -->
 
 <button class="btn btn-primary">Submit</button>
 ```
-
 
 You could normally use `type="number"` for the second input, but I'm leaving it as `text` to demonstrate validation.
 
@@ -104,17 +116,24 @@ You could normally use `type="number"` for the second input, but I'm leaving it 
 ```html
 <div class="form-group">
   <label class="form-control-label" for="name">Name</label>
-  <input id="name" name="name" class="form-control" type="text">
-  **<div class="invalid-feedback">This field is required.</div>**
-</div><!-- /form-group -->
+  <input id="name" name="name" class="form-control" type="text" />
+  **
+  <div class="invalid-feedback">This field is required.</div>
+  **
+</div>
+<!-- /form-group -->
 
 <div class="form-group">
-  <label class="form-control-label" for="number">Enter a number between 1 and 10</label>
-  <input id="number" name="number" class="form-control" type="text">
-  <div class="invalid-feedback">Make sure this is a number between 1 and 10.</div>
-</div><!-- /form-group -->
+  <label class="form-control-label" for="number"
+    >Enter a number between 1 and 10</label
+  >
+  <input id="number" name="number" class="form-control" type="text" />
+  <div class="invalid-feedback">
+    Make sure this is a number between 1 and 10.
+  </div>
+</div>
+<!-- /form-group -->
 ```
-
 
 Note that you won't actually see these elements right away. Bootstrap hides them by default.
 
@@ -124,10 +143,10 @@ With the HTML in place, now we'll jump into `main.js` and start coding the logic
 
 ```javascript
 var form = new Vue({
-  el: '#form',
+  el: "#form",
   data: {
-    name: '',
-    number: '',
+    name: "",
+    number: "",
     attemptSubmit: false,
   },
   computed: {
@@ -141,7 +160,6 @@ var form = new Vue({
 });
 ```
 
-
 In our `data` object, there are three variables:
 
 1. `name` — Will hold the value of the `name` input
@@ -152,26 +170,38 @@ In our `data` object, there are three variables:
 
 There are also a couple computed variables here:
 
-* `missingName` — Will return `true` if name is empty
+- `missingName` — Will return `true` if name is empty
 
-* `wrongNumber` — Will return `true` if number is not between 1 and 10
+- `wrongNumber` — Will return `true` if number is not between 1 and 10
 
 Finally, there are a couple methods:
 
-* `isNumeric` — A utility function that checks to see if an input is a number
+- `isNumeric` — A utility function that checks to see if an input is a number
 
-* `validateForm` — The main function that will be called when trying to submit
+- `validateForm` — The main function that will be called when trying to submit
 
 I mentioned above that there are two variables that hold the value of the inputs. We can wire those up with [Vue models](https://vuejs.org/v2/guide/forms.html#Basic-Usage). Back in the HTML…
 
 ```html
-<input id="name" name="name" class="form-control form-control-warning" type="text" **v-model="name"**>
+<input
+  id="name"
+  name="name"
+  class="form-control form-control-warning"
+  type="text"
+  **v-model="name"
+  **
+/>
 
 ...
 
-<input id="number" name="number" class="form-control form-control-warning" type="text" v-model="number">
+<input
+  id="number"
+  name="number"
+  class="form-control form-control-warning"
+  type="text"
+  v-model="number"
+/>
 ```
-
 
 With our models wired up, we can use the computed variables to determine the status of each input. `missingName`is easy. Return `true` if value is empty:
 
@@ -179,7 +209,7 @@ With our models wired up, we can use the computed variables to determine the sta
 missingName: function () { return this.name === ''; },
 ```
 
-`wrongNumber` is a *little* more complex, but not bad at all. Return `true` if the value is not a number **or** it's less than 1 **or** it's greater than 10.
+`wrongNumber` is a _little_ more complex, but not bad at all. Return `true` if the value is not a number **or** it's less than 1 **or** it's greater than 10.
 
 ```javascript
 wrongNumber: function () {
@@ -191,7 +221,6 @@ wrongNumber: function () {
 },
 ```
 
-
 Oops, we're calling `isNumeric()` but we haven't coded it, yet. I found a [great solution on Stack Overflow](http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric/1830844#1830844). Here's what it looks like:
 
 ```javascript
@@ -199,7 +228,6 @@ isNumeric: function (n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 },
 ```
-
 
 We're actually done with the JavaScript except for the actual `validateForm()` function. For that one, we just want to tell our app the user attempted to submit the form and prevent it from submitting if `missingName` or `wrongNumber` are true. Keep in mind you can keep adding computed variables here if you have more inputs that need to be validated.
 
@@ -210,28 +238,34 @@ validateForm: function (event) {
 },
 ```
 
-
 Done with JavaScript. Back in the HTML, we need to fire the `validateForm()` function when the form is submitted.
 
 ```html
-<form id="form" method="post" **v-on:submit="validateForm"**>
+<form id="form" method="post" **v-on:submit="validateForm" **></form>
 ```
 
-
-Now the form will not submit if there are validation errors. But, at this point, the user doesn't know exactly *why* the form didn't submit.
+Now the form will not submit if there are validation errors. But, at this point, the user doesn't know exactly _why_ the form didn't submit.
 
 Remember those `invalid-feedback` `div`s that are hidden by default? We can make them appear by setting an `is-invalid` class on the `input` adjacent to them.
 
 Set conditional classes using Vue like so:
 
 ```html
-<input id="name" ..snip.. **v-bind:class="{ 'is-invalid': attemptSubmit && missingName }"**>
+<input
+  id="name"
+  ..snip..
+  **v-bind:class="{ 'is-invalid': attemptSubmit && missingName }"
+  **
+/>
 
-<input id="number" ..snip.. v-bind:class="{ 'is-invalid': attemptSubmit && wrongNumber }">
+<input
+  id="number"
+  ..snip..
+  v-bind:class="{ 'is-invalid': attemptSubmit && wrongNumber }"
+/>
 ```
 
-
-The `is-invalid` class will only be applied when both `attemptSubmit` is `true` *and* when `missingName` (or `wrongNumber`) is `true`.
+The `is-invalid` class will only be applied when both `attemptSubmit` is `true` _and_ when `missingName` (or `wrongNumber`) is `true`.
 
 That's it! On load, the form looks like…
 

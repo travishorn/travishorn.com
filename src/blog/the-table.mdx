@@ -2,14 +2,14 @@
 cover: ./images/9MKjzc94r.webp
 datePublished: 2017-11-30 22:01:09+00:00
 tags:
-- css
-- d3
-- data-visualization
-- design-ui
-- html
-- javascript
-- vue
-- web-development
+  - css
+  - d3
+  - data-visualization
+  - design-ui
+  - html
+  - javascript
+  - vue
+  - web-development
 title: The <table>
 ---
 
@@ -19,21 +19,23 @@ understand.
 
 Tables in HTML are marked up using the following elements:
 
-* `<table>` itself
-* `<caption>` to represent the title of the table
-* `<colgroup>` to define a group of columns
-* `<thead>` to define a set of rows defining the head of the columns
-* `<tbody>` to group one or more rows as the body
-* `<tfoot>` to define a set of rows summarizing the columns
-* `<tr>` to specify markup that comprises one row of a table
-* `<th>` to define a cell as header of a group of other cells
-* `<td>` to define a cell of a table that contains data
+- `<table>` itself
+- `<caption>` to represent the title of the table
+- `<colgroup>` to define a group of columns
+- `<thead>` to define a set of rows defining the head of the columns
+- `<tbody>` to group one or more rows as the body
+- `<tfoot>` to define a set of rows summarizing the columns
+- `<tr>` to specify markup that comprises one row of a table
+- `<th>` to define a cell as header of a group of other cells
+- `<td>` to define a cell of a table that contains data
 
 A simple table may be coded like so:
 
 ```html
 <table>
-  <caption>MLB 2016 Standings</caption>
+  <caption>
+    MLB 2016 Standings
+  </caption>
   <thead>
     <tr>
       <th>Team</th>
@@ -70,9 +72,10 @@ padding to the cells.
 
 ```css
 th,
-td { padding: 7px 40px; }
+td {
+  padding: 7px 40px;
+}
 ```
-
 
 ![The same table, but with padding that makes it easier to
 read](./images/dHiAkpFM_.webp)
@@ -82,8 +85,12 @@ be done by collapsing table borders and adding a bottom border to all
 `<tr>` elements.
 
 ```css
-table { border-collapse: collapse; }
-tr { border-bottom: solid 1px #E6E6E6; }
+table {
+  border-collapse: collapse;
+}
+tr {
+  border-bottom: solid 1px #e6e6e6;
+}
 ```
 
 Setting `border-collapse: collapse` on `table` specifies that adjacent cells
@@ -101,9 +108,10 @@ should even be centered in the first place.
 
 ```css
 th,
-td { text-align: left; }
+td {
+  text-align: left;
+}
 ```
-
 
 ![The same table, with all text aligned to the left edge of its containing
 cell](./images/HTME6iGvZ.webp)
@@ -119,7 +127,9 @@ Alignment can be done with the `:nth-child()` selector.
 ```css
 td:nth-child(3),
 td:nth-child(4),
-td:nth-child(5) { text-align: right; }
+td:nth-child(5) {
+  text-align: right;
+}
 ```
 
 Another good design choice is to align a column's header with it's data. This
@@ -131,7 +141,9 @@ th:nth-child(4),
 th:nth-child(5),
 td:nth-child(3),
 td:nth-child(4),
-td:nth-child(5) { text-align: right; }
+td:nth-child(5) {
+  text-align: right;
+}
 ```
 
 ![The same table, with all numerical columns align to the right for easier
@@ -145,8 +157,8 @@ taken out to four.
 
 ![The same table, but with modified number values so they don't all have the
 same precision (number of digits after the decimal
-place).](./images/PGj0ssxV3.webp)*Inconsistent decimal places make comparisons
-harder*
+place).](./images/PGj0ssxV3.webp)_Inconsistent decimal places make comparisons
+harder_
 
 It's not as easy to scan down the column and compare one **Pct** to another. For
 this reason, no matter the source data, it's always best to normalize like data.
@@ -182,7 +194,10 @@ a free service that hosts these, and many more fonts. To use **Roboto** and
 page:
 
 ```html
-<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono"
+  rel="stylesheet"
+/>
 ```
 
 Then, in CSS, set the table's font to **Roboto** and the number columns to
@@ -201,7 +216,6 @@ td:nth-child(5) {
   font-size: 16px;
 }
 ```
-
 
 ![The same table, but text is displayed with the Roboto and Roboto Mono
 fonts](./images/xyB84S930.webp)
@@ -244,8 +258,12 @@ can solve this problem by setting a new padding value for the first and last
 cells in each row.
 
 ```css
-tr > :first-child { padding-left: 0; }
-tr > :last-child { padding-right: 0; }
+tr > :first-child {
+  padding-left: 0;
+}
+tr > :last-child {
+  padding-right: 0;
+}
 ```
 
 ![The same table, but the padding on the left and right has been
@@ -279,13 +297,13 @@ on the page within another `<script>` tag.
 
 ```javascript
 new Vue({
-  el: 'table',
+  el: "table",
   data: {
-    caption: 'MLB 2016 Standings',
+    caption: "MLB 2016 Standings",
     standings: [
       {
-        team: 'Red Sox',
-        division: 'AL East',
+        team: "Red Sox",
+        division: "AL East",
         wins: 93,
         losses: 69,
       },
@@ -295,7 +313,6 @@ new Vue({
 });
 ```
 
-
 Notice there is no **pct** property. That's because it can be computed from the
 **wins** and **losses**. We don't need to store it when we can compute it at
 runtime.
@@ -304,7 +321,9 @@ We can now replace our hard-coded HTML table with the following Vue template.
 
 ```html
 <table>
-  <caption>{{ caption }}</caption>
+  <caption>
+    {{ caption }}
+  </caption>
   <thead>
     <tr>
       <th>Team</th>
@@ -326,14 +345,12 @@ We can now replace our hard-coded HTML table with the following Vue template.
 </table>
 ```
 
-
 We use `v-for` to loop over the `standings` array. All of the values in the
 table so far come straight from JSON. **Pct** is a little different.
 
 ```html
 <td>{{ team.wins / (team.wins + team.losses) }}</td>
 ```
-
 
 The win percentage is calculated as the number of wins out of number of games
 played total.
@@ -348,19 +365,17 @@ But the **Pct** column needs to be formatted. This can be done with a `filter`.
 
 ```javascript
 new Vue({
-  el: 'table',
+  el: "table",
   filters: {
     pct(n) {
-      return n
-        .toFixed(3)
-        .toString()
-        .substr(1);
+      return n.toFixed(3).toString().substr(1);
     },
   },
-  data: { /* snip */},
+  data: {
+    /* snip */
+  },
 });
 ```
-
 
 The filter first fixes the number at 3 decimal places with
 [`.toFixed()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed),
@@ -402,11 +417,15 @@ Then create a computed property that (for right now) just returns this array.
 
 ```javascript
 new Vue({
-  el: 'table',
-  filters: { /* snip */ },
+  el: "table",
+  filters: {
+    /* snip */
+  },
   data: {
-    caption: 'MLB 2016 Standings',
-    rawStandings: [ /* snip */ ],
+    caption: "MLB 2016 Standings",
+    rawStandings: [
+      /* snip */
+    ],
   },
   computed: {
     standings() {
@@ -420,8 +439,8 @@ new Vue({
 Now we can enhance the array in whichever way we like. For starters, we'll add
 two new properties:
 
-* `totalGames` — will be the sum of wins and losses
-* `pct `— will the the percentage of wins out of total games played
+- `totalGames` — will be the sum of wins and losses
+- `pct `— will the the percentage of wins out of total games played
 
 This can be done by mapping over the `rawStandings` array and adding properties
 to each object within it.
@@ -433,7 +452,7 @@ standings() {
     team.pct = team.wins / team.totalGames;
     return team;
   });
-      
+
   return standings;
 },
 ```
@@ -443,7 +462,6 @@ Finally, modify the template to take advantage of the new `pct` property.
 ```html
 <td>{{ **team.pct** | pct }}</td>
 ```
-
 
 Much better. No more JavaScript in the template.
 
@@ -469,22 +487,28 @@ All of these bindings fire the `sortBy()` method. It looks like this:
 
 ```javascript
 new Vue({
-  el: 'table',
-  filters: { /* snip */ },
-  data: { /* snip */ },
-  computed: { /* snip */ },
+  el: "table",
+  filters: {
+    /* snip */
+  },
+  data: {
+    /* snip */
+  },
+  computed: {
+    /* snip */
+  },
   methods: {
     sortBy(key) {
       if (key === this.sortKey) {
-        if (this.sortDirection === 'asc') {
-          this.sortDirection = 'desc';
+        if (this.sortDirection === "asc") {
+          this.sortDirection = "desc";
         } else {
-          this.sortDirection = 'asc';
+          this.sortDirection = "asc";
         }
       } else {
-        this.sortDirection = 'asc';
+        this.sortDirection = "asc";
       }
-      
+
       this.sortKey = key;
     },
   },
@@ -550,21 +574,23 @@ appears by default when a user is hovering over a button.
 You can set this style in CSS.
 
 ```css
-thead th { cursor: default; }
+thead th {
+  cursor: default;
+}
 ```
 
 ![Composite of two images labeled "OLD" and "NEW". On top of the old table, a
 text mouse cursor is visible. On top of the new table, the default mouse cursor
 is visible](./images/9asrvC10o.webp)
 
-How about a total row? It doesn't *completely* make sense in this case (MLB
+How about a total row? It doesn't _completely_ make sense in this case (MLB
 standings), but you can imagine a table where it would. We will need 4 new
 computed properties:
 
-* `leagueWins ` — sum of all teams' wins
-* `leagueLosses` — sum of all teams' losses
-* `leagueGames `— sum of `leagueWins `and `leagueLosses`
-* `leaguePct `— percentage of `leagueWins `out of `leagueGames`
+- `leagueWins ` — sum of all teams' wins
+- `leagueLosses` — sum of all teams' losses
+- `leagueGames `— sum of `leagueWins `and `leagueLosses`
+- `leaguePct `— percentage of `leagueWins `out of `leagueGames`
 
 ```javascript
 computed: {
@@ -608,8 +634,8 @@ In the template, display these values in a `<tfoot>` element.
 ```
 
 ![A snippet from the bottom of the table, showing a "total row" labeled "League"
-with total wins, losses, and percent](./images/_N8JPhiUn.webp)*The last row
-contains totals for the entire league*
+with total wins, losses, and percent](./images/_N8JPhiUn.webp)_The last row
+contains totals for the entire league_
 
 Again, the total row isn't exactly useful in this case — the number of wins will
 always be equal to the number of losses, and the win percentage will always be
@@ -670,7 +696,9 @@ The text gets hard to read near the middle where the values are light yellow. To
 combat this, we can add a `text-stroke` in CSS to outline the text.
 
 ```css
-td:nth-child(5) { -webkit-text-stroke: 1px rgba(0, 0, 0, 0.2); }
+td:nth-child(5) {
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.2);
+}
 ```
 
 The `text-stroke` is 1 pixel wide and black, but only 20% opaque.

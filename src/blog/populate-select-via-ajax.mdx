@@ -2,10 +2,10 @@
 cover: ./images/nWTB20SRf.webp
 datePublished: 2016-11-04 22:01:02+00:00
 tags:
-- api
-- html
-- javascript
-- web-development
+  - api
+  - html
+  - javascript
+  - web-development
 title: Populate <select> via AJAX
 ---
 
@@ -20,18 +20,17 @@ Ultimately, what we'll build is a solution that enables us to add `data-*` attri
   name="userId"
   data-source="[https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users)"
   data-valueKey="id"
-  data-displayKey="name">
-</select>
+  data-displayKey="name"
+></select>
 ```
-
 
 Notice the…
 
-* `data-source` that contains the URL to the API endpoint
+- `data-source` that contains the URL to the API endpoint
 
-* `data-valueKey` that tells us what key to use (from the returned JSON) for the `<option>`'s value
+- `data-valueKey` that tells us what key to use (from the returned JSON) for the `<option>`'s value
 
-* `data-displayKey` that tells us what key to use for the displayed text
+- `data-displayKey` that tells us what key to use for the displayed text
 
 For simplicity's sake, I'll be using [jQuery](https://jquery.com/). However, you could also re-write this using [axios](https://github.com/axios/axios) or vanilla JavaScript with [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) or the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 
@@ -43,20 +42,17 @@ $('select[data-source]).each(function() {
 });
 ```
 
-
 Inside this function, we'll grab a copy of `this` inside a jQuery wrapper. In this instance, `this` is a reference to the `<select>` element.
 
 ```javascript
 var $select = $(this);
 ```
 
-
 Now, — and this part is optional — I like to add an empty `<option>` that the `<select>` will default to.
 
 ```javascript
-$select.append('<option></option>');
+$select.append("<option></option>");
 ```
-
 
 Next, we'll pull the list of items via AJAX.
 
@@ -68,17 +64,15 @@ $.ajax({
 });
 ```
 
-
 Notice we're getting the URL from the `<select>`'s data-source attribute. Also notice, since `$.ajax()` is a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), we're attaching a `.then()` function to the end that we can use to determine what happens once the API response is returned.
 
 Inside the `.then()` function, let's loop through our options.
 
 ```javascript
-options.map(function(option) {
+options.map(function (option) {
   // Handle each option here
 });
 ```
-
 
 For each option, we'll create a new jQuery-wrapped `<option>` element, set its value, and set the display text.
 
@@ -90,32 +84,30 @@ $option
   .text(option[$select.attr('data-displayKey']);
 ```
 
-
 Finally, we'll append the `<option>` to the select `<select>`.
 
 ```javascript
 $select.append($option);
 ```
 
-
 The finished product (19 lines of code) looks like this:
 
 ```javascript
-$('select[data-source]').each(function() {
+$("select[data-source]").each(function () {
   var $select = $(this);
-  
-  $select.append('<option></option>');
-  
+
+  $select.append("<option></option>");
+
   $.ajax({
-    url: $select.attr('data-source'),
-  }).then(function(options) {
-    options.map(function(option) {
-      var $option = $('<option>');
-      
+    url: $select.attr("data-source"),
+  }).then(function (options) {
+    options.map(function (option) {
+      var $option = $("<option>");
+
       $option
-        .val(option[$select.attr('data-valueKey')])
-        .text(option[$select.attr('data-displayKey')]);
-      
+        .val(option[$select.attr("data-valueKey")])
+        .text(option[$select.attr("data-displayKey")]);
+
       $select.append($option);
     });
   });

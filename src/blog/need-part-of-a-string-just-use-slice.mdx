@@ -18,7 +18,7 @@ takes two parameters.
 2. `endIndex` — The index of the last character to return
 
 ```javascript
-'The quick brown fox'.slice(4, 9);
+"The quick brown fox".slice(4, 9);
 // Returns 'quick'.
 ```
 
@@ -34,7 +34,7 @@ labeled "9"](./images/xaPcwfpog.webp)
 characters all the way to the end of the string.
 
 ```javascript
-'The quick brown fox'.slice(4);
+"The quick brown fox".slice(4);
 // Returns 'quick brown fox'.
 ```
 
@@ -43,13 +43,13 @@ characters all the way to the end of the string.
 Instead of writing `LEFT('The quick brown fox', 3)`, you can write…
 
 ```javascript
-'The quick brown fox'.slice(0, 3);
+"The quick brown fox".slice(0, 3);
 ```
 
 Instead of writing `RIGHT('The quick brown fox', 3);`, you can write…
 
 ```javascript
-'The quick brown fox'.slice(-3);
+"The quick brown fox".slice(-3);
 ```
 
 This works because when `startIndex` is negative, `.slice()` starts from the end
@@ -63,7 +63,7 @@ is very similar to `.slice()`. There are two main differences.
 If either parameter in `.substring()` is negative, it's treated as zero.
 
 ```javascript
-'The quick brown fox'.substring(-3);
+"The quick brown fox".substring(-3);
 // Returns 'The quick brown fox'.
 ```
 
@@ -72,10 +72,10 @@ parameters. This is different than `.slice()` which will simply return an empty
 string.
 
 ```javascript
-'The quick brown fox'.substring(9, 4);
+"The quick brown fox".substring(9, 4);
 // Returns 'quick'.
 
-'The quick brown fox'.slice(9, 4);
+"The quick brown fox".slice(9, 4);
 // Returns '';
 ```
 
@@ -92,7 +92,7 @@ It also takes two parameters. The first parameter is the usual start character
 index. But the second parameter is the length to extract.
 
 ```javascript
-'The quick brown fox'.substr(4, 5);
+"The quick brown fox".substr(4, 5);
 // Returns 'quick'.
 ```
 

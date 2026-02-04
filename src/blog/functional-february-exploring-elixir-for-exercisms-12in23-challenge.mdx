@@ -10,8 +10,7 @@ Challenge](https://exercism.org/challenges/12in23) by trying out [the Elixir
 programming language](https://elixir-lang.org/).
 
 If you're not familiar with this challenge, it's a programming-language learning
-challenge that tasks you with trying out 12 different languages in the year of
-2023.
+challenge that tasks you with trying out 12 different languages in the year of 2023.
 
 > The idea is simple: each month, you'll focus on learning a new programming
 > language. We'll provide resources and support to help you along the way, and
@@ -29,7 +28,7 @@ wordmark.](./images/5785552d-34c2-4601-b7b2-7f9fab04ac12.webp)
 
 > Elixir is a dynamic, functional language for building scalable and
 > maintainable applications.
-> 
+>
 > Elixir runs on the Erlang VM, known for creating low-latency, distributed, and
 > fault-tolerant systems. These capabilities and Elixir tooling allow developers
 > to be productive in several domains, such as web development, embedded
@@ -94,17 +93,14 @@ We are given 5 tasks:
 1. Define the `Lasagna.expected_minutes_in_oven/0` function that does not take
    any arguments and returns how many minutes the lasagna should be in the oven.
    According to the cooking book, the expected oven time in minutes is 40
-    
 2. Define the `Lasagna.remaining_minutes_in_oven/1` function that takes the
    actual minutes the lasagna has been in the oven as an argument and returns
    how many minutes the lasagna still has to remain in the oven, based on the
    expected oven time in minutes from the previous task
-    
 3. Define the `Lasagna.preparation_time_in_minutes/1` function that takes the
    number of layers you added to the lasagna as an argument and returns how many
    minutes you spent preparing the lasagna, assuming each layer takes you 2
    minutes to prepare
-    
 4. Define the `Lasagna.total_time_in_minutes/2` function that takes two
    arguments: the first argument is the number of layers you added to the
    lasagna, and the second argument is the number of minutes the lasagna has
@@ -112,10 +108,8 @@ We are given 5 tasks:
    worked on cooking the lasagna, which is the sum of the preparation time in
    minutes, and the time in minutes the lasagna has spent in the oven at the
    moment
-    
 5. Define the `Lasagna.alarm/0` function that does not take any arguments and
    returns a message indicating that the lasagna is ready to eat
-    
 
 The `Lasagna.expected_minutes_in_oven/0` means that `Lasagna` is the module
 name, `expected_minutes_in_oven` is the function name, and `0` is the number of
@@ -157,23 +151,19 @@ This exercise was all about using conditional logic. There are 4 tasks:
    has a power pellet active and if Pac-Man is touching a ghost) and returns a
    boolean value if Pac-Man is able to eat the ghost. The function should return
    true only if Pac-Man has a power pellet active and is touching a ghost.
-    
 2. Define the `Rules.score?/2` function that takes two arguments (if Pac-Man is
    touching a power pellet and if Pac-Man is touching a dot) and returns a
    boolean value if Pac-Man scored. The function should return true if Pac-Man
    is touching a power pellet or a dot.
-    
 3. Define the `Rules.lose?/2` function that takes two arguments (if Pac-Man has
    a power pellet active and if Pac-Man is touching a ghost) and returns a
    boolean value if Pac-Man loses. The function should return true if Pac-Man is
    touching a ghost and does not have a power pellet active.
-    
 4. Define the `Rules.win?/3` function that takes three arguments (if Pac-Man has
    eaten all of the dots, if Pac-Man has a power pellet active, and if Pac-Man
    is touching a ghost) and returns a boolean value if Pac-Man wins. The
    function should return true if Pac-Man has eaten all of the dots and has not
    lost based on the arguments defined in part 3.
-    
 
 Again, since I was following the syllabus, I understood how the logic operators
 `and`, `or`, and `not` work. Once I understood how the Pacman rules were
@@ -221,7 +211,6 @@ tasks:
 3. Implement a function to calculate the monthly rate, and apply a discount
 4. Implement a function that takes a budget, an hourly rate, and a discount, and
    calculates how many days of work that covers
-    
 
 There are more business logic rules and expected return types in the actual
 exercise, but I don't think its particularly relevant to repeat here. You can
@@ -294,7 +283,6 @@ This was a fun one that used anonymous functions and bit manipulation. There are
 7. Implement `Secrets.secret_combine/2`. It should return a function which takes
    one argument and applies to it the two functions passed in to
    `secret_combine` in order.
-    
 
 Building anonymous functions and use closures are some powerful concepts that
 some people find very hard to wrap their head around at first. But if you can
@@ -368,7 +356,7 @@ There are 6 tasks:
 6. Define the `functional_list?/1` function which takes 1 argument (a language
    list). It should return a boolean value. It should return true if "Elixir" is
    one of the languages in the list.
-    
+
 Here we go.
 
 ```elixir

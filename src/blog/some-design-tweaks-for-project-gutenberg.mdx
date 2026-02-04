@@ -2,10 +2,10 @@
 cover: ./images/FlrTXGgzn.webp
 datePublished: 2018-07-19 22:01:01+00:00
 tags:
-- css
-- design-ui
-- html
-- software-engineering
+  - css
+  - design-ui
+  - html
+  - software-engineering
 title: Some design tweaks for Project Gutenberg
 ---
 
@@ -52,7 +52,10 @@ better.
 This can be done with...
 
 ```css
-body { font-family: Georgia, Cambria, serif; font-size: 22px; }
+body {
+  font-family: Georgia, Cambria, serif;
+  font-size: 22px;
+}
 ```
 
 ![Prose with a larger, nicer font](./images/nH7men3Vl.webp)
@@ -87,7 +90,10 @@ I think the colors they've chosen work nicely, but personally, I prefer a "night
 mode" light-on-dark.
 
 ```css
-body { background-color: #22344A; color: white; }
+body {
+  background-color: #22344a;
+  color: white;
+}
 ```
 
 ![Prose with a dark color scheme. Light text on dark
@@ -105,8 +111,8 @@ lines of JavaScript that saves my place so that the browser automatically
 scrolls down to where I left off when I re-open the page.
 
 ```javascript
-document.addEventListener('DOMContentLoaded', () => {
-  const ns = 'pridePrejudice';
+document.addEventListener("DOMContentLoaded", () => {
+  const ns = "pridePrejudice";
   const key = `saveScroll.${ns}`;
 
   const savePosition = () => {
@@ -117,10 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (savedPosition) window.scrollTo(0, savedPosition);
 
-  window.addEventListener('scroll', savePosition);
+  window.addEventListener("scroll", savePosition);
 });
 ```
-
 
 Each time the page is scrolled, the Y (vertical) position is saved to
 [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
@@ -145,7 +150,7 @@ bottom of the `<head>` section.
     margin: 0 auto;
     font-family: Georgia, Cambria, serif;
     font-size: 22px;
-    background-color: #22344A;
+    background-color: #22344a;
     color: white;
   }
   p {
@@ -154,8 +159,8 @@ bottom of the `<head>` section.
   }
 </style>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const ns = 'pridePrejudice';
+  document.addEventListener("DOMContentLoaded", () => {
+    const ns = "pridePrejudice";
     const key = `saveScroll.${ns}`;
 
     const savePosition = () => {
@@ -166,13 +171,13 @@ bottom of the `<head>` section.
 
     if (savedPosition) window.scrollTo(0, savedPosition);
 
-    window.addEventListener('scroll', savePosition);
+    window.addEventListener("scroll", savePosition);
   });
 </script>
 ```
 
-*Remember to change the `*ns`* constant if you will be reading more than one
-book.*
+*Remember to change the `*ns`_ constant if you will be reading more than one
+book._
 
 I have a few books saved just like this on my computer so I can open them and
 start reading whenever I want, even without an internet connection.

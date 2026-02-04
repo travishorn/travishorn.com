@@ -2,11 +2,11 @@
 cover: ./images/552f7526-f8fd-487e-ab65-b0f53906eccd.webp
 datePublished: 2024-01-31 12:00:38+00:00
 tags:
-- linux
-- performance
-- python
-- server-management
-- terminal
+  - linux
+  - performance
+  - python
+  - server-management
+  - terminal
 title: Monitoring your Linux Server with Prometheus
 ---
 
@@ -33,7 +33,7 @@ In the **prometheus** section, find the version that is labeled **LTS**.
 Copy the listed URL. It will be labeled something like
 **prometheus-2.37.6.linux-amd64.tar.gz**.
 
-*The exact filename will likely differ depending on when you're reading this.*
+_The exact filename will likely differ depending on when you're reading this._
 
 In your terminal, use `wget` to download the file at the copied URL.
 
@@ -41,8 +41,8 @@ In your terminal, use `wget` to download the file at the copied URL.
 wget https://github.com/prometheus/prometheus/releases/download/v2.37.6/prometheus-2.37.6.linux-amd64.tar.gz
 ```
 
-*The URL in the line above is just an example, use the actual URL you copied
-earlier.*
+_The URL in the line above is just an example, use the actual URL you copied
+earlier._
 
 The file will be downloaded to your machine. Unzip it.
 
@@ -159,14 +159,14 @@ Create a file called `/opt/prometheus/web.yml`.
 
 ```yaml
 basic_auth_users:
-    [username]: [copied password hash]
+  [username]: [copied password hash]
 ```
 
 For the username, choose any username you like. For the password hash, paste the
 password hash you copied earlier.
 
-*The brackets \[\] are only there for demonstration and should not be included
-in your file.*
+_The brackets \[\] are only there for demonstration and should not be included
+in your file._
 
 Edit `/etc/systemd/system/prometheus.service` to change the `ExecStart` line.
 
@@ -195,9 +195,9 @@ Prometheus comes with some basic metrics to monitor by default, but you'll want
 to use "exporters" which provide access to even more metrics. There are metrics
 for...
 
-* Your hardware and OS: the "Node exporter" `node_exporter`
-* MySQL/MariaDB: the "MySQL Server Exporter" `mysqld_exporter`
-* Many, many more
+- Your hardware and OS: the "Node exporter" `node_exporter`
+- MySQL/MariaDB: the "MySQL Server Exporter" `mysqld_exporter`
+- Many, many more
 
 Create a directory to store the exporters.
 
@@ -214,8 +214,8 @@ In the **Architecture** dropdown menu, choose **amd64**.
 Find the exporter you want to install. In this example, we'll go with the Node
 exporter.
 
-In the **node\_exporter** section, copy the listed URL. It will be labeled
-something like **node\_exporter-1.5.0.linux-amd64.tar.gz**.
+In the **node_exporter** section, copy the listed URL. It will be labeled
+something like **node_exporter-1.5.0.linux-amd64.tar.gz**.
 
 In your terminal, download the file at the copied URL.
 
@@ -299,7 +299,7 @@ Indented under the `scrape_configs` section, add the following.
 ```yaml
 - job_name: node
   static_configs:
-  - targets: ['localhost:9100']
+    - targets: ["localhost:9100"]
 ```
 
 Restart the Prometheus service.

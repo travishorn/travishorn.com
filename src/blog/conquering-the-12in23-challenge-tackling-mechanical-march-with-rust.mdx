@@ -37,15 +37,14 @@ Follow along as I conquer Mechanical March's featured challenges with Rust.
 Rust has held the title of most-loved language in the Stack Overflow Developer
 Survey for 7 years in a row now. Why do developers love it so much?
 
-* It is memory safe with an ownership/borrowing system that prevents common
+- It is memory safe with an ownership/borrowing system that prevents common
   programming pitfalls
-* It is fast due to its strict control over memory allocations
-* It supports threads and async programming so you can take advantage of modern
+- It is fast due to its strict control over memory allocations
+- It supports threads and async programming so you can take advantage of modern
   hardware
-* It uses a very expressive syntax with a powerful type system. This way you
+- It uses a very expressive syntax with a powerful type system. This way you
   don't have to sacrifice legibility for complexity
-* It hosts a vibrant and supportive community
-    
+- It hosts a vibrant and supportive community
 
 It's time for me to see what Rust is all about.
 
@@ -248,7 +247,7 @@ pub fn push(&mut self, element: T) {
 
 The basic idea is to create a new `Node`. This new node's `next` points to the
 current list's `head`. Then we update the list's `head` to be the new node,
-effectively *pushing* the new node into the front of the list.
+effectively _pushing_ the new node into the front of the list.
 
 You'll notice we don't create a new Node directly. `head` and `next` items have
 to be of type `Option<Box<Node<T>>>` remember? Since our list's size is unknown
@@ -342,7 +341,7 @@ lists.
 impl<T> From<SimpleLinkedList<T>> for Vec<T> {
     fn from(mut linked_list: SimpleLinkedList<T>) -> Vec<T> {
         let mut vec = Vec::new();
-        
+
         while let Some(node) = linked_list.pop() {
             vec.push(node);
         }
@@ -477,7 +476,7 @@ Instead, what you must do is start at 2 and repeat a simple algorithm:
 1. Mark all multiples of that number as not-prime (remember, no multiple of
    another number can be prime)
 2. Go to the next unmarked (prime) number
-    
+
 ```rust
 pub fn primes_up_to(upper_bound: u64) -> Vec<u64> {
     // Create a vector of booleans up the the upper bound + 1
@@ -621,7 +620,7 @@ recursively call `find_helper()`, but only pass in the right half of the array
 this time. We also tell it where in the array this sub-array starts from.
 
 If the value at the middle of the array is greater than the key, we need to
-recursively call `find_helper()`, but only pass in the *left* half of the array
+recursively call `find_helper()`, but only pass in the _left_ half of the array
 this time. Again, we tell it where in the array this sub-array starts from.
 
 Finally, if none of those conditions are met (although I think one of them
@@ -651,21 +650,21 @@ developers make for friendly answers and delightful documentation.
 
 Some of the biggest pain points for me were...
 
-* trying to understand memory management
-* the incredibly strict typing system
-* overwhelming error messages
+- trying to understand memory management
+- the incredibly strict typing system
+- overwhelming error messages
 
 Luckily, all the things that seem difficult for me as a beginner with this
 language actually seem like they'll be positives as I become more comfortable
 with the language.
 
-* Thinking about ownership and borrowing to ensure memory management doesn't
+- Thinking about ownership and borrowing to ensure memory management doesn't
   come naturally to me right now, but it forces you to code in a way that
   prevents many runtime errors you wouldn't catch in other languages.
-* A strict compiler ensures code quality and safety. I feel like I can write
+- A strict compiler ensures code quality and safety. I feel like I can write
   code faster in other languages, but if that code is low quality and breaks all
   the time, what good is it?
-* While complex error messages are hard to parse for a newbie, it's a blessing
+- While complex error messages are hard to parse for a newbie, it's a blessing
   to have such detailed and informative messages for someone who's building a
   complex application
 

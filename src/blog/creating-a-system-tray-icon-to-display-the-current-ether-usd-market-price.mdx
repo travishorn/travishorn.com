@@ -2,10 +2,10 @@
 cover: ./images/fB_xutVL7.webp
 datePublished: 2017-08-24 22:01:01+00:00
 tags:
-- api
-- backend-systems
-- git
-- javascript
+  - api
+  - backend-systems
+  - git
+  - javascript
 title: Creating a system tray icon to display the current Ether-USD market price
 ---
 
@@ -42,12 +42,12 @@ npm init -y
 We are going to utilize a few npm packages that others have created for us
 already. Namely:
 
-* [Electron](https://www.npmjs.com/package/electron). The `Menu` and `Tray`
+- [Electron](https://www.npmjs.com/package/electron). The `Menu` and `Tray`
   components will be very helpful in creating an app that runs in the system
   tray
-* [Moment](https://www.npmjs.com/package/moment). Great for formatting dates &
+- [Moment](https://www.npmjs.com/package/moment). Great for formatting dates &
   times
-* [Request](https://www.npmjs.com/package/requests). The most popular package
+- [Request](https://www.npmjs.com/package/requests). The most popular package
   for making and handling HTTP requests
 
 Install and save them in the npm package.
@@ -66,9 +66,9 @@ hold our tray component. We want this variable to be at the top-level scope so
 we can reference it at any point of our app lifecycle.
 
 ```javascript
-const { app, Menu, Tray } = require('electron');
-const request = require('request');
-const moment = require('moment');
+const { app, Menu, Tray } = require("electron");
+const request = require("request");
+const moment = require("moment");
 
 let tray = null;
 ```
@@ -77,7 +77,7 @@ When the script is run, Electron will start the `app`. We can listen for the
 `ready` event and instantiate the rest of the app.
 
 ```javascript
-app.on('ready', () => {
+app.on("ready", () => {
   // All the remaining code will go here
 });
 ```
@@ -85,8 +85,8 @@ app.on('ready', () => {
 Once the app is ready, we can create our tray.
 
 ```javascript
-tray = new Tray('ethereum-logo.ico');
-tray.setToolTip('Getting market price...');
+tray = new Tray("ethereum-logo.ico");
+tray.setToolTip("Getting market price...");
 tray.setContextMenu(contextMenu);
 ```
 
@@ -103,14 +103,19 @@ once the price has been gathered.
 The last line sets the context menu. This is the menu that pops up when the user
 right-clicks on the icon. But we're passing a variable that doesn't exist, yet!
 Let's create that variable. It should be an instance of `Electron.Menu`. It is
-necessary to place variable declarations *before* any portion of the code that
-uses them. This means that I'll write the next few lines of code *above*
+necessary to place variable declarations _before_ any portion of the code that
+uses them. This means that I'll write the next few lines of code _above_
 `tray.setContextMenu(contextMenu).`
 
 ```javascript
 const contextMenu = Menu.buildFromTemplate([
-  { label: 'Update', click: updatePrice },
-  { label: 'Quit', click: () => { app.quit(); } },
+  { label: "Update", click: updatePrice },
+  {
+    label: "Quit",
+    click: () => {
+      app.quit();
+    },
+  },
 ]);
 ```
 
@@ -119,7 +124,7 @@ accepts an array of objects defining the menu items. You'll notice two menu
 items: **Update** and **Quit**. **Quit** is pretty self-explanatory. It calls
 `app.quit()` on click which exits the app. **Update** calls `updatePrice()` on
 click, which we haven't written, yet. Let's write it now. Again, these lines
-should be written *above* where it's called.
+should be written _above_ where it's called.
 
 ```javascript
 const updatePrice = () => {
@@ -148,7 +153,7 @@ simple error message.
 
 ```javascript
 if (err) {
-  tray.setTooltip('Error getting market price.');
+  tray.setTooltip("Error getting market price.");
 } else {
   // No error. Price is in the response body
 }
@@ -158,10 +163,10 @@ If there are no errors, we can go ahead and update the tooltip to show the
 price. The price can be found in the response body, which looks like this:
 
 ```json
-{ "data":
-  {
+{
+  "data": {
     "amount": "300.71",
-    "currency":"USD"
+    "currency": "USD"
   }
 }
 ```
@@ -172,7 +177,7 @@ both pieces of information:
 
 ```javascript
 const amount = JSON.parse(body).data.amount;
-const timestamp = moment().format('YYYY-MM-DD HH:mm');
+const timestamp = moment().format("YYYY-MM-DD HH:mm");
 ```
 
 Now set the tooltip.
@@ -194,37 +199,45 @@ updatePrice();
 The whole app is 36 lines:
 
 ```javascript
-const { app, Menu, Tray } = require('electron');
-const request = require('request');
-const moment = require('moment');
+const { app, Menu, Tray } = require("electron");
+const request = require("request");
+const moment = require("moment");
 
 let tray = null;
 
-app.on('ready', () => {
+app.on("ready", () => {
   const updatePrice = () => {
-    request({
-      url: 'https://api.coinbase.com/v2/prices/ETH-USD/spot',
-      headers: { 'CB-VERSION': '2017-08-04' },
-    }, (err, res, body) => {
-      if (err) {
-        tray.setToolTip('Error getting market price.');
-      } else {
-        const amount = JSON.parse(body).data.amount;
-        const timestamp = moment().format('YYYY-MM-DD HH:mm');
+    request(
+      {
+        url: "https://api.coinbase.com/v2/prices/ETH-USD/spot",
+        headers: { "CB-VERSION": "2017-08-04" },
+      },
+      (err, res, body) => {
+        if (err) {
+          tray.setToolTip("Error getting market price.");
+        } else {
+          const amount = JSON.parse(body).data.amount;
+          const timestamp = moment().format("YYYY-MM-DD HH:mm");
 
-        tray.setToolTip(`$${amount} as of ${timestamp}`);
-      }
-    });
+          tray.setToolTip(`$${amount} as of ${timestamp}`);
+        }
+      },
+    );
   };
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Update', click: updatePrice },
-    { label: 'Quit', click: () => { app.quit(); } },
+    { label: "Update", click: updatePrice },
+    {
+      label: "Quit",
+      click: () => {
+        app.quit();
+      },
+    },
   ]);
 
-  tray = new Tray('ethereum-logo.ico');
+  tray = new Tray("ethereum-logo.ico");
 
-  tray.setToolTip('Getting market price...');
+  tray.setToolTip("Getting market price...");
   tray.setContextMenu(contextMenu);
 
   updatePrice();

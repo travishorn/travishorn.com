@@ -2,11 +2,11 @@
 cover: ./images/tTHmae6Pr.webp
 datePublished: 2016-04-05 20:40:35+00:00
 tags:
-- api
-- css
-- html
-- javascript
-- nodejs
+  - api
+  - css
+  - html
+  - javascript
+  - nodejs
 title: Creating a front-end for working with your API proxy
 ---
 
@@ -25,26 +25,26 @@ We'll start with a simple boilerplate in HTML.
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Mailing List Signup</title>
   </head>
   <body>
-    <div class="container">
-
-    </div>
+    <div class="container"></div>
   </body>
-</html>  
+</html>
 ```
 
 To keep things simple, add the stylesheet from Bootstrap to the `<head>`.
 
 ```html
-<link rel="stylesheet" href="[https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css](https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css)">
+<link
+  rel="stylesheet"
+  href="[https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css](https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css)"
+/>
 ```
-
 
 In the container, add a header.
 
@@ -54,19 +54,15 @@ In the container, add a header.
 </div>
 ```
 
-
 Below that, we'll add a single "row" and single "column" that will use
 breakpoints for styling the form. It will show up full-width on small screens,
 and centered on larger ones.
 
 ```html
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-
-  </div>
+  <div class="col-md-6 col-md-offset-3"></div>
 </div>
 ```
-
 
 Inside this "column," we'll add a couple alert boxes that are hidden by default.
 These boxes will display error and success messages.
@@ -80,7 +76,6 @@ These boxes will display error and success messages.
   <p>Thank you! You are signed up.</p>
 </div>
 ```
-
 
 Below those alert boxes, let's add the form. It's a simple form with one input
 (for email address) and a submit button. You may need to change the action
@@ -106,18 +101,16 @@ tags just before the closing `</body>` tag.
 <script src="mailing-list-signup.js"></script>
 ```
 
-
 ### The JavaScript
 
 Create a new file called mailing-list-signup.js. We'll start with a jQuery
 document ready function and put the parser in strict mode.
 
 ```javascript
-$(function() {
-  'use strict';
+$(function () {
+  "use strict";
 
   // The rest of the code will go here.
-
 });
 ```
 
@@ -125,18 +118,18 @@ I always like to store the DOM elements that I'll be using in variables. Add the
 following variables:
 
 ```javascript
-var signupForm = $('#signupForm');
-var errorDiv = $('#errorDiv');
-var errorList = $('#errorList');
-var successDiv = $('#successDiv');
+var signupForm = $("#signupForm");
+var errorDiv = $("#errorDiv");
+var errorList = $("#errorList");
+var successDiv = $("#successDiv");
 ```
 
 We're going to need a few functions for showing and hiding the alert boxes.
 
 ```javascript
 function showErrors(errors) {
-  errors.map(function(error) {
-    errorList.append('<li>' + error + '</li>');
+  errors.map(function (error) {
+    errorList.append("<li>" + error + "</li>");
   });
 
   errorDiv.show();
@@ -144,7 +137,7 @@ function showErrors(errors) {
 
 function hideErrors() {
   errorDiv.hide();
-  errorList.html('');
+  errorList.html("");
 }
 
 function showSuccess() {
@@ -162,14 +155,14 @@ to blank.
 
 ```javascript
 function clearForm(form) {
-  form.find('input[type=text]').val('');
+  form.find("input[type=text]").val("");
 }
 ```
 
 Now, listen for form submission.
 
 ```javascript
-signupForm.on('submit', function(e) {
+signupForm.on("submit", function (e) {
   // The rest of the code will go here.
 });
 ```
@@ -177,7 +170,7 @@ signupForm.on('submit', function(e) {
 Inside the form submission event, we'll set up some variables for later use.
 
 ```javascript
-var emailAddress = $('#emailAddress').val();
+var emailAddress = $("#emailAddress").val();
 var errors = [];
 ```
 
@@ -193,7 +186,9 @@ We still need some error checking. There are many possibilities here, but for
 the sake of simplicity, I'll just check for a blank email address.
 
 ```javascript
-if (!emailAddress) { errors.push('Please enter your email address.'); }
+if (!emailAddress) {
+  errors.push("Please enter your email address.");
+}
 ```
 
 You can add more error checks and keep pushing errors into the errors variable,
@@ -212,16 +207,16 @@ As long as there aren't any errors we can submit the form through AJAX.
 
 ```javascript
 $.ajax({
-  type: signupForm.attr('method'),
-  url: signupForm.attr('action'),
+  type: signupForm.attr("method"),
+  url: signupForm.attr("action"),
   data: signupForm.serialize(),
 })
-.done(function(res) {
-  // Do something with response
-})
-.fail(function(jqXHR, textStatus, errThrown) {
-  // Do something with thrown error
-});
+  .done(function (res) {
+    // Do something with response
+  })
+  .fail(function (jqXHR, textStatus, errThrown) {
+    // Do something with thrown error
+  });
 ```
 
 To handle the AJAX request failing, we should add this code in the .fail

@@ -2,14 +2,14 @@
 cover: ./images/YNP5zB51J.webp
 datePublished: 2019-06-20 12:01:01+00:00
 tags:
-- css
-- design-ui
-- html
-- javascript
-- nodejs
-- terminal
-- vue
-- web-development
+  - css
+  - design-ui
+  - html
+  - javascript
+  - nodejs
+  - terminal
+  - vue
+  - web-development
 title: Creating a Photo Gallery with Vue & CSS Grid
 ---
 
@@ -139,9 +139,9 @@ file](https://raw.githubusercontent.com/travishorn/photo-gallery/master/src/phot
   },
   {
     "id": 1,
-    "title": null,
+    "title": null
     // ... snip ...
-  },
+  }
   // ... snip ...
 ]
 ```
@@ -186,17 +186,23 @@ following.
 </template>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 
-  html { font-size: 22px; }
-  body { font-family: 'Roboto', sans-serif; }
+html {
+  font-size: 22px;
+}
+body {
+  font-family: "Roboto", sans-serif;
+}
 
-  a {
-    color: #0094FF;
-    text-decoration: none;
-  }
+a {
+  color: #0094ff;
+  text-decoration: none;
+}
 
-  a:hover { color: #0074C6; }
+a:hover {
+  color: #0074c6;
+}
 </style>
 ```
 
@@ -214,10 +220,10 @@ This is another simple one. Replace everything in the file with the following.
 </template>
 
 <script>
-import Gallery from '@/components/Gallery.vue';
+import Gallery from "@/components/Gallery.vue";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
     Gallery,
   },
@@ -235,10 +241,8 @@ The template looks like this:
 ```vue
 <template>
   <div class="gallery">
-    <div class="gallery-panel"
-         v-for="photo in photos"
-         :key="photo.id">
-      <img :src="thumbUrl(photo.filename)">
+    <div class="gallery-panel" v-for="photo in photos" :key="photo.id">
+      <img :src="thumbUrl(photo.filename)" />
     </div>
   </div>
 </template>
@@ -255,10 +259,10 @@ Now for the script.
 
 ```vue
 <script>
-import photos from '@/photos.json';
+import photos from "@/photos.json";
 
 export default {
-  name: 'Gallery',
+  name: "Gallery",
   data() {
     return {
       photos,
@@ -292,24 +296,23 @@ Some styling will go a long way here.
 
 ```vue
 <style>
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-    grid-gap: 1rem;
-    max-width: 80rem;
-    margin: 5rem auto;
-    padding: 0 5rem;
-  }
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-gap: 1rem;
+  max-width: 80rem;
+  margin: 5rem auto;
+  padding: 0 5rem;
+}
 
-  .gallery-panel img {
-    width: 100%;
-    height: 22vw;
-    object-fit: cover;
-    border-radius: 0.75rem;
-  }
+.gallery-panel img {
+  width: 100%;
+  height: 22vw;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
 </style>
 ```
-
 
 On our container `.gallery` we set `display: grid` and set the
 `grid-template-columns`. With this style, columns are automatically adjusted
@@ -335,11 +338,9 @@ Update the template.
 ```vue
 <template>
   <div class="gallery">
-    <div class="gallery-panel"
-         v-for="photo in photos"
-         :key="photo.id">
+    <div class="gallery-panel" v-for="photo in photos" :key="photo.id">
       <router-link :to="`/photo/${photo.id}`">
-        <img :src="thumbUrl(photo.filename)">
+        <img :src="thumbUrl(photo.filename)" />
       </router-link>
     </div>
   </div>
@@ -355,19 +356,19 @@ We need to set up that route. Open `src/router.js`.
 Delete the sample `/about` route so the entire router looks like this.
 
 ```javascript
-import Vue from 'vue';
-import Router from 'vue-router';
-import Home from './views/Home.vue';
+import Vue from "vue";
+import Router from "vue-router";
+import Home from "./views/Home.vue";
 
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: "/",
+      name: "home",
       component: Home,
     },
   ],
@@ -411,10 +412,10 @@ We can now build the view for this route. Create `src/views/Photo.vue`.
 </template>
 
 <script>
-import Photo from '@/components/Photo.vue';
+import Photo from "@/components/Photo.vue";
 
 export default {
-  name: 'photo',
+  name: "photo",
   components: {
     Photo,
   },
@@ -435,15 +436,11 @@ Let's start with a simple template.
 ```vue
 <template>
   <div class="lightbox">
-
-    <img :src="photoUrl(photo.filename)">
+    <img :src="photoUrl(photo.filename)" />
 
     <div class="lightbox-info">
-      <div class="lightbox-info-inner">
-        Info
-      </div>
+      <div class="lightbox-info-inner">Info</div>
     </div>
-
   </div>
 </template>
 ```
@@ -461,10 +458,10 @@ Now for the script.
 
 ```vue
 <script>
-import photos from '@/photos.json';
+import photos from "@/photos.json";
 
 export default {
-  name: 'Photo',
+  name: "Photo",
   data() {
     return {
       photos,
@@ -504,33 +501,33 @@ styling.
 
 ```vue
 <style>
-  .lightbox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 2rem;
-  }
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2rem;
+}
 
-  .lightbox img {
-    margin: auto;
-    width: 100%;
-    grid-column-start: 2;
-  }
+.lightbox img {
+  margin: auto;
+  width: 100%;
+  grid-column-start: 2;
+}
 
-  .lightbox-info {
-    margin: auto 2rem auto 0;
-  }
+.lightbox-info {
+  margin: auto 2rem auto 0;
+}
 
-  .lightbox-info-inner {
-    background-color: #FFFFFF;
-    display: inline-block;
-    padding: 2rem;
-  }
+.lightbox-info-inner {
+  background-color: #ffffff;
+  display: inline-block;
+  padding: 2rem;
+}
 </style>
 ```
 
@@ -539,7 +536,7 @@ It also has a semi-transparent dark background color. Perhaps most importantly,
 it uses `display: grid` with 3 equal width columns.
 
 The `.lightbox-img` has automatic margins, putting it in the center of it's
-column. The width is 100% so it always takes up the whole column (and *only* the
+column. The width is 100% so it always takes up the whole column (and _only_ the
 column — no overflow), and it has `grid-column-start: 2` so that it starts in
 the second column of our 3-column grid. This puts it in the center.
 
@@ -574,9 +571,7 @@ Right now, there's just placeholder text in the info box. Replace the word
 
 <p v-if="photo.source">
   via
-  <a rel="nofollow" :href="photo.source.url">
-    {{ photo.source.name }}
-  </a>
+  <a rel="nofollow" :href="photo.source.url"> {{ photo.source.name }} </a>
 </p>
 ```
 
@@ -602,9 +597,8 @@ that pushes a route to the router.
 In the template, add a click event to the lightbox element.
 
 ```html
-<div class="lightbox" @click.self="closeLightbox">
+<div class="lightbox" @click.self="closeLightbox"></div>
 ```
-
 
 Notice I used the `.self` modifier. Without it, the click event will propagate
 to sub-elements and the lightbox would close even if you clicked on the photo or
@@ -656,11 +650,11 @@ Then, in the script, import the `Gallery` component.
 
 ```vue
 <script>
-import Gallery from '@/components/Gallery.vue';
-import Photo from '@/components/Photo.vue';
+import Gallery from "@/components/Gallery.vue";
+import Photo from "@/components/Photo.vue";
 
 export default {
-  name: 'photo',
+  name: "photo",
   components: {
     Gallery,
     Photo,
@@ -684,9 +678,9 @@ the gallery in the background. Clicking takes them to the gallery itself.
 There are some files the Vue CLI created that we don't need anymore. You can
 safely delete…
 
-* `src/views/About.vue`
-* `src/components/HelloWorld.vue`
-* `src/assets/logo.webp`
+- `src/views/About.vue`
+- `src/components/HelloWorld.vue`
+- `src/assets/logo.webp`
 
 You should also consider updating `README.md` to be more descriptive of the
 actual app we've created.

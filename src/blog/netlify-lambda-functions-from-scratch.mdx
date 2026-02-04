@@ -2,12 +2,12 @@
 cover: ./images/a_q7KAyjlo.webp
 datePublished: 2018-09-12 22:01:01+00:00
 tags:
-- api
-- backend-systems
-- deployment
-- git
-- javascript
-- web-development
+  - api
+  - backend-systems
+  - deployment
+  - git
+  - javascript
+  - web-development
 title: Netlify Lambda Functions from Scratch
 ---
 
@@ -91,8 +91,8 @@ scripts, shown in bold below.
 }
 ```
 
-*Don't worry if your `*package.json`* looks slightly different. I've cut out
-some non-essential lines in mine.*
+*Don't worry if your `*package.json`_ looks slightly different. I've cut out
+some non-essential lines in mine._
 
 Both of these commands reference a directory that that doesn't exist yet:
 `src/lambda`. This is the directory where we'll actually write our functions.
@@ -123,18 +123,18 @@ Let's fill in our handler with a callback.
 exports.handler = (event, context, callback) => {
   callback(null, {
     statusCode: 200,
-    body: 'Hello, world!',
+    body: "Hello, world!",
   });
 };
 ```
 
-*Why is the first argument `*null`* in the callback?* Because Netlify uses that
+*Why is the first argument `*null`_ in the callback?_ Because Netlify uses that
 argument to determine if there was an error with the function. If you wanted to
 return an error, you could write something like this.
 
 ```javascript
 exports.handler = (event, context, callback) => {
-  callback('Oh no! An error.');
+  callback("Oh no! An error.");
 };
 ```
 
@@ -200,7 +200,7 @@ Next, create a new file called `src/lambda/todo.js`. In this file, we'll
 axios, and then write a handler just like before.
 
 ```javascript
-const axios = require('axios');
+const axios = require("axios");
 
 exports.handler = (event, context, callback) => {
   // Here we'll use Axios to get a remote resource
@@ -211,7 +211,8 @@ Inside the handler (where the comment is above), use Axios to get JSON from
 [https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com)
 
 ```javascript
-axios.get('https://jsonplaceholder.typicode.com/todos/1')
+axios
+  .get("https://jsonplaceholder.typicode.com/todos/1")
   .then((res) => {
     // Do something with successful response
   })
@@ -242,10 +243,11 @@ callback(err);
 The full `todo.js` function looks like this:
 
 ```javascript
-const axios = require('axios');
+const axios = require("axios");
 
 exports.handler = (event, context, callback) => {
-  axios.get('https://jsonplaceholder.typicode.com/todos/1')
+  axios
+    .get("https://jsonplaceholder.typicode.com/todos/1")
     .then((res) => {
       callback(null, {
         statusCode: 200,
@@ -286,7 +288,7 @@ include this additional line:
 /lambda
 ```
 
-*The slash is important.* It tells git to ignore only the `lambda` directory at
+_The slash is important._ It tells git to ignore only the `lambda` directory at
 the root level; we still want our `src/lambda` to be tracked.
 
 And finally, we need to tell Netlify to run our build command when deploying.

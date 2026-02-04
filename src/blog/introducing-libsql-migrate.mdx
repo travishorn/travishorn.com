@@ -2,9 +2,9 @@
 cover: ./images/5b5d2dce-db10-447f-9363-321db8d01246.webp
 datePublished: 2024-04-12 11:00:50+00:00
 tags:
-- databases
-- javascript
-- sql
+  - databases
+  - javascript
+  - sql
 title: Introducing libsql Migrate
 ---
 
@@ -95,7 +95,7 @@ export default {
 };
 ```
 
-*💡 This file should be tracked alongside the rest of your source code.*
+_💡 This file should be tracked alongside the rest of your source code._
 
 ### Making a Migration
 
@@ -105,8 +105,8 @@ When you want to make changes to your database, create a new migration.
 libsql-migrate make demo
 ```
 
-*💡 Replace `demo` with whatever name you'd like to give the migration. Ideally,
-it would be a short name that describes the changes.*
+_💡 Replace `demo` with whatever name you'd like to give the migration. Ideally,
+it would be a short name that describes the changes._
 
 A file with the current timestamp and the name you chose will be added to the
 migrations directory. This directory is `./migrations` by default, but can be
@@ -154,8 +154,8 @@ export async function down(client) {
 }
 ```
 
-*💡 Track the migrations directory in source control. Ideally, it will be a
-living history of changes to your database schema.*
+_💡 Track the migrations directory in source control. Ideally, it will be a
+living history of changes to your database schema._
 
 ### Running the Next Migration
 
@@ -203,8 +203,8 @@ libsql-migrate latest
 The `up()` function for all pending migration files will be executed in series,
 alphabetically.
 
-*💡 All migrations that were run during this command are considered part of the
-same "batch".*
+_💡 All migrations that were run during this command are considered part of the
+same "batch"._
 
 ### Rolling Back the Latest Batch
 
@@ -227,7 +227,7 @@ new seed file.
 libsql-migrate seed:make demo
 ```
 
-*💡 Replace `demo` with whatever name you'd like to give the seed.*
+_💡 Replace `demo` with whatever name you'd like to give the seed._
 
 A file with the name you chose will be added to the seeds directory. This
 directory is `./seeds` by default, but you can change that in `libsqlrc.js` like
@@ -263,8 +263,8 @@ export async function seed(client) {
 }
 ```
 
-*💡 While not required, you'll probably want to delete existing data (like the
-example above shows) before seeding.*
+_💡 While not required, you'll probably want to delete existing data (like the
+example above shows) before seeding._
 
 ### Run a Seed
 
@@ -332,7 +332,7 @@ coding.
 import { createClient } from "@libsql/client";
 
 const client = createClient({
-  url: "file:local.db"
+  url: "file:local.db",
 });
 ```
 

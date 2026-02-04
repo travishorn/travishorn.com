@@ -53,8 +53,8 @@ import SparkLine from "./components/SparkLine.vue";
 export default {
   name: "App",
   components: {
-    SparkLine
-  }
+    SparkLine,
+  },
 };
 </script>
 ```
@@ -91,13 +91,13 @@ export default {
       sensors: [
         [808, 1475, 1426, 1884, 1396],
         [3246, 1941, 2649, 1633, 1262],
-        [190, 128, 209, 208, 116]
-      ]
+        [190, 128, 209, 208, 116],
+      ],
     };
   },
   components: {
-    SparkLine
-  }
+    SparkLine,
+  },
 };
 ```
 
@@ -280,15 +280,12 @@ each sensor? Note the new lines in bold below.
   <div class="sensor" v-for="sensor in sensors" :key="sensor.name">
     <SparkLine class="sensor-chart" :data="sensor.data" />
 
-    <div class="sensor-value">
-      {{ sensor.data[sensor.data.length - 1] }}
-    </div>
+    <div class="sensor-value">{{ sensor.data[sensor.data.length - 1] }}</div>
 
     <div class="sensor-name">{{ sensor.name }}</div>
   </div>
 </div>
 ```
-
 
 We can make these numbers bigger as you can imagine they might be valuable to
 see at a glance.
@@ -307,9 +304,9 @@ color. You can place this right alongside `<style scoped>`.
 
 ```html
 <style>
-body {
-  background-color: #212124;
-}
+  body {
+    background-color: #212124;
+  }
 </style>
 ```
 
@@ -337,8 +334,8 @@ sensors: [
   { name: "Gross HP", data: [5959, 2163, 3935, 3443, 4566] },
   { name: "Water °F", data: [243, 98, 101, 193, 184] },
   { name: "Oil °F", data: [253, 143, 150, 232, 215] },
-  { name: "MPH/Minute", data: [5, 6, 4, 2, 3] }
-]
+  { name: "MPH/Minute", data: [5, 6, 4, 2, 3] },
+];
 ```
 
 ![The data above is represented with the sparkline grid we
@@ -355,10 +352,7 @@ second. It also "caps" the array to the latest 15 values only.
 
 ```javascript
 setInterval(() => {
-  this
-    .sensors[0]
-    .data
-    .push(Math.floor(Math.random() * 800 + 800));
+  this.sensors[0].data.push(Math.floor(Math.random() * 800 + 800));
 
   this.sensors[0].data = this.sensors[0].data.slice(-15);
 }, 1000);

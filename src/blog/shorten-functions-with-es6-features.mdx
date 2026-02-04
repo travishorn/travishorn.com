@@ -12,7 +12,7 @@ Consider this function.
 
 ```javascript
 function sayHello(name) {
-  return 'Hello, ' + name + '.';
+  return "Hello, " + name + ".";
 }
 ```
 
@@ -32,7 +32,7 @@ We can further shorten it using [arrow
 functions](http://es6-features.org/#ExpressionBodies).
 
 ```javascript
-var sayHello = name => `Hello, ${name}.`;
+var sayHello = (name) => `Hello, ${name}.`;
 ```
 
 Using this syntax, the function is shortened drastically, without losing any
@@ -42,7 +42,7 @@ The function above looks nice, but there's one last change I would personally
 make to make the code even easier to reason about.
 
 ```javascript
-const sayHello = name => `Hello, ${name}.`;
+const sayHello = (name) => `Hello, ${name}.`;
 ```
 
 I swapped `var` for `const`. Constants cannot be re-assigned, so this function

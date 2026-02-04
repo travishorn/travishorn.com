@@ -2,10 +2,10 @@
 cover: ./images/aed04e76-31a2-4aa3-ac70-7b142b2f9761.webp
 datePublished: 2023-09-27 11:00:09+00:00
 tags:
-- deployment
-- git
-- linux
-- react
+  - deployment
+  - git
+  - linux
+  - react
 title: Serving Next.js Apps on your Linux Server
 ---
 
@@ -18,20 +18,19 @@ dependency installation, app building, and serving.
 
 ## Prerequisites
 
-* Node.js is installed
-    
-* A [Next.js](https://nextjs.org/) app has been written and its source code is
+- Node.js is installed
+- A [Next.js](https://nextjs.org/) app has been written and its source code is
   in a git repository accessible by the server
-* You are logged in to the server as a non-root user
-* If using a virtual machine, port 3000 is forwarded
+- You are logged in to the server as a non-root user
+- If using a virtual machine, port 3000 is forwarded
 
 ## **Clone the repository**
 
 Use `git clone` to clone the repository into the `~/apps` directory.
 
-*The repository could be located anywhere. If it is hosted on the same server as
+_The repository could be located anywhere. If it is hosted on the same server as
 you're currently using, (for example, inside the `~/repos` directory), you can
-clone it by passing `git clone` the path to the repository.*
+clone it by passing `git clone` the path to the repository._
 
 ```bash
 git clone ~/repos/my-app ~/apps/my-app

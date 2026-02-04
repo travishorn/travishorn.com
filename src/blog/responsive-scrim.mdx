@@ -3,7 +3,6 @@ title: "Responsive Scrim"
 datePublished: 2018-08-21T22:01:02+00:00
 cover: ./images/axA86A9w4.webp
 tags: ["css", "design-ui"]
-
 ---
 
 Overlaying text on an image, or even a solid color, can get tricky. The text can
@@ -31,10 +30,10 @@ photo, but not on the dark parts.
 ## A color in the middle
 
 ![The text has been changed to yellow, but is still hard to read in
-places](./images/vWCJ1hth9.webp)*Yellow?*
+places](./images/vWCJ1hth9.webp)_Yellow?_
 
 ![The text has been changed to red, but yet again is still hard to
-read](./images/v0MrBxFpVH.webp)*Red?*
+read](./images/v0MrBxFpVH.webp)_Red?_
 
 No color seems to work here. And even if we found one, that color wouldn't work
 for **all** images. So if you were trying to build a site that displays captions
@@ -88,10 +87,7 @@ Say we have a panel that uses the tiger photo as its background, and white text
 in the foreground.
 
 ```html
-<div class="panel panel-tiger">
-  Lorem ipsum dolor sit amet.
-</div>
-
+<div class="panel panel-tiger">Lorem ipsum dolor sit amet.</div>
 ```
 
 ```css
@@ -110,9 +106,7 @@ The first step is to place the text inside an inner `<div>`.
 
 ```html
 <div class="panel panel-tiger">
-  <div class="scrim">
-    Lorem ipsum dolor sit amet.
-  </div>
+  <div class="scrim">Lorem ipsum dolor sit amet.</div>
 </div>
 ```
 

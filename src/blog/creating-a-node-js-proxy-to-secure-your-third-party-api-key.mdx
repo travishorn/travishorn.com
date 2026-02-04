@@ -3,11 +3,7 @@ title: "Creating a Node.js proxy to secure your third-party API key"
 datePublished: 2016-04-01T22:31:01+00:00
 cover: ./images/Hm4qzc__g.webp
 tags: ["api", "javascript", "nodejs", "security"]
-
 ---
-
-
-
 
 Today I am creating a mailing list signup form that will post data to a sheet on Fieldbook. We could give our form the API key but this is a terrible idea as it gives anyone who visits the form the key to do anything they want to your database (Fieldbook book).
 
@@ -15,11 +11,11 @@ Instead, we'll create a proxy in Node.js in less than 50 lines of code.
 
 First let's set up the database. Log into Fieldbook and create a new book. In that book, make a sheet named **Contacts**. This sheet will contain these three columns
 
-* **Contact ID** (I am just using Fieldbook's built in numeric ID)
+- **Contact ID** (I am just using Fieldbook's built in numeric ID)
 
-* **Email address**, and — just for the fun of it —
+- **Email address**, and — just for the fun of it —
 
-* **Signup date**.
+- **Signup date**.
 
 Now, click on **API**, then **Manage API access**, then **Generate a new API key**. Make sure to copy down the **Username** and **Password**.
 
@@ -30,13 +26,11 @@ mkdir fbproxy
 cd fbproxy
 ```
 
-
 Next, let's initialize our npm project.
 
 ```console
 npm init
 ```
-
 
 Answer any prompts.
 
@@ -46,25 +40,24 @@ Now we can install dependencies.
 npm install express body-parser requestify moment --save
 ```
 
-
 The proxy itself is simple enough. In a new file called index.js, we'll first put the parser in strict mode and require our modules.
 
 ```javascript
-'use strict';
+"use strict";
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var requestify = require('requestify');
-var moment = require('moment');
+var express = require("express");
+var bodyParser = require("body-parser");
+var requestify = require("requestify");
+var moment = require("moment");
 ```
 
 Now set up the constants.
 
 ```javascript
 var PORT = process.env.PORT || 3000;
-var BASE_URL = 'https://api.fieldbook.com/v1/[your book ID]';
+var BASE_URL = "https://api.fieldbook.com/v1/[your book ID]";
 var API_OPTIONS = {
-  headers: { accept: 'application/json' },
+  headers: { accept: "application/json" },
   auth: {
     username: process.env.FB_API_USERNAME,
     password: process.env.FB_API_PASSWORD,
@@ -77,9 +70,12 @@ var app = express();
 Since the form will be running from a separate service as our proxy, we'll need to set up CORS. And since we'll be accepting form data, we'll set up the body-parser, too.
 
 ```javascript
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept",
+  );
   next();
 });
 
@@ -112,8 +108,8 @@ app.post('/contacts', function(req, res) {
 With everything else set up, we will simply tell our proxy to listen for incoming connections.
 
 ```javascript
-app.listen(PORT, function() {
-  console.log('Fieldbook proxy listening on port %s.', PORT);
+app.listen(PORT, function () {
+  console.log("Fieldbook proxy listening on port %s.", PORT);
 });
 ```
 

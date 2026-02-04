@@ -2,11 +2,11 @@
 cover: ./images/90908587-8061-41de-926c-b842a2b389fa.webp
 datePublished: 2023-11-09 00:00:11+00:00
 tags:
-- backend-systems
-- javascript
-- performance
-- server-management
-- web-development
+  - backend-systems
+  - javascript
+  - performance
+  - server-management
+  - web-development
 title: Reverse Proxying with nginx
 ---
 
@@ -22,11 +22,11 @@ behind a reverse proxy like nginx? After all, they could just set the app to
 listen on port 80 or 443 and allow users to connect directly. Here are a few
 good reasons:
 
-* If your application runs on multiple back-end servers, you can leverage a
+- If your application runs on multiple back-end servers, you can leverage a
   reverse proxy to balance the load between them
-* HTTPS/SSL is more easily managed and typically runs faster when delegated to a
+- HTTPS/SSL is more easily managed and typically runs faster when delegated to a
   dedicated reverse proxy
-* Using a reverse proxy can add more versatility to your server. It can be
+- Using a reverse proxy can add more versatility to your server. It can be
   configured for many scenarios, can host multiple apps on the same port, and
   enables more robust security features
 
@@ -82,12 +82,11 @@ should see your Node.js app.
 
 ## Next Steps
 
-* All requests to the web application should go through port 80 (or 443 if you
-  set up HTTPS/SSL later). However, the application is still listening on port
-  3000. Use a firewall to block external requests to port 3000. I have a full
+- All requests to the web application should go through port 80 (or 443 if you
+  set up HTTPS/SSL later). However, the application is still listening on port 3000. Use a firewall to block external requests to port 3000. I have a full
   [guide on using nftables to set firewall
   rules](https://travishorn.com/firewall-configuration-with-nftables) this way.
-* Web sites and applications should be served over HTTPS with SSL. You can
+- Web sites and applications should be served over HTTPS with SSL. You can
   configure nginx to handle this. I have a [guide on setting up nginx with
   HTTPS/SSL](https://travishorn.com/configuring-httpstls-on-nginx-a-complete-guide-for-securing-web-traffic),
   as well.

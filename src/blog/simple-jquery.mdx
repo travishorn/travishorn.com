@@ -2,10 +2,10 @@
 cover: ./images/cFhoxcpuD.webp
 datePublished: 2016-08-04 22:01:01+00:00
 tags:
-- api
-- html
-- javascript
-- web-development
+  - api
+  - html
+  - javascript
+  - web-development
 title: Simple jQuery
 ---
 
@@ -26,7 +26,7 @@ The simplest method is to use the [jQuery CDN](https://code.jquery.com/) and inc
   <body>
     [CONTENT]
 
-  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
     <script>
       $(function() {
         // Put your jQuery code here.
@@ -36,7 +36,6 @@ The simplest method is to use the [jQuery CDN](https://code.jquery.com/) and inc
 </html>
 ```
 
-
 ### Selecting Elements
 
 Most methods in jQuery require you to target an element(s) on the page.
@@ -44,20 +43,19 @@ Most methods in jQuery require you to target an element(s) on the page.
 This selects all `<p>` elements:
 
 ```javascript
-$('p').doSomething();
+$("p").doSomething();
 ```
 
 Select an element that has the id `target`. For example `<div id="target">`:
 
 ```javascript
-$('#target').doSomething();
+$("#target").doSomething();
 ```
 
 Select all elements with the class `selectme`. For example `<div class="selectme">` or `<li class="selectme">`:
 
-
 ```javascript
-$('.selectme').doSomething();
+$(".selectme").doSomething();
 ```
 
 For more information about selecting elements, visit [https://api.jquery.com/category/selectors/](https://api.jquery.com/category/selectors/).
@@ -69,19 +67,19 @@ In all three of the examples above, the method being called was `doSomething()`.
 Add the class `highlight` to every `<span>` on the page:
 
 ```javascript
-$('span').addClass('highlight');
+$("span").addClass("highlight");
 ```
 
 Set the HTML inside every `<p>` to `Replacement text.`
 
 ```javascript
-$('p').html('Replacement text.');
+$("p").html("Replacement text.");
 ```
 
 Changes the `alt` attribute of `<img id="header" …>` to `Sky with clouds`:
 
 ```javascript
-$('img#header').attr('alt', 'Sky with clouds');
+$("img#header").attr("alt", "Sky with clouds");
 ```
 
 For more information about manipulation, visit [https://api.jquery.com/category/manipulation/](http://api.jquery.com/category/manipulation/).
@@ -93,7 +91,7 @@ Events are a way to perform an action when a condition is met. Some examples fol
 Executes when the user clicks on `target`:
 
 ```javascript
-$('#target').click(function() {
+$("#target").click(function () {
   // Do something.
 });
 ```
@@ -101,7 +99,7 @@ $('#target').click(function() {
 Executes when the user hovers over `target`:
 
 ```javascript
-$('#target').hover(function() {
+$("#target").hover(function () {
   // Do something.
 });
 ```
@@ -109,7 +107,7 @@ $('#target').hover(function() {
 Executes when `target` gains focus (user clicks or tabs into it):
 
 ```javascript
-$('#target').focus(function() {
+$("#target").focus(function () {
   // Do something.
 });
 ```

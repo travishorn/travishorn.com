@@ -2,24 +2,24 @@
 cover: ./images/dodEdh1fH.webp
 datePublished: 2019-10-10 22:01:01+00:00
 tags:
-- data-science
-- git
-- javascript
-- web-development
+  - data-science
+  - git
+  - javascript
+  - web-development
 title: Introducing csval, an open source CSV data validator
 ---
 
 csval is a command-line tool and a JavaScript library that can check CSV files
 against a set of validation rules. Some of the rules you can check for include…
 
-* CSV file is actually valid itself and can be parsed
-* Presence of required fields
-* Mismatching types. For example, number vs string
-* Minimum and maximum lengths
-* Number ranges
-* Values from a fixed set of options
-* Regex pattern matching
-* Much more. Check the [JSON Schema
+- CSV file is actually valid itself and can be parsed
+- Presence of required fields
+- Mismatching types. For example, number vs string
+- Minimum and maximum lengths
+- Number ranges
+- Values from a fixed set of options
+- Regex pattern matching
+- Much more. Check the [JSON Schema
   reference](https://json-schema.org/understanding-json-schema/reference/index.html)
   for more information
 
@@ -176,14 +176,14 @@ Use it in your project like so.
 const csval = require("csval");
 
 const main = async () => {
-  const csvString= "name,age\nJohn,30";
+  const csvString = "name,age\nJohn,30";
 
   const rules = {
     properties: {
       name: {
-        type: "string"
-      }
-    }
+        type: "string",
+      },
+    },
   };
 
   const parsed = await csval.parseCsv(csvString);
@@ -202,7 +202,7 @@ rules from files.
 const csval = require("csval");
 
 const main = async () => {
-  const csvString= await readCsv("path/to/file.csv");
+  const csvString = await readCsv("path/to/file.csv");
   const rules = await readRules("path/to/rules.json");
   const parsed = await csval.parseCsv(csvString);
   const valid = await csval.validate(parsed, rules);

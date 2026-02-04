@@ -18,16 +18,16 @@ Continuous values are numeric; any value with an interval.
 
 For example:
 
-* Height (inches and centimeters)
-* Weight (pounds and kilograms)
-* Temperature (Fahrenheit and Celsius)
-* Time (seconds and minutes)
-* Blood pressure (mmHg - millimeters of mercury)
-* Concentration (mol/L - moles of solute per liter of solution)
-* Distance (miles and kilometers)
-* Voltage (volts)
-* Gross domestic product (GDP) per capita
-* Reaction time (milliseconds)
+- Height (inches and centimeters)
+- Weight (pounds and kilograms)
+- Temperature (Fahrenheit and Celsius)
+- Time (seconds and minutes)
+- Blood pressure (mmHg - millimeters of mercury)
+- Concentration (mol/L - moles of solute per liter of solution)
+- Distance (miles and kilometers)
+- Voltage (volts)
+- Gross domestic product (GDP) per capita
+- Reaction time (milliseconds)
 
 Analysis on continuous values typically include t-test, ANOVA, linear
 regression, density plots, and histograms.
@@ -68,14 +68,14 @@ Discrete values are also numeric, but represent distinct separate values
 
 For example:
 
-* Number of children
-* Defect count
-* Number of visits
-* Eggs laid
-* Phone call counts
-* Number of transactions
-* Dice outcomes
-* Goals scored
+- Number of children
+- Defect count
+- Number of visits
+- Eggs laid
+- Phone call counts
+- Number of transactions
+- Dice outcomes
+- Goals scored
 
 Discrete values are typically analyzed using Poisson/negative binomial
 regression, chi-square (counts), bar charts, and frequency tables.
@@ -94,11 +94,11 @@ hours.](./images/60a227f1-de3e-48fd-8bd2-8f8c64f68a01.webp)
 Dot plot showing visitors per hour of the day. From [Anamalia
 Life](https://animalia-life.club/qa/pictures/dot-plot).
 
-Discrete values can further be broken down into *small-range* and *count* data.
+Discrete values can further be broken down into _small-range_ and _count_ data.
 Think about the difference between the number on a dice roll and the number of
 views a YouTube video has? Both are discrete, but we think about them
-differently. A dice roll is *small-range* discrete data. it has a fixed, limited
-set of outcomes (1 through 6). Now, the number of views is *count* data. It
+differently. A dice roll is _small-range_ discrete data. it has a fixed, limited
+set of outcomes (1 through 6). Now, the number of views is _count_ data. It
 could be 0, 10, or 10,000 (there's no upper limit).
 
 ## Categorical: Nominal and Ordinal
@@ -107,11 +107,11 @@ Nominal values are categories without order.
 
 For example:
 
-* Eye colors (brown, blue, and green)
-* Blood types (A+, A-, B+, B-, AB+, AB-, O+, O-)
-* Species (tigers, elephants, blue whales, oak trees, and sunflowers)
-* Cities (Tokyo, Sao Paulo, Cairo, and New York City)
-* Brands (Apple, Samsung, and Mercedes-Benz)
+- Eye colors (brown, blue, and green)
+- Blood types (A+, A-, B+, B-, AB+, AB-, O+, O-)
+- Species (tigers, elephants, blue whales, oak trees, and sunflowers)
+- Cities (Tokyo, Sao Paulo, Cairo, and New York City)
+- Brands (Apple, Samsung, and Mercedes-Benz)
 
 You can plot nominal values in a contingency table, chi-squares, and bar charts.
 
@@ -119,11 +119,11 @@ Ordinal values are ordered categories where the intervals are not equal.
 
 For example:
 
-* Likert scale (strongly disagree, disagree, neutral, agree, strongly agree)
-* Education level (less than high school, high school graduate, some college,
+- Likert scale (strongly disagree, disagree, neutral, agree, strongly agree)
+- Education level (less than high school, high school graduate, some college,
   bachelor's degree, master's degree, doctorate)
-* Customer satisfaction (dissatisfied, neutral, satisfied)
-* Medal rank (bronze, silver, and gold)
+- Customer satisfaction (dissatisfied, neutral, satisfied)
+- Medal rank (bronze, silver, and gold)
 
 Ordinal values are typically plotted using ordinal logistic regression,
 median/IQR, and stacked bar charts.
@@ -160,10 +160,10 @@ Binary values appear when there are two possible values.
 
 For example:
 
-* Yes/No
-* True/False
-* Infected/Not Infected
-* Pass/Fail
+- Yes/No
+- True/False
+- Infected/Not Infected
+- Pass/Fail
 
 Analysis on binary values can be done using logistic regression, confusion
 matrices, ROC curves, and bar charts.
@@ -182,9 +182,9 @@ Interval values have meaningful differences, with no true zero.
 
 For example:
 
-* Celsius (0, 37, 100)
-* Fahrenheit (32, 98.6, 212)
-* Calendar year (1492, 1776, 1945)
+- Celsius (0, 37, 100)
+- Fahrenheit (32, 98.6, 212)
+- Calendar year (1492, 1776, 1945)
 
 Note that an interval value can be zero (like 0 degrees Celsius), but that zero
 point is arbitrary; it is just a reference point, not a complete absence of the
@@ -196,11 +196,11 @@ true zero.
 
 For example:
 
-* Length (8 feet or 244 centimeters)
-* Mass (102 grams or 3.6 ounces)
-* Time elapsed (36 hours or 2160 minutes)
-* Income ($9.50 or £7.22)
-* Kelvin (0, 273.15, 373.15)
+- Length (8 feet or 244 centimeters)
+- Mass (102 grams or 3.6 ounces)
+- Time elapsed (36 hours or 2160 minutes)
+- Income ($9.50 or £7.22)
+- Kelvin (0, 273.15, 373.15)
 
 A length of 0 is a true zero; the absence of length. It doesn't matter if you're
 measuring in feet, centimeters, or anything else. It's always zero.
@@ -219,9 +219,9 @@ distributions.
 
 For example:
 
-* Calls per hour
-* Daily accident counts
-* Species observed
+- Calls per hour
+- Daily accident counts
+- Species observed
 
 These values are often analyzed with Poisson/negative binomial models and
 rate-based comparisons.
@@ -241,9 +241,9 @@ differently.
 
 For example, a survey might include:
 
-* Age (continuous)
-* Satisfaction (ordinal)
-* Gender (nominal)
+- Age (continuous)
+- Satisfaction (ordinal)
+- Gender (nominal)
 
 Whenever possible, you should analyze your data using its original, most
 detailed scale. Keeping a variable like age as a continuous number preserves far
@@ -255,7 +255,7 @@ exact measurement. This can make complex data easier to interpret. For age, you
 might bin the data into bins of 18-24, 25-34, 35-44, and so on.
 
 | Continuous | Binned | Ordinal     |
-|------------|--------|-------------|
+| ---------- | ------ | ----------- |
 | 28 years   | 20-30  | Young Adult |
 | 45.7 years | 40-50  | Middle-aged |
 | 19.2 years | 10-20  | Teenager    |
@@ -303,13 +303,13 @@ For ordinal outcomes, use Poisson/negative binomial regression.
 
 ## Avoiding Common Pitfalls
 
-* Be cautious of arbitrarily binning continuous data.
-* Check the distribution.
-* Consider the measurement scale.
-* Choose models that match the data type.
-* Don't treat ordinal data as interval without justification.
-* Watch for zero-inflation in counts.
-* Make sure you're not misusing parametric tests on skewed continuous data.
+- Be cautious of arbitrarily binning continuous data.
+- Check the distribution.
+- Consider the measurement scale.
+- Choose models that match the data type.
+- Don't treat ordinal data as interval without justification.
+- Watch for zero-inflation in counts.
+- Make sure you're not misusing parametric tests on skewed continuous data.
 
 Getting a handle on data types might seem like a small detail, but it's the
 foundation for any solid analysis. Choosing the right chart, the right model, or

@@ -2,13 +2,13 @@
 cover: ./images/WlNKiaazB4.webp
 datePublished: 2017-12-21 23:01:01+00:00
 tags:
-- css
-- data-visualization
-- html
-- javascript
-- software-engineering
-- vue
-- web-development
+  - css
+  - data-visualization
+  - html
+  - javascript
+  - software-engineering
+  - vue
+  - web-development
 title: Data by Geographic Distance
 ---
 
@@ -16,7 +16,7 @@ Say you have a database that contains information about clients your company
 serves. Among the client information are two pieces of data: geographical
 location and number of orders.
 
-You could extend this example to other data points, but the *location* will be
+You could extend this example to other data points, but the _location_ will be
 the main focus of this article.
 
 You or your company may find it beneficial to view client data sorted and
@@ -24,7 +24,6 @@ filtered based on location. Follow along and build a web app that helps you
 visualize this information.
 
 Here's a preview of what you can build by following this guide:
-
 
 First, we must transform the raw data into a format usable by our web app. Here
 is the raw data I'm using in this example:
@@ -34,16 +33,15 @@ is the raw data I'm using in this example:
   { id: 0, coords: [38.622185, -90.257458], orders: 52 },
   { id: 1, coords: [38.668842, -90.237202], orders: 56 },
   { id: 2, coords: [38.604211, -90.288014], orders: 93 },
-  { id: 3, coords: [38.653293, -90.278744], orders:  6 },
+  { id: 3, coords: [38.653293, -90.278744], orders: 6 },
   { id: 4, coords: [38.639886, -90.216259], orders: 53 },
   { id: 5, coords: [38.638813, -90.144848], orders: 24 },
-  { id: 6, coords: [38.609577, -90.203900], orders: 73 },
+  { id: 6, coords: [38.609577, -90.2039], orders: 73 },
   { id: 7, coords: [38.621112, -90.226216], orders: 83 },
   { id: 8, coords: [38.637204, -90.232052], orders: 16 },
   { id: 9, coords: [38.631949, -90.189882], orders: 16 },
-]
+];
 ```
-
 
 Notice each client has an ID number, GPS coordinates, and a number of orders.
 
@@ -56,13 +54,25 @@ contents.
   <head>
     <title>Interactive Client Data by Distance</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
-    <link rel="stylesheet" href="app.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto+Mono"
+    />
+    <link rel="stylesheet" href="app.css" />
   </head>
   <body>
     <div id="app" class="container my-3 my-sm-5">
@@ -78,13 +88,13 @@ contents.
 
 Besides the basic HTML structure, notice we are including…
 
-* Bootstrap CSS — for general design
-* Leaflet CSS — for making the map look pretty
-* Roboto Mono font — to display our numerical data neatly in a table
-* app.css — our custom styles (not written, yet)
-* Vue.js — for the UI
-* Leaflet.js — for the embedded map
-* app.js — our custom JavaScript (not written, yet)
+- Bootstrap CSS — for general design
+- Leaflet CSS — for making the map look pretty
+- Roboto Mono font — to display our numerical data neatly in a table
+- app.css — our custom styles (not written, yet)
+- Vue.js — for the UI
+- Leaflet.js — for the embedded map
+- app.js — our custom JavaScript (not written, yet)
 
 Also notice the single `<div>` in the body. This will be the mounting
 point for our app.
@@ -92,17 +102,20 @@ point for our app.
 First, some styles. Create `app.css` with the following content.
 
 ```css
-.map { height: 600px; }
+.map {
+  height: 600px;
+}
 
 th,
-td { text-align: right; }
+td {
+  text-align: right;
+}
 
 td {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 16px;
 }
 ```
-
 
 We give the (future) map a height, align text in the (future) table to the
 right, and set the font in the table to a nice monospace font. This is because
@@ -113,7 +126,7 @@ Now create `app.js` with this Vue app skeleton.
 
 ```javascript
 new Vue({
-  el: '#app',
+  el: "#app",
 
   filters: {},
 
@@ -123,7 +136,9 @@ new Vue({
     centerCircle: null,
     center: [38.627222, -90.197778],
     radius: 1000,
-    rawClients: [ /* paste the client data from earlier here */ ],
+    rawClients: [
+      /* paste the client data from earlier here */
+    ],
   },
 
   computed: {},
@@ -144,21 +159,20 @@ new Vue({
 });
 ```
 
-
 So far, we have 6 data properties and 3 methods. The 6 data properties are…
 
-* `map` — a placeholder property that will represent our map once it is
+- `map` — a placeholder property that will represent our map once it is
   initialized
-* `tileLayer` — a placeholder property that will represent the tile layer on the
+- `tileLayer` — a placeholder property that will represent the tile layer on the
   map once it is initalized
-* `centerCircle` — a placeholder property that will represent a semi-transparent
+- `centerCircle` — a placeholder property that will represent a semi-transparent
   circle over the map indicating the area we are currently looking at. This
   circle will be adjustable.
-* `center` — a 2-value array with latitude and longitude for the center of our
+- `center` — a 2-value array with latitude and longitude for the center of our
   map. This could be your company headquarters, retail location, or shipping
   facility. For the sake of example, I'm using downtown Saint Louis, MO.
-* `radius` — represents the radius of the centerCircle, in meters
-* `rawClients` — The client data. This should be a copy & paste of the client data
+- `radius` — represents the radius of the centerCircle, in meters
+- `rawClients` — The client data. This should be a copy & paste of the client data
   from earlier in this article.
 
 There are also 3 methods. One of them, `initMap()` is called when the app is
@@ -189,7 +203,7 @@ distance(p1, p2) {
   const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
           Math.cos(φ1) * Math.cos(φ2) *
           Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c;
@@ -310,7 +324,6 @@ computed: {
 },
 ```
 
-
 This computed property uses
 [`Array.reduce()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce?v=a)
 to loop through the clients array and return the distance with the highest
@@ -336,11 +349,13 @@ have to add a range input.
 In the HTML, above `<div id="map">`, add…
 
 ```html
-<input class="form-control"
-       type="range"
-       min="0"
-       :max="maxDistance"
-       v-model="radius">
+<input
+  class="form-control"
+  type="range"
+  min="0"
+  :max="maxDistance"
+  v-model="radius"
+/>
 
 <h2 class="text-center">{{ radius }}</h2>
 ```
@@ -441,7 +456,7 @@ This array would look good displayed in a table below the map. In HTML, after
 </table>
 ```
 
-*Now this is pretty cool.* Only the clients within the radius are shown in the
+_Now this is pretty cool._ Only the clients within the radius are shown in the
 table. You can adjust the range input slider and watch table rows appear and
 disappear.
 
@@ -503,7 +518,7 @@ of various precisions, the brackets have been eliminated and all coordinates are
 rounded to the same decimal place](./images/8gNzkxJ2p.webp)
 
 Finally, it would be great to see the **total number of orders** for all the
-clients *currently shown* (all the clients in the selected radius). Another
+clients _currently shown_ (all the clients in the selected radius). Another
 computed property can do this.
 
 ```javascript

@@ -2,9 +2,9 @@
 cover: ./images/k3otgPg_k.webp
 datePublished: 2014-08-08 05:00:00+00:00
 tags:
-- databases
-- javascript
-- software-engineering
+  - databases
+  - javascript
+  - software-engineering
 title: NoSQL & MongoDB
 ---
 
@@ -24,7 +24,6 @@ Olivia        Hall         Green             *NULL*
 Owen          Reed         *NULL*            Pizza
 ```
 
-
 And the same data in a users collection in MongoDB:
 
 ```
@@ -40,7 +39,6 @@ And the same data in a users collection in MongoDB:
   "favoriteFood" : "Pizza"
 }
 ```
-
 
 You can see that documents in MongoDB don't have to follow the same schema; The first document has a favoriteColor key, but not a favoriteFood key. And the opposite is true for the second document. Some people make the argument that this type of data modeling is better for how modern software development works.
 
@@ -66,7 +64,6 @@ There are many ways to model this in NoSQL. The most common would probably be to
 }
 ```
 
-
 You can still get all distinct customer information without referring to another table. In this case, just a query like this will do:
 
 ```
@@ -87,7 +84,6 @@ You can still get all distinct customer information without referring to another
   }
 }
 ```
-
 
 If you do happen to need to "join" a table in MongoDB, you can do it on the application side by querying the first collection, and then querying the second collection based on the returned document(s). This is generally slower, and if you find yourself doing it a lot, you may consider remodeling your data structure into a more non-relational format.
 

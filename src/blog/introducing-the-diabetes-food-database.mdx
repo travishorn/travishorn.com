@@ -2,12 +2,12 @@
 cover: ./images/n0cCK6z6F.webp
 datePublished: 2018-12-11 12:01:00+00:00
 tags:
-- api
-- data-visualization
-- javascript
-- svg
-- vue
-- web-development
+  - api
+  - data-visualization
+  - javascript
+  - svg
+  - vue
+  - web-development
 title: Introducing the Diabetes Food Database
 ---
 
@@ -41,9 +41,9 @@ The app is built with the help of quite a few open source projects including
 
 There are really three pieces at work here:
 
-* The data
-* The back-end search API based on a single lambda function
-* The pretty front-end user interface
+- The data
+- The back-end search API based on a single lambda function
+- The pretty front-end user interface
 
 ### The data
 
@@ -61,12 +61,11 @@ something like this:
       "explanation": "Sugar is not easily processed by a ..snip..",
       "suggestions": "Sugar is important for bodily ..snip..",
       "ingredients": []
-    },
+    }
     // snip
   ]
 }
 ```
-
 
 ### The back-end
 
@@ -80,9 +79,9 @@ The search is fairly simple, thanks to the help of Pluralize and Fuse.
 First, I import the dependencies…
 
 ```javascript
-const { singular } = require('pluralize');
-const Fuse = require('fuse.js');
-const { foods } = require('../database.json');
+const { singular } = require("pluralize");
+const Fuse = require("fuse.js");
+const { foods } = require("../database.json");
 ```
 
 In addition to Pluralize and Fuse, you can see I'm importing the data, as well.
@@ -91,7 +90,7 @@ Next, I create the search engine based on the data.
 
 ```javascript
 const fuse = new Fuse(foods, {
-  keys: ['name', 'alternateNames'],
+  keys: ["name", "alternateNames"],
   threshold: 0.4,
 });
 ```
@@ -139,14 +138,15 @@ With the `results` object ready, we finally respond.
 
 ```javascript
 callback(null, {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-    },
-    body: JSON.stringify(results),
-  });
+  statusCode: 200,
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept",
+  },
+  body: JSON.stringify(results),
+});
 ```
 
 We tell the client that the request was successful (`statusCode: 200`), set the
@@ -164,11 +164,11 @@ solution, but the easiest way to get started with Vue SFCs yourself is using the
 
 The app is made up of five components:
 
-* The main app
-* A search bar
-* An error message (if the API isn't working as expected)
-* A results listing
-* A food item card
+- The main app
+- A search bar
+- An error message (if the API isn't working as expected)
+- A results listing
+- A food item card
 
 You can see how I built each of these in the [open source repository on
 GitHub](https://github.com/travishorn/diabetes-food-database).
@@ -178,19 +178,19 @@ The basic idea is that the search bar component emits an event with a query…
 ```vue
 <template>
   <form @submit.prevent="search">
-    <input type="text" v-model="q">
+    <input type="text" v-model="q" />
   </form>
 </template>
 
 <script>
 export default {
-  name: 'SearchBar',
+  name: "SearchBar",
   data() {
-    return { q: '' };
+    return { q: "" };
   },
   methods: {
     search() {
-      this.$emit('search', this.q);
+      this.$emit("search", this.q);
     },
   },
 };
@@ -221,25 +221,22 @@ export default {
 </script>
 ```
 
-
 The results listing component iterates over the results and outputs a food item
 card for each item.
 
 ```vue
 <template>
   <div>
-    <FoodItem v-for="food in results"
-              :key="food.name"
-              :food="food" />
+    <FoodItem v-for="food in results" :key="food.name" :food="food" />
   </div>
 </template>
 
 <script>
-import FoodItem from './FoodItem.vue';
+import FoodItem from "./FoodItem.vue";
 
 export default {
-  name: 'ResultsListing',
-  props: ['results'],
+  name: "ResultsListing",
+  props: ["results"],
   components: { FoodItem },
 };
 </script>
@@ -265,11 +262,7 @@ written using SVG.
           </linearGradient>
         </defs>
 
-        <rect width="500"
-              height="10"
-              rx="3"
-              ry="3"
-              fill="url(#redGreen)" />
+        <rect width="500" height="10" rx="3" ry="3" fill="url(#redGreen)" />
         <g :transform="indicatorTranslation">
           <path d="M 5 0 L 10 10 L 0 10 Z" />
           <text x="5" y="25" text-anchor="middle">
@@ -288,15 +281,15 @@ written using SVG.
 
 <script>
 export default {
-  name: 'FoodItem',
-  props: ['food'],
+  name: "FoodItem",
+  props: ["food"],
   computed: {
     indicatorTranslation() {
       const x = (this.food.level - 1) * 100 + 50;
       return `translate(${x} 10)`;
     },
     indicatorText() {
-      const levels = ['Avoid', 'Caution', 'Okay', 'Good', 'Great'];
+      const levels = ["Avoid", "Caution", "Okay", "Good", "Great"];
       return levels[this.food.level - 1];
     },
   },
@@ -307,9 +300,9 @@ export default {
 The chart is probably the trickiest part to understand. It's made up of three
 elements:
 
-* the rectangle with gradient
-* the triangle indicator
-* the indicator text ("Avoid", "Caution", etc)
+- the rectangle with gradient
+- the triangle indicator
+- the indicator text ("Avoid", "Caution", etc)
 
 The rectangle uses a linear gradient defined in the SVG's `<defs>`.
 
@@ -345,9 +338,10 @@ left edge of the block. To fix this, we add 50 so the indicator is in the middle
 of the block (100 / 2 = 50).
 
 We're almost done, but our SVG chart x-axis starts at 0 and our levels start at
+
 1. This means everything is offset by a whole "block" (100 pixels). To correct
-this, we simply subtract 1 from the level before running the rest of the
-equation.
+   this, we simply subtract 1 from the level before running the rest of the
+   equation.
 
 The result is a pretty card with a pretty chart.
 

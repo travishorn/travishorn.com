@@ -16,16 +16,16 @@ asynchronously.
 Here is a simple script.
 
 ```javascript
-const output = document.getElementById('output');
-const button = document.getElementById('button');
+const output = document.getElementById("output");
+const button = document.getElementById("button");
 
 const greet = (subject) => {
   return `Hello, ${subject}!`;
 };
 
-button.addEventListener('click', () => {
-  output.textContent = 'Loading...';
-  output.textContent = greet('World');
+button.addEventListener("click", () => {
+  output.textContent = "Loading...";
+  output.textContent = greet("World");
 });
 ```
 
@@ -42,8 +42,8 @@ would be setting a timeout so the result is **not returned right away**.
 What if we change our function to look like this?
 
 ```javascript
-const output = document.getElementById('output');
-const button = document.getElementById('button');
+const output = document.getElementById("output");
+const button = document.getElementById("button");
 
 const greet = (subject) => {
   setTimeout(() => {
@@ -51,13 +51,13 @@ const greet = (subject) => {
   }, 1000);
 };
 
-button.addEventListener('click', () => {
-  output.textContent = 'Loading...';
-  output.textContent = greet('World');
+button.addEventListener("click", () => {
+  output.textContent = "Loading...";
+  output.textContent = greet("World");
 });
 ```
 
-*Note the timeout above.*
+_Note the timeout above._
 
 You might expect this code to work just as before, but with a 1000 millisecond
 (1 second) delay.
@@ -82,19 +82,19 @@ const greet = (subject**, callback**) => {
 };
 ```
 
-*One interesting thing to note about the function above is that, when calling
+_One interesting thing to note about the function above is that, when calling
 the callback, the first argument we're passing is `null`. If our function
 encountered an error while executing, we would pass an error message in place of
 this `null` value. This isn't necessarily required but it is a strong
-convention, so I definitely recommend it.*
+convention, so I definitely recommend it._
 
 Now that we've modified our function, we have to modify how we call it.
 
 ```javascript
-button.addEventListener('click', () => {
-  output.textContent = 'Loading...';
-  
-  greet('World', (error, message) => {
+button.addEventListener("click", () => {
+  output.textContent = "Loading...";
+
+  greet("World", (error, message) => {
     output.textContent = message;
   });
 });
@@ -102,13 +102,13 @@ button.addEventListener('click', () => {
 
 In addition to the first `subject` argument, `greet()` now takes a second
 argument, which is a function. This function is the callback that gets called
-when `greet()` is done. *That* is where we set the output message.
+when `greet()` is done. _That_ is where we set the output message.
 
 It's also where you'd handle any errors that occurred. This can be done with a
 simple `if` statement.
 
 ```javascript
-greet('World', (error, message) => {
+greet("World", (error, message) => {
   if (error) {
     output.textContent = `There was a problem: ${error}`;
   } else {
@@ -134,7 +134,7 @@ as…
 > allows you to associate handlers with an asynchronous action's eventual
 > success value or failure reason. This lets asynchronous methods return values
 > like synchronous methods: instead of immediately returning the final value,
-> the asynchronous method returns a *promise* to supply the value at some point
+> the asynchronous method returns a _promise_ to supply the value at some point
 > in the future.
 
 We can re-write our function to use promises like so.
@@ -146,7 +146,7 @@ const greet = (subject) => {
       resolve(`Hello, ${subject}!`);
     }, 1000);
   });
-}
+};
 ```
 
 The function is back to only needing one argument. And instead of returning a
@@ -156,10 +156,10 @@ to an error).
 Of course, this means we must change how it's called.
 
 ```javascript
-button.addEventListener('click', () => {
-  output.textContent = 'Loading...';
-  
-  greet('World').then((message) => {
+button.addEventListener("click", () => {
+  output.textContent = "Loading...";
+
+  greet("World").then((message) => {
     output.textContent = message;
   });
 });
@@ -169,10 +169,10 @@ Just as with callbacks, we can handle errors in the call. It looks a little
 different, though.
 
 ```javascript
-button.addEventListener('click', () => {
-  output.textContent = 'Loading...';
-  
-  greet('World')
+button.addEventListener("click", () => {
+  output.textContent = "Loading...";
+
+  greet("World")
     .then((message) => {
       output.textContent = message;
     })
@@ -195,9 +195,9 @@ call it in the same style as a synchronous function; we just have to add a
 couple keywords.
 
 ```javascript
-asyncButton.addEventListener('click', async () => {
-  output.textContent = 'Loading...';
-  output.textContent = await greet('World');
+asyncButton.addEventListener("click", async () => {
+  output.textContent = "Loading...";
+  output.textContent = await greet("World");
 });
 ```
 
@@ -210,12 +210,12 @@ As with all asynchronous functions, we need a way to report if an error
 occurred. In this case, we can use `try` and `catch`.
 
 ```javascript
-asyncButton.addEventListener('click', async () => {
-  output.textContent = 'Loading...';
-  
+asyncButton.addEventListener("click", async () => {
+  output.textContent = "Loading...";
+
   try {
-    output.textContent = await greet('World');
-  } catch(error) {
+    output.textContent = await greet("World");
+  } catch (error) {
     output.textContent = `There was a problem: ${error}`;
   }
 });

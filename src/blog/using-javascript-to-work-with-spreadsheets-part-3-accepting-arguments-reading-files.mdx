@@ -2,13 +2,14 @@
 cover: ./images/lErLM518q.webp
 datePublished: 2021-01-04 23:03:06+00:00
 tags:
-- api
-- excel
-- javascript
-- nodejs
-- terminal
-title: 'Using JavaScript to Work with Spreadsheets, Part 3: Accepting Arguments &
-  Reading Files'
+  - api
+  - excel
+  - javascript
+  - nodejs
+  - terminal
+title:
+  "Using JavaScript to Work with Spreadsheets, Part 3: Accepting Arguments &
+  Reading Files"
 ---
 
 This is the third article in a series where we'll be learning to use the
@@ -45,8 +46,8 @@ console.log("Hello, World!");
 Save the file.
 
 Now run it by going back to the Terminal in VS Code ( `Ctrl + `` ) and typing
-`node index` and pressing Enter. This command tells Node.js to start and run the
-contents on `index.js`.
+`node index`and pressing Enter. This command tells Node.js to start and run the
+contents on`index.js`.
 
 The contents of `index.js` tell node to simply "log" the words "Hello, World!"
 to the console (terminal).
@@ -147,6 +148,7 @@ switch to another editor like Notepad. Remember to start a new file, you can
 press `Ctrl + N`.
 
 Inside `proverb.txt`, type whatever proverb you like.
+
 > Be not afraid of growing slowly, be afraid only of standing still.
 
 Save the file.
@@ -242,7 +244,7 @@ line reads `fs.readFile(path[, options], callback)`. Red annotations point to
 The first is the path to the file. The second is optional (notice it's in
 brackets) and the third is a "callback."
 
-Look back at our error. It says that `callback` *must* be a function. As our
+Look back at our error. It says that `callback` _must_ be a function. As our
 code is now, it's undefined. Meaning we didn't even provide a value at all. We
 only gave `readFile` a single argument.
 
@@ -251,7 +253,7 @@ function. So let's make a new (empty) function.
 
 ```javascript
 function readFileCallback() {
-    // Something will go in here later
+  // Something will go in here later
 }
 ```
 
@@ -279,7 +281,7 @@ const fs = require("fs");
 const inputPath = process.argv[2];
 
 function readFileCallback() {
-    // Something will go in here later
+  // Something will go in here later
 }
 
 // Read the file at the path
@@ -287,7 +289,7 @@ fs.readFile(process.argv[2], "", readFileCallback);
 ```
 
 Notice I defined `readFileCallback()` above `fs.readFile()`. I like to define
-variables and functions *before* they're called. It can prevent issues in
+variables and functions _before_ they're called. It can prevent issues in
 complex code.
 
 Save the file and run it again. The result?
@@ -295,7 +297,7 @@ Save the file and run it again. The result?
 No more error, but not much else. The program just exits.
 
 So what's happening? `fs.readFile()` reads the file. But when it finishes, we're
-not *doing* anything with the result. That's what the callback is for.
+not _doing_ anything with the result. That's what the callback is for.
 
 In many Node.js built-in functions, when the function completes it's job, it
 fires a "callback" function that you provide. In this case, we provided that
@@ -311,16 +313,16 @@ documentation](https://nodejs.org/docs/latest-v14.x/api/fs.html#fs_fs_readfile_p
 that this is indeed the signature of that callback.
 
 ![The same screenshot of the Node.js docs for `fs.readFile()`. This time a red
-annotation circle surrounds `callback <Function>` with two arguments: `err
-<Error>` and `data <string> | <Buffer>`.](./images/4G9QBerU4.webp)
+annotation circle surrounds `callback <Function>` with two arguments: `err ` and
+`data`.](./images/4G9QBerU4.webp)
 
 So our callback should really look like this:
 
 ```javascript
 // Used as a callback when a file is read
 function readFileCallback(err, data) {
-    // Log the data
-    console.log(data);
+  // Log the data
+  console.log(data);
 }
 ```
 
@@ -357,11 +359,11 @@ const inputPath = process.argv[2];
 
 // Used as a callback when a file is read
 function readFileCallback(err, data) {
-    // Convert the file's data buffer to a string
-    const fileContents = data.toString();
+  // Convert the file's data buffer to a string
+  const fileContents = data.toString();
 
-    // Log the file contents
-    console.log(fileContents);
+  // Log the file contents
+  console.log(fileContents);
 }
 
 // Read the file at the path

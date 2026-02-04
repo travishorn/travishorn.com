@@ -9,8 +9,7 @@ What type of unique identifier should you use for your next data-backed project?
 Incremental integers? UUIDs? A URL-friendly short ID? I present: the LOL ID.
 
 ```javascript
-'lxxxxxxxxl'
-  .replace(/x/g, () => Math.random() > 0.5 ? 'l' : 'o');
+"lxxxxxxxxl".replace(/x/g, () => (Math.random() > 0.5 ? "l" : "o"));
 ```
 
 [Check out the live demonstration on
@@ -21,11 +20,11 @@ random "o"s or "l"s.
 
 Some random LOL IDs generated with this code:
 
-* lloollooll
-* lolollloll
-* lololloool
-* loolololll
-* loloooolol
+- lloollooll
+- lolollloll
+- lololloool
+- loolololll
+- loloooolol
 
 ### Disclaimer
 

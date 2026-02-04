@@ -3,11 +3,7 @@ title: "Building upon JavaScript with TypeScript"
 datePublished: 2016-06-28T22:01:01+00:00
 cover: ./images/Tlm-xSDuP.webp
 tags: ["javascript", "web-development"]
-
 ---
-
-
-
 
 TypeScript is just a superset of JavaScript. You can run classic JavaScript through the TypeScript compiler and it will come out just fine, just the way it already was. However, once you start using the features of TypeScript that JavaScript doesn't already have, you start to see its power.
 
@@ -22,15 +18,15 @@ function Greeter(greeting) {
   this.greeting = greeting;
 }
 
-Greeter.prototype.greet = function() {
-  return 'Hello, ' + this.greeting;
-}
+Greeter.prototype.greet = function () {
+  return "Hello, " + this.greeting;
+};
 
-let greeter = new Greeter('World');
+let greeter = new Greeter("World");
 
-let button = document.createElement('button');
-button.textContent = 'Say Hello';
-button.onclick = function() {
+let button = document.createElement("button");
+button.textContent = "Say Hello";
+button.onclick = function () {
   alert(greeter.greet());
 };
 
@@ -44,15 +40,15 @@ function Greeter(greeting) {
   this.greeting = greeting;
 }
 
-Greeter.prototype.greet = function() {
-  return 'Hello, ' + this.greeting;
-}
+Greeter.prototype.greet = function () {
+  return "Hello, " + this.greeting;
+};
 
-let greeter = new Greeter({ message: 'World' });
+let greeter = new Greeter({ message: "World" });
 
-let button = document.createElement('button');
-button.textContent = 'Say Hello';
-button.onclick = function() {
+let button = document.createElement("button");
+button.textContent = "Say Hello";
+button.onclick = function () {
   alert(greeter.greet());
 };
 
@@ -70,15 +66,15 @@ function Greeter(greeting: string) {
   this.greeting = greeting;
 }
 
-Greeter.prototype.greet = function() {
-  return 'Hello, ' + this.greeting;
-}
+Greeter.prototype.greet = function () {
+  return "Hello, " + this.greeting;
+};
 
-let greeter = new Greeter({ message: 'World' });
+let greeter = new Greeter({ message: "World" });
 
-let button = document.createElement('button');
-button.textContent = 'Say Hello';
-button.onclick = function() {
+let button = document.createElement("button");
+button.textContent = "Say Hello";
+button.onclick = function () {
   alert(greeter.greet());
 };
 
@@ -92,15 +88,15 @@ function Greeter(greeting: string) {
   this.greeting = greeting;
 }
 
-Greeter.prototype.greet = function() {
-  return 'Hello, ' + this.greeting;
-}
+Greeter.prototype.greet = function () {
+  return "Hello, " + this.greeting;
+};
 
-let greeter = new Greeter('World');
+let greeter = new Greeter("World");
 
-let button = document.createElement('button');
-button.textContent = 'Say Hello';
-button.onclick = function() {
+let button = document.createElement("button");
+button.textContent = "Say Hello";
+button.onclick = function () {
   alert(greeter.greet());
 };
 
@@ -116,21 +112,21 @@ Our Greeter() function is acting as a class already. Let's make it an actual cla
 ```typescript
 class Greeter {
   greeting: string;
-  
+
   constructor(message: string) {
     this.greeting = message;
   }
 
   greet() {
-    return 'Hello, ' + this.greeting
+    return "Hello, " + this.greeting;
   }
 }
 
-let greeter = new Greeter('World');
+let greeter = new Greeter("World");
 
-let button = document.createElement('button');
-button.textContent = 'Say Hello';
-button.onclick = function() {
+let button = document.createElement("button");
+button.textContent = "Say Hello";
+button.onclick = function () {
   alert(greeter.greet());
 };
 
@@ -153,31 +149,35 @@ We're going to move away from the greeter example and instead showcase inheritan
 
 ```typescript
 class Animal {
-  constructor(public name: string) { }
-  
+  constructor(public name: string) {}
+
   move(distanceInMeters: number = 0) {
     console.log(`${this.name} moved ${distanceInMeters} meters.`);
   }
 }
 
 class Snake extends Animal {
-  constructor(name: string) { super(name); }
+  constructor(name: string) {
+    super(name);
+  }
   move(distanceInMeters = 5) {
-    console.log('Slithering...');
+    console.log("Slithering...");
     super.move(distanceInMeters);
   }
 }
 
 class Horse extends Animal {
-  constructor(name: string) { super(name); }
+  constructor(name: string) {
+    super(name);
+  }
   move(distanceInMeters = 45) {
-    console.log('Galloping...');
+    console.log("Galloping...");
     super.move(distanceInMeters);
   }
 }
 
-let sam = new Snake('Sammy the Python');
-let tom: Animal = new Horse('Tommy the Palomino');
+let sam = new Snake("Sammy the Python");
+let tom: Animal = new Horse("Tommy the Palomino");
 
 sam.move();
 tom.move(34);
@@ -196,7 +196,7 @@ Sometimes you'll want to create a class or function that can accept a variety of
 ```typescript
 class Greeter<T> {
   greeting: T;
-  
+
   constructor(message: T) {
     this.greeting = message;
   }
@@ -206,13 +206,13 @@ class Greeter<T> {
   }
 }
 
-let greeter = new Greeter<string>('Hello, world');
+let greeter = new Greeter<string>("Hello, world");
 
-let button = document.createElement('button');
-button.textContent = 'Say Hello';
-button.onclick = function() {
+let button = document.createElement("button");
+button.textContent = "Say Hello";
+button.onclick = function () {
   alert(greeter.greet());
-}
+};
 
 document.body.appendChild(button);
 ```
@@ -227,18 +227,18 @@ In case you need a type to be one of two types, you can use a union type. For ex
 type NameOrNameArray = string | string[];
 
 function createName(name: NameOrNameArray) {
-  if (typeof name === 'string') {
+  if (typeof name === "string") {
     return name;
   } else {
-    return name.join(' ');
+    return name.join(" ");
   }
 }
 
-var greetingMessage = `Greetings, ${ createName(['Sam', 'Smith']) }.`;
+var greetingMessage = `Greetings, ${createName(["Sam", "Smith"])}.`;
 
-let button = document.createElement('button');
-button.textContent = 'Say Hello';
-button.onclick = function() {
+let button = document.createElement("button");
+button.textContent = "Say Hello";
+button.onclick = function () {
   alert(greetingMessage);
 };
 
@@ -249,11 +249,11 @@ This is just the tip of the iceberg as far as the functionality TypeScript adds 
 
 Some sections you definitely don't want to skip are…
 
-* Interfaces
+- Interfaces
 
-* Enums
+- Enums
 
-* Namespaces and Modules
+- Namespaces and Modules
 
 Hopefully you can use this and my previous TypeScript post as a jumping-off point into using TypeScript to write more efficient JavaScript.
 

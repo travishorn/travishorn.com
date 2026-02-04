@@ -50,7 +50,7 @@ yet. Go ahead and create it.
 ```javascript
 // Function for reading XLSX, logging first column of first sheet
 function listFirstColAction(path) {
-    // List logic here
+  // List logic here
 }
 ```
 
@@ -94,18 +94,17 @@ The whole `listFirstColAction()` function looks like this:
 ```javascript
 // Function for reading XLSX, logging first column of first sheet
 function listFirstColAction(path) {
-    // Create an instance of workbook to load data into
-    const workbook = new exceljs.Workbook();
+  // Create an instance of workbook to load data into
+  const workbook = new exceljs.Workbook();
 
-// Read the file
-    workbook.xlsx.readFile(path)
-        .then(function(book) {
-            // Get reference to first worksheet
-            const sheet = book.getWorksheet(1);
+  // Read the file
+  workbook.xlsx.readFile(path).then(function (book) {
+    // Get reference to first worksheet
+    const sheet = book.getWorksheet(1);
 
-            // Log the values of first column
-            console.log(sheet.getColumn(1).values);
-        });
+    // Log the values of first column
+    console.log(sheet.getColumn(1).values);
+  });
 }
 ```
 
@@ -137,43 +136,42 @@ const exceljs = require("exceljs");
 
 // Function for taking a file path and logging the contents
 function logAction(path) {
-    // Used as a callback when a file is read
-    function readFileCallback(err, data) {
-        if (err !== null) {
-            switch (err.code) {
-                case "ENOENT":
-                    console.error("That file doesn't exist.");
-                    break;
-                default:
-                    console.error(err.message);
-            }
-        } else {
-            // Convert the file's data buffer to a string
-            const fileContents = data.toString();
+  // Used as a callback when a file is read
+  function readFileCallback(err, data) {
+    if (err !== null) {
+      switch (err.code) {
+        case "ENOENT":
+          console.error("That file doesn't exist.");
+          break;
+        default:
+          console.error(err.message);
+      }
+    } else {
+      // Convert the file's data buffer to a string
+      const fileContents = data.toString();
 
-            // Log the file contents
-            console.log(fileContents);
-        }
+      // Log the file contents
+      console.log(fileContents);
     }
+  }
 
-    // Read the file at the path
-    fs.readFile(path, "", readFileCallback);
+  // Read the file at the path
+  fs.readFile(path, "", readFileCallback);
 }
 
 // Function for reading XLSX, logging first column of first sheet
 function listFirstColAction(path) {
-    // Create an instance of workbook to load data into
-    const workbook = new exceljs.Workbook();
+  // Create an instance of workbook to load data into
+  const workbook = new exceljs.Workbook();
 
-    // Read the file
-    workbook.xlsx.readFile(path)
-        .then(function(book) {
-            // Get reference to first worksheet
-            const sheet = book.getWorksheet(1);
+  // Read the file
+  workbook.xlsx.readFile(path).then(function (book) {
+    // Get reference to first worksheet
+    const sheet = book.getWorksheet(1);
 
-            // Log the values of first column
-            console.log(sheet.getColumn(1).values);
-        });
+    // Log the values of first column
+    console.log(sheet.getColumn(1).values);
+  });
 }
 
 // A Commander command for reading files and logging the contents
@@ -215,7 +213,7 @@ the file any time it is "required" in another file. Simply add `module.exports =
 
 ```javascript
 module.exports = function logAction(path) {
-    // ... snip ...
+  // ... snip ...
 };
 ```
 
@@ -235,27 +233,27 @@ const fs = require("fs");
 
 // Function for taking a file path and logging the contents
 module.exports = function logAction(path) {
-    // Used as a callback when a file is read
-    function readFileCallback(err, data) {
-        if (err !== null) {
-            switch (err.code) {
-                case "ENOENT":
-                    console.error("That file doesn't exist.");
-                    break;
-                default:
-                    console.error(err.message);
-            }
-        } else {
-            // Convert the file's data buffer to a string
-            const fileContents = data.toString();
+  // Used as a callback when a file is read
+  function readFileCallback(err, data) {
+    if (err !== null) {
+      switch (err.code) {
+        case "ENOENT":
+          console.error("That file doesn't exist.");
+          break;
+        default:
+          console.error(err.message);
+      }
+    } else {
+      // Convert the file's data buffer to a string
+      const fileContents = data.toString();
 
-            // Log the file contents
-            console.log(fileContents);
-        }
+      // Log the file contents
+      console.log(fileContents);
     }
+  }
 
-// Read the file at the path
-    fs.readFile(path, "", readFileCallback);
+  // Read the file at the path
+  fs.readFile(path, "", readFileCallback);
 };
 ```
 
@@ -268,18 +266,17 @@ const exceljs = require("exceljs");
 
 // Function for reading XLSX, logging first column of first sheet
 module.exports = function listFirstColAction(path) {
-    // Create an instance of workbook to load data into
-    const workbook = new exceljs.Workbook();
+  // Create an instance of workbook to load data into
+  const workbook = new exceljs.Workbook();
 
-    // Read the file
-    workbook.xlsx.readFile(path)
-        .then(function(book) {
-            // Get reference to first worksheet
-            const sheet = book.getWorksheet(1);
+  // Read the file
+  workbook.xlsx.readFile(path).then(function (book) {
+    // Get reference to first worksheet
+    const sheet = book.getWorksheet(1);
 
-            // Log the values of first column
-            console.log(sheet.getColumn(1).values);
-        });
+    // Log the values of first column
+    console.log(sheet.getColumn(1).values);
+  });
 };
 ```
 

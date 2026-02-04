@@ -2,27 +2,27 @@
 cover: ./images/rKT7X8JF7.webp
 datePublished: 2016-03-17 22:31:01+00:00
 tags:
-- html
-- javascript
-- performance
-- security
-- web-development
+  - html
+  - javascript
+  - performance
+  - security
+  - web-development
 title: What considerations do I make while building a web application or site?
 ---
 
 I will break this problem down into six categories:
 
-* User interface
+- User interface
 
-* Security
+- Security
 
-* Performance
+- Performance
 
-* Search engine optimization (SEO)
+- Search engine optimization (SEO)
 
-* Maintainability
+- Maintainability
 
-* Technology
+- Technology
 
 ### User interface
 
@@ -65,22 +65,27 @@ If the goal is to lay out a page with a main content area and a sidebar, you may
 </table>
 ```
 
-
-While this *will* work, it is incorrect on a semantic level. Tables should only be used for tabular data. Think of the real purpose of a table: to show data in columns and rows with labels. Our use-case does not fit.
+While this _will_ work, it is incorrect on a semantic level. Tables should only be used for tabular data. Think of the real purpose of a table: to show data in columns and rows with labels. Our use-case does not fit.
 
 Instead, let's use a semantic approach:
 
 ```html
 <style>
-  content, aside { float: left; }
-  content        { width: 75%; }
-  aside          { width: 25%; }
+  content,
+  aside {
+    float: left;
+  }
+  content {
+    width: 75%;
+  }
+  aside {
+    width: 25%;
+  }
 </style>
 
 <article>Content</article>
 <aside>Sidebar</aside>
 ```
-
 
 This is much better. Search engines will have a much easier time understanding your content when it is laid out in elements that describe it. You'll also notice that the styles are separated, creating an even clearer concept of what is content, and what isn't.
 
@@ -96,17 +101,17 @@ I read this quote a long time ago and I think about it from time to time as I tr
 
 Some of the techniques I've used keep a project maintainable include…
 
-* Writing small, clearly defined modules
+- Writing small, clearly defined modules
 
-* Succinctly commenting code where necessary
+- Succinctly commenting code where necessary
 
-* Re-writing hard-to-understand code
+- Re-writing hard-to-understand code
 
-* Using a versioning system like git
+- Using a versioning system like git
 
-* Writing unit tests
+- Writing unit tests
 
-* Writing documentation (even automatically using tools like [JSDoc](https://github.com/jsdoc3/jsdoc))
+- Writing documentation (even automatically using tools like [JSDoc](https://github.com/jsdoc3/jsdoc))
 
 ### Technology
 

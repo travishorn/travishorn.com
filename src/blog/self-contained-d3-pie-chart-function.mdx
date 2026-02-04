@@ -2,11 +2,11 @@
 cover: ./images/UvYnTKwKU.webp
 datePublished: 2019-10-07 22:01:03+00:00
 tags:
-- d3
-- data-visualization
-- javascript
-- svg
-- web-development
+  - d3
+  - data-visualization
+  - javascript
+  - svg
+  - web-development
 title: Self-contained D3 Pie Chart Function
 ---
 
@@ -77,9 +77,10 @@ The `container` constant uses a D3 selector to select the passed in element.
 Next we create the chart element itself inside the container.
 
 ```javascript
-const chart = container.append('svg')
-  .style('width', '100%')
-  .attr('viewBox', `0 0 ${size} ${size}`);
+const chart = container
+  .append("svg")
+  .style("width", "100%")
+  .attr("viewBox", `0 0 ${size} ${size}`);
 ```
 
 Now for the plot area. This is a container element that starts exactly in the
@@ -87,8 +88,9 @@ middle of the chart. This is a good reference point for where to place the pie
 slices.
 
 ```javascript
-const plotArea = chart.append('g')
-  .attr('transform', `translate(${half}, ${half})`);
+const plotArea = chart
+  .append("g")
+  .attr("transform", `translate(${half}, ${half})`);
 ```
 
 ### Scales
@@ -97,8 +99,9 @@ There's only one scale this time: the color scale. We use this to color each
 slice based on the data names.
 
 ```javascript
-const color = d3.scaleOrdinal()
-  .domain(data.map(d => d.name))
+const color = d3
+  .scaleOrdinal()
+  .domain(data.map((d) => d.name))
   .range(d3.schemeCategory10);
 ```
 
@@ -107,15 +110,14 @@ const color = d3.scaleOrdinal()
 We calculate the slices using three D3 methods.
 
 ```javascript
-const pie = d3.pie()
+const pie = d3
+  .pie()
   .sort(null)
-  .value(d => d.value);
-  
+  .value((d) => d.value);
+
 const arcs = pie(data);
-  
-const arc = d3.arc()
-  .innerRadius(0)
-  .outerRadius(fourth);
+
+const arc = d3.arc().innerRadius(0).outerRadius(fourth);
 ```
 
 `d3.pie` is the base of the calculations. By default, D3 sorts our data from
@@ -139,9 +141,7 @@ prominently.](./images/X5fdripvT.webp)
 We'll position the labels with arcs, too.
 
 ```javascript
-const arcLabel = d3.arc()
-  .innerRadius(labelOffset)
-  .outerRadius(labelOffset);
+const arcLabel = d3.arc().innerRadius(labelOffset).outerRadius(labelOffset);
 ```
 
 We defined `labelOffset` earlier as 1.4 times a fourth of the chart size. This
@@ -153,13 +153,14 @@ farther-away labels. Decrease it for closer or overlapping labels.
 Now we can plot the slices by appending `path`s to our chart.
 
 ```javascript
-plotArea.selectAll('path')
+plotArea
+  .selectAll("path")
   .data(arcs)
   .enter()
-  .append('path')
-  .attr('fill', d => color(d.data.name))
-  .attr('stroke', 'white')
-  .attr('d', arc);
+  .append("path")
+  .attr("fill", (d) => color(d.data.name))
+  .attr("stroke", "white")
+  .attr("d", arc);
 ```
 
 ![The same pie chart, with no overlaid red lines and no text labels; just
@@ -170,14 +171,15 @@ colored pie slices.](./images/bg_41mM77m.webp)
 It looks good but we still need some labels.
 
 ```javascript
-const labels = plotArea.selectAll('text')
+const labels = plotArea
+  .selectAll("text")
   .data(arcs)
   .enter()
-  .append('text')
-  .style('text-anchor', 'middle')
-  .style('alignment-baseline', 'middle')
-  .style('font-size', '20px')
-  .attr('transform', d => `translate(${arcLabel.centroid(d)})`)
+  .append("text")
+  .style("text-anchor", "middle")
+  .style("alignment-baseline", "middle")
+  .style("font-size", "20px")
+  .attr("transform", (d) => `translate(${arcLabel.centroid(d)})`);
 ```
 
 Each label is positioned based on a D3 arc method called `centroid`. It places
@@ -189,11 +191,12 @@ moment.
 First add the data names by appending a `tspan` to each `text` label.
 
 ```javascript
-labels.append('tspan')
-  .attr('y', '-0.6em')
-  .attr('x', 0)
-  .style('font-weight', 'bold')
-  .text(d => `${d.data.name}`);
+labels
+  .append("tspan")
+  .attr("y", "-0.6em")
+  .attr("x", 0)
+  .style("font-weight", "bold")
+  .text((d) => `${d.data.name}`);
 ```
 
 ![The same pie chart, but with slices labeled "Option A", "Option B", and
@@ -202,10 +205,13 @@ labels.append('tspan')
 Then add the data values and percentages by appending another `tspan`.
 
 ```javascript
-labels.append('tspan')
-  .attr('y', '0.6em')
-  .attr('x', 0)
-  .text(d => `${d.data.value} (${Math.round(d.data.value / total * 100)}%)`);
+labels
+  .append("tspan")
+  .attr("y", "0.6em")
+  .attr("x", 0)
+  .text(
+    (d) => `${d.data.value} (${Math.round((d.data.value / total) * 100)}%)`,
+  );
 ```
 
 The values appear first, then the percentage is calculated inside of
@@ -231,59 +237,65 @@ const pieChart = (selector, data) => {
   const labelOffset = fourth * 1.4;
   const total = data.reduce((acc, cur) => acc + cur.value, 0);
   const container = d3.select(selector);
-  
-  const chart = container.append('svg')
-    .style('width', '100%')
-    .attr('viewBox', `0 0 ${size} ${size}`);
-  
-  const plotArea = chart.append('g')
-    .attr('transform', `translate(${half}, ${half})`);
-  
-  const color = d3.scaleOrdinal()
-    .domain(data.map(d => d.name))
+
+  const chart = container
+    .append("svg")
+    .style("width", "100%")
+    .attr("viewBox", `0 0 ${size} ${size}`);
+
+  const plotArea = chart
+    .append("g")
+    .attr("transform", `translate(${half}, ${half})`);
+
+  const color = d3
+    .scaleOrdinal()
+    .domain(data.map((d) => d.name))
     .range(d3.schemeCategory10);
 
-const pie = d3.pie()
+  const pie = d3
+    .pie()
     .sort(null)
-    .value(d => d.value);
-  
+    .value((d) => d.value);
+
   const arcs = pie(data);
-  
-  const arc = d3.arc()
-    .innerRadius(0)
-    .outerRadius(fourth);
-  
-  const arcLabel = d3.arc()
-    .innerRadius(labelOffset)
-    .outerRadius(labelOffset);
-  
-  plotArea.selectAll('path')
+
+  const arc = d3.arc().innerRadius(0).outerRadius(fourth);
+
+  const arcLabel = d3.arc().innerRadius(labelOffset).outerRadius(labelOffset);
+
+  plotArea
+    .selectAll("path")
     .data(arcs)
     .enter()
-    .append('path')
-    .attr('fill', d => color(d.data.name))
-    .attr('stroke', 'white')
-    .attr('d', arc);
-  
-  const labels = plotArea.selectAll('text')
+    .append("path")
+    .attr("fill", (d) => color(d.data.name))
+    .attr("stroke", "white")
+    .attr("d", arc);
+
+  const labels = plotArea
+    .selectAll("text")
     .data(arcs)
     .enter()
-    .append('text')
-    .style('text-anchor', 'middle')
-    .style('alignment-baseline', 'middle')
-    .style('font-size', '20px')
-    .attr('transform', d => `translate(${arcLabel.centroid(d)})`)
-    
-  labels.append('tspan')
-    .attr('y', '-0.6em')
-    .attr('x', 0)
-    .style('font-weight', 'bold')
-    .text(d => `${d.data.name}`);
-  
-  labels.append('tspan')
-    .attr('y', '0.6em')
-    .attr('x', 0)
-    .text(d => `${d.data.value} (${Math.round(d.data.value / total * 100)}%)`);
+    .append("text")
+    .style("text-anchor", "middle")
+    .style("alignment-baseline", "middle")
+    .style("font-size", "20px")
+    .attr("transform", (d) => `translate(${arcLabel.centroid(d)})`);
+
+  labels
+    .append("tspan")
+    .attr("y", "-0.6em")
+    .attr("x", 0)
+    .style("font-weight", "bold")
+    .text((d) => `${d.data.name}`);
+
+  labels
+    .append("tspan")
+    .attr("y", "0.6em")
+    .attr("x", 0)
+    .text(
+      (d) => `${d.data.value} (${Math.round((d.data.value / total) * 100)}%)`,
+    );
 };
 ```
 

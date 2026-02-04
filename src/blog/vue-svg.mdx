@@ -2,12 +2,12 @@
 cover: ./images/tbfBSQYKF.webp
 datePublished: 2017-11-16 22:01:04+00:00
 tags:
-- d3
-- data-visualization
-- html
-- javascript
-- svg
-- vue
+  - d3
+  - data-visualization
+  - html
+  - javascript
+  - svg
+  - vue
 title: Vue + SVG
 ---
 
@@ -31,8 +31,11 @@ the JavaScript directly in another `<script>` tag. Here's the boilerplate:
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <title>Vue + SVG</title>
 
@@ -52,7 +55,7 @@ the JavaScript directly in another `<script>` tag. Here's the boilerplate:
 
     <script>
       new Vue({
-        el: '#app',
+        el: "#app",
         data: {
           data: [12, 17, 22, 27, 32, 37],
         },
@@ -81,9 +84,7 @@ We want to add a circle for each piece of data.
 
 ```html
 <svg width="800" height="100">
-  <circle
-    v-for="(d, i) in data"
-  />
+  <circle v-for="(d, i) in data" />
 </svg>
 ```
 
@@ -99,7 +100,7 @@ First, change the `height` attribute on the `<svg>` element to be bound to
 a Vue variable.
 
 ```html
-<svg width="800" :height="chartHeight">
+<svg width="800" :height="chartHeight"></svg>
 ```
 
 Then, add the variable to the `data` property in Vue.
@@ -118,13 +119,15 @@ Now add a computed property called `y`:
 
 ```javascript
 new Vue({
-  el: '#app',
+  el: "#app",
   data: {
     data: [12, 17, 22, 27, 32, 37],
     chartHeight: 100,
   },
   computed: {
-    y() { return this.chartHeight / 2; },
+    y() {
+      return this.chartHeight / 2;
+    },
   },
 });
 ```
@@ -133,12 +136,8 @@ Finally, we can bind our computed property `y` to the `cy` attribute of the
 circles.
 
 ```html
-<circle
-  v-for="(d, i) in data"
-  :cy="y"
-/>
+<circle v-for="(d, i) in data" :cy="y" />
 ```
-
 
 The code above means that all circles will have a `cy` that is equal to
 `chartHeight / 2`. Even if you change the chart's height, the circles will still
@@ -149,37 +148,37 @@ one will require a method that acts on the `i` variable (the index of the data �
 where it is positioned in the array).
 
 ```html
-<circle
-  v-for="(d, i) in data"
-  :cy="y"
-  :cx="x(i)"
-/>
+<circle v-for="(d, i) in data" :cy="y" :cx="x(i)" />
 ```
 
 Here's what the method looks like:
 
 ```javascript
 new Vue({
-  el: '#app',
+  el: "#app",
   data: {
     data: [12, 17, 22, 27, 32, 37],
     chartHeight: 100,
   },
   computed: {
-    y() { return this.chartHeight / 2; },
+    y() {
+      return this.chartHeight / 2;
+    },
   },
   methods: {
-    x(i) { return i * 130 + 50; },
+    x(i) {
+      return i * 130 + 50;
+    },
   },
 });
 ```
 
 Basically, we multiply the index by 130.
 
-* The first piece of data will be positioned at 0 * 130 = 0
-* The next piece will be positioned at 1 * 130 = 130
-* The next piece will be positioned at 2 * 130 = 260
-* and so on…
+- The first piece of data will be positioned at 0 \* 130 = 0
+- The next piece will be positioned at 1 \* 130 = 130
+- The next piece will be positioned at 2 \* 130 = 260
+- and so on…
 
 If you use a lower number than 130, the circles will be closer together. If you
 use a higher number, they will be further apart.
@@ -192,12 +191,7 @@ size of the circle. We want the circles size to be dependent on the actual data
 ( `d`).
 
 ```html
-<circle
-  v-for="(d, i) in data"
-  :cy="y"
-  :cx="x(i)"
-  :r="d"
-/>
+<circle v-for="(d, i) in data" :cy="y" :cx="x(i)" :r="d" />
 ```
 
 In this case, we just bind it directly. But you could also use another method to
@@ -210,7 +204,9 @@ At this point, your page should show 6 black circles in increasing size.
 You can change the color of the circles in CSS.
 
 ```css
-circle { fill: orange; }
+circle {
+  fill: orange;
+}
 ```
 
 Adding data labels is easy now that we have the basic process down. We use the
@@ -218,11 +214,7 @@ Adding data labels is easy now that we have the basic process down. We use the
 The inner content of this element is the data itself.
 
 ```html
-<text
-  v-for="(d, i) in data"
-  :y="y"
-  :x="x(i)"
->{{ d }}</text>
+<text v-for="(d, i) in data" :y="y" :x="x(i)">{{ d }}</text>
 ```
 
 The result is a simple data visualization using circles. [See the full code and

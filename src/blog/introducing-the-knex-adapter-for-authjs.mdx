@@ -2,12 +2,12 @@
 cover: ./images/9dc813ea-2f9e-4c41-ad26-ac11ad278fcb.webp
 datePublished: 2023-07-05 12:00:39+00:00
 tags:
-- api
-- javascript
-- nodejs
-- security
-- software-engineering
-- sql
+  - api
+  - javascript
+  - nodejs
+  - security
+  - software-engineering
+  - sql
 title: Introducing the Knex Adapter for Auth.js
 ---
 
@@ -26,7 +26,7 @@ using Knex.js.
 
 In this article, I discuss the necessary steps before installation, guide you
 through the installation process, and demonstrate how to integrate it with
-[Next.js](https://nextjs.org/) or [SvelteKit](https://kit.svelte.dev/). 
+[Next.js](https://nextjs.org/) or [SvelteKit](https://kit.svelte.dev/).
 
 I'll also talk about the motivation behind creating this adapter. Hint: It is an
 essential tool I needed for the major rewrite of apps and services at my
@@ -44,11 +44,8 @@ to your database using this adapter.
 Assuming...
 
 1. you already have a Next.js, SvelteKit, or SolidStart app, and
-    
 2. NextAuth.js/Auth.js is already working with it, and
-    
 3. you have Knex.js installed and configured to work with your database,
-    
 
 all you need to do is install this adapter:
 
@@ -82,7 +79,9 @@ const db = knex({
 
 export default NextAuth({
   adapter: KnexAdapter(db),
-  providers: [ /* your providers */ ],
+  providers: [
+    /* your providers */
+  ],
 });
 ```
 
@@ -92,25 +91,33 @@ Import the adapter into `src/hooks.server.js`, give it a Knex.js database
 connection, and set it as the `adapter` in your `SvelteKitAuth` configuration.
 
 ```javascript
-import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } from '$env/static/private';
-import { KnexAdapter } from 'authjs-knexjs-adapter';
-import { SvelteKitAuth } from '@auth/sveltekit';
+import {
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD,
+  DB_DATABASE,
+} from "$env/static/private";
+import { KnexAdapter } from "authjs-knexjs-adapter";
+import { SvelteKitAuth } from "@auth/sveltekit";
 import knex from "knex";
 
 const db = knex({
-  client: 'mysql2',
+  client: "mysql2",
   connection: {
     host: DB_HOST,
-    port: parseInt(DB_PORT ?? '3306', 10),
+    port: parseInt(DB_PORT ?? "3306", 10),
     user: DB_USER,
     password: DB_PASSWORD,
-    database: DB_DATABASE
-  }
+    database: DB_DATABASE,
+  },
 });
 
 export const handle = SvelteKitAuth({
   adapter: KnexAdapter(db),
-  providers: [ /* your providers */ ],
+  providers: [
+    /* your providers */
+  ],
 });
 ```
 
@@ -265,8 +272,8 @@ npm install next-auth
 And create the server configuration at `pages/api/auth/[...nextauth].ts`.
 
 ```typescript
-import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
 export default NextAuth({
   providers: [
@@ -275,7 +282,7 @@ export default NextAuth({
       clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET,
     }),
   ],
-})
+});
 ```
 
 Note: Auth.js is adding official support for other frameworks as we speak. I'm
@@ -394,20 +401,22 @@ the row that was just inserted, using the email to identify it (the `email`
 column is unique in the database schema). Finally, it returns that selected user
 object.
 
-*Where does that* `knex()` *function come from?* Remember that it is given to
+_Where does that_ `knex()` _function come from?_ Remember that it is given to
 the `KnexAdapter` function. It will be provided in the consuming app. Such as in
 `pages/api/auth/[...nextauth].ts` like so:
 
 ```typescript
-const db = knex({ /* database connection properties */ });
+const db = knex({
+  /* database connection properties */
+});
 
 export default NextAuth({
   adapter: KnexAdapter(db),
 });
 ```
 
-*Why do we have to select the user immediately after inserting it? Can't we use
-Knex.js's* `returning()` *method?* Not really. Specifying which columns should
+_Why do we have to select the user immediately after inserting it? Can't we use
+Knex.js's_ `returning()` _method?_ Not really. Specifying which columns should
 be returned during insert, update, and delete operations isn't supported by all
 database engines. Selecting the data as a separate transaction after inserting
 it ensures this adapter works with all engines. If you know you will be using a
@@ -416,8 +425,8 @@ more efficient, I encourage you to fork the code and make those changes. Maybe
 you could even open-source your fork to allow others to use it and collaborate
 with you!
 
-*Why do we even have to select anything from the database at all? Aren't we just
-selecting the same data we just inserted?* We are selecting the data as it sits
+_Why do we even have to select anything from the database at all? Aren't we just
+selecting the same data we just inserted?_ We are selecting the data as it sits
 in the database, including the newly created `id` the database assigned. Just
 returning the original `user` object is not enough.
 
@@ -578,8 +587,8 @@ This function is used when Auth.js wants to "unlink" an OAuth account from a
 user. Functionally, it deletes the row that matches the given provider and
 provider account id.
 
-We've already looked at creating *users* and *accounts*. Now let's look at
-creating a *session* with `createSession()`.
+We've already looked at creating _users_ and _accounts_. Now let's look at
+creating a _session_ with `createSession()`.
 
 ```typescript
 async createSession(session) {
@@ -809,10 +818,10 @@ Most of the configuration comes from the [Auth.js adapter base TypeScript
 configuration](https://github.com/nextauthjs/next-auth/tree/a79774f6e890b492ae30201f24b3f7024d0d7c9d/packages/tsconfig)
 that the official adapters use. Some important highlights are:
 
-* `"outDir": "."` tells TypeScript to place the built files right in the root
+- `"outDir": "."` tells TypeScript to place the built files right in the root
   directory. This is important so the `exports` and `types` properties in
   `package.json` point to the right location of these important files.
-* This package uses `"target": "ES2019"` as it is the latest target that is 100%
+- This package uses `"target": "ES2019"` as it is the latest target that is 100%
   compatible with the earliest engine defined in `package.json` (Node.js
   12.20.0).
 

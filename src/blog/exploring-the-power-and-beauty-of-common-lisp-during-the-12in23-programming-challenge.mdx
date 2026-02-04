@@ -2,10 +2,11 @@
 cover: ./images/fad4fe99-e711-46aa-a8c6-ede382a4742a.webp
 datePublished: 2023-06-15 18:47:31+00:00
 tags:
-- software-engineering
-- svg
-title: 'Exploring the Power and Beauty of Common Lisp during the #12in23 Programming
-  Challenge'
+  - software-engineering
+  - svg
+title:
+  "Exploring the Power and Beauty of Common Lisp during the #12in23 Programming
+  Challenge"
 ---
 
 This month marks the halfway point in the yearlong challenge. This time, I
@@ -67,7 +68,6 @@ I did my tests by...
 2. Launching the REPL with `sbcl`
 3. Loading the tests with `(load "hello-world-test.lisp")`
 4. Running the tests with `(hello-world-test:run-tests)`
-    
 
 I'll be tackling each of the 5 "featured exercises." These exercises are chosen
 by Exercism because they particularly highlight a scenario where this month's
@@ -88,8 +88,8 @@ This is a "leap year" exercise with a simple premise: Given a year, report if it
 is a leap year. Everyone knows that leap years occur every 4 years. All you must
 do is determine whether the given year is evenly divisible by 4, right? Well,
 there are some additional, less-known rules surrounding leap year: even if the
-year is evenly divisible by 4, if it is *also* divisible by 100, it is *not* a
-leap year. To further muddy things, it becomes a leap year again if it is *also*
+year is evenly divisible by 4, if it is _also_ divisible by 100, it is _not_ a
+leap year. To further muddy things, it becomes a leap year again if it is _also_
 divisible by 400. These are all rules according to the Gregorian calendar.
 
 My solution uses `mod` and `zerop` to get the modulus (remainder of division)
@@ -163,8 +163,8 @@ list of the squares of all natural numbers up to a given number.
 
 With those helper functions written, I made the two important functions:
 
-* `square-of-sum` which gives the square of the sum
-* `sum-of-squares` which gives the sum of the squares
+- `square-of-sum` which gives the square of the sum
+- `sum-of-squares` which gives the sum of the squares
 
 Finally, I wrote the `difference` function that simply subtracts one from the
 other.
@@ -210,14 +210,14 @@ exercise has you "creating" robots, giving them names, and changing those names.
 
 My solution involved:
 
-* A `robot` struct
-* A `random-letter` function that returns a random uppercase English letter
-* A `generate-robot-name` function that uses that function for generating a name
+- A `robot` struct
+- A `random-letter` function that returns a random uppercase English letter
+- A `generate-robot-name` function that uses that function for generating a name
   according to the specific naming scheme
-* A `build-robot` function that makes an instance of the struct with a generated
+- A `build-robot` function that makes an instance of the struct with a generated
   name
-* A `robot-name` function which returns the `name` property of an instance
-* An finally, a `reset-name` function which uses `setf` to update the name
+- A `robot-name` function which returns the `name` property of an instance
+- An finally, a `reset-name` function which uses `setf` to update the name
 
 ```lisp
 (defpackage :robot-name

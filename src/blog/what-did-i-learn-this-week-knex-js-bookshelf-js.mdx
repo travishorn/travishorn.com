@@ -2,11 +2,11 @@
 cover: ./images/OX2zbbKRs.webp
 datePublished: 2016-03-09 17:30:04+00:00
 tags:
-- api
-- databases
-- javascript
-- nodejs
-- sql
+  - api
+  - databases
+  - javascript
+  - nodejs
+  - sql
 title: What did I learn this week? Knex.js & Bookshelf.js
 ---
 
@@ -30,7 +30,7 @@ In the past, interfacing with a SQL server in Node.js was a chore. I have tried 
 
 The first module I tried using was [Sequelize](http://docs.sequelizejs.com/en/latest/). I really like it and I'm still using it in some ongoing projects. However, there is something about it that just doesn't fit my style.
 
-Somewhere along the way I stumbled across Bookshelf.js. This is a library I *really* get along with. In the process of setting it up, I realized it relies heavily on Knex.js, which I also find interesting. Here, I'll walk you through my first encounter with these modules.
+Somewhere along the way I stumbled across Bookshelf.js. This is a library I _really_ get along with. In the process of setting it up, I realized it relies heavily on Knex.js, which I also find interesting. Here, I'll walk you through my first encounter with these modules.
 
 ### Building a CRUD API using Knex.js and Bookshelf.js with [Express](http://expressjs.com/)
 
@@ -42,7 +42,6 @@ First, create a new directory to house the project…
 mkdir contacts
 cd contacts
 ```
-
 
 Initialize npm and answer all its questions…
 
@@ -63,13 +62,11 @@ license: MIT
 Is this ok? yes
 ```
 
-
 Install the necessary modules…
 
 ```console
 npm install --save express body-parser knex bookshelf sqlite3
 ```
-
 
 Let's start with a simple index.js…
 
@@ -93,32 +90,27 @@ app.listen(PORT, function() {
 });
 ```
 
-
 This will get the server up and running, but you may have noticed we've required a contactRoute module that we still need to set up to handle all HTTP requests to the `/contact` route.
 
 Let's create `routes/contact.js`…
 
 ```javascript
-'use strict';
+"use strict";
 
-var express = require('express');
+var express = require("express");
 
-var Contact = require('../models/contact');
+var Contact = require("../models/contact");
 
 var router = express.Router();
 
-router.route('/')
-  .get(function(req, res) {
-    Contact
-      .fetchAll()
-      .then(function(contacts) {
-        res.json({ contacts });
-      });
+router.route("/").get(function (req, res) {
+  Contact.fetchAll().then(function (contacts) {
+    res.json({ contacts });
   });
+});
 
 module.exports = router;
 ```
-
 
 Now, our route will respond to HTTP GET requests to /contact. The `Contact.fetchAll().then();` call is our first dive into Bookshelf.js.
 
@@ -127,77 +119,71 @@ But before we can use this route, we need to define the Contact model.
 Create `models/contact.js`…
 
 ```javascript
-'use strict';
+"use strict";
 
-var bookshelf = require('../bookshelf');
+var bookshelf = require("../bookshelf");
 
 var Contact = bookshelf.Model.extend({
-  tableName: 'contacts',
+  tableName: "contacts",
 });
 
 module.exports = Contact;
 ```
 
-
 That's it for the model, but please take note of two things:
 
-1. We are not requiring the bookshelf module, but rather a `bookshelf.js` *file* that we will soon create in our project's root directory. This will be our connection to the database. All models will use this file.
+1. We are not requiring the bookshelf module, but rather a `bookshelf.js` _file_ that we will soon create in our project's root directory. This will be our connection to the database. All models will use this file.
 
 1. We didn't define any columns for our table. Why? Because Bookshelf actually looks at the table you defined in the tableName property and gets the columns from there. You can create this table any way you want, but we will look at an easy way to do this with Knex.js migrations later.
 
 Since we are requiring the `../bookshelf.js` file in our model, let's create that…
 
 ```javascript
-'use strict';
+"use strict";
 
-var knex = require('knex')(require('./knexfile'));
+var knex = require("knex")(require("./knexfile"));
 
-var bookshelf = require('bookshelf')(knex);
+var bookshelf = require("bookshelf")(knex);
 
 module.exports = bookshelf;
 ```
-
 
 We are finally requiring the bookshelf module here. When we do, we are passing along an instance of knex. And when we require knex, we are passing along a configuration object called `knexfile.js`.
 
 Let's make `knexfile.js` so we can tell Knex how to connect to our database server (or in this case, the SQLite file)…
 
 ```javascript
-'use strict';
+"use strict";
 
 module.exports = {
-  client: 'sqlite3',
+  client: "sqlite3",
   connection: {
-    filename: 'database.sqlite3',
+    filename: "database.sqlite3",
   },
   useNullAsDefault: true,
 };
 ```
-
 
 We're almost done, but remember that the Bookshelf model will attempt to read our table and create a model based on it. We need to create the contacts table. Fortunately, we can define our table in JavaScript and use the Knex CLI to create it. This is called a "migration."
 
 First, create `migrations/contacts.js`…
 
 ```javascript
-'use strict';
+"use strict";
 
-exports.up = function(knex) {
-  return knex.schema
-    .createTable('contacts', function(table) {
-      table.increments('id').primary();
-      table.string('firstName');
-      table.string('lastName');
-      table.string('emailAddress');
-    });
+exports.up = function (knex) {
+  return knex.schema.createTable("contacts", function (table) {
+    table.increments("id").primary();
+    table.string("firstName");
+    table.string("lastName");
+    table.string("emailAddress");
+  });
 };
 
-exports.down = function(knex) {
-  return knex.schema
-    .dropTable('contacts');
+exports.down = function (knex) {
+  return knex.schema.dropTable("contacts");
 };
 ```
-
 
 We can run this migration with the Knex CLI. One option is to install Knex globally and run it.
 
@@ -206,13 +192,11 @@ npm install -g knex
 knex migrate:latest
 ```
 
-
 Another option, since we already installed Knex locally, is to run
 
 ```console
 node_modules/.bin/knex migrate:latest
 ```
-
 
 My favorite option, though, is to use an npm script. npm automatically looks in `/node_modules/.bin` for executable commands. To set this up, just create a new script in `package.json`…
 
@@ -223,13 +207,11 @@ My favorite option, though, is to use an npm script. npm automatically looks in 
 },
 ```
 
-
 Now that this is set up, simply run
 
 ```console
 npm run migrate
 ```
-
 
 To test out the server, run
 
@@ -237,13 +219,11 @@ To test out the server, run
 node index.js
 ```
 
-
 After a moment, you should see `Contacts server listening on port 3000.` If you GET [http://127.0.0.1:3000/contact](http://127.0.0.1:3000/contact), you will get a response:
 
 ```json
-{"contacts":[]}
+{ "contacts": [] }
 ```
-
 
 Since there are no contacts in the database at the moment, the array is empty.
 
@@ -269,33 +249,29 @@ router.route('/')
   });
 ```
 
-
 For updating (PUT) and deleting (DELETE), we will need a separate route that includes the id we want to modify.
 
 Let's do updating first. Again, in `routes/contact.js`…
 
 ```javascript
-router.route('/:id')
-  .put(function(req, res) {
-    Contact
-      .where('id', req.params.id)
-      .fetch()
-      .then(function(contact) {
-        contact
-          .save({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            emailAddress: req.body.emailAddress,
-          })
-          .then(function(saved) {
-            res.json({ saved });
-          });
-      });
-  });
+router.route("/:id").put(function (req, res) {
+  Contact.where("id", req.params.id)
+    .fetch()
+    .then(function (contact) {
+      contact
+        .save({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          emailAddress: req.body.emailAddress,
+        })
+        .then(function (saved) {
+          res.json({ saved });
+        });
+    });
+});
 
 module.exports = router;
 ```
-
 
 And deleting…
 
@@ -314,7 +290,6 @@ router.route('/:id')
   });
 ```
 
-
 If you restart your server…
 
 ```console
@@ -330,10 +305,9 @@ and POST [http://127.0.0.1:3000/contact](http://127.0.0.1:3000/contact) with a u
     "lastName": "Horn",
     "emailAddress": "travis@travishorn.com",
     "id": 1
- }
+  }
 }
 ```
-
 
 and if you GET [http://127.0.0.1:3000/contact,](http://127.0.0.1:3000/contact,) you will get the response:
 
@@ -345,11 +319,10 @@ and if you GET [http://127.0.0.1:3000/contact,](http://127.0.0.1:3000/contact,) 
       "firstName": "Travis",
       "lastName": "Horn",
       "emailAddress": "travis@travishorn.com"
-     }
-   ]
+    }
+  ]
 }
 ```
-
 
 We can update the record by sending a PUT request to [http://127.0.0.1:3000/contact/1](http://127.0.0.1:3000/contact/1) with a urlencoded body of `firstName=Travis&lastName=Horn&emailAddress=me%40travishorn.com`, you will get the response:
 
@@ -360,10 +333,9 @@ We can update the record by sending a PUT request to [http://127.0.0.1:3000/cont
     "lastName": "Horn",
     "emailAddress": "me@travishorn.com",
     "id": 1
- }
+  }
 }
 ```
-
 
 and finally, if you send a DELETE request to [http://127.0.0.1:3000/contact/1](http://127.0.0.1:3000/contact/1), you will get the response:
 
@@ -373,23 +345,19 @@ and finally, if you send a DELETE request to [http://127.0.0.1:3000/contact/1](h
 }
 ```
 
-
 The record no longer exists and you get an empty object back.
 
 If you stuck around this long, it might be worth mentioning that you can implement a search function pretty easily. Modify `routes/contact.js`…
 
 ```javascript
-router.route('/')
-  .get(function(req, res) {
-    Contact
-      .where(req.query)    // Add this one line
-      .fetchAll()
-      .then(function(contacts) {
-        res.json({ contacts });
-      });
-  })
+router.route("/").get(function (req, res) {
+  Contact.where(req.query) // Add this one line
+    .fetchAll()
+    .then(function (contacts) {
+      res.json({ contacts });
+    });
+});
 ```
-
 
 With the simple addition of a `where()` function/clause we can now send GET requests like [http://127.0.0.1:3000/contact?firstName=Travis](http://127.0.0.1:3000/contact?firstName=Travis) and it will only return records that match the query. Pretty cool!
 

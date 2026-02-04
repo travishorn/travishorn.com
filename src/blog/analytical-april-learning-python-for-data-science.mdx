@@ -2,12 +2,12 @@
 cover: ./images/25091e99-ca58-48f2-87f7-ba220e31c229.webp
 datePublished: 2023-04-05 12:00:38+00:00
 tags:
-- data-science
-- javascript
-- python
-- software-engineering
-- svg
-title: 'Analytical April: Learning Python for Data Science'
+  - data-science
+  - javascript
+  - python
+  - software-engineering
+  - svg
+title: "Analytical April: Learning Python for Data Science"
 ---
 
 Python is a powerful programming language that has become increasingly popular
@@ -114,19 +114,18 @@ then you load it into the new system.
 In this case, we are given a set of data that stores a list of scores and the
 letters that correspond to them (think "Scrabble").
 
-* 1 point: "A", "E", "I", etc.
-* 2 points: "D", "G"
-* 3 points: "B", "C", "M", etc.
-* and so on
-    
+- 1 point: "A", "E", "I", etc.
+- 2 points: "D", "G"
+- 3 points: "B", "C", "M", etc.
+- and so on
 
 We need to transform this data into a new format. One that uses a list of
 letters with their corresponding score.
 
-* A: 1 point
-* B: 3 points
-* C: 3 points
-* and so on
+- A: 1 point
+- B: 3 points
+- C: 3 points
+- and so on
 
 To get us started, the exercise gives us a function that we have to fill in.
 
@@ -190,12 +189,12 @@ def largest_product(series, size):
     # If the size is negative, raise an error
     if size < 0:
         raise ValueError("span must not be negative")
-        
+
     # If the series is empty and the size is positive, raise an error
     if series == "" and size > 0:
         raise ValueError("span must be smaller than string length")
 
-    # If the series is not empty but cannot be converted to an integer, raise 
+    # If the series is not empty but cannot be converted to an integer, raise
     # an error
     try:
         series != "" and int(series)
@@ -217,7 +216,7 @@ def largest_product(series, size):
     # Loop through a range starting at 0 and ending at the end of the series,
     # minus the size
     for i in range(len(series) - size + 1):
-        # Get a slice of the series that starts at the current position and 
+        # Get a slice of the series that starts at the current position and
         # is the length of the given size
         subseries = series[i:i + size]
 
@@ -255,7 +254,7 @@ Given a matrix like this:
 ```
 
 Find any position where the number in that position is the largest of any other
-in its row *and* it is the smallest of any other in its column. In the example
+in its row _and_ it is the smallest of any other in its column. In the example
 matrix above, the `5` that is at row 2, column 1 meets this criteria, so it is a
 saddle point.
 
@@ -287,12 +286,12 @@ def saddle_points(matrix):
 
     # Loop over each row
     for row_index, row in enumerate(matrix):
-        # If the current row isn't the same length as the first row, the 
-        # matrix doesn't have an equal length in each row. It is irregular; 
+        # If the current row isn't the same length as the first row, the
+        # matrix doesn't have an equal length in each row. It is irregular;
         # raise an exception.
         if len(row) != len(matrix[0]):
             raise ValueError("irregular matrix")
-        
+
         # Loop over each number in the current row
         for col_index, n in enumerate(row):
 
@@ -300,10 +299,10 @@ def saddle_points(matrix):
             # number in the row AND it is less than or equal to the smallest
             # number in the column...
             if n >= row_maxs[row_index] and n <= col_mins[col_index]:
-                # ...a saddle point was found. Append the row and column 
+                # ...a saddle point was found. Append the row and column
                 # index to the list
                 saddle_points.append({ "row": row_index + 1, "column": col_index + 1})
-    
+
     # Return the list of saddle points
     return saddle_points;
 ```
@@ -351,9 +350,9 @@ def sum_of_multiples(limit, factors):
 
             # Increase the multiple by the current factor and then loop again
             multiple += factor
-            
-    
-    # Remove duplicates by converting the list to a set and then back to a 
+
+
+    # Remove duplicates by converting the list to a set and then back to a
     # list
     unique_multiples = list(set(multiples))
 
@@ -376,8 +375,8 @@ For this one, I...
 3. Split the sentence on whitespace to get a list of words
 4. Create a new empty dictionary
 5. Use a `for` loop over each word
-    1. If the word already exists in the dictionary, increment its number by 1
-    2. If it doesn't, add it to the dictionary with a value of 1
+   1. If the word already exists in the dictionary, increment its number by 1
+   2. If it doesn't, add it to the dictionary with a value of 1
 6. Return the dictionary
 
 ```python
@@ -388,9 +387,9 @@ def count_words(sentence):
     # Convert the entire sentence to lowercase
     lower_sentence = sentence.lower()
 
-    # Use `re.sub()` and a regular expression to remove apostrophes that 
-    # appear at the beginning or end of any word, and also remove any 
-    # character that isn't a lowercase letter, a number, whitespace, or 
+    # Use `re.sub()` and a regular expression to remove apostrophes that
+    # appear at the beginning or end of any word, and also remove any
+    # character that isn't a lowercase letter, a number, whitespace, or
     # apostrophe. The removed characters are replace by a space
     clean_sentence = re.sub(r"(?<!\w)'|'(?!\w)|[^a-z0-9\s']+", " ", lower_sentence)
 

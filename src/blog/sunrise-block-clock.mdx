@@ -2,13 +2,13 @@
 cover: ./images/FMN27fUhw.webp
 datePublished: 2017-12-28 23:01:02+00:00
 tags:
-- css
-- data-visualization
-- html
-- software-engineering
-- svg
-- vue
-- web-development
+  - css
+  - data-visualization
+  - html
+  - software-engineering
+  - svg
+  - vue
+  - web-development
 title: Sunrise Block Clock
 ---
 
@@ -28,35 +28,39 @@ I started out by creating `index.html` with boilerplate HTML.
 <html lang="en">
   <head>
     <title>Sunrise Block Clock</title>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
   </head>
-  <body>
-    
-  </body>
+  <body></body>
 </html>
 ```
 
 In the `<head>` section, I added…
 
-* the Roboto font from Google
-* A custom stylesheet
+- the Roboto font from Google
+- A custom stylesheet
 
 ```html
 <head>
   <!-- snip -->
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-  <link rel="stylesheet" href="app.css">
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto"
+  />
+  <link rel="stylesheet" href="app.css" />
 </head>
 ```
 
 In the `<body>` section, I added…
 
-* An `<svg>` element to build the clock upon
-* Vue.js
-* A custom JS file
+- An `<svg>` element to build the clock upon
+- Vue.js
+- A custom JS file
 
 ```html
 <body>
@@ -73,7 +77,7 @@ Then, I created `app.css` with some basic styles.
 body {
   text-align: center;
   padding: 50px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 svg text {
@@ -90,7 +94,7 @@ Next, I created `app.js` with a Vue app skeleton.
 
 ```javascript
 new Vue({
-  el: '#chart',
+  el: "#chart",
 
   filters: {},
 
@@ -120,11 +124,8 @@ computed: {
 And in `index.html`:
 
 ```html
-<svg id="chart"
-     :width="width"
-     :height="height">
+<svg id="chart" :width="width" :height="height"></svg>
 ```
-
 
 The entire `<svg>` element's background gets filled with a sunrise-like
 gradient.
@@ -160,18 +161,15 @@ be the "blocks". They all have a semi-transparent outline (`stroke`).
 
 ```html
 <g v-for="hIndex in 24">
-  <rect stroke="rgba(0, 0, 0, 0.05)"
-        v-for="mIndex in 60" />
+  <rect stroke="rgba(0, 0, 0, 0.05)" v-for="mIndex in 60" />
 </g>
 ```
-
 
 In order to position the blocks, I needed a way to get the width and height for
 each block.
 
 There will be 24 rows of 60 blocks each. Basically, the width should be the
-total width divided by 60 and the height should be the total height divided by
-24.
+total width divided by 60 and the height should be the total height divided by 24.
 
 We can get these values with computed properties.
 
@@ -187,10 +185,12 @@ computed: {
 Now the width and height can be set.
 
 ```html
-<rect stroke="rgba(0, 0, 0, 0.05)"
-      v-for="mIndex in 60"
-      :width="minuteWidth"
-      :height="minuteHeight" />
+<rect
+  stroke="rgba(0, 0, 0, 0.05)"
+  v-for="mIndex in 60"
+  :width="minuteWidth"
+  :height="minuteHeight"
+/>
 ```
 
 ![The same gradient, but with a black rectangle in the upper left corner. The
@@ -304,7 +304,9 @@ And then in `index.html`:
   :x="width / 2"
   :y="height / 2"
   text-anchor="middle"
-  alignment-baseline="middle">{{ now | localeTime }}</text>
+  alignment-baseline="middle"
+  >{{ now | localeTime }}</text
+>
 ```
 
 ![The same timestamp, but now formatted for better human readability. Showing

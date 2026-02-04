@@ -3,11 +3,7 @@ title: "JavaScript Reference: Closures"
 datePublished: 2016-08-03T22:01:01+00:00
 cover: ./images/2GMLUcafn.webp
 tags: ["javascript", "software-engineering"]
-
 ---
-
-
-
 
 This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
 
@@ -15,25 +11,24 @@ This post is part of a project to move my old reference material to my blog. Bef
 
 ```javascript
 // Create single environment with 3 functions
-var makeCounter = function() {
+var makeCounter = function () {
   // Private variable and private function
   var privateCounter = 0;
   function changeBy(val) {
     privateCounter += val;
   }
   return {
-    increment: function() {
+    increment: function () {
       changeBy(1);
     },
-    decrement: function() {
+    decrement: function () {
       changeBy(-1);
     },
-    value: function() {
+    value: function () {
       return privateCounter;
-    }
-  }   
+    },
+  };
 };
-
 
 // Create closure from function
 counter = makeCounter();
@@ -51,13 +46,12 @@ counter.decrement();
 document.write(counter.value());
 ```
 
-
 ### Multiple Closures
 
 ```javascript
 // Create the function
-function makeLevelAdder(level){
-  return function(schoolName) {
+function makeLevelAdder(level) {
+  return function (schoolName) {
     return schoolName + " " + level;
   };
 }
@@ -70,7 +64,6 @@ var addMiddle = makeLevelAdder("Middle");
 document.write(addElementary("Lincoln") + "<br>");
 document.write(addMiddle("Washington"));
 ```
-
 
 ### Simple Example
 

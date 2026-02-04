@@ -2,11 +2,11 @@
 cover: ./images/rwJM_a7gC.webp
 datePublished: 2016-08-10 22:01:01+00:00
 tags:
-- git
-- javascript
-- nodejs
-- software-engineering
-- windows
+  - git
+  - javascript
+  - nodejs
+  - software-engineering
+  - windows
 title: The Basics of Modular JavaScript & npm Packages
 ---
 
@@ -65,7 +65,6 @@ There are also many ways to install [Node.js](https://nodejs.org/en/). Each have
 v4.4.7
 ```
 
-
 ### 3. Using npm packages in Node
 
 Once you start breaking your apps into smaller modular packages, you will find that, in so many cases, someone has already had the same need as you and has already written a package for it. In the JavaScript world, the main repository for all of these packages is [npm](https://npmjs.com/). First, let's see how to use these packages in Node, then we'll see how you can also use them in the browser.
@@ -89,7 +88,7 @@ name: (mypackage)
 version: (1.0.0)
 description: My first npm package
 entry point: (index.js)
-test command: 
+test command:
 git repository:
 keywords:
 author: Travis Horn
@@ -112,7 +111,6 @@ About to write to C:\code\mypackage\package.json:
 Is this ok? (yes)
 ```
 
-
 This will create a **package.json** file that contains metadata about your project.
 
 **Installing a package**
@@ -123,13 +121,11 @@ When you find a package that you want to use, just run
 npm install [package name] --save
 ```
 
-
 This installs the package and saves it as a dependency in **package.json**.
 
 ```console
 npm install lodash --save
 ```
-
 
 package.json:
 
@@ -144,28 +140,25 @@ package.json:
 }
 ```
 
-
 **Using a package**
 
 Once it is installed, just require it at the top of any script that uses it, like so:
 
 ```javascript
-var _ = require('lodash');
+var _ = require("lodash");
 ```
-
 
 You now have access to the `_` object, which contains all the code downloaded and installed with the package.
 
 ```javascript
-var myObj = _.assign({ 'a': 1 }, { 'b': 2 }, { 'c': 3 });
+var myObj = _.assign({ a: 1 }, { b: 2 }, { c: 3 });
 
 // myObj = { 'a': 1, 'b': 2, 'c': 3 }
 ```
 
-
 ### 4. Using npm packages in the browser
 
-Using packaged modules like that in Node is great. But what about the browser? Like everything else I've mentioned, there are *many* ways to get this done. One simple option is **browserify**.
+Using packaged modules like that in Node is great. But what about the browser? Like everything else I've mentioned, there are _many_ ways to get this done. One simple option is **browserify**.
 
 **Setup**
 
@@ -174,7 +167,6 @@ Open a **Command Prompt** and run
 ```console
 npm install -g browserify
 ```
-
 
 This will install browserify globally. Meaning that it's not tied to a specific project, but rather a utility that you can use anywhere.
 
@@ -186,15 +178,13 @@ When you find a package you want to use, just run
 npm install [package name]
 ```
 
-
 **Using a package**
 
 First, require it at the top of any script that uses it, like so:
 
 ```javascript
-var _ = require('lodash');
+var _ = require("lodash");
 ```
-
 
 You now have access to the `_` object, which contains all the code downloaded and installed with the package. Before running in the browser, you need to bundle your code with **browserify**…
 
@@ -235,16 +225,15 @@ A good module is well tested, so I'll show you how to write a module with tests.
 **Fig 1**
 
 ```javascript
-require('chai').should();
-var pkg = require('./app');
+require("chai").should();
+var pkg = require("./app");
 
-describe('pkg', function() {
-  it('adds two numbers', function() {
+describe("pkg", function () {
+  it("adds two numbers", function () {
     pkg.add(1, 1).should.equal(2);
   });
 });
 ```
-
 
 **Fig 2**
 
@@ -252,17 +241,15 @@ describe('pkg', function() {
 "scripts": { "test": "mocha --reporter spec tests" }
 ```
 
-
 **Fig 3**
 
 ```javascript
 module.exports = {
-  add: function(num1, num2) {
+  add: function (num1, num2) {
     return num1 + num2;
-  }
+  },
 };
 ```
-
 
 The methods I used in these steps are only one way of doing it. You will undoubtedly develop your own style and figure out what tools work best for you. Hope fully this post will give you a head start.
 

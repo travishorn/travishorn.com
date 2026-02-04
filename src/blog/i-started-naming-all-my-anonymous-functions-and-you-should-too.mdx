@@ -18,8 +18,8 @@ For example, the
 [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
 function takes two arguments:
 
-* a function to execute, and
-* a number of milliseconds to wait before execution
+- a function to execute, and
+- a number of milliseconds to wait before execution
 
 Here's a simple demonstration.
 
@@ -28,10 +28,10 @@ Here's a simple demonstration.
 ```
 
 ```javascript
-const message = document.getElementById('message');
+const message = document.getElementById("message");
 
 setTimeout(function () {
-  message.textContent = 'Hello, world.';
+  message.textContent = "Hello, world.";
 }, 1000);
 ```
 
@@ -41,18 +41,18 @@ world."
 [See it in action here on CodePen.](https://codepen.io/travishorn/pen/PEmgzG)
 
 See the function inside `setTimeout()`? It doesn't have a name; it is
-*anonymous*.
+_anonymous_.
 
 Although the code works, what happens when we introduce a bug? Say we made a
 typo on the symbol `message`.
 
 ```javascript
 setTimeout(function () {
-  mesage.textContent = 'Hello, world.';
+  mesage.textContent = "Hello, world.";
 }, 1000);
 ```
 
-*Notice I forgot an "s" in "message".*
+_Notice I forgot an "s" in "message"._
 
 The message on the page never changes. At this point, as a developer, you see
 that something is wrong and would probably be looking towards the [DevTools
@@ -81,11 +81,11 @@ name that anonymous function.
 
 ```javascript
 setTimeout(function sayHello() {
-  mesage.textContent = 'Hello, world.';
+  mesage.textContent = "Hello, world.";
 }, 1000);
 ```
 
-*To illustrate the point, I'm keeping the typo in for right now.*
+_To illustrate the point, I'm keeping the typo in for right now._
 
 Now look at the error:
 
@@ -94,8 +94,7 @@ Uncaught ReferenceError: mesage is not defined
     at sayHello (app.js:3)
 ```
 
-
-It is *almost* identical. But with one big difference: **the name of the
+It is _almost_ identical. But with one big difference: **the name of the
 function that produced the error**.
 
 In a large project, this extra piece of information could make it that much
@@ -108,13 +107,13 @@ outside the `setTimeout()` call.
 
 ```javascript
 function sayHello() {
-  message.textContent = 'Hello, world.';
+  message.textContent = "Hello, world.";
 }
 
 setTimeout(sayHello, 1000);
 ```
 
-*I fixed the typo now, to demonstrate working code.*
+_I fixed the typo now, to demonstrate working code._
 
 There are a couple of advantages to this style:
 
@@ -130,8 +129,8 @@ functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Fun
 
 ```javascript
 const sayHello = () => {
-  message.textContent = 'Hello, world.';
-}
+  message.textContent = "Hello, world.";
+};
 
 setTimeout(sayHello, 1000);
 ```

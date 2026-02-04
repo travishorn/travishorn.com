@@ -2,11 +2,11 @@
 cover: ./images/K9gs9jUb0.webp
 datePublished: 2017-11-02 22:01:01+00:00
 tags:
-- css
-- design-ui
-- html
-- nodejs
-- web-development
+  - css
+  - design-ui
+  - html
+  - nodejs
+  - web-development
 title: Customizing Bootstrap Styles, Step-by-Step
 ---
 
@@ -31,17 +31,22 @@ In `index.html`:
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <title>My page</title>
 
-    <link rel="stylesheet" href="bootstrap.css">
-    <link rel="stylesheet" href="custom.css">
+    <link rel="stylesheet" href="bootstrap.css" />
+    <link rel="stylesheet" href="custom.css" />
   </head>
   <body>
     <div class="container">
-      <div class="alert alert-success">Congratulations, you've customized Bootstrap styles!</div>
+      <div class="alert alert-success">
+        Congratulations, you've customized Bootstrap styles!
+      </div>
     </div>
   </body>
 </html>
@@ -51,7 +56,7 @@ In `custom.css`:
 
 ```css
 .alert-success {
-  background-color: #4CFF00;
+  background-color: #4cff00;
 }
 ```
 
@@ -59,7 +64,7 @@ The problems with this method are:
 
 1. Two stylesheets = two HTTP requests = longer loading times
 
-1. The above code changes the successful *alert*'s color, but what about *other*
+1. The above code changes the successful _alert_'s color, but what about _other_
    success classes (such as badges or table rows)? You would have to add CSS
    rules to change the color for all of them.
 
@@ -110,8 +115,8 @@ In this guide, I will start from scratch.
    Bootstrap 4 Beta is the latest version as of this writing)
 
 1. Add webpack and the other development dependencies we'll need with `npm i -D
-   autoprefixer css-loader node-sass postcss-loader precss sass-loader
-   style-loader webpack`
+autoprefixer css-loader node-sass postcss-loader precss sass-loader
+style-loader webpack`
 
 1. In `package.json`, add a build script to run webpack
 
@@ -125,34 +130,33 @@ In this guide, I will start from scratch.
 7. Tell webpack how to build your app by creating `webpack.config.js`:
 
 ```javascript
-const precss = require('precss');
-const autoprefixer = require('autoprefixer');
+const precss = require("precss");
+const autoprefixer = require("autoprefixer");
 
 module.exports = {
-  entry: './app.js',
+  entry: "./app.js",
   output: {
-    filename: 'bundle.js',
+    filename: "bundle.js",
   },
   module: {
-    rules: [{
-      test: /\.scss$/,
-      use: [
-        { loader: 'style-loader' },
-        { loader: 'css-loader' },
-        {
-          loader: 'postcss-loader',
-          options: {
-            plugins() {
-              return [
-                precss,
-                autoprefixer,
-              ];
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins() {
+                return [precss, autoprefixer];
+              },
             },
           },
-        },
-        { loader: 'sass-loader' },
-      ],
-    }],
+          { loader: "sass-loader" },
+        ],
+      },
+    ],
   },
 };
 ```
@@ -167,7 +171,7 @@ out `bundle.js` for us.
 8. With that being said, create `app.js`:
 
 ```javascript
-import './style.scss';
+import "./style.scss";
 ```
 
 That's the only line in this file. In the future, if you want to bundle more
@@ -181,7 +185,6 @@ can import them here.
 @import "~bootstrap/scss/bootstrap";
 ```
 
-
 The first line tells Sass to import a custom stylesheet (which we will create in
 a minute).
 
@@ -192,9 +195,8 @@ variables easily in your custom stylesheet.
 10. Create `_custom.scss`:
 
 ```scss
-$green: #4CFF00;
+$green: #4cff00;
 ```
-
 
 This is where all the fun happens. You can override [any variable you find in
 Bootstrap's
@@ -215,19 +217,23 @@ To use these styles, just include it in your HTML:
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <title>My page</title>
   </head>
   <body>
-    <div class="alert alert-success">Congratulations, you've customized Bootstrap styles!</div>
+    <div class="alert alert-success">
+      Congratulations, you've customized Bootstrap styles!
+    </div>
 
     <script src="bundle.js"></script>
   </body>
 </html>
 ```
-
 
 Any time you want to make changes, just edit `_custom.scss` and then run `npm
 run build`.
@@ -241,29 +247,29 @@ To customize the styles to your branding, look at editing all of the colors near
 the top:
 
 ```scss
-$blue:    #007bff !default;
-$indigo:  #6610f2 !default;
-$purple:  #6f42c1 !default;
-$pink:    #e83e8c !default;
-$red:     #dc3545 !default;
-$orange:  #fd7e14 !default;
-$yellow:  #ffc107 !default;
-$green:   #28a745 !default;
-$teal:    #20c997 !default;
-$cyan:    #17a2b8 !default;
+$blue: #007bff !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #dc3545 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: #28a745 !default;
+$teal: #20c997 !default;
+$cyan: #17a2b8 !default;
 ```
 
 And enabling/disabling any of these optional features:
 
 ```scss
-$enable-caret:              true !default;
-$enable-rounded:            true !default;
-$enable-shadows:            false !default;
-$enable-gradients:          false !default;
-$enable-transitions:        true !default;
-$enable-hover-media-query:  false !default;
-$enable-grid-classes:       true !default;
-$enable-print-styles:       true !default;
+$enable-caret: true !default;
+$enable-rounded: true !default;
+$enable-shadows: false !default;
+$enable-gradients: false !default;
+$enable-transitions: true !default;
+$enable-hover-media-query: false !default;
+$enable-grid-classes: true !default;
+$enable-print-styles: true !default;
 ```
 
 Want shadows in your app? Just set `$enable-shadows: true`.

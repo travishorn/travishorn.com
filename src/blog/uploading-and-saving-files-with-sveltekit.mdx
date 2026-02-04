@@ -2,13 +2,13 @@
 cover: ./images/6bbbca79-c9dd-474a-9174-1d3e09ddc191.webp
 datePublished: 2023-09-08 15:16:21+00:00
 tags:
-- git
-- javascript
-- nodejs
-- svelte
-- terminal
-- web-development
-- windows
+  - git
+  - javascript
+  - nodejs
+  - svelte
+  - terminal
+  - web-development
+  - windows
 title: Uploading and Saving Files with SvelteKit
 ---
 
@@ -48,13 +48,10 @@ liking.
 
 Answer the questions given to create the project. Here's what I chose:
 
-* Which Svelte app template? **Skeleton project**
-    
-* Add type checking with TypeScript? **Yes, using JavaScript with JSDoc
+- Which Svelte app template? **Skeleton project**
+- Add type checking with TypeScript? **Yes, using JavaScript with JSDoc
   comments**
-    
-* Select additional options **(none)**
-    
+- Select additional options **(none)**
 
 Change into the directory.
 
@@ -97,30 +94,30 @@ following:
 
 This is a basic form in HTML, but it's all we need. Note:
 
-* The form `method` must be `post`
-* The form must have an `enctype` of `multipart/form-data`
-* The `input` of type `file` will render a "file chooser" form control. Here,
+- The form `method` must be `post`
+- The form must have an `enctype` of `multipart/form-data`
+- The `input` of type `file` will render a "file chooser" form control. Here,
   the input's name is **file**, but feel free to choose any name of your liking.
   Just keep in mind that we will be referencing it later.
-* There is a `button` at the end of the form that submits the form.
+- There is a `button` at the end of the form that submits the form.
 
 Now, create a new file called `src/routes/+page.server.js` with the following
 contents:
 
 ```javascript
-import { writeFile } from 'node:fs/promises';
-import { extname } from 'path';
+import { writeFile } from "node:fs/promises";
+import { extname } from "path";
 
 /** @type {import('./$types').Actions} */
 export const actions = {
   default: async ({ request }) => {
     const formData = await request.formData();
-    const uploadedFile = formData?.get('file');
+    const uploadedFile = formData?.get("file");
     const filename = `uploads/${crypto.randomUUID()}${extname(uploadedFile?.name)}`;
     await writeFile(filename, Buffer.from(await uploadedFile?.arrayBuffer()));
 
     return { success: true };
-  }
+  },
 };
 ```
 

@@ -2,11 +2,11 @@
 cover: ./images/kegKg1kgm.webp
 datePublished: 2018-12-20 11:01:00+00:00
 tags:
-- css
-- html
-- javascript
-- performance
-- web-development
+  - css
+  - html
+  - javascript
+  - performance
+  - web-development
 title: 3 ways a front-end developer can reduce page load
 ---
 
@@ -27,28 +27,28 @@ demonstrate, take a look at this simple HTML file.
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width,
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,
                    initial-scale=1,
-                   shrink-to-fit=no">
+                   shrink-to-fit=no"
+    />
 
-<link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/main.css" />
 
-<title>Hello, world!</title>
+    <title>Hello, world!</title>
   </head>
   <body>
     <div class="container my-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
           <h1>Hello, world!</h1>
-          
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
       </div>
-    </div>    
+    </div>
   </body>
 </html>
 ```
@@ -102,7 +102,6 @@ Basically, instead of this…
 </html>
 ```
 
-
 Do this…
 
 ```html
@@ -139,8 +138,7 @@ Webpack](https://iamakulov.com/notes/optimize-images-webpack/).
 
 ### Bonus! Reduce perceived page load with a loading animation
 
-Besides *actually* reducing the load time, you can also reduce the *perceived**
-***load time. Users hate when they're not sure if a page is doing anything. If
+Besides _actually_ reducing the load time, you can also reduce the \*perceived** \***load time. Users hate when they're not sure if a page is doing anything. If
 the page doesn't load or appear to load right away, many users might even click
 away.
 
@@ -153,7 +151,7 @@ of JavaScript, consider adding something like this at the forefront of your site
 or app.
 
 ```html
-<img id="loading" src="loading.gif">
+<img id="loading" src="loading.gif" />
 ```
 
 In your JavaScript, when you know your page is ready to be viewed, simply hide
@@ -161,8 +159,8 @@ the image.
 
 ```javascript
 document.onreadystatechange = () => {
-  if (document.readyState === 'complete') {
-    document.getElementById('loading').style.display = 'none';
+  if (document.readyState === "complete") {
+    document.getElementById("loading").style.display = "none";
   }
 };
 ```

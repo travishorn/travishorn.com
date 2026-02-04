@@ -2,20 +2,20 @@
 cover: ./images/0dzo-giMt.webp
 datePublished: 2018-01-11 23:01:02+00:00
 tags:
-- d3
-- data-visualization
-- javascript
-- svg
-- web-development
+  - d3
+  - data-visualization
+  - javascript
+  - svg
+  - web-development
 title: Google-style gauge charts using D3
 ---
 
 Google provides a free charting library to display live charts on your site. It
 works pretty well but has some disadvantages:
 
-* The library must be loaded from Google's servers
-* Loading can be slow at times
-* Limited customization
+- The library must be loaded from Google's servers
+- Loading can be slow at times
+- Limited customization
 
 All of their charts can be re-created using an open-source library like
 [D3.js](https://d3js.org/) but some of them are easier to re-create than others.
@@ -37,7 +37,7 @@ defined in JavaScript based on the container element's dimensions.
 
   .gaugeChart-bezel-inner {
     fill: none;
-    stroke: #CCCCCC;
+    stroke: #cccccc;
   }
 
   .gaugeChart-tick {
@@ -52,14 +52,14 @@ defined in JavaScript based on the container element's dimensions.
   }
 
   .gaugeChart-needle {
-    stroke: #CD4120;
-    fill: #E57358;
+    stroke: #cd4120;
+    fill: #e57358;
     opacity: 0.8;
   }
 
   .gaugeChart-needle-cap {
     stroke: #666666;
-    fill: #4684EE;
+    fill: #4684ee;
   }
 </style>
 ```
@@ -94,8 +94,8 @@ This is how the function is called:
 
 ```javascript
 gaugeChart({
-  el: '#memChart',
-  label: 'Memory',
+  el: "#memChart",
+  label: "Memory",
   value: 73,
 });
 ```
@@ -110,7 +110,7 @@ const chart = d3.select(o.el);
 Now, get the width of this chart.
 
 ```javascript
-const width = chart.attr('width');
+const width = chart.attr("width");
 ```
 
 We will now set a plethora of heights, widths, and spacing relative to this
@@ -121,13 +121,13 @@ const center = width / 2;
 const outerBezelWidth = width * 0.009;
 const outerBezelRadius = center - outerBezelWidth;
 const innerBezelWidth = width * 0.072;
-const innerBezelRadius = outerBezelRadius - (innerBezelWidth / 2);
-const tickHeight = outerBezelWidth + innerBezelWidth + (width * 0.027);
+const innerBezelRadius = outerBezelRadius - innerBezelWidth / 2;
+const tickHeight = outerBezelWidth + innerBezelWidth + width * 0.027;
 const tickWidth = width * 0.009;
 const tickHiderRadius = width * 0.345;
 const labelY = center / 1.3;
 const valueLabelY = width * 0.75;
-const labelFontSize = width * .13;
+const labelFontSize = width * 0.13;
 const needleWidth = width * 0.054;
 const needleCapRadius = width * 0.059;
 ```
@@ -155,7 +155,8 @@ The range is going to be the angle of the first tick and the angle of the last
 tick.
 
 ```javascript
-const needleScale = d3.scaleLinear()
+const needleScale = d3
+  .scaleLinear()
   .domain([o.min || 0, o.max || 100])
   .range([angle, lastTickAngle]);
 ```
@@ -172,33 +173,36 @@ gauge.
 First is the outer bezel (the thin black circle).
 
 ```javascript
-const outerBezel = chart.append('circle')
-  .attr('class', 'gaugeChart-bezel-outer')
-  .attr('cx', center)
-  .attr('cy', center)
-  .attr('stroke-width', outerBezelWidth)
-  .attr('r', outerBezelRadius);
+const outerBezel = chart
+  .append("circle")
+  .attr("class", "gaugeChart-bezel-outer")
+  .attr("cx", center)
+  .attr("cy", center)
+  .attr("stroke-width", outerBezelWidth)
+  .attr("r", outerBezelRadius);
 ```
 
 Next is the face of the gauge (a white circle) inside the bezel.
 
 ```javascript
-const face = chart.append('circle')
-  .attr('class', 'gaugeChart-face')
-  .attr('cx', center)
-  .attr('cy', center)
-  .attr('r', outerBezelRadius - 1);
+const face = chart
+  .append("circle")
+  .attr("class", "gaugeChart-face")
+  .attr("cx", center)
+  .attr("cy", center)
+  .attr("r", outerBezelRadius - 1);
 ```
 
 Next is the inner bezel (the gray circle) inside the outer bezel.
 
 ```javascript
-const innerBezel = chart.append('circle')
-  .attr('class', 'gaugeChart-bezel-inner')
-  .attr('cx', center)
-  .attr('cy', center)
-  .attr('stroke-width', innerBezelWidth)
-  .attr('r', innerBezelRadius);
+const innerBezel = chart
+  .append("circle")
+  .attr("class", "gaugeChart-bezel-inner")
+  .attr("cx", center)
+  .attr("cy", center)
+  .attr("stroke-width", innerBezelWidth)
+  .attr("r", innerBezelRadius);
 ```
 
 Now, we can use a `while` loop to create the ticks. We loop until the angle is
@@ -207,15 +211,16 @@ iteration.
 
 ```javascript
 while (angle <= lastTickAngle) {
-  chart.append('line')
-    .attr('class', 'gaugeChart-tick')
-    .attr('x1', center)
-    .attr('y1', center)
-    .attr('x2', center)
-    .attr('y2', tickHeight)
-    .attr('stroke-width', tickWidth)
-    .attr('transform', `rotate(${angle} ${center} ${center})`);
-  
+  chart
+    .append("line")
+    .attr("class", "gaugeChart-tick")
+    .attr("x1", center)
+    .attr("y1", center)
+    .attr("x2", center)
+    .attr("y2", tickHeight)
+    .attr("stroke-width", tickWidth)
+    .attr("transform", `rotate(${angle} ${center} ${center})`);
+
   angle += tickSpacing;
 }
 ```
@@ -228,23 +233,25 @@ color as the gauge face. This circle will be placed on top of the ticks to hide
 most of each of them. Only the outer tips will still be visible.
 
 ```javascript
-const tickHider = chart.append('circle')
-  .attr('class', 'gaugeChart-tickHider')
-  .attr('cx', center)
-  .attr('cy', center)
-  .attr('r', tickHiderRadius);
+const tickHider = chart
+  .append("circle")
+  .attr("class", "gaugeChart-tickHider")
+  .attr("cx", center)
+  .attr("cy", center)
+  .attr("r", tickHiderRadius);
 ```
 
 Now the label.
 
 ```javascript
-const label = chart.append('text')
-  .attr('class', 'gaugeChart-label')
-  .attr('x', center)
-  .attr('y', labelY)
-  .attr('text-anchor', 'middle')
-  .attr('alignment-baseline', 'middle')
-  .attr('font-size', labelFontSize)
+const label = chart
+  .append("text")
+  .attr("class", "gaugeChart-label")
+  .attr("x", center)
+  .attr("y", labelY)
+  .attr("text-anchor", "middle")
+  .attr("alignment-baseline", "middle")
+  .attr("font-size", labelFontSize)
   .text(o.label);
 ```
 
@@ -252,13 +259,14 @@ And the value label (the actual number that will appear near the bottom of the
 gauge).
 
 ```javascript
-const valueLabel = chart.append('text')
-  .attr('class', 'gaugeChart-label-value')
-  .attr('x', center)
-  .attr('y', valueLabelY)
-  .attr('text-anchor', 'middle')
-  .attr('alignment-baseline', 'middle')
-  .attr('font-size', labelFontSize)
+const valueLabel = chart
+  .append("text")
+  .attr("class", "gaugeChart-label-value")
+  .attr("x", center)
+  .attr("y", valueLabelY)
+  .attr("text-anchor", "middle")
+  .attr("alignment-baseline", "middle")
+  .attr("font-size", labelFontSize)
   .text(o.value);
 ```
 
@@ -267,24 +275,29 @@ using a `<path>`. By default, it is pointing straight up (0 degrees). But
 then we rotate it based on the `needleAngle` set earlier.
 
 ```javascript
-const needle = chart.append('path')
-  .attr('class', 'gaugeChart-needle')
-  .attr('stroke-width', outerBezelWidth)
-  .attr('d', `M ${center - needleWidth / 2} ${center}
+const needle = chart
+  .append("path")
+  .attr("class", "gaugeChart-needle")
+  .attr("stroke-width", outerBezelWidth)
+  .attr(
+    "d",
+    `M ${center - needleWidth / 2} ${center}
               L ${center} ${tickHeight}
-              L ${center + needleWidth / 2} ${center} Z`)
-  .attr('transform', `rotate(${needleAngle} ${center} ${center})`);
+              L ${center + needleWidth / 2} ${center} Z`,
+  )
+  .attr("transform", `rotate(${needleAngle} ${center} ${center})`);
 ```
 
 Finally, we add the "cap" that covers the base of the needle.
 
 ```javascript
-const needleCap = chart.append('circle')
-  .attr('class', 'gaugeChart-needle-cap')
-  .attr('cx', center)
-  .attr('cy', center)
-  .attr('stroke-width', outerBezelWidth)
-  .attr('r', needleCapRadius);
+const needleCap = chart
+  .append("circle")
+  .attr("class", "gaugeChart-needle-cap")
+  .attr("cx", center)
+  .attr("cy", center)
+  .attr("stroke-width", outerBezelWidth)
+  .attr("r", needleCapRadius);
 ```
 
 The entire function looks like this:
@@ -292,101 +305,114 @@ The entire function looks like this:
 ```javascript
 const gaugeChart = (o) => {
   const chart = d3.select(o.el);
-  const width = chart.attr('width');
+  const width = chart.attr("width");
   const center = width / 2;
   const outerBezelWidth = width * 0.009;
   const outerBezelRadius = center - outerBezelWidth;
   const innerBezelWidth = width * 0.072;
-  const innerBezelRadius = outerBezelRadius - (innerBezelWidth / 2);
-  const tickHeight = outerBezelWidth + innerBezelWidth + (width * 0.027);
+  const innerBezelRadius = outerBezelRadius - innerBezelWidth / 2;
+  const tickHeight = outerBezelWidth + innerBezelWidth + width * 0.027;
   const tickWidth = width * 0.009;
   const tickHiderRadius = width * 0.345;
   const labelY = center / 1.3;
   const valueLabelY = width * 0.75;
-  const labelFontSize = width * .13;
+  const labelFontSize = width * 0.13;
   const needleWidth = width * 0.054;
   const needleCapRadius = width * 0.059;
   const tickSpacing = 13.5;
   const lastTickAngle = 135;
   let angle = -135;
-  
-  const needleScale = d3.scaleLinear()
+
+  const needleScale = d3
+    .scaleLinear()
     .domain([o.min || 0, o.max || 100])
     .range([angle, lastTickAngle]);
-  
+
   const needleAngle = needleScale(o.value);
-  
-  const outerBezel = chart.append('circle')
-    .attr('class', 'gaugeChart-bezel-outer')
-    .attr('cx', center)
-    .attr('cy', center)
-    .attr('stroke-width', outerBezelWidth)
-    .attr('r', outerBezelRadius);
-  
-  const face = chart.append('circle')
-    .attr('class', 'gaugeChart-face')
-    .attr('cx', center)
-    .attr('cy', center)
-    .attr('r', outerBezelRadius - 1);
-  
-  const innerBezel = chart.append('circle')
-    .attr('class', 'gaugeChart-bezel-inner')
-    .attr('cx', center)
-    .attr('cy', center)
-    .attr('stroke-width', innerBezelWidth)
-    .attr('r', innerBezelRadius);
-  
+
+  const outerBezel = chart
+    .append("circle")
+    .attr("class", "gaugeChart-bezel-outer")
+    .attr("cx", center)
+    .attr("cy", center)
+    .attr("stroke-width", outerBezelWidth)
+    .attr("r", outerBezelRadius);
+
+  const face = chart
+    .append("circle")
+    .attr("class", "gaugeChart-face")
+    .attr("cx", center)
+    .attr("cy", center)
+    .attr("r", outerBezelRadius - 1);
+
+  const innerBezel = chart
+    .append("circle")
+    .attr("class", "gaugeChart-bezel-inner")
+    .attr("cx", center)
+    .attr("cy", center)
+    .attr("stroke-width", innerBezelWidth)
+    .attr("r", innerBezelRadius);
+
   while (angle <= lastTickAngle) {
-    chart.append('line')
-      .attr('class', 'gaugeChart-tick')
-      .attr('x1', center)
-      .attr('y1', center)
-      .attr('x2', center)
-      .attr('y2', tickHeight)
-      .attr('stroke-width', tickWidth)
-      .attr('transform', `rotate(${angle} ${center} ${center})`);
-    
+    chart
+      .append("line")
+      .attr("class", "gaugeChart-tick")
+      .attr("x1", center)
+      .attr("y1", center)
+      .attr("x2", center)
+      .attr("y2", tickHeight)
+      .attr("stroke-width", tickWidth)
+      .attr("transform", `rotate(${angle} ${center} ${center})`);
+
     angle += tickSpacing;
   }
-  
-  const tickHider = chart.append('circle')
-    .attr('class', 'gaugeChart-tickHider')
-    .attr('cx', center)
-    .attr('cy', center)
-    .attr('r', tickHiderRadius);
-  
-  const label = chart.append('text')
-    .attr('class', 'gaugeChart-label')
-    .attr('x', center)
-    .attr('y', labelY)
-    .attr('text-anchor', 'middle')
-    .attr('alignment-baseline', 'middle')
-    .attr('font-size', labelFontSize)
+
+  const tickHider = chart
+    .append("circle")
+    .attr("class", "gaugeChart-tickHider")
+    .attr("cx", center)
+    .attr("cy", center)
+    .attr("r", tickHiderRadius);
+
+  const label = chart
+    .append("text")
+    .attr("class", "gaugeChart-label")
+    .attr("x", center)
+    .attr("y", labelY)
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle")
+    .attr("font-size", labelFontSize)
     .text(o.label);
-  
-  const valueLabel = chart.append('text')
-    .attr('class', 'gaugeChart-label-value')
-    .attr('x', center)
-    .attr('y', valueLabelY)
-    .attr('text-anchor', 'middle')
-    .attr('alignment-baseline', 'middle')
-    .attr('font-size', labelFontSize)
+
+  const valueLabel = chart
+    .append("text")
+    .attr("class", "gaugeChart-label-value")
+    .attr("x", center)
+    .attr("y", valueLabelY)
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle")
+    .attr("font-size", labelFontSize)
     .text(o.value);
-  
-  const needle = chart.append('path')
-    .attr('class', 'gaugeChart-needle')
-    .attr('stroke-width', outerBezelWidth)
-    .attr('d', `M ${center - needleWidth / 2} ${center}
+
+  const needle = chart
+    .append("path")
+    .attr("class", "gaugeChart-needle")
+    .attr("stroke-width", outerBezelWidth)
+    .attr(
+      "d",
+      `M ${center - needleWidth / 2} ${center}
                 L ${center} ${tickHeight}
-                L ${center + needleWidth / 2} ${center} Z`)
-    .attr('transform', `rotate(${needleAngle} ${center} ${center})`);
-  
-  const needleCap = chart.append('circle')
-    .attr('class', 'gaugeChart-needle-cap')
-    .attr('cx', center)
-    .attr('cy', center)
-    .attr('stroke-width', outerBezelWidth)
-    .attr('r', needleCapRadius);
+                L ${center + needleWidth / 2} ${center} Z`,
+    )
+    .attr("transform", `rotate(${needleAngle} ${center} ${center})`);
+
+  const needleCap = chart
+    .append("circle")
+    .attr("class", "gaugeChart-needle-cap")
+    .attr("cx", center)
+    .attr("cy", center)
+    .attr("stroke-width", outerBezelWidth)
+    .attr("r", needleCapRadius);
 };
 ```
 
@@ -400,8 +426,8 @@ We can call the function like this:
 
 ```javascript
 gaugeChart({
-  el: '#memChart',
-  label: 'Memory',
+  el: "#memChart",
+  label: "Memory",
   value: 73,
 });
 ```

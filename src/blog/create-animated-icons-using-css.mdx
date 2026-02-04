@@ -2,12 +2,12 @@
 cover: ./images/ZXXOT_4N3.webp
 datePublished: 2017-11-09 22:01:01+00:00
 tags:
-- animation
-- css
-- design-ui
-- html
-- javascript
-- web-development
+  - animation
+  - css
+  - design-ui
+  - html
+  - javascript
+  - web-development
 title: Create Animated Icons using CSS
 ---
 
@@ -66,9 +66,15 @@ And they are all black.
 Now, each individual line needs to be shifted from the top a certain distance:
 
 ```css
-.burger-menu .line-1 { top: 14px; }
-.burger-menu .line-2 { top: 42px; }
-.burger-menu .line-3 { top: 72px; }
+.burger-menu .line-1 {
+  top: 14px;
+}
+.burger-menu .line-2 {
+  top: 42px;
+}
+.burger-menu .line-3 {
+  top: 72px;
+}
 ```
 
 Nice! Our burger menu is complete. The full HTML and CSS is:
@@ -97,9 +103,15 @@ Nice! Our burger menu is complete. The full HTML and CSS is:
   background-color: black;
 }
 
-.burger-menu .line-1 { top: 14px; }
-.burger-menu .line-2 { top: 42px; }
-.burger-menu .line-3 { top: 72px; }
+.burger-menu .line-1 {
+  top: 14px;
+}
+.burger-menu .line-2 {
+  top: 42px;
+}
+.burger-menu .line-3 {
+  top: 72px;
+}
 ```
 
 When the user taps this icon, they can expect a menu to open. But what if they
@@ -127,7 +139,9 @@ toggled, remove the middle line ( `line-2` ) and then rotate the top and bottom
 lines ( `line-1` and `line-3` ).
 
 ```css
-.burger-menu.toggled .line-2 { opacity: 0; }
+.burger-menu.toggled .line-2 {
+  opacity: 0;
+}
 
 .burger-menu.toggled .line-1 {
   transform: translateY(28px) rotate(45deg);
@@ -195,14 +209,14 @@ Now, in JavaScript, we can grab all our toggleable icons (even though there is
 only one at the moment):
 
 ```javascript
-const toggleables = document.querySelectorAll('.toggleable');
+const toggleables = document.querySelectorAll(".toggleable");
 ```
 
 For each toggleable icon, we want to listen for clicks:
 
 ```javascript
 toggleables.forEach((toggleable) => {
-  toggleable.addEventListener('click', toggleIcon);
+  toggleable.addEventListener("click", toggleIcon);
 });
 ```
 
@@ -212,13 +226,13 @@ The code above means that any time a toggleable icon is clicked, the
 ```javascript
 const toggleIcon = (e) => {
   // Code to set the toggled class goes here
-}
+};
 ```
 
 In the above function, the `e` argument contains a reference to the click event.
 This is useful because we can figure out which icon was clicked from it.
-Normally, you could just use `e.target` to get this information, but *there's a
-problem!*
+Normally, you could just use `e.target` to get this information, but _there's a
+problem!_
 
 `e.target` will vary depending on whether the user clicked on the container
 `.toggleable` `div` or any of the children `.line` `div`s.
@@ -263,7 +277,7 @@ class:
 
 ```javascript
 const icon = e.composedPath().find((el) => {
-  return el.classList.contains('toggleable');
+  return el.classList.contains("toggleable");
 });
 ```
 
@@ -271,36 +285,35 @@ Great! Now, we have a reference to the `.toggleable` `div`. If our icon is
 already toggled, remove the `toggled` class. Otherwise, add it.
 
 ```javascript
-if (icon.classList.contains('toggled')) {
-  icon.classList.remove('toggled');
+if (icon.classList.contains("toggled")) {
+  icon.classList.remove("toggled");
 } else {
-  icon.classList.add('toggled');
+  icon.classList.add("toggled");
 }
 ```
 
 Our finished JavaScript looks like this:
 
 ```javascript
-const toggleables = document.querySelectorAll('.toggleable')
+const toggleables = document.querySelectorAll(".toggleable");
 
 const toggleIcon = (e) => {
   console.log(e.path);
   const icon = e.path.find((el) => {
-    return el.classList.contains('toggleable');
+    return el.classList.contains("toggleable");
   });
-  
-  if (icon.classList.contains('toggled')) {
-    icon.classList.remove('toggled');
+
+  if (icon.classList.contains("toggled")) {
+    icon.classList.remove("toggled");
   } else {
-    icon.classList.add('toggled');
+    icon.classList.add("toggled");
   }
 };
 
 toggleables.forEach((toggleable) => {
-  toggleable.addEventListener('click', toggleIcon);
+  toggleable.addEventListener("click", toggleIcon);
 });
 ```
-
 
 Clicking the icon — whether it's the container or any of the lines within it —
 will toggle the `toggled` class, and therefor switch the icon.

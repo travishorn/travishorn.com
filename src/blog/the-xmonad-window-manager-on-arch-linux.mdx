@@ -2,8 +2,8 @@
 cover: ./images/xwJjjEq6j.webp
 datePublished: 2022-01-03 13:54:44+00:00
 tags:
-- linux
-- terminal
+  - linux
+  - terminal
 title: The xmonad Window Manager on Arch Linux
 ---
 
@@ -27,7 +27,7 @@ you chose when installing the operating system.
 # Check time settings
 
 If you're following along this article series, you will have just finished
-installing Arch for the first time. We *did* enable time synchronization.
+installing Arch for the first time. We _did_ enable time synchronization.
 However, we only did so on the live image. Since we're now booting into the
 actual installed system, you'll probably have to re-enable it.
 
@@ -46,7 +46,7 @@ sudo timedatectl set-ntp true
 # Installation
 
 The package manager **pacman** can be used to install all sorts of packages in
-Arch.  
+Arch.
 
 Before you install a new package, it's good practice to synchronize the package
 database and update existing packages on your system.
@@ -163,7 +163,7 @@ To get started, here are the most common keyboard bindings I use on a daily
 basis.
 
 | Effect                           | Keys                |
-|:---------------------------------|:--------------------|
+| :------------------------------- | :------------------ |
 | Launch a new terminal            | Alt + Shift + Enter |
 | Close a window                   | Alt + Shift + c     |
 | Focus on next window             | Alt + Tab           |
@@ -384,9 +384,10 @@ The important part of the code is `exec startx`. By including `exec`, your
 system will automatically log you out any time the window manager is killed.
 This is considered a security best practice.
 
-That's it! You can test that xmonad starts at login by closing xmonad with **Alt
-+ Shift + q** and then running `logout` to log out. Type your username and
-password again to log in. xmonad should launch automatically.
+That's it! You can test that xmonad starts at login by closing xmonad with \*\*Alt
+
+- Shift + q\*\* and then running `logout` to log out. Type your username and
+  password again to log in. xmonad should launch automatically.
 
 # Extra: picom
 
@@ -412,7 +413,7 @@ main = do
 ```
 
 If you're using VirtualBox, picom will throw errors because of vsync. I usually
-disable vsync. This isn't a *great* solution, because vsync prevents screen
+disable vsync. This isn't a _great_ solution, because vsync prevents screen
 tearing when watching video or playing games. But disabling it is the easiest
 way to get picom working in this setup.
 

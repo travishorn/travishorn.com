@@ -16,12 +16,12 @@ really never been easier.
 Thanks to other talented developers, today we have many modern tools available.
 Keep reading to learn how to install and use...
 
-* **The Haskell Tool Stack** - build tool
-* **HLint** - code linting
-* **Haskell Syntax Highlighting** in VS Code
-* **GHCi** - the compiler's interactive mode
-* **ghcid** - auto-reload and evaluation code on change
-    
+- **The Haskell Tool Stack** - build tool
+- **HLint** - code linting
+- **Haskell Syntax Highlighting** in VS Code
+- **GHCi** - the compiler's interactive mode
+- **ghcid** - auto-reload and evaluation code on change
+
 This guide is **not** an introduction to the language itself. Instead, it's a
 guide on setting up an environment for coding.
 
@@ -115,12 +115,11 @@ you'll want a few extensions.
 
 In the Extensions panel (Ctrl + Shift + X), search for and install:
 
-* [Haskell Syntax
+- [Haskell Syntax
   Highlighting](https://marketplace.visualstudio.com/items?itemName=justusadam.language-haskell)
   by Justus Adam
-* [haskell-linter](https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter)
+- [haskell-linter](https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter)
   by Cody Hoover
-    
 
 Note that haskell-linter only works if you've got hlint installed (see the
 previous section above).
@@ -228,8 +227,8 @@ Add it to `package.yaml` in the `dependencies` section.
 
 ```yaml
 dependencies:
-- base >= 4.7 && < 5
-- text
+  - base >= 4.7 && < 5
+  - text
 ```
 
 Note that `base` was already there from the default Stack template. All you need
@@ -251,7 +250,7 @@ someFunc = T.putStrLn "someFunc"
 ```
 
 Keep in mind that the first time you build your project after defining a new
-dependency, Stack will have to download and compile it and all of *its*
+dependency, Stack will have to download and compile it and all of _its_
 dependencies. It might take a while the first time.
 
 ## Building the project

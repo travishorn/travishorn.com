@@ -7,8 +7,8 @@ tags: ["api", "html", "javascript"]
 
 Today we'll build a dependency-free function that accepts…
 
-* Data in a JSON array
-* An optional space-separated list of classes
+- Data in a JSON array
+- An optional space-separated list of classes
 
 …then transforms the data and returns a string of HTML representing a table
 element with the specified classes.
@@ -18,11 +18,11 @@ with the same properties. For example:
 
 ```json
 [
-  { "country": "China",         "population": 1379510000 },
-  { "country": "India",         "population": 1330780000 },
-  { "country": "United States", "population":  324788000 },
-  { "country": "Indonesia",     "population":  260581000 },
-  { "country": "Brazil",        "population":  206855000 }
+  { "country": "China", "population": 1379510000 },
+  { "country": "India", "population": 1330780000 },
+  { "country": "United States", "population": 324788000 },
+  { "country": "Indonesia", "population": 260581000 },
+  { "country": "Brazil", "population": 206855000 }
 ]
 ```
 
@@ -41,8 +41,8 @@ First we'll set up some variables.
 
 ```javascript
 var cols = Object.keys(json[0]);
-var headerRow = '';
-var bodyRows = '';
+var headerRow = "";
+var bodyRows = "";
 ```
 
 We want one table column per property. Since it can be assumed (or error-checked
@@ -56,7 +56,7 @@ Next, we'll make sure that if no `classes` argument is passed, that the
 we build the HTML string.
 
 ```javascript
-classes = classes || '';
+classes = classes || "";
 ```
 
 Now I'm going to define a utility function that capitalizes the first letter of
@@ -74,8 +74,8 @@ then concatenates that with `.slice(1)` (the rest of the string).
 Next, we loop over the list of keys and create column headers.
 
 ```javascript
-cols.map(function(col) {
-  headerRow += '<th>' + capitalizeFirstLetter(col) + '</th>';
+cols.map(function (col) {
+  headerRow += "<th>" + capitalizeFirstLetter(col) + "</th>";
 });
 ```
 
@@ -99,8 +99,8 @@ properties and create cells (`<td>`s). This next part goes inside our loop
 above.
 
 ```javascript
-cols.map(function(colName) {
-  bodyRows += '<td>' + row[colName] + '<td>';
+cols.map(function (colName) {
+  bodyRows += "<td>" + row[colName] + "<td>";
 });
 ```
 
@@ -121,11 +121,11 @@ That's it! If we pass our example arrow of objects from earlier…
 
 ```javascript
 var data = [
-  { "country": "China",         "population": 1379510000 },
-  { "country": "India",         "population": 1330780000 },
-  { "country": "United States", "population":  324788000 },
-  { "country": "Indonesia",     "population":  260581000 },
-  { "country": "Brazil",        "population":  206855000 }
+  { country: "China", population: 1379510000 },
+  { country: "India", population: 1330780000 },
+  { country: "United States", population: 324788000 },
+  { country: "Indonesia", population: 260581000 },
+  { country: "Brazil", population: 206855000 },
 ];
 
 json2table(data);
@@ -174,7 +174,7 @@ On a webpage, you could place this anywhere by writing something like this:
 <div id="tableGoesHere"></div>
 
 <script>
-  document.getElementById('tableGoesHere').innerHTML = json2table(data);
+  document.getElementById("tableGoesHere").innerHTML = json2table(data);
 </script>
 ```
 

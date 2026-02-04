@@ -2,13 +2,13 @@
 cover: ./images/ZmIYsPQNe.webp
 datePublished: 2022-02-24 18:31:42+00:00
 tags:
-- api
-- automation
-- backend-systems
-- deployment
-- git
-- javascript
-- software-engineering
+  - api
+  - automation
+  - backend-systems
+  - deployment
+  - git
+  - javascript
+  - software-engineering
 title: Building a Telegram Bot with Netlify
 ---
 
@@ -262,7 +262,7 @@ curl -F "url=https://partiibot-64e989.netlify.app/.netlify/functions/update" htt
 Success! I received an OK response
 
 ```json
-{"ok":true,"result":true,"description":"Webhook was set"}
+{ "ok": true, "result": true, "description": "Webhook was set" }
 ```
 
 # Write the Serverless Function
@@ -397,9 +397,12 @@ https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage
 I had Axios issue a POST request to this URL
 
 ```javascript
-await axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
-  // TODO: Add form data
-});
+await axios.post(
+  `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
+  {
+    // TODO: Add form data
+  },
+);
 ```
 
 The `sendMessage` endpoint accepts some form data. I used these two fields:
@@ -412,10 +415,13 @@ text will just be some hardcoded filler for now. So the full post request looked
 like this:
 
 ```javascript
-await axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
-  chat_id: JSON.parse(event.body).message.chat.id,
-  text: "I got your message!",
-});
+await axios.post(
+  `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
+  {
+    chat_id: JSON.parse(event.body).message.chat.id,
+    text: "I got your message!",
+  },
+);
 ```
 
 That block went just before `return { statusCode: 200 };`
@@ -454,10 +460,13 @@ Here's `sendMessage.js`:
 const axios = require("axios").default;
 
 module.exports = async (chat_id, text) => {
-  await axios.post(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
-    chat_id,
-    text,
-  });
+  await axios.post(
+    `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`,
+    {
+      chat_id,
+      text,
+    },
+  );
 
   return true;
 };
@@ -896,7 +905,7 @@ The results look like this:
           "username": "pavledjuric"
         },
         "title": "What is Amazon Containerization - An Actionable Guide to Running Containers in AWS"
-      },
+      }
       // and so on
     ]
   }

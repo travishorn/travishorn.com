@@ -1,14 +1,14 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { siteTitle, siteDescription } from '../site.js';
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import { siteTitle, siteDescription } from "../site.js";
 
 export async function GET(context) {
-  const blog = await getCollection('blog');
+  const blog = await getCollection("blog");
 
   const items = blog
     .filter((post) => !post.data.draft)
     .sort(
-    (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf()
+      (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
     )
     .map((post) => ({
       title: post.data.title,
@@ -21,6 +21,6 @@ export async function GET(context) {
     title: siteTitle,
     description: siteDescription,
     site: context.site,
-    items
+    items,
   });
 }

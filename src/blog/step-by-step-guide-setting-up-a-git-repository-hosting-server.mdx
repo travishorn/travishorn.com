@@ -2,11 +2,11 @@
 cover: ./images/02f53192-0535-4fd2-b8b9-274c8d60f71a.webp
 datePublished: 2023-08-30 11:00:09+00:00
 tags:
-- deployment
-- git
-- security
-- server-management
-title: 'Step-by-Step Guide: Setting Up a Git Repository Hosting Server'
+  - deployment
+  - git
+  - security
+  - server-management
+title: "Step-by-Step Guide: Setting Up a Git Repository Hosting Server"
 ---
 
 If you're looking for a reliable and secure way to host your Git repositories,
@@ -34,8 +34,8 @@ for those seeking full ownership and control over their codebase.
 
 ## Prerequisites
 
-* A working Linux server machine
-* You are logged in as a non-root user with sudo privileges
+- A working Linux server machine
+- You are logged in as a non-root user with sudo privileges
 
 ## Install git
 
@@ -114,11 +114,10 @@ git clone ssh://myuser@myserver/home/myuser/repos/my-app
 ```
 
 > You can use `localhost` as the hostname as long as...
-> 
+>
 > 1. you're using a virtual machine,
 > 2. you're running `git clone` from the host machine, and
 > 3. you have port 22 forwarded
-
 
 You will be prompted to enter password for `myuser`.
 
@@ -154,9 +153,9 @@ setting up public key authentication.
 
 Make sure you have...
 
-* set up public key authentication on your server
-* added your public key to the server user's `authorized_keys` file
-* added your server as a configured host on your workstation
+- set up public key authentication on your server
+- added your public key to the server user's `authorized_keys` file
+- added your server as a configured host on your workstation
 
 [I wrote a separate blog article with instructions for all of these
 things.](https://travishorn.com/unlocking-the-power-of-public-key-authentication-in-openssh-a-comprehensive-guide)

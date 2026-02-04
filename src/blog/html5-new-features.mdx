@@ -2,10 +2,10 @@
 cover: ./images/V4ocgEco8.webp
 datePublished: 2012-05-04 19:29:56+00:00
 tags:
-- html
-- javascript
-- web-development
-title: 'HTML5: New Features'
+  - html
+  - javascript
+  - web-development
+title: "HTML5: New Features"
 ---
 
 The HTML5 specification is still in working draft, but as web development is
@@ -31,7 +31,6 @@ element when your document has clear "sections" within it.
 <section>Elementary School</section>
 ```
 
-
 ### article
 
 Represents an independent piece of content of a document. This tag could be used
@@ -39,7 +38,12 @@ to define a full blog post or other written piece.
 
 ```html
 <article>
-  High school is a term used in parts of the English-speaking world to describe institutions which provide all or part of secondary education, but not always the highest years of basic education, which can be called a "secondary school" or "secondary college" or other terms, depending on the nation or region. The phrase "high school" is often incorporated into the name of the related institutions.
+  High school is a term used in parts of the English-speaking world to describe
+  institutions which provide all or part of secondary education, but not always
+  the highest years of basic education, which can be called a "secondary school"
+  or "secondary college" or other terms, depending on the nation or region. The
+  phrase "high school" is often incorporated into the name of the related
+  institutions.
 </article>
 ```
 
@@ -51,9 +55,10 @@ see them as side-bars that link or have information to other content on the
 site.
 
 ```html
-<aside>For more information about this site, please visit the "About" section.</aside>
+<aside>
+  For more information about this site, please visit the "About" section.
+</aside>
 ```
-
 
 ### hgroup
 
@@ -103,7 +108,6 @@ define your navigation with the `<nav>` tag.
 </nav>
 ```
 
-
 ### figure & figcaption
 
 A figure in a written book would be something like a photo or a chart. These
@@ -113,11 +117,10 @@ body text, could be taken away without damaging the text.
 
 ```html
 <figure>
-  <img src="https://www.google.com/images/srpr/logo3w.webp" alt="Google">
+  <img src="https://www.google.com/images/srpr/logo3w.webp" alt="Google" />
   <figcaption>Google's logo.</figcaption>
 </figure>
 ```
-
 
 There are many new form elements and input types in this latest version of
 HTML5. All of them aim to make more specific elements you would commonly find on
@@ -132,14 +135,13 @@ answer and/or select from the datalist.
 
 ```html
 <datalist id="levels">
-  <option value="High">
-  <option value="Middle">
-  <option value="Elementary">
+  <option value="High"></option>
+  <option value="Middle"></option>
+  <option value="Elementary"></option>
 </datalist>
 
-<input list="levels">
+<input list="levels" />
 ```
-
 
 ### keygen
 
@@ -150,58 +152,56 @@ back to the browser. With the certificate signed by your server, the user can
 access secure parts of your site where you're requiring a valid certificate.
 
 ```html
-<keygen name="key">
+<keygen name="key"></keygen>
 ```
-
 
 ## Input Types
 
 All the types below are new valid values for the `<input type="">` attribute.
 
-* `tel`: A telephone number
+- `tel`: A telephone number
 
-* `search`: Search terms
+- `search`: Search terms
 
-* `url`: A URL
+- `url`: A URL
 
-* `email`: An email address
+- `email`: An email address
 
-* `datetime`: A date and/or time
+- `datetime`: A date and/or time
 
-* `number`: A number
+- `number`: A number
 
-* `range`: A number within a specific range
+- `range`: A number within a specific range
 
-* `color`: A hex value of a color
+- `color`: A hex value of a color
 
 Code:
 
 ```html
 <label for="phoneNumber">Phone number:</label>
-<input type="tel" id="phoneNumber"><br>
+<input type="tel" id="phoneNumber" /><br />
 
 <label for="search">Search:</label>
-<input type="search" id="search"><br>
+<input type="search" id="search" /><br />
 
 <label for="webSite">Web site:</label>
-<input type="url" id="webSite"><br>
+<input type="url" id="webSite" /><br />
 
 <label for="emailAddress">Email address:</label>
-<input type="email" id="emailAddress"><br>
+<input type="email" id="emailAddress" /><br />
 
 <label for="dateOfBirth">Date of birth:</label>
-<input type="datetime" id="dateOfBirth"><br>
+<input type="datetime" id="dateOfBirth" /><br />
 
 <label for="age">Age:</label>
-<input type="number" min="0" max="100" id="age"><br>
+<input type="number" min="0" max="100" id="age" /><br />
 
 <label for="volume">Volume:</label>
-<input type="range" min="0" max="100" step="10" id="volume"><br>
+<input type="range" min="0" max="100" step="10" id="volume" /><br />
 
 <label for="favoriteColor">Favorite color:</label>
-<input type="color" id="favoriteColor">
+<input type="color" id="favoriteColor" />
 ```
-
 
 ## Other Elements
 
@@ -218,7 +218,6 @@ that, offering native support in the browser rather than a plugin like Flash.
 <video src="video.ogv" controls></video>
 ```
 
-
 ### audio
 
 Similar to `<video>`, but with audio data only.
@@ -227,7 +226,6 @@ Similar to `<video>`, but with audio data only.
 <audio src="audio.ogg" controls></audio>
 ```
 
-
 ### track
 
 Specifies external timed track information for the `<video>` element. This can
@@ -235,10 +233,9 @@ be used for subtitles and captions.
 
 ```html
 <video src="video.ogv" controls>
-  <track kind="subtitles" src="video.en.vtt" srclang="en" label="English">
+  <track kind="subtitles" src="video.en.vtt" srclang="en" label="English" />
 </video>
 ```
-
 
 ### progress
 
@@ -246,9 +243,10 @@ Used to indicate the status of a task. This will normally create a progress bar
 that can be manipulated through JavaScript.
 
 ```javascript
-<progress max="100" value="25">25%</progress>
+<progress max="100" value="25">
+  25%
+</progress>
 ```
-
 
 ### meter
 
@@ -259,7 +257,6 @@ progress.
 <meter max="100" value="50">50 out of 100</meter>
 ```
 
-
 ### canvas
 
 Another popular new element. Renders dynamic bitmap images on the fly. This is
@@ -269,8 +266,8 @@ useful for graphs and games.
 <canvas id="rectangle"></canvas>
 
 <script>
-  var canvas = document.getElementById('rectangle');
-  var context = canvas.getContext('2d');
+  var canvas = document.getElementById("rectangle");
+  var context = canvas.getContext("2d");
 
   context.fillRect(0, 0, 50, 50);
 </script>
@@ -295,37 +292,35 @@ page.
 </details>
 ```
 
-
 ## Attributes
 
 Input Attributes
 
-* `autofocus`: Places the cursor in this input on page load
+- `autofocus`: Places the cursor in this input on page load
 
-* `placeholder`: Text to be displayed in input is empty
+- `placeholder`: Text to be displayed in input is empty
 
-* `form`: Defines what form the element belongs to
+- `form`: Defines what form the element belongs to
 
-* `required`: Will prompt user to complete the input if blank
+- `required`: Will prompt user to complete the input if blank
 
 Code:
 
 ```html
 <label for="autoFocus">Will be autofocused:</label>
-<input type="text" autofocus id="autoFocus"><br>
+<input type="text" autofocus id="autoFocus" /><br />
 
 <label for="placeHolder">Has a placeholder:</label>
-<input type="text" placeholder="See!" id="placeHolder"><br>
+<input type="text" placeholder="See!" id="placeHolder" /><br />
 
 <label for="tiedToForm">Tied to a separate form:</label>
-<input type="text" form="otherForm" id="tiedToForm">
+<input type="text" form="otherForm" id="tiedToForm" />
 
 <form id="otherForm" action="#"></form>
 
 <label for="isRequired">Cannot be blank when submitted:</label>
-<input type="text" required>
+<input type="text" required />
 ```
-
 
 ### contenteditable
 
@@ -333,13 +328,10 @@ Add this attribute to any element to make it editable. I can see a lot of use
 coming out of this tag for web applications.
 
 ```html
-<div contenteditable>
-  You can edit this div.
-</div>
+<div contenteditable>You can edit this div.</div>
 ```
 
-
-### data-*
+### data-\*
 
 A long-overdue feature of HTML. You can assign custom attributes to any element,
 just by prefixing it with `data-`.
@@ -352,7 +344,6 @@ just by prefixing it with `data-`.
 </ul>
 ```
 
-
 ### draggable & dropzone
 
 `dropzone` can be used to specify an area of a page the user can drop things
@@ -362,17 +353,19 @@ other attributes to tell dropzone what to do with dropped content.
 ```html
 <div draggable="true">I can be dragged</div>
 
-<div dropzone="copy file:image/png file:image/gif file:image/jpeg" ondrop="receive(event, this)">
+<div
+  dropzone="copy file:image/png file:image/gif file:image/jpeg"
+  ondrop="receive(event, this)"
+>
   <p>Drop an image here!</p>
 </div>
 
 <script>
   function receive(event, element) {
-    alert('Dropped!');
+    alert("Dropped!");
   }
 </script>
 ```
-
 
 I wouldn't use any of these features without having relevent fallbacks in place
 due to how new they are and how sporadic the support may be. However, many of

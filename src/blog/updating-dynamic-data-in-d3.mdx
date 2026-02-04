@@ -2,10 +2,10 @@
 cover: ./images/trfwnInZy.webp
 datePublished: 2017-11-23 22:01:06+00:00
 tags:
-- d3
-- data-visualization
-- javascript
-- svg
+  - d3
+  - data-visualization
+  - javascript
+  - svg
 title: Updating Dynamic Data in D3
 ---
 
@@ -64,9 +64,7 @@ Inside the `plot()` function, use D3 to store a reference to all
 data to them.
 
 ```javascript
-const circle = svg
-  .selectAll('circle')
-  .data(data);
+const circle = svg.selectAll("circle").data(data);
 ```
 
 Now, define what happens when a new piece of data enters our dataset:
@@ -74,10 +72,10 @@ Now, define what happens when a new piece of data enters our dataset:
 ```javascript
 circle
   .enter()
-  .append('circle')
-  .attr('cy', circleRadius)
-  .attr('cx', (d, i) => circleRadius + (i * circleDiameter))
-  .attr('r', circleRadius);
+  .append("circle")
+  .attr("cy", circleRadius)
+  .attr("cx", (d, i) => circleRadius + i * circleDiameter)
+  .attr("r", circleRadius);
 ```
 
 Breaking down the code above… when a piece of data enters the dataset:
@@ -92,9 +90,7 @@ Breaking down the code above… when a piece of data enters the dataset:
 And when a piece of data exits the dataset:
 
 ```javascript
-circle
-  .exit()
-  .remove();
+circle.exit().remove();
 ```
 
 Just remove the `<circle>` it represents.
@@ -102,7 +98,7 @@ Just remove the `<circle>` it represents.
 The `plot()` function is done. Let's use it to plot our data to our svg element.
 
 ```javascript
-const svg = d3.select('svg');
+const svg = d3.select("svg");
 plot(data, svg);
 ```
 
@@ -118,12 +114,12 @@ JavaScript. First, define the buttons' actions.
 const addCircle = () => {
   if (data.length < 5) data.push(1);
   plot(data, svg);
-}
+};
 
 const removeCircle = () => {
   data.pop();
   plot(data, svg);
-}
+};
 ```
 
 To add a circle, push a new value to the array, then run the `plot()` function
@@ -139,11 +135,9 @@ event](https://developer.mozilla.org/en-US/docs/Web/Events/click) on the
 buttons.
 
 ```javascript
-document.getElementById('addCircle')
-  .addEventListener('click', addCircle);
+document.getElementById("addCircle").addEventListener("click", addCircle);
 
-document.getElementById('removeCircle')
-  .addEventListener('click', removeCircle);
+document.getElementById("removeCircle").addEventListener("click", removeCircle);
 ```
 
 Clicking "Add circle" adds a new value to the array, thus a new circle to our

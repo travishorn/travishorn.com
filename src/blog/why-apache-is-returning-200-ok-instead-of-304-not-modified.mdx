@@ -7,7 +7,7 @@ tags: ["api", "performance", "server-management"]
 
 I recently ran into a frustrating caching issue with Apache. I requested a page
 where the request headers included `If-Modified-Since` and the response headers
-included `Last-Modified`. Since the timestamps matched, the server *should* have
+included `Last-Modified`. Since the timestamps matched, the server _should_ have
 responded with a **304 Not Modified** (and no content). Instead, it kept
 responding with a **200 OK** and the full content payload.
 
@@ -29,7 +29,7 @@ Using **time-based validation**, the server sends a `Last-Modified` (a timestamp
 of when the file changed). The client asks for a `If-Modified-Since` (sending
 that timestamp back). If the file hasn't changed since that date, return
 **304**.
-    
+
 Using **content-based validation (ETags)**, the server sends an `ETag` (a unique
 hash or fingerprint of the file contents, e.g., `"12345"`). The client asks for
 a `If-None-Match` (sending that hash back). If the file's current hash matches
@@ -46,7 +46,7 @@ First, I discovered that Apache prioritizes `If-None-Match` over
 the response headers included an `ETag`. Even though the values seemed to match,
 I was still getting a **200 OK**.
 
-Then I remembered I had enabled compression (mod\_deflate) using
+Then I remembered I had enabled compression (mod_deflate) using
 `AddOutputFilterByType`.
 
 It turns out that when Gzip compression is enabled, Apache appends a `-gzip`
@@ -57,7 +57,7 @@ validation still failing?
 ## The Root Cause
 
 The issue lies in Apache's order of operations. Apache calculates the ETag for
-the underlying file and compares it to the client's header *before* it applies
+the underlying file and compares it to the client's header _before_ it applies
 compression.
 
 The flow looks like this:
@@ -69,7 +69,7 @@ The flow looks like this:
 5. Apache compresses the file and appends `-gzip` to the ETag.
 6. Apache sends **200 OK** with `ETag: "12345-gzip"`.
 
-Because the suffix is added *after* the comparison, the client's ETag will never
+Because the suffix is added _after_ the comparison, the client's ETag will never
 match the server's calculated ETag.
 
 ## The Solution
@@ -83,7 +83,7 @@ Inside your `<IfModule mod_deflate.c>` block, add `FileETag None`:
 <IfModule mod_deflate.c>
     # ... your compression settings ...
     AddOutputFilterByType DEFLATE text/plain text/html ...
-    
+
     # Disable ETags so the server falls back to Last-Modified
     FileETag None
 </IfModule>

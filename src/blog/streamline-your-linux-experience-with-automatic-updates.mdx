@@ -29,15 +29,15 @@ sudo dpkg-reconfigure -plow unattended-upgrades
 
 By default, the system will check for and download upgrades twice a day:
 
-* A random time in a 12 hour window starting at 6 AM
-* A random time in a 12 hour window starting at 6 PM
+- A random time in a 12 hour window starting at 6 AM
+- A random time in a 12 hour window starting at 6 PM
 
 It will then apply the upgrades once per day in a random time in a 60 minute
 window starting at 6 AM.
 
 ## Modify the Schedule
 
-You can override the default schedule when upgrades are *downloaded*.
+You can override the default schedule when upgrades are _downloaded_.
 
 ```bash
 sudo systemctl edit apt-daily.timer
@@ -63,7 +63,7 @@ Once the overrides are in place, restart the timer.
 sudo systemctl restart apt-daily.timer
 ```
 
-You can override the default schedule when upgrades are *applied*, as well.
+You can override the default schedule when upgrades are _applied_, as well.
 
 ```bash
 sudo systemctl edit apt-daily-upgrade.timer

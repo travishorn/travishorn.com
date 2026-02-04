@@ -2,11 +2,11 @@
 cover: ./images/xLowHt8yT.webp
 datePublished: 2021-01-11 23:03:30+00:00
 tags:
-- excel
-- javascript
-- nodejs
-- terminal
-title: 'Using JavaScript to Work with Spreadsheets, Part 4: Making the CLI More Robust'
+  - excel
+  - javascript
+  - nodejs
+  - terminal
+title: "Using JavaScript to Work with Spreadsheets, Part 4: Making the CLI More Robust"
 ---
 
 This is the fourth article in a series where we'll be learning to use the
@@ -88,7 +88,7 @@ argument.
 ```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
-    // Read file at the path
+  // Read file at the path
 }
 ```
 
@@ -97,8 +97,8 @@ Move the line of code that reads files into this new function.
 ```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
-    // Read the file at the path
-    fs.readFile(process.argv[2], "", readFileCallback);
+  // Read the file at the path
+  fs.readFile(process.argv[2], "", readFileCallback);
 }
 ```
 
@@ -108,8 +108,8 @@ function.
 ```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
-    // Read the file at the path
-    fs.readFile(path, "", readFileCallback);
+  // Read the file at the path
+  fs.readFile(path, "", readFileCallback);
 }
 ```
 
@@ -120,17 +120,17 @@ way keeps everything tidy.
 ```javascript
 // Function for taking a file path and logging the contents
 function logAction(path) {
-    // Used as a callback when a file is read
-    function readFileCallback(err, data) {
-        // Convert the file's data buffer to a string
-        const fileContents = data.toString();
+  // Used as a callback when a file is read
+  function readFileCallback(err, data) {
+    // Convert the file's data buffer to a string
+    const fileContents = data.toString();
 
-        // Log the file contents
-        console.log(fileContents);
-    }
+    // Log the file contents
+    console.log(fileContents);
+  }
 
-    // Read the file at the path
-    fs.readFile(path, "", readFileCallback);
+  // Read the file at the path
+  fs.readFile(path, "", readFileCallback);
 }
 ```
 
@@ -251,11 +251,11 @@ again.
 ```javascript
 // Used as a callback when a file is read
 function readFileCallback(err, data) {
-    // Convert the file's data buffer to a string
-    const fileContents = data.toString();
+  // Convert the file's data buffer to a string
+  const fileContents = data.toString();
 
-    // Log the file contents
-    console.log(fileContents);
+  // Log the file contents
+  console.log(fileContents);
 }
 ```
 
@@ -265,15 +265,15 @@ defined, but I bet `err` is. Let's write logic to handle this case.
 ```javascript
 // Used as a callback when a file is read
 function readFileCallback(err, data) {
-    if (err !== null) {
-        console.error(err);
-    } else {
-        // Convert the file's data buffer to a string
-        const fileContents = data.toString();
+  if (err !== null) {
+    console.error(err);
+  } else {
+    // Convert the file's data buffer to a string
+    const fileContents = data.toString();
 
-        // Log the file contents
-        console.log(fileContents);
-    }
+    // Log the file contents
+    console.log(fileContents);
+  }
 }
 ```
 
@@ -305,13 +305,13 @@ haven't encountered, just show the ugly error message.
 
 ```javascript
 if (err !== null) {
-    switch (err.code) {
-        case "ENOENT":
-            console.error("That file doesn't exist.");
-            break;
-        default:
-            console.error(err.message);
-    }
+  switch (err.code) {
+    case "ENOENT":
+      console.error("That file doesn't exist.");
+      break;
+    default:
+      console.error(err.message);
+  }
 }
 ```
 

@@ -2,12 +2,12 @@
 cover: ./images/Z8PigsLA3.webp
 datePublished: 2020-08-15 19:36:58+00:00
 tags:
-- d3
-- data-visualization
-- javascript
-- svg
-- vue
-- web-development
+  - d3
+  - data-visualization
+  - javascript
+  - svg
+  - vue
+  - web-development
 title: Build a Sparkline Vue Component
 ---
 
@@ -32,11 +32,11 @@ The CLI will ask you questions about how you'd like to set up your project. You
 can accept the defaults or manually select features you like. I manually
 selected…
 
-* Babel
-* Linter/Formatter
-* ESLint + Prettier
-* Lint on save
-* In dedicated config files
+- Babel
+- Linter/Formatter
+- ESLint + Prettier
+- Lint on save
+- In dedicated config files
 
 Once the project has been created, start the dev server.
 
@@ -50,17 +50,14 @@ Create a new component in the `src/components` directory called `SparkLine.vue`
 ```vue
 <template>
   <svg viewBox="0 0 200 40">
-    <path d="M 0 20 H 200"
-          fill="none"
-          stroke-width="3"
-          stroke-color="gold" />
+    <path d="M 0 20 H 200" fill="none" stroke-width="3" stroke-color="gold" />
   </svg>
 </template>
 
 <script>
 export default {
-  name: "SparkLine"
-}
+  name: "SparkLine",
+};
 </script>
 ```
 
@@ -86,7 +83,7 @@ In that file, replace everything in the template with…
 ```
 
 Notice how we put the sparkline component inside a container element with a
-narrow width. This will give it the traditional *small* appearance.
+narrow width. This will give it the traditional _small_ appearance.
 
 Now, replace the script section with…
 
@@ -97,8 +94,8 @@ import SparkLine from "./components/SparkLine.vue";
 export default {
   name: "App",
   components: {
-    SparkLine
-  }
+    SparkLine,
+  },
 };
 </script>
 ```
@@ -139,9 +136,9 @@ export default {
       type: Array,
       default() {
         return [0, 0];
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 ```
@@ -174,10 +171,12 @@ the `props` definition, add a `mounted()` function.
 ```javascript
 export default {
   name: "SparkLine",
-  props: { /* ... snip ... */ },
+  props: {
+    /* ... snip ... */
+  },
   mounted() {
     // We will set up the chart here
-  }
+  },
 };
 ```
 
@@ -211,7 +210,7 @@ Now we must define the line function.
 this.line = d3
   .line()
   .x((d, i) => this.x(i))
-  .y(d => this.y(d));
+  .y((d) => this.y(d));
 ```
 
 What the code above does, is defines a D3 line where the x value is determined
@@ -297,7 +296,7 @@ While all of this works as a single component, there's one important bug that we
 have to fix if we want to re-use this component more than once on the same page.
 Right now, we have D3 selecting the sole `<svg>` element on the page. If you
 have more than one `<svg>` on the same page, D3 is just going to select the
-first one it finds. This is no good. We want to select the `<svg>` in *this*
+first one it finds. This is no good. We want to select the `<svg>` in _this_
 component.
 
 To do that, we can assign our `<svg>` a unique ID.
@@ -319,25 +318,31 @@ Create a new `id` data property and use nanoid to make it random.
 ```javascript
 export default {
   name: "SparkLine",
-  props: { /* ... snip ... */ },
+  props: {
+    /* ... snip ... */
+  },
   data() {
     return {
-      id: `chart-${nanoid()}`
+      id: `chart-${nanoid()}`,
     };
   },
-  methods: { /* ... snip ... */ },
-  mounted() { /* ... snip ... */ }
+  methods: {
+    /* ... snip ... */
+  },
+  mounted() {
+    /* ... snip ... */
+  },
 };
 ```
 
-We use the template string ``chart-${nanoid()}`` so that our random id is in the
+We use the template string `chart-${nanoid()}` so that our random id is in the
 format `chart-kHM_8K1yz8GGq6MVBwfoG` or `chart-VG5J13fYZIdMBrSDRuEBX` for
 example. It's always random.
 
 In the template, set the `<svg>`'s `id` to this new id.
 
 ```html
-<svg :id="id" viewBox="0 0 200 40">
+<svg :id="id" viewBox="0 0 200 40"></svg>
 ```
 
 Finally, tell D3 to select the element based on this ID.

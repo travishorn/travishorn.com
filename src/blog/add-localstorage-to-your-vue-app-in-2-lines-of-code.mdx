@@ -16,18 +16,18 @@ example](https://codepen.io/travishorn/pen/brKvvN).
 
 The app template is made out of two basic components:
 
-* an `<input>` that's bound to `newTodo` and executes `addTodo()` on enter.    
-* a list that loops over `todos`; displaying a checkbox bound to
+- an `<input>` that's bound to `newTodo` and executes `addTodo()` on enter.
+- a list that loops over `todos`; displaying a checkbox bound to
   `todo.completed` and a text node bound to `todo.text`
 
 The Vue app is defined with two data objects:
 
-* `newTodo`, which stores the value of the new "to do" text input
-* `todos`, which is an array of existing todo items (currently empty)
+- `newTodo`, which stores the value of the new "to do" text input
+- `todos`, which is an array of existing todo items (currently empty)
 
 The app has a single method:
 
-* `addTodo()`, which pushes a new "todo" object to the `todos` array and then
+- `addTodo()`, which pushes a new "todo" object to the `todos` array and then
   clears the `newTodo` text input
 
 Near the bottom of the app, I've placed some code to be executed when the app is
@@ -72,8 +72,8 @@ caniuse.com](./images/1_lJjF2TKJ62wCRstukN8dqA.webp)
 
 The basic idea here is to listen for two events:
 
-* when the `todos` array changes, serialize it and save to LocalStorage
-* when the app mounts, get the data from from LocalStorage, deserialize it, and
+- when the `todos` array changes, serialize it and save to LocalStorage
+- when the app mounts, get the data from from LocalStorage, deserialize it, and
   update the `todos` array.
 
 The first event will be handled with the watcher we already have in place. Just

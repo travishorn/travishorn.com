@@ -2,9 +2,9 @@
 cover: ./images/CXuLD0-W6.webp
 datePublished: 2014-09-29 23:30:00+00:00
 tags:
-- git
-- javascript
-- nodejs
+  - git
+  - javascript
+  - nodejs
 title: npm Package Store
 ---
 
@@ -28,7 +28,6 @@ A web app that displays updates for your globally installed npm modules. Inspire
 > npm start
 ```
 
-
 Then just go to [http://127.0.0.1:3000](http://127.0.0.1:3000/)
 
 You can modify the port **npm Package Store** runs on with the PORT environment variable.
@@ -37,14 +36,14 @@ You can modify the port **npm Package Store** runs on with the PORT environment 
 
 There's plenty of room for improvement on this project.
 
-* I've already [published it as an npm module](https://www.npmjs.org/package/npm-package-store), but similar to **Go Package Manager**, I'd like to make this into a binary that can be installed and executed globally, instead of a cloned repository.
+- I've already [published it as an npm module](https://www.npmjs.org/package/npm-package-store), but similar to **Go Package Manager**, I'd like to make this into a binary that can be installed and executed globally, instead of a cloned repository.
 
-* The web app should show the changelog between the currently installed version and the latest version. npm tracks certain changes in the package metadata, but this doesn't include commit messages. npm Package Store will have to follow the repository property in package.json and query GitHub's API to see changes.
+- The web app should show the changelog between the currently installed version and the latest version. npm tracks certain changes in the package metadata, but this doesn't include commit messages. npm Package Store will have to follow the repository property in package.json and query GitHub's API to see changes.
 
-* It should be possible to search through installed modules.
+- It should be possible to search through installed modules.
 
-* It should also be possible to search and install modules in the npm registry.
+- It should also be possible to search and install modules in the npm registry.
 
-* I'd also like to offer more options than just "update." These might include "uninstall", "downgrade", etc.
+- I'd also like to offer more options than just "update." These might include "uninstall", "downgrade", etc.
 
 See the code and contribute on GitHub: [https://github.com/travishorn/npm-package-store](https://github.com/travishorn/npm-package-store)

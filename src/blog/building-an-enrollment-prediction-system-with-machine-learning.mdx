@@ -2,11 +2,11 @@
 cover: ./images/61c9c477-8025-406c-826b-ef4b2c3aaeea.webp
 datePublished: 2026-01-13 12:00:17+00:00
 tags:
-- data-science
-- performance
-- python
-- software-engineering
-- sql
+  - data-science
+  - performance
+  - python
+  - software-engineering
+  - sql
 title: Building an Enrollment Prediction System with Machine Learning
 ---
 
@@ -82,7 +82,7 @@ FROM enrollment e
 JOIN schools s ON e.school_id = s.id
 WHERE
     -- Count date methodology
-    CAST(CONCAT(e.school_year, '-10-01') AS DATE) 
+    CAST(CONCAT(e.school_year, '-10-01') AS DATE)
         BETWEEN e.entry_date AND COALESCE(e.exit_date, '9999-12-31')
 GROUP BY
     s.name,
@@ -113,8 +113,7 @@ overlaid.](./images/a9492e70-ce6f-4a4f-acaf-1655262b8ab6.webp)
 The numbers are definitely not static. There is a significant peak around 2020,
 reaching nearly 10,500 students, followed by a drop the very next year. This
 volatility is most likely due to the COVID-19 pandemic. Since that reset, the
-data shows a brief recovery followed by a steady downward trajectory through
-2026. This proves that a simple "average growth" formula would not suffice. The
+data shows a brief recovery followed by a steady downward trajectory through 2026. This proves that a simple "average growth" formula would not suffice. The
 data is a complex, non-linear narrative that requires a model capable of
 adapting to sudden shifts.
 
@@ -167,16 +166,16 @@ import forecasting as fc          # Handles applying the model to future dates
 def main():
     # Setup arguments
     parser = argparse.ArgumentParser()
-    
+
     parser.add_argument(
-        '--target_year', 
-        type=int, 
+        '--target_year',
+        type=int,
         required=True
     )
-    
+
     parser.add_argument(
-        '--window', 
-        type=int, 
+        '--window',
+        type=int,
         default=5
     )
 
@@ -229,9 +228,9 @@ def create_dataset(lookback_window=5):
     df = pd.read_csv('raw_enrollment_data.csv')
 
     # Enforce grade sort order
-    grade_map = {'PK': -1, 'K': 0, '1': 1, '2': 2, '3': 3, '4': 4, 
+    grade_map = {'PK': -1, 'K': 0, '1': 1, '2': 2, '3': 3, '4': 4,
                  '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, '11': 11, '12': 12}
-    
+
     df['grade_id'] = df['grade'].map(grade_map)
     df = df.sort_values(by=['school', 'grade_id', 'school_year'])
 
@@ -241,15 +240,15 @@ def create_dataset(lookback_window=5):
     df['enrollment_lag_1'] = grouper['enrollment'].shift(1)
     df['enrollment_lag_2'] = grouper['enrollment'].shift(2)
     df['enrollment_lag_3'] = grouper['enrollment'].shift(3)
-    
+
     # Rolling averages smooth out noisy years
     df['enrollment_rolling_avg_2yr'] = grouper['enrollment'].transform(lambda x: x.rolling(2).mean())
     df['enrollment_rolling_avg_3yr'] = grouper['enrollment'].transform(lambda x: x.rolling(3).mean())
-    
+
     # Simple numeric time index for regression models (e.g., 2018 -> 0, 2019 -> 1)
     df['time_index'] = df['school_year'] - df['school_year'].min()
 
-    # Cohort features    
+    # Cohort features
     df['target_prev_grade_id'] = df['grade_id'] - 1
     df['target_prev_year'] = df['school_year'] - 1
 
@@ -257,8 +256,8 @@ def create_dataset(lookback_window=5):
     lookup_df.rename(columns={'enrollment': 'prev_year_prev_grade_enrollment'}, inplace=True)
 
     df = pd.merge(
-        df, 
-        lookup_df, 
+        df,
+        lookup_df,
         left_on=['school', 'target_prev_grade_id', 'target_prev_year'],
         right_on=['school', 'grade_id', 'school_year'],
         how='left',
@@ -271,15 +270,15 @@ def create_dataset(lookback_window=5):
 
     # Cleanup and export
     final_cols = [
-        'school', 'grade', 'school_year', 
+        'school', 'grade', 'school_year',
         'enrollment_lag_1', 'enrollment_lag_2', 'enrollment_lag_3',
         'enrollment_rolling_avg_2yr', 'enrollment_rolling_avg_3yr',
         'time_index', 'prev_year_prev_grade_enrollment', 'cohort_progression_ratio'
     ]
-    
+
     # Remove rows with NaN created by lags (the first few years of data)
     clean_df = df.dropna(subset=['enrollment_lag_3'])[final_cols]
-    
+
     return clean_df
 
 if __name__ == "__main__":
@@ -311,23 +310,23 @@ from sklearn.metrics import mean_absolute_error
 def run_baseline(df):
     # Time-based split
     test_year = df['school_year'].max()
-    
+
     train_df = df[df['school_year'] < test_year]
     test_df  = df[df['school_year'] == test_year]
 
     # Define features
     features = [
-        'enrollment_lag_1', 
-        'enrollment_lag_2', 
-        'enrollment_rolling_avg_2yr', 
-        'time_index', 
+        'enrollment_lag_1',
+        'enrollment_lag_2',
+        'enrollment_rolling_avg_2yr',
+        'time_index',
         'cohort_progression_ratio'
     ]
     target = 'enrollment'
 
     X_train = train_df[features]
     y_train = train_df[target]
-    
+
     X_test  = test_df[features]
     y_test  = test_df[target]
 
@@ -363,8 +362,8 @@ def find_best_model(df):
 
     # Define features
     features = [
-        'enrollment_lag_1', 'enrollment_lag_2', 
-        'enrollment_rolling_avg_2yr', 'time_index', 
+        'enrollment_lag_1', 'enrollment_lag_2',
+        'enrollment_rolling_avg_2yr', 'time_index',
         'cohort_progression_ratio'
     ]
     target = 'enrollment'
@@ -387,10 +386,10 @@ def find_best_model(df):
     for name, model in models.items():
         # Train
         model.fit(X_train, y_train)
-        
+
         # Predict
         predictions = model.predict(X_test)
-        
+
         # Evaluate
         mae = mean_absolute_error(y_test, predictions)
 
@@ -398,10 +397,10 @@ def find_best_model(df):
         if mae < best_mae:
             best_mae = mae
             champion = model
-    
+
     # Retrain the champion on ALL data (Train + Test) before forecasting the future.
     champion.fit(df[features], df[target])
-    
+
     return champion
 ```
 
@@ -411,7 +410,7 @@ automate the process of tuning the model's hyperparameters. I started by
 targeting the Random Forest's architecture. Instead of testing every possible
 combination of parameters (which takes forever), I implemented
 RandomizedSearchCV. This technique samples a wide range of possibilities for
-parameters like the number of trees (n\_estimators), maximum depth (max\_depth),
+parameters like the number of trees (n_estimators), maximum depth (max_depth),
 etc. The script identifies the specific configuration that produces the best
 predictions.
 
@@ -424,8 +423,8 @@ from sklearn.model_selection import RandomizedSearchCV
 def optimize_random_forest(df):
     # Prepare data
     features = [
-        'enrollment_lag_1', 'enrollment_lag_2', 
-        'enrollment_rolling_avg_2yr', 'time_index', 
+        'enrollment_lag_1', 'enrollment_lag_2',
+        'enrollment_rolling_avg_2yr', 'time_index',
         'cohort_progression_ratio'
     ]
     target = 'enrollment'
@@ -462,13 +461,13 @@ def optimize_random_forest(df):
     # Results
     best_params = search.best_params_
     best_score = search.best_score_ # R-squared value
-    
+
     # Return the optimized model ready for use
     return search.best_estimator_
 ```
 
 To be able to import these files into the main pipeline, we'll need a
-model\_training file that glues everything together:
+model_training file that glues everything together:
 
 ```python
 import baseline_model
@@ -480,15 +479,15 @@ def find_best_model(df):
     champion = advanced_models.find_best_model(df)
     if champion.name == "Random Forest":
         champion = tuning.optimize_random_forest(df)
-    
+
     features = [
-        'enrollment_lag_1', 'enrollment_lag_2', 
-        'enrollment_rolling_avg_2yr', 'time_index', 
+        'enrollment_lag_1', 'enrollment_lag_2',
+        'enrollment_rolling_avg_2yr', 'time_index',
         'cohort_progression_ratio'
     ]
-    
+
     champion.fit(df[features], df['enrollment'])
-    
+
     return champion
 ```
 
@@ -575,11 +574,11 @@ def test_window_sensitivity(df):
     test_year = df['school_year'].max()
 
     # Compare these specific history lengths
-    windows = [3, 5, 7] 
+    windows = [3, 5, 7]
 
     features = [
-        'enrollment_lag_1', 'enrollment_lag_2', 
-        'enrollment_rolling_avg_2yr', 'time_index', 
+        'enrollment_lag_1', 'enrollment_lag_2',
+        'enrollment_rolling_avg_2yr', 'time_index',
         'cohort_progression_ratio'
     ]
     target = 'enrollment'
@@ -588,7 +587,7 @@ def test_window_sensitivity(df):
         # Filter
         start_year = test_year - lookback
         subset_df = df[df['school_year'] >= start_year].copy()
-        
+
         # Split
         train_df = subset_df[subset_df['school_year'] < test_year]
         test_df  = subset_df[subset_df['school_year'] == test_year]
@@ -596,10 +595,10 @@ def test_window_sensitivity(df):
         # Train and evaluate
         model = RandomForestRegressor(n_estimators=100, random_state=42)
         model.fit(train_df[features], train_df[target])
-        
+
         predictions = model.predict(test_df[features])
         error = mean_absolute_error(test_df[target], predictions)
-        
+
         print(f"{lookback}-year window MAE: {error:.2f}")
 ```
 
@@ -625,40 +624,40 @@ def predict_future(model, year):
     # Identify most recent data
     df = pd.read_csv('raw_enrollment_data.csv')
     latest_known_year = df['school_year'].max()
-    
+
     # Filter for the current active students
     current_roster = df[df['school_year'] == latest_known_year].copy()
 
     # Construct future dataframe
     future_df = current_roster[['school', 'grade']].copy()
     future_df['school_year'] = year
-    
+
     # Generate features
-    
+
     future_df['enrollment_lag_1'] = current_roster['enrollment'].values
-    
+
     # For this simplified demo, we assume stability for older lags/ratios.
     # In a real production system, you would calculate these recursively.
-    future_df['enrollment_lag_2'] = current_roster['enrollment'].values 
+    future_df['enrollment_lag_2'] = current_roster['enrollment'].values
     future_df['enrollment_rolling_avg_2yr'] = current_roster['enrollment'].values
     future_df['cohort_progression_ratio'] = 1.0  # Assumes 100% survival rate for the demo
-    
+
     # Update the time index (e.g., if last year was index 5, this is index 6)
     future_df['time_index'] = 100 # Arbitrary high number for the future
 
     # Predict
     features = [
-        'enrollment_lag_1', 'enrollment_lag_2', 
-        'enrollment_rolling_avg_2yr', 'time_index', 
+        'enrollment_lag_1', 'enrollment_lag_2',
+        'enrollment_rolling_avg_2yr', 'time_index',
         'cohort_progression_ratio'
     ]
-    
+
     predictions = model.predict(future_df[features])
 
     # Format output
     future_df['enrollment_prediction'] = np.round(predictions).astype(int)
     final_output = future_df[['school', 'grade', 'school_year', 'enrollment_prediction']]
-    
+
     return final_output
 ```
 

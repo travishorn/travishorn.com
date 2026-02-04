@@ -2,8 +2,8 @@
 cover: ./images/cnftiP-F9.webp
 datePublished: 2016-08-01 22:01:02+00:00
 tags:
-- javascript
-- web-development
+  - javascript
+  - web-development
 title: Link Directly to Google's "I'm Feeling Lucky" Feature
 ---
 
@@ -23,7 +23,6 @@ The URL structure is:
 http://www.google.com/search?q=term&btnI
 ```
 
-
 The most important part of the URL is **&btnI**. If you omit it, Google just returns a regular results page. With **&btnI** appended to the end, Google takes you directly to the top result for the search term (which is, in this case, "term").
 
 Please note that the last letter is a capital "i".
@@ -36,13 +35,11 @@ You can ask users which browser they are using in a text input. If the user inpu
 http://www.google.com/search?q=enable+javascript+firefox&btnI
 ```
 
-
 Similarly, if the user entered "Internet Explorer", your form can redirect them to:
 
 ```
 http://www.google.com/search?q=enable+javascript+internet+explorer&btnI
 ```
-
 
 Demo: [Enable JavaScript in Internet Explorer](http://www.google.com/search?q=enable+javascript+internet+explorer&btnI)
 
@@ -58,7 +55,6 @@ This seems to work for some queries, but not all. While, all of the examples in 
 http://www.google.com/search?q=github+foo+bar+foobar&btnI
 ```
 
-
 Instead of redirecting you to the first search result, the regular Google results are shown. I'm not sure why this is. Google doesn't seem to have any documentation to support this API in the first place.
 
 If you are running into this issue, [Lorenzo Alali](https://medium.com/@lorenzoalali) pointed me to [this topic on the Alfred Forums](https://www.alfredforum.com/topic/5927-force-im-feeling-lucky/?do=findComment&comment=36422) where a workaround is discussed. [DuckDuckGo](https://duckduckgo.com) (a competing search engine) provides the same functionality as Google's "I'm Feeling Lucky" button. They call it "I'm Feeling Ducky". Here's how you would use it:
@@ -66,7 +62,6 @@ If you are running into this issue, [Lorenzo Alali](https://medium.com/@lorenzoa
 ```
 https://duckduckgo.com/?q=!ducky+github+foo+bar+foobar
 ```
-
 
 The difference between this approach and the Google approach is that:
 

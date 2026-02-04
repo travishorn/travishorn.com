@@ -2,12 +2,12 @@
 cover: ./images/096d65f6-d134-430f-a857-4151f07d39d4.webp
 datePublished: 2023-10-25 11:00:12+00:00
 tags:
-- deployment
-- git
-- javascript
-- linux
-- nodejs
-- server-management
+  - deployment
+  - git
+  - javascript
+  - linux
+  - nodejs
+  - server-management
 title: Rolling Your Own Continuous Deployment with Node.js, Git, PM2, and Linux
 ---
 
@@ -20,19 +20,19 @@ Linux.
 
 ## Prerequisites
 
-* A Node.js app that has its source code hosted in a bare git repository on the
+- A Node.js app that has its source code hosted in a bare git repository on the
   server. This is different than just cloning the repository. The server is
   actually hosting the repo. [I wrote a guide for
   this.](https://travishorn.com/step-by-step-guide-setting-up-a-git-repository-hosting-server)
-* The repository has been cloned to another location on the server. This is the
+- The repository has been cloned to another location on the server. This is the
   production code that PM2 will manage.
-* The production code for the app is being run and managed by PM2. [I also wrote
+- The production code for the app is being run and managed by PM2. [I also wrote
   a guide for
   this.](https://travishorn.com/how-to-manage-nodejs-processes-with-pm2)
 
 ## **Set up CI**
 
-In the bare repository (*not* the cloned repository that PM2 is running from),
+In the bare repository (_not_ the cloned repository that PM2 is running from),
 create a post-receive git hook by creating a file named `[repo
 name]/hooks/post-receive`.
 

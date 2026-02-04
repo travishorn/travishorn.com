@@ -2,12 +2,12 @@
 cover: ./images/knymS6IkD.webp
 datePublished: 2018-10-25 11:01:01+00:00
 tags:
-- css
-- d3
-- git
-- html
-- software-engineering
-- web-development
+  - css
+  - d3
+  - git
+  - html
+  - software-engineering
+  - web-development
 title: Day-to-day source control
 ---
 
@@ -68,8 +68,8 @@ my-charts/
   index.html
 ```
 
-*Assume that in this example, the directory already has a Git repository
-initialized on it.*
+_Assume that in this example, the directory already has a Git repository
+initialized on it._
 
 Now I want to add a new chart to this page.
 
@@ -79,16 +79,19 @@ created) new script.
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/main.css" />
     <title>My Charts</title>
   </head>
   <body>
     <div id="chart-1"></div>
-    **<div id="chart-2"></div>
+    **
+    <div id="chart-2"></div>
     **
     <script src="scripts/d3.js"></script>
     <script src="scripts/chart-1.js"></script>
-    **<script src="scripts/chart-2.js"></script>**
+    **
+    <script src="scripts/chart-2.js"></script>
+    **
   </body>
 </html>
 ```
@@ -96,8 +99,8 @@ created) new script.
 Then I create `scripts/chart-2.js`:
 
 ```javascript
-d3.tsv('/data/data.tsv', (err, data) => {
-  const chart = d3.select('#chart-2').append('svg');
+d3.tsv("/data/data.tsv", (err, data) => {
+  const chart = d3.select("#chart-2").append("svg");
 
   /*
    * SNIP!
@@ -167,7 +170,6 @@ Once merged, the feature branch can be safely deleted.
 ```console
 git branch -d chart_3
 ```
-
 
 If I **don't** like the changes and I want to get rid of the branch **without
 merging**, I force the delete.

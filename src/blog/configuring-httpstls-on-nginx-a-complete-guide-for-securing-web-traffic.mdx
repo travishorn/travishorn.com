@@ -2,10 +2,10 @@
 cover: ./images/a0a0049f-5b80-43fb-ae45-aed1387738ce.webp
 datePublished: 2023-12-06 12:00:12+00:00
 tags:
-- bash
-- security
-- server-management
-title: 'Configuring HTTPS/TLS on nginx: A Complete Guide for Securing Web Traffic'
+  - bash
+  - security
+  - server-management
+title: "Configuring HTTPS/TLS on nginx: A Complete Guide for Securing Web Traffic"
 ---
 
 Today, online security is paramount. Configuring HTTPS/TLS/SSL on your web
@@ -92,8 +92,8 @@ With the certificate installed, you should be able to visit your domain using
 `https://` and see your web app. You can also visit it via `http://` and you
 should be automatically redirected to the `https://` URL.
 
-*Make sure you have allowed incoming traffic on port 443 in your firewall's
-configuration.*
+_Make sure you have allowed incoming traffic on port 443 in your firewall's
+configuration._
 
 ## Self-Signed Certificate
 
@@ -157,9 +157,9 @@ server {
 }
 ```
 
-*Note that the configuration file uses the term "SSL" for backward
+_Note that the configuration file uses the term "SSL" for backward
 compatibility. Rest assured what we're enabling here is the more updated, more
-common, and more secure TLS.*
+common, and more secure TLS._
 
 Save and close the file.
 
@@ -179,8 +179,8 @@ With the certificate installed, you should be able to visit your domain using
 `https://` and see your web app. You can also visit it via `http://` and you
 should be automatically redirected to the `https://` URL.
 
-*Make sure you have allowed incoming traffic on port 443 in your firewall's
-configuration.*
+_Make sure you have allowed incoming traffic on port 443 in your firewall's
+configuration._
 
 Since you're using a self-signed certificate, your browser will probably warn
 you that the certificate is invalid. You can usually bypass this by clicking

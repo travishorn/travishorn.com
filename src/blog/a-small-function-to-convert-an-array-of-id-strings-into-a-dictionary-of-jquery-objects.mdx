@@ -2,111 +2,104 @@
 cover: ./images/KiYqTh4QT.webp
 datePublished: 2016-07-16 00:12:52+00:00
 tags:
-- css
-- javascript
-- web-development
-title: A small function to convert an array of ID strings into a dictionary of jQuery
+  - css
+  - javascript
+  - web-development
+title:
+  A small function to convert an array of ID strings into a dictionary of jQuery
   objects
 ---
 
 I often use jQuery to modify the DOM. The simplest way to do this is to use jQuery's query selector and a modifier function.
 
 ```javascript
-$('#intro').css('background-color', 'green');
+$("#intro").css("background-color", "green");
 ```
 
 If you have to perform multiple actions on the same element, you can keep using this selector.
 
 ```javascript
-$('#intro').css('background-color', 'green');
+$("#intro").css("background-color", "green");
 
 // Later...
 
-$('#intro').hide();
+$("#intro").hide();
 ```
-
 
 Instead of searching the DOM every time we want to access this element, it is much more efficient to search for it once and store it in a variable.
 
 ```javascript
-var intro = $('#intro');
+var intro = $("#intro");
 
-intro.css('background-color', 'green');
+intro.css("background-color", "green");
 
 // Later...
 
 intro.hide();
 ```
 
-
 If you have many elements to access…
 
 ```javascript
-var intro = $('#intro');
-var header = $('#header');
-var button = $('#button');
-var form = $('#form');
-var alert = $('#alert');
-var footer = $('#footer');
+var intro = $("#intro");
+var header = $("#header");
+var button = $("#button");
+var form = $("#form");
+var alert = $("#alert");
+var footer = $("#footer");
 // etc...
 ```
-
 
 it may be wise to put them all into a "dictionary" object.
 
 ```javascript
 var dom = {
-  intro: $('#intro'),
-  header: $('#header'),
-  button: $('#button'),
-  form: $('#form'),
-  alert: $('#alert'),
-  footer: $('#footer'),
+  intro: $("#intro"),
+  header: $("#header"),
+  button: $("#button"),
+  form: $("#form"),
+  alert: $("#alert"),
+  footer: $("#footer"),
   /// etc...
 };
 ```
 
-
 This way they can be accessed by dot (or bracket) notation from the main object.
 
 ```javascript
-dom.intro.css('background-color', 'green');
+dom.intro.css("background-color", "green");
 dom.header.hide();
 
-dom['outro'].text('Goodbye.');
-dom['alert'].show();
+dom["outro"].text("Goodbye.");
+dom["alert"].show();
 ```
-
 
 Writing the dictionary seems inefficient because there's a lot of duplicated words. As long as your element IDs are also valid JavaScript variable names, we can automatically convert the IDs into variables with a small function.
 
 ### The idsToJqObjects function
 
 ```javascript
-var idsToJqObjects = function(arr) {
-  return arr
-    .reduce(function addJqToObject(obj, newKey) {
-      obj[newKey] = $('#' + newKey);
-      return obj;
-    }, {});
+var idsToJqObjects = function (arr) {
+  return arr.reduce(function addJqToObject(obj, newKey) {
+    obj[newKey] = $("#" + newKey);
+    return obj;
+  }, {});
 };
 ```
-
 
 Use it in this way:
 
 ```javascript
 var dom = idstoJqObjects([
-  'intro',
-  'header',
-  'button',
-  'form',
-  'alert',
-  'footer',
+  "intro",
+  "header",
+  "button",
+  "form",
+  "alert",
+  "footer",
   // etc...
 ]);
 ```
-
 
 Your jQuery objects can be accessed with the same dot or bracket notation as before, without having to write duplicate code for each ID/variable.
 

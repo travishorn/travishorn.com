@@ -2,12 +2,12 @@
 cover: ./images/TyLD1va8B.webp
 datePublished: 2019-04-11 11:01:01+00:00
 tags:
-- css
-- deployment
-- html
-- javascript
-- vue
-- web-development
+  - css
+  - deployment
+  - html
+  - javascript
+  - vue
+  - web-development
 title: Getting Started with Vue Single File Components
 ---
 
@@ -16,7 +16,7 @@ guide, it begins by detailing how to use Vue in the easiest way possible:
 including the library directly using the `<script>` tag. This is a very fast way
 to get started. It's effective for new users.
 
-Eventually, you'll discover a need for components. While you *can* still use the
+Eventually, you'll discover a need for components. While you _can_ still use the
 direct`<script>` method with components, it would be wise to start thinking
 about switching over to [Single File
 Components](https://vuejs.org/v2/guide/single-file-components.html) — or SFCs.
@@ -28,10 +28,10 @@ Vue to your page via direct `<script>` include, you define a component like
 this:
 
 ```javascript
-Vue.component('person-greeter', {
-  props: ['personName'],
-  template: '<h2>Hello, {{ personName }}!</h2>'
-})
+Vue.component("person-greeter", {
+  props: ["personName"],
+  template: "<h2>Hello, {{ personName }}!</h2>",
+});
 ```
 
 And use it inside a Vue instance like this:
@@ -45,38 +45,38 @@ And use it inside a Vue instance like this:
 
 ```javascript
 new Vue({
-  el: '#app'
+  el: "#app",
 });
 ```
 
 Components are very powerful because you can lay out your app into logical
-*components* and re-use them when it makes sense to do so. If you're not
+_components_ and re-use them when it makes sense to do so. If you're not
 familiar with them, I recommend checking out [the official documentation section
 on components](https://vuejs.org/v2/guide/components.html).
 
-### Now, what is a *Single File* Component?
+### Now, what is a _Single File_ Component?
 
 SFCs are components (just like above) except they are self-contained in their
 own files.
 
 ### Why should I use SFCs over the method above?
 
-* **More naming flexibility** — As you can see above, components built using
+- **More naming flexibility** — As you can see above, components built using
   direct `<script>` include must be registered using `Vue.component`. They are
-  all *globally* registered. This forces all component names to be unique.
+  all _globally_ registered. This forces all component names to be unique.
   Single file components are registered using a different method that allows you
   can name them however you wish. For example: If you are using two libraries
   that share component names, you have a way to handle that with SFCs.
-* **Prettier templates** — Components registered using `Vue.component` must have
+- **Prettier templates** — Components registered using `Vue.component` must have
   a `template` property which is a string that describes the template. With
   SFCs, you can code the template more naturally in your editor instead of using
   a single string. Most modern editors can even syntax highlight templates just
   as if you were writing regular HTML.
-* **Component styling** — Take another look at the component above. You can see
+- **Component styling** — Take another look at the component above. You can see
   the HTML and JavaScript that make up the component. But CSS, if you wanted to
   add any, would have to be included separately. SFCs provide a method to code
   the component's CSS with the component itself.
-* **Pre-processor support** — It's not so easy to use pre-processors like Babel,
+- **Pre-processor support** — It's not so easy to use pre-processors like Babel,
   Pug, or SASS with the direct `<script>` method. This problem is solved with
   SFCs.
 
@@ -92,15 +92,15 @@ The example above can be written in a single file component called
 
 <script>
 module.exports = {
-  props: ['personName']
-}
+  props: ["personName"],
+};
 </script>
 
 <style scoped>
-  h2 {
-    font-size: 40px;
-    color: mediumseagreen;
-  }
+h2 {
+  font-size: 40px;
+  color: mediumseagreen;
+}
 </style>
 ```
 
@@ -153,7 +153,7 @@ npm i -D @vue/cli-service vue-template-compiler
 > the overhead on clients when using our app.
 
 Once all our dependencies are installed, we need to define some npm scripts.
-We'll want one for *serving* during development and one for *building* for
+We'll want one for _serving_ during development and one for _building_ for
 production. Open `package.json` and add the scripts (in bold below).
 
 ```json
@@ -163,7 +163,6 @@ production. Open `package.json` and add the scripts (in bold below).
   "build": "vue-cli-service build"
 },
 ```
-
 
 When serving and building our site, the Vue CLI service will look for an HTML
 file in which to auto-inject built files. Let's create it now. Create a new
@@ -175,9 +174,9 @@ automatically be injected with code from our Vue app.
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
     <title>My Vue App</title>
   </head>
@@ -194,12 +193,12 @@ Now for the Vue app itself. Create a new directory called `src` alongside
 `main.js`. Create it now.
 
 ```javascript
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
+import App from "./App.vue";
 
 new Vue({
-  render: h => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
 ```
 
 When building our app, the build tool will look at this file first to figure out
@@ -219,8 +218,8 @@ Since `main.js` is looking for `App.vue`, let's create that.
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App",
+};
 </script>
 
 <style>
@@ -260,16 +259,16 @@ inside `src` called `components`. Inside that, create `PersonGreeter.vue`.
 
 <script>
 module.exports = {
-  name: 'PersonGreeter',
-  props: ['personName']
-}
+  name: "PersonGreeter",
+  props: ["personName"],
+};
 </script>
 
 <style scoped>
-  h2 {
-    font-size: 40px;
-    color: mediumseagreen;
-  }
+h2 {
+  font-size: 40px;
+  color: mediumseagreen;
+}
 </style>
 ```
 
@@ -285,14 +284,14 @@ below.
 </template>
 
 <script>
-import PersonGreeter from './components/PersonGreeter.vue'
+import PersonGreeter from "./components/PersonGreeter.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    PersonGreeter
-  }
-}
+    PersonGreeter,
+  },
+};
 </script>
 ```
 

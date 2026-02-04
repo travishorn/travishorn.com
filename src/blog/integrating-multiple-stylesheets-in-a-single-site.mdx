@@ -2,10 +2,10 @@
 cover: ./images/jsNNHWeY4.webp
 datePublished: 2016-08-17 22:01:01+00:00
 tags:
-- automation
-- css
-- html
-- javascript
+  - automation
+  - css
+  - html
+  - javascript
 title: Integrating multiple stylesheets in a single site
 ---
 
@@ -20,9 +20,8 @@ So one big stylesheet is the way to go, right? In my opinion, in most cases, yes
 What kind of workflow works best for one stylesheet then? The simplest answer would be just one file called styles.css (or similar). When you want to change the style, you just open up styles.css, scroll until you find the relevant section, and modify the CSS. In your HTML, you simply link the sheet like so:
 
 ```html
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css" />
 ```
-
 
 This will work fine unless/until your site grows so big that finding the relevant section of CSS requires a bunch of scrolling or Ctrl + F'ing.
 
@@ -32,23 +31,22 @@ One solution to the problem above is to have multiple stylesheets in development
 
 In this case, let's assume I have an `index.html` and a folder called `css`. Inside the `css` folder there are 4 files:
 
-* bootstrap.css — for my basic boilerplate styles
+- bootstrap.css — for my basic boilerplate styles
 
-* header.css — for my page header
+- header.css — for my page header
 
-* main.css — for the main content of my site (between the header & footer)
+- main.css — for the main content of my site (between the header & footer)
 
-* footer.css — for the small footer at the bottom of every page
+- footer.css — for the small footer at the bottom of every page
 
 I could link all these stylesheets in my `index.html` like so:
 
 ```html
-<link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/header.css">
-<link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="css/bootstrap.css" />
+<link rel="stylesheet" href="css/header.css" />
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/footer.css" />
 ```
-
 
 But I want one stylesheet, not four. For this, I'll add a single build step using Gulp.
 
@@ -58,13 +56,11 @@ If you don't already have it, you have to install the Gulp CLI globally. This wi
 npm install -g gulp-cli
 ```
 
-
 The next step is optional, but since we are working with npm modules, I highly recommend initiating npm on your project to keep track of dependencies:
 
 ```console
 npm init
 ```
-
 
 Answer all prompts from `npm init`. When you're finished, install gulp and the gulp-concat-css plugin as development dependencies:
 
@@ -72,23 +68,21 @@ Answer all prompts from `npm init`. When you're finished, install gulp and the g
 npm install --save-dev gulp gulp-concat-css
 ```
 
-
 Now, create a new file called gulpfile.js in your project's root directory. This file will describe the style concatenation build step as well as any future build steps you may add later.
 
 ```javascript
-'use strict';
+"use strict";
 
-var gulp = require('gulp');
-var concatCss = require('gulp-concat-css');
+var gulp = require("gulp");
+var concatCss = require("gulp-concat-css");
 
-gulp.task('css', function() {
-  return gulp.src('css/*.css')
-    .pipe(concatCss('style.css'))
-    .pipe(gulp.dest('.'));
+gulp.task("css", function () {
+  return gulp
+    .src("css/*.css")
+    .pipe(concatCss("style.css"))
+    .pipe(gulp.dest("."));
 });
-
 ```
-
 
 This defines a new gulp task called `css`. The task takes any file in the `css` folder with a `.css` extension and pipes it to `gulp-concat-css`, which concatenates them all into a `style.css` file, then pipes **that** to a destination directory. In the code above, the destination directory is our project's root.
 
@@ -98,13 +92,11 @@ Basically, when you run
 gulp css
 ```
 
-
 a new file will appear called `styles.css` which contains all of your styles. In `index.html`, you can replace all those stylesheet links with one line:
 
 ```html
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css" />
 ```
-
 
 If (when) you change the CSS and are ready to push your updates to production, just run `gulp css` again to re-concatenate the styles.
 
@@ -113,9 +105,8 @@ If (when) you change the CSS and are ready to push your updates to production, j
 At this point you are done. However, I would personally take an extra step and create a default gulp task that includes the `css` task. Add this to `gulpfile.css`:
 
 ```javascript
-gulp.task('default', ['css']);
+gulp.task("default", ["css"]);
 ```
-
 
 Now, you can run the build by simply running…
 
@@ -123,16 +114,15 @@ Now, you can run the build by simply running…
 gulp
 ```
 
-
 If you ever add more build steps (gulp tasks), you can add them to the array we just created. Other build steps you may consider are:
 
-* minifying the CSS file
+- minifying the CSS file
 
-* concatenating & minifying JS files
+- concatenating & minifying JS files
 
-* minifying HTML
+- minifying HTML
 
-* compressing image files
+- compressing image files
 
 These can all be done with various [Gulp plugins](http://gulpjs.com/plugins/).
 

@@ -2,9 +2,9 @@
 cover: ./images/mHiZY5TFc.webp
 datePublished: 2012-04-20 05:00:00+00:00
 tags:
-- css
-- design-ui
-- web-development
+  - css
+  - design-ui
+  - web-development
 title: Web Fonts
 ---
 
@@ -18,13 +18,15 @@ First, [download a copy of Open Sans](http://themes.googleusercontent.com/static
 
 ```css
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url('OpenSans.woff') format('woff');
+  src:
+    local("Open Sans"),
+    local("OpenSans"),
+    url("OpenSans.woff") format("woff");
 }
 ```
-
 
 In the src definition, the first two items point to the user's local machine. If they already have the font installed, we don't want to waste time and bandwidth downloading it again. However, if the browser cannot find the font installed locally, it will move on the third item, which is a url to our copy of OpenSans.woff on the server. If the browser doesn't support .WOFF, Open Sans won't be available, but if you have more format for the same font, you could keep on adding urls.
 
@@ -32,9 +34,8 @@ Once @font-face is in place, simply call the web font like any other font in you
 
 ```css
 body {
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 ```
-
 
 It couldn't be easier than that. [Six Revisions has a comprehensive, but a little dated guide on using @font-face.](http://sixrevisions.com/css/font-face-guide/) I recommend checking it out.

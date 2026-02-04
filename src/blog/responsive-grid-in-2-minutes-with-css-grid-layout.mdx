@@ -2,11 +2,11 @@
 cover: ./images/2Sd8JOL3O.webp
 datePublished: 2019-06-06 12:01:01+00:00
 tags:
-- css
-- design-ui
-- html
-- responsive-design
-- web-development
+  - css
+  - design-ui
+  - html
+  - responsive-design
+  - web-development
 title: Responsive grid in 2 minutes with CSS Grid Layout
 ---
 
@@ -48,8 +48,12 @@ vertically, one word per line.](./images/Mc2aHw8mk.webp)
 Add some basic styles.
 
 ```css
-html { font-size: 22px; }
-body { padding: 1rem; }
+html {
+  font-size: 22px;
+}
+body {
+  padding: 1rem;
+}
 
 .card {
   background-color: dodgerblue;
@@ -62,7 +66,7 @@ body { padding: 1rem; }
 ![A tall skinny blue filled rectangle with the words ONE, TWO, and THREE in
 white spaced evenly and stacked vertically.](./images/gWzQD71Sz.webp)
 
-*I cropped the rest out, but you get the idea.*
+_I cropped the rest out, but you get the idea._
 
 Add a parent element to contain the cards.
 
@@ -100,7 +104,7 @@ to the parent. The only change you'll notice so far is the gap between elements.
 spacing between them. They are labeled ONE, TWO, and
 THREE.](./images/uMnhcsN1_.webp)
 
-*And so on.*
+_And so on._
 
 We're coding for mobile first so we assume the user is using a small screen.
 That's why the cards take up a whole row each (one column).
@@ -111,7 +115,9 @@ Is the screen larger than 600 pixels? Make it two columns.
 
 ```css
 @media (min-width: 600px) {
-  .cards { grid-template-columns: repeat(2, 1fr); }
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 ```
 
@@ -122,7 +128,9 @@ Is the screen larger than 900 pixels? Make it three columns.
 
 ```css
 @media (min-width: 900px) {
-  .cards { grid-template-columns: repeat(3, 1fr); }
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 ```
 

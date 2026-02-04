@@ -2,11 +2,11 @@
 cover: ./images/foKxFH-uS.webp
 datePublished: 2015-06-30 01:35:00+00:00
 tags:
-- animation
-- css
-- design-ui
-- html
-- javascript
+  - animation
+  - css
+  - design-ui
+  - html
+  - javascript
 title: Fireflies with canvas and requestAnimationFrame
 ---
 
@@ -31,25 +31,23 @@ The only required HTML is a `<canvas>` element with an id attribute.
 <canvas id="canvas"></canvas>
 ```
 
-
 The only required CSS is to make the body and canvas elements have a black
 background.
 
 ```css
-body, canvas {
+body,
+canvas {
   background-color: #000;
 }
 ```
-
 
 The magic happens in JavaScript, of course. First, we get a 2D context of our
 canvas element.
 
 ```javascript
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
 ```
-
 
 Then, we set up some constants. You can play with these to get different firefly
 effects.
@@ -62,13 +60,11 @@ var FLY_SIZE_RANGE = [1, 5];
 var FLY_LIFESPAN_RANGE = [75, 150];
 ```
 
-
 We'll need an array to keep track of the currently displayed flies.
 
 ```javascript
 var flies = [];
 ```
-
 
 Throughout the code, there will be many times we'll need to get a random number
 within a certain range. I use a simple function for this.
@@ -79,26 +75,30 @@ function randomRange(min, max) {
 }
 ```
 
-
 Now we'll need a Fly object from which all instantiated flies will get their
 prototype. This object contains properties including the position of the fly,
 the velocity (xSpeed and ySpeed), size, lifespan, current age, and color.
 
 ```javascript
 function Fly(options) {
-  if (!options) { options = {}; }
+  if (!options) {
+    options = {};
+  }
 
   this.x = options.x || randomRange(0, canvas.width);
   this.y = options.y || randomRange(0, canvas.height);
-   this.xSpeed = options.xSpeed || randomRange(FLY_XSPEED_RANGE[0], FLY_XSPEED_RANGE[1]);
-  this.ySpeed = options.ySpeed || randomRange(FLY_YSPEED_RANGE[0], FLY_YSPEED_RANGE[1]);
+  this.xSpeed =
+    options.xSpeed || randomRange(FLY_XSPEED_RANGE[0], FLY_XSPEED_RANGE[1]);
+  this.ySpeed =
+    options.ySpeed || randomRange(FLY_YSPEED_RANGE[0], FLY_YSPEED_RANGE[1]);
   this.size = options.size || randomRange(FLY_SIZE_RANGE[0], FLY_SIZE_RANGE[1]);
-  this.lifeSpan = options.lifeSpan || randomRange(FLY_LIFESPAN_RANGE[0], FLY_LIFESPAN_RANGE[1]);
+  this.lifeSpan =
+    options.lifeSpan ||
+    randomRange(FLY_LIFESPAN_RANGE[0], FLY_LIFESPAN_RANGE[1]);
   this.age = 0;
   this.colors = options.colors || { red: 207, green: 255, blue: 4, alpha: 0 };
 }
 ```
-
 
 The next function is a little funky, and I've had to modify it to fit specific
 browsers (or the display frame on CodePen). It basically just makes an element
@@ -111,7 +111,6 @@ function fitToScreen(element) {
 }
 ```
 
-
 Next, we'll need a function for clearing the canvas. It simply draws a black
 rectangle over the entire canvas. You'll see later that we actually call this
 every single frame, and re-draw our flies on a later step.
@@ -119,12 +118,11 @@ every single frame, and re-draw our flies on a later step.
 ```javascript
 function clearScreen() {
   ctx.beginPath();
-  ctx.fillStyle = 'rgb(0, 0, 0)';
+  ctx.fillStyle = "rgb(0, 0, 0)";
   ctx.rect(0, 0, canvas.width, canvas.height);
   ctx.fill();
 }
 ```
-
 
 This function will create a fly as long as we haven't hit our max (set earlier).
 
@@ -136,18 +134,17 @@ function createFlies() {
 }
 ```
 
-
 This next step is pretty important. It loops through all our flies, and….
 
-* updates their position on the canvas
-* increments their age
-* sets their opacity based on their age and lifespan (in this case, we're making
+- updates their position on the canvas
+- increments their age
+- sets their opacity based on their age and lifespan (in this case, we're making
   them start out invisible, fade in as they near half their "life", and fade
   back out until they're invisible again)
 
 ```javascript
 function moveFlies() {
-  flies.forEach(function(fly) {
+  flies.forEach(function (fly) {
     fly.x += fly.xSpeed;
     fly.y += fly.ySpeed;
     fly.age++;
@@ -155,16 +152,19 @@ function moveFlies() {
     if (fly.age < fly.lifeSpan / 2) {
       fly.colors.alpha += 1 / (fly.lifeSpan / 2);
 
-      if (fly.colors.alpha > 1) { fly.colors.alpha = 1; }
+      if (fly.colors.alpha > 1) {
+        fly.colors.alpha = 1;
+      }
     } else {
       fly.colors.alpha -= 1 / (fly.lifeSpan / 2);
 
-      if (fly.colors.alpha < 0) { fly.colors.alpha = 0; }
+      if (fly.colors.alpha < 0) {
+        fly.colors.alpha = 0;
+      }
     }
   });
 }
 ```
-
 
 Now we'll loop through the flies and see if any individual fly's age is equal or
 greater than their lifespan. If so, we'll remove them from the array (and
@@ -175,16 +175,15 @@ see that there is room for another fly and instantiate a new one.
 function removeFlies() {
   var i = flies.length;
 
-   while (i--) {
-     var fly = flies[i];
+  while (i--) {
+    var fly = flies[i];
 
-     if (fly.age >= fly.lifeSpan) {
-       flies.splice(i, 1);
-     }
+    if (fly.age >= fly.lifeSpan) {
+      flies.splice(i, 1);
+    }
   }
 }
 ```
-
 
 Here's the function that actually draws the flies on the canvas. We loop through
 the flies array and add a new full arc (circle) for each one, with the
@@ -192,15 +191,23 @@ attributes described by the fly's object.
 
 ```javascript
 function drawFlies() {
-  flies.forEach(function(fly) {
+  flies.forEach(function (fly) {
     ctx.beginPath();
-    ctx.fillStyle = 'rgba(' + fly.colors.red + ', ' + fly.colors.green + ', ' + fly.colors.blue + ', ' + fly.colors.alpha + ')';
-    ctx.arc( fly.x, fly.y, fly.size, 0, Math.PI * 2, false );
+    ctx.fillStyle =
+      "rgba(" +
+      fly.colors.red +
+      ", " +
+      fly.colors.green +
+      ", " +
+      fly.colors.blue +
+      ", " +
+      fly.colors.alpha +
+      ")";
+    ctx.arc(fly.x, fly.y, fly.size, 0, Math.PI * 2, false);
     ctx.fill();
   });
 }
 ```
-
 
 Almost done. We'll set up a function to call each of our other functions in the
 correct order:
@@ -210,7 +217,6 @@ correct order:
 3. Move the existing flies
 4. Remove old flies that are past their lifespan
 5. Draw flies on the canvas
-
 
 ```javascript
 function render() {
@@ -222,25 +228,24 @@ function render() {
 }
 ```
 
-
 I'm going to go ahead and fit the canvas to the screen, and watch for a window
 re-size. If the window is re-sized, we'll re-fit the canvas.
 
 ```javascript
-window.addEventListener('resize', function() {
+window.addEventListener("resize", function () {
   fitToScreen(canvas);
 });
 
 fitToScreen(canvas);
 ```
 
-
 Finally, we'll set up an animation loop by calling requestAnimationFrame,
 rendering our flies, and repeating.
 
 ```javascript
 (function animationLoop() {
-  window.requestAnimationFrame(animationLoop); render();
+  window.requestAnimationFrame(animationLoop);
+  render();
 })();
 ```
 

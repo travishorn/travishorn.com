@@ -3,11 +3,7 @@ title: "JavaScript Reference: Objects"
 datePublished: 2016-08-03T22:01:02+00:00
 cover: ./images/aC0Mm7ljv.webp
 tags: ["javascript", "software-engineering"]
-
 ---
-
-
-
 
 This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
 
@@ -37,7 +33,6 @@ function showProps(obj) {
 document.write(showProps(testData));
 ```
 
-
 ### Constructor Function
 
 ```javascript
@@ -49,18 +44,14 @@ function TestData(districtName, schoolName, schoolYear) {
   this.schoolYear = schoolYear;
 }
 
-var data1 = new TestData(
-  "Central School District",
-  "Lincoln Elementary",
-  2011
-);
+var data1 = new TestData("Central School District", "Lincoln Elementary", 2011);
 
 var data2 = new TestData(
   "Central School District",
   "Jefferson Elementary",
-  2011
+  2011,
 );
-    
+
 // Add property to previously defined object type
 TestData.prototype.semester = null;
 data1.semester = 1;
@@ -77,7 +68,6 @@ function showProps(obj) {
 // Write the result of showProps to screen
 document.write(showProps(data1));
 ```
-
 
 ### Dot Notation
 
@@ -101,21 +91,20 @@ function showProps(obj) {
 document.write(showProps(testData));
 ```
 
-
 ### Getters & Setters
 
 ```javascript
 // Define one getter and one setter
 var testData = {
-  "districtName": "Central School District",
-  "schoolName": "Lincoln Elementary",
-  "schoolYear": 2011,
+  districtName: "Central School District",
+  schoolName: "Lincoln Elementary",
+  schoolYear: 2011,
   get names() {
     return this.districtName + ", " + this.schoolName;
   },
   set incYear(x) {
     this.schoolYear += x;
-  }
+  },
 };
 
 // Call incYear setter
@@ -127,7 +116,6 @@ document.write(testData.names + "<br>");
 // Write schoolYear property to screen after mutating with setter
 document.write(testData["schoolYear"]);
 ```
-
 
 ### Nesting Constructor Function
 
@@ -144,16 +132,9 @@ function TestData(districtName, school, schoolYear) {
   this.schoolYear = schoolYear;
 }
 
-var lincoln = new School(
-  "Lincoln",
-  "Elementary"
-);
+var lincoln = new School("Lincoln", "Elementary");
 
-var data1 = new TestData(
-  "Central School District",
-  lincoln,
-  2011
-);
+var data1 = new TestData("Central School District", lincoln, 2011);
 
 // Loop through properties using bracket notation
 function showProps(obj) {
@@ -169,18 +150,17 @@ document.write("data1:<br>" + showProps(data1) + "<br>");
 document.write("lincoln:<br>" + showProps(lincoln) + "<br>");
 ```
 
-
 ### Nesting Object Initializer
 
 ```javascript
 // Object within object using initializer
 var testData = {
-  "districtName": "Central School District",
-  "school": {
-    "name": "Lincoln",
-    "level": "Elementary"
+  districtName: "Central School District",
+  school: {
+    name: "Lincoln",
+    level: "Elementary",
   },
-  "schoolYear": 2011
+  schoolYear: 2011,
 };
 
 // Loop through properties using bracket notation
@@ -196,7 +176,6 @@ function showProps(obj) {
 document.write(showProps(testData));
 ```
 
-
 ### Methods
 
 ```javascript
@@ -204,16 +183,20 @@ function TestData(districtName, schoolName, schoolYear) {
   this.districtName = districtName;
   this.schoolName = schoolName;
   this.schoolYear = schoolYear;
-  this.displayData = function(){
-    document.write("displayData:<br>" + this.schoolName + "'s " + this.schoolYear + " school year at " + this.districtName + ".");
+  this.displayData = function () {
+    document.write(
+      "displayData:<br>" +
+        this.schoolName +
+        "'s " +
+        this.schoolYear +
+        " school year at " +
+        this.districtName +
+        ".",
+    );
   };
 }
 
-var data1 = new TestData(
-  "Central School District",
-  "Lincoln Elementary",
-  2011
-);
+var data1 = new TestData("Central School District", "Lincoln Elementary", 2011);
 
 // Loop through properties using bracket notation
 function showProps(obj) {
@@ -231,15 +214,14 @@ document.write("data1:<br>" + showProps(data1) + "<br>");
 data1.displayData();
 ```
 
-
 ### Object Initializer
 
 ```javascript
 // Create object using object initializer (literal notation)
 var testData = {
-  "districtName": "Central School District",
-  "schoolName": "Lincoln Elementary",
-  "schoolYear": 2011
+  districtName: "Central School District",
+  schoolName: "Lincoln Elementary",
+  schoolYear: 2011,
 };
 
 // Loop through properties using bracket notation

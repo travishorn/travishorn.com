@@ -2,12 +2,12 @@
 cover: ./images/WpQERtaMF.webp
 datePublished: 2019-03-28 11:01:01+00:00
 tags:
-- d3
-- data-visualization
-- html
-- javascript
-- svg
-- web-development
+  - d3
+  - data-visualization
+  - html
+  - javascript
+  - svg
+  - web-development
 title: D3 Line Chart with Forecast
 ---
 
@@ -49,45 +49,45 @@ avocados sold in the US by month from January 2015 to March 2018.
 
 ```javascript
 let history = [
-  { date: '2015-01-01', volume: 120453518 },
-  { date: '2015-02-01', volume: 137503440 },
-  { date: '2015-03-01', volume: 158757311 },
-  { date: '2015-04-01', volume: 130552492 },
-  { date: '2015-05-01', volume: 182752154 },
-  { date: '2015-06-01', volume: 144304088 },
-  { date: '2015-07-01', volume: 135088854 },
-  { date: '2015-08-01', volume: 158191824 },
-  { date: '2015-09-01', volume: 124257823 },
-  { date: '2015-10-01', volume: 115231050 },
-  { date: '2015-11-01', volume: 138719625 },
-  { date: '2015-12-01', volume: 111443042 },
-  { date: '2016-01-01', volume: 179118249 },
-  { date: '2016-02-01', volume: 161566818 },
-  { date: '2016-03-01', volume: 147686869 },
-  { date: '2016-04-01', volume: 151936061 },
-  { date: '2016-05-01', volume: 211814173 },
-  { date: '2016-06-01', volume: 154985479 },
-  { date: '2016-07-01', volume: 176758565 },
-  { date: '2016-08-01', volume: 139879341 },
-  { date: '2016-09-01', volume: 136744721 },
-  { date: '2016-10-01', volume: 135775521 },
-  { date: '2016-11-01', volume:  97906206 },
-  { date: '2016-12-01', volume: 124987140 },
-  { date: '2017-01-01', volume: 201461887 },
-  { date: '2017-02-01', volume: 178173517 },
-  { date: '2017-03-01', volume: 135677135 },
-  { date: '2017-04-01', volume: 185292137 },
-  { date: '2017-05-01', volume: 160638753 },
-  { date: '2017-06-01', volume: 155101164 },
-  { date: '2017-07-01', volume: 179955080 },
-  { date: '2017-08-01', volume: 128238409 },
-  { date: '2017-09-01', volume: 107595048 },
-  { date: '2017-10-01', volume: 136697530 },
-  { date: '2017-11-01', volume: 122366787 },
-  { date: '2017-12-01', volume: 173496117 },
-  { date: '2018-01-01', volume: 162729515 },
-  { date: '2018-02-01', volume: 188381335 },
-  { date: '2018-03-01', volume: 172521404 },
+  { date: "2015-01-01", volume: 120453518 },
+  { date: "2015-02-01", volume: 137503440 },
+  { date: "2015-03-01", volume: 158757311 },
+  { date: "2015-04-01", volume: 130552492 },
+  { date: "2015-05-01", volume: 182752154 },
+  { date: "2015-06-01", volume: 144304088 },
+  { date: "2015-07-01", volume: 135088854 },
+  { date: "2015-08-01", volume: 158191824 },
+  { date: "2015-09-01", volume: 124257823 },
+  { date: "2015-10-01", volume: 115231050 },
+  { date: "2015-11-01", volume: 138719625 },
+  { date: "2015-12-01", volume: 111443042 },
+  { date: "2016-01-01", volume: 179118249 },
+  { date: "2016-02-01", volume: 161566818 },
+  { date: "2016-03-01", volume: 147686869 },
+  { date: "2016-04-01", volume: 151936061 },
+  { date: "2016-05-01", volume: 211814173 },
+  { date: "2016-06-01", volume: 154985479 },
+  { date: "2016-07-01", volume: 176758565 },
+  { date: "2016-08-01", volume: 139879341 },
+  { date: "2016-09-01", volume: 136744721 },
+  { date: "2016-10-01", volume: 135775521 },
+  { date: "2016-11-01", volume: 97906206 },
+  { date: "2016-12-01", volume: 124987140 },
+  { date: "2017-01-01", volume: 201461887 },
+  { date: "2017-02-01", volume: 178173517 },
+  { date: "2017-03-01", volume: 135677135 },
+  { date: "2017-04-01", volume: 185292137 },
+  { date: "2017-05-01", volume: 160638753 },
+  { date: "2017-06-01", volume: 155101164 },
+  { date: "2017-07-01", volume: 179955080 },
+  { date: "2017-08-01", volume: 128238409 },
+  { date: "2017-09-01", volume: 107595048 },
+  { date: "2017-10-01", volume: 136697530 },
+  { date: "2017-11-01", volume: 122366787 },
+  { date: "2017-12-01", volume: 173496117 },
+  { date: "2018-01-01", volume: 162729515 },
+  { date: "2018-02-01", volume: 188381335 },
+  { date: "2018-03-01", volume: 172521404 },
 ];
 ```
 
@@ -96,12 +96,12 @@ like so.
 
 ```javascript
 let forecast = [
-  { date: '2018-04-01' },
-  { date: '2018-05-01' },
-  { date: '2018-06-01' },
-  { date: '2018-07-01' },
-  { date: '2018-08-01' },
-  { date: '2018-09-01' },
+  { date: "2018-04-01" },
+  { date: "2018-05-01" },
+  { date: "2018-06-01" },
+  { date: "2018-07-01" },
+  { date: "2018-08-01" },
+  { date: "2018-09-01" },
 ];
 ```
 
@@ -110,7 +110,7 @@ JavaScript so D3 can plot them correctly. Luckily, [D3 provides a nice timeParse
 function](https://github.com/d3/d3-time-format).
 
 ```javascript
-const parseTime = d3.timeParse('%Y-%m-%d');
+const parseTime = d3.timeParse("%Y-%m-%d");
 ```
 
 `map` over the `history` array and use this function to convert all the dates.
@@ -146,7 +146,7 @@ So the signature of this function is…
 ```javascript
 const predict = (data, newX) => {
   /* All prediction logic goes in here */
-}
+};
 ```
 
 Inside this function, we'll need a helper function that will round numbers to
@@ -154,18 +154,18 @@ two decimal places (hundredths). You could place this outside `predict()` if you
 need it elsewhere, but for now, let's just put it inside to keep things cleaner.
 
 ```javascript
-const round = n => Math.round(n * 100) / 100;
+const round = (n) => Math.round(n * 100) / 100;
 ```
 
 To make a prediction, the first thing we need to do is perform a pretty
 extensive summary on the input data. All of these data points are needed to make
 the prediction. We need to find…
 
-* The sum of all X values
-* The sum of all Y values
-* The sum of all X values squared
-* The sum of the product of all X and Y values (multiplication)
-* The length of the array
+- The sum of all X values
+- The sum of all Y values
+- The sum of all X values squared
+- The sum of the product of all X and Y values (multiplication)
+- The length of the array
 
 Use
 [`array.prototype.reduce()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
@@ -173,10 +173,13 @@ to get all these values and store them in an object. The initial object will be
 zeroed out.
 
 ```javascript
-const sum = data.reduce((acc, pair) => {
-  /* Summary operations go in here */
-  return acc;
-}, { x: 0, y: 0, squareX: 0, product: 0, len: 0});
+const sum = data.reduce(
+  (acc, pair) => {
+    /* Summary operations go in here */
+    return acc;
+  },
+  { x: 0, y: 0, squareX: 0, product: 0, len: 0 },
+);
 ```
 
 Inside the `reduce()` call, we'll first break down the X & Y value pair.
@@ -207,20 +210,23 @@ return acc;
 The completed `reduce()` call looks like this:
 
 ```javascript
-const sum = data.reduce((acc, pair) => {
-  const x = pair[0];
-  const y = pair[1];
-  
-  if (y !== null) {
-    acc.x += x;
-    acc.y += y;
-    acc.squareX += x * x;
-    acc.product += x * y;
-    acc.len += 1;
-  }
-  
-  return acc;
-}, { x: 0, y: 0, squareX: 0, product: 0, len: 0 });
+const sum = data.reduce(
+  (acc, pair) => {
+    const x = pair[0];
+    const y = pair[1];
+
+    if (y !== null) {
+      acc.x += x;
+      acc.y += y;
+      acc.squareX += x * x;
+      acc.product += x * y;
+      acc.len += 1;
+    }
+
+    return acc;
+  },
+  { x: 0, y: 0, squareX: 0, product: 0, len: 0 },
+);
 ```
 
 Ultimately, we want our predict function to return a new Y value for a given X.
@@ -231,8 +237,8 @@ function is called, it will be given the `x`, but we need to calculate the
 The gradient is `rise` over `run`. So first, let's calculate those.
 
 ```javascript
-const rise = (sum.len * sum.product) - (sum.x * sum.y);
-const run = (sum.len * sum.squareX) - (sum.x * sum.x);
+const rise = sum.len * sum.product - sum.x * sum.y;
+const run = sum.len * sum.squareX - sum.x * sum.x;
 ```
 
 Now we can calculate the gradient.
@@ -247,7 +253,7 @@ it to two decimal places using the helper function we created earlier.
 And now we have all pieces to calculate the intercept.
 
 ```javascript
-const intercept = round((sum.y / sum.len) - ((gradient * sum.x) / sum.len));
+const intercept = round(sum.y / sum.len - (gradient * sum.x) / sum.len);
 ```
 
 With the intercept calculated, our predictor has everything it needs. We return
@@ -257,29 +263,32 @@ The entire `predict()` function looks like this.
 
 ```javascript
 const predict = (data, newX) => {
-  const round = n => Math.round(n * 100) / 100;
-  
-  const sum = data.reduce((acc, pair) => {
-    const x = pair[0];
-    const y = pair[1];
-    
-    if (y !== null) {
-      acc.x += x;
-      acc.y += y;
-      acc.squareX += x * x;
-      acc.product += x * y;
-      acc.len += 1;
-    }
-    
-    return acc;
-  }, { x: 0, y: 0, squareX: 0, product: 0, len: 0 });
+  const round = (n) => Math.round(n * 100) / 100;
 
-  const run = ((sum.len * sum.squareX) - (sum.x * sum.x));
-  const rise = ((sum.len * sum.product) - (sum.x * sum.y));
+  const sum = data.reduce(
+    (acc, pair) => {
+      const x = pair[0];
+      const y = pair[1];
+
+      if (y !== null) {
+        acc.x += x;
+        acc.y += y;
+        acc.squareX += x * x;
+        acc.product += x * y;
+        acc.len += 1;
+      }
+
+      return acc;
+    },
+    { x: 0, y: 0, squareX: 0, product: 0, len: 0 },
+  );
+
+  const run = sum.len * sum.squareX - sum.x * sum.x;
+  const rise = sum.len * sum.product - sum.x * sum.y;
   const gradient = run === 0 ? 0 : round(rise / run);
-  const intercept = round((sum.y / sum.len) - ((gradient * sum.x) / sum.len));
+  const intercept = round(sum.y / sum.len - (gradient * sum.x) / sum.len);
 
-  return round((gradient * newX) + intercept);
+  return round(gradient * newX + intercept);
 };
 ```
 
@@ -298,7 +307,7 @@ The code above creates `historyIndex` which looks like this:
   [1, 137503440],
   [2, 158757311],
   [3, 130552492],
-  [4, 182752154],
+  [4, 182752154]
   /* Snip */
 ]
 ```
@@ -314,7 +323,7 @@ forecast = forecast.map((d, i) => {
   return {
     date: parseTime(d.date),
     volume: predict(historyIndex, historyIndex.length - 1 + i),
-  }
+  };
 });
 ```
 
@@ -363,12 +372,13 @@ Back in JavaScript, grab the `<svg>` element, set margins and other dimensions,
 and append an inner `<g>` element within the margins.
 
 ```javascript
-const chart = d3.select('#chart');
+const chart = d3.select("#chart");
 const margin = { top: 20, right: 20, bottom: 30, left: 70 };
 const width = 1000 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
-const innerChart = chart.append('g')
-  .attr('transform', `translate(${margin.left} ${margin.top})`);
+const innerChart = chart
+  .append("g")
+  .attr("transform", `translate(${margin.left} ${margin.top})`);
 ```
 
 Our X and Y scales will be based on Time and Linear respectively.
@@ -383,9 +393,10 @@ tell D3 how to build the lines. Do that by creating a `line` function. The dates
 will become X values and the volumes will become Y values.
 
 ```javascript
-const line = d3.line()
-  .x(d => x(d.date))
-  .y(d => y(d.volume));
+const line = d3
+  .line()
+  .x((d) => x(d.date))
+  .y((d) => y(d.volume));
 ```
 
 The X domain will be the smallest X value to the largest X value. In our case it
@@ -393,24 +404,22 @@ this means the earliest date (in history) to the latest date (in forecast). Get
 this programmatically with D3's `min` and `max` functions.
 
 ```javascript
-x.domain([
-  d3.min(history, d => d.date),
-  d3.max(forecast, d => d.date),
-]);
+x.domain([d3.min(history, (d) => d.date), d3.max(forecast, (d) => d.date)]);
 ```
 
-The Y domain is similar. It will be the smallest *possible* volume (0) to the
+The Y domain is similar. It will be the smallest _possible_ volume (0) to the
 largest volume that exists in the data.
 
 ```javascript
-y.domain([0, d3.max(history, d => d.volume)]);
+y.domain([0, d3.max(history, (d) => d.volume)]);
 ```
 
 We're ready to start adding visible elements to the chart. First, the X axis.
 
 ```javascript
-innerChart.append('g')
-  .attr('transform', `translate(0 ${height})`)
+innerChart
+  .append("g")
+  .attr("transform", `translate(0 ${height})`)
   .call(d3.axisBottom(x));
 ```
 
@@ -420,15 +429,16 @@ for months going forward (April, July, October, etc.)](./images/PYjOsBEUI.webp)
 Next, the Y axis.
 
 ```javascript
-innerChart.append('g')
+innerChart
+  .append("g")
   .call(d3.axisLeft(y))
-  .append('text')
-  .attr('fill', '#000')
-  .attr('transform', 'rotate(-90)')
-  .attr('y', 6)
-  .attr('dy', '0.71em')
-  .attr('text-anchor', 'end')
-  .text('Avocados Sold');
+  .append("text")
+  .attr("fill", "#000")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 6)
+  .attr("dy", "0.71em")
+  .attr("text-anchor", "end")
+  .text("Avocados Sold");
 ```
 
 ![The existing bottom X axis, with the addition of a left Y axis starting at 0
@@ -438,12 +448,13 @@ Sold"](./images/kLOrAlHXg.webp)
 Now the history line.
 
 ```javascript
-innerChart.append('path')
+innerChart
+  .append("path")
   .datum(history)
-  .attr('fill', 'none')
-  .attr('stroke', 'steelblue')
-  .attr('stroke-width', 1.5)
-  .attr('d', line);
+  .attr("fill", "none")
+  .attr("stroke", "steelblue")
+  .attr("stroke-width", 1.5)
+  .attr("d", line);
 ```
 
 ![The same chart, with the addition of a blue line going up and down across
@@ -452,13 +463,14 @@ time](./images/LyMTa7n0p.webp)
 And finally, the forecast line.
 
 ```javascript
-innerChart.append('path')
+innerChart
+  .append("path")
   .datum(forecast)
-  .attr('fill', 'none')
-  .attr('stroke', 'tomato')
-  .attr('stroke-dasharray', '10,7')
-  .attr('stroke-width', 1.5)
-  .attr('d', line);
+  .attr("fill", "none")
+  .attr("stroke", "tomato")
+  .attr("stroke-dasharray", "10,7")
+  .attr("stroke-width", 1.5)
+  .attr("d", line);
 ```
 
 ![The same chart, but once the historic line runs out, a prediction linear red

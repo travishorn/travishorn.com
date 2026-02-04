@@ -2,8 +2,8 @@
 cover: ./images/BaiGzqW3y.webp
 datePublished: 2014-08-14 22:44:54+00:00
 tags:
-- design-ui
-- html
+  - design-ui
+  - html
 title: Web accessibility
 ---
 
@@ -15,31 +15,32 @@ When you write with accessibility in mind, your code is written more [semantical
 
 Some accessibility information:
 
-* [Section508](http://www.section508.gov/)
+- [Section508](http://www.section508.gov/)
 
-* [WAI](http://www.w3.org/WAI/)
+- [WAI](http://www.w3.org/WAI/)
 
-* [WAI-ARIA](http://www.w3.org/WAI/intro/aria)
+- [WAI-ARIA](http://www.w3.org/WAI/intro/aria)
 
-* [WCAG 2](http://www.w3.org/TR/WCAG20/)
+- [WCAG 2](http://www.w3.org/TR/WCAG20/)
 
-* [MobiForge](http://mobiforge.com/) (for mobile development)
+- [MobiForge](http://mobiforge.com/) (for mobile development)
 
 Federal agencies are legally required to make their sites accessible to people with disabilities according to [Section 508](http://www.section508.gov/) of the Rehabilitation Act of 1973.
 
 For example, consider the following element.
 
 ```html
-<img src="img/graph.webp">
+<img src="img/graph.webp" />
 ```
-
 
 The linked image may appear as a beautiful graph as long as it's being viewed by a human without vision issues, using a standard browser. However, to a crawler or a blind person, it means nothing. Instead, the above element can be re-written like so:
 
 ```html
-<img src="img/graph.webp" alt="Graph showing an average increase of $1K in sales every year for the past decade.">
+<img
+  src="img/graph.webp"
+  alt="Graph showing an average increase of $1K in sales every year for the past decade."
+/>
 ```
-
 
 The alt text describes the image for a user who otherwise cannot view it.
 
@@ -53,4 +54,4 @@ Your site needs to be accessible to crawlers so that it can be effeciently index
 
 Know that not all crawlers and robots follow robots.txt. Some are programmed to misbehave and will ignore or actively disobey robots.txt.
 
-*Accessbility icon created by [Visual Pharm](http://icons8.com/).*
+_Accessbility icon created by [Visual Pharm](http://icons8.com/)._

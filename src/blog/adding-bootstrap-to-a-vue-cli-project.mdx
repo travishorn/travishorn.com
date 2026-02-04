@@ -17,7 +17,7 @@ just here to get this set up as fast as possible, the short version is this:
 
 1. `npm i bootstrap jquery popper.js`
 2. Add to `src/main.js`: `import 'bootstrap'; import
-   'bootstrap/dist/css/bootstrap.min.css';`
+'bootstrap/dist/css/bootstrap.min.css';`
 
 ### Getting set up
 
@@ -91,20 +91,20 @@ dependencies](https://getbootstrap.com/docs/4.0/getting-started/javascript/#depe
 npm install bootstrap jquery popper.js
 ```
 
-*Note: If you're not going to use Bootstrap's JavaScript, and only going to use
+_Note: If you're not going to use Bootstrap's JavaScript, and only going to use
 its styles, don't worry about installing[ jQuery](https://jquery.com/) or
-[Popper.js](https://popper.js.org/).*
+[Popper.js](https://popper.js.org/)._
 
 Finally, import it into the main script by adding these lines to the top of
 `withbootstrap/src/main.js`:
 
 ```javascript
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 ```
 
-*Again, if you only want the styles, and not the JavaScript functionality, just
-leave off the first line and only include the CSS.*
+_Again, if you only want the styles, and not the JavaScript functionality, just
+leave off the first line and only include the CSS._
 
 That takes care of both the JavaScript and the styles. The alert we wrote
 earlier now has the look and functionality we were looking for!

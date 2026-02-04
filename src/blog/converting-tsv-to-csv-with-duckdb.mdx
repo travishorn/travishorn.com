@@ -2,9 +2,9 @@
 cover: ./images/b37ebdc9-d8f3-4990-be2d-580899e17525.webp
 datePublished: 2025-08-15 11:00:44+00:00
 tags:
-- data-science
-- sql
-- terminal
+  - data-science
+  - sql
+  - terminal
 title: Converting TSV to CSV with DuckDB
 ---
 
@@ -19,10 +19,10 @@ run it from your terminal.
 
 It can do all kinds of things, like…
 
-* Read and write CSV, Parquet, and JSON
-* Perform SQL operations including window functions and CTEs
-* Query other databases like MySQL and PostgreSQL
-* Guarantee ACID transactions
+- Read and write CSV, Parquet, and JSON
+- Perform SQL operations including window functions and CTEs
+- Query other databases like MySQL and PostgreSQL
+- Guarantee ACID transactions
 
 It's great for querying CSV files:
 
@@ -101,21 +101,21 @@ for file in "${tsv_files[@]}"; do
     filename=$(basename "$file")
     basename="${filename%.*}"
     dirname=$(dirname "$file")
-    
+
     # Construct the output filename
     output_file="$dirname/$basename.csv"
-    
+
     echo "Processing $filename -> $basename.csv..."
-    
+
     # Execute the DuckDB command
     # Escape single quotes in paths by doubling them
     input_path=$(echo "$file" | sed "s/'/''/g")
     output_path=$(echo "$output_file" | sed "s/'/''/g")
-    
+
     sql_command="COPY (SELECT * FROM read_csv('$input_path', delim = '\t')) TO '$output_path';"
-    
+
     duckdb -c "$sql_command"
-    
+
     if [ $? -eq 0 ]; then
         echo "Conversion complete for $filename."
     else

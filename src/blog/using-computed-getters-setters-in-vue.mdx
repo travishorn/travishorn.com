@@ -2,11 +2,11 @@
 cover: ./images/aoy3bOQRr.webp
 datePublished: 2017-05-02 22:01:02+00:00
 tags:
-- css
-- html
-- javascript
-- vue
-- web-development
+  - css
+  - html
+  - javascript
+  - vue
+  - web-development
 title: Using Computed Getters & Setters in Vue
 ---
 
@@ -16,19 +16,24 @@ Vue.js supports getters and setters on computed variables. You can use these var
 
 [Look at this CodePen demo](https://codepen.io/travishorn/pen/YVQEKJ). Check the boxes and watch the text input at the bottom change. You can also change the text input directly to check/uncheck the boxes. This type of conversion could be used to allow users to "import" and "export" options via their clipboard. You could also use this method to store the binary version in localStorage (and retrieve it later to restore checked options).
 
-
 I'll be using [Bootstrap 4](https://v4-alpha.getbootstrap.com/) for styling so we won't have to write any CSS. The HTML setup looks like this:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <title>Convert Set of True/False Values to Binary</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+    />
   </head>
   <body>
     <div id="app"></div>
@@ -39,20 +44,19 @@ I'll be using [Bootstrap 4](https://v4-alpha.getbootstrap.com/) for styling so w
 </html>
 ```
 
-
 Inside the `<div id="app">` let's build our app template.
 
 ```html
 <div class="form-check" v-for="pet in pets">
   <label class="form-check-label">
-    <input class="form-check-input" type="checkbox" v-model="pet.selected">
+    <input class="form-check-input" type="checkbox" v-model="pet.selected" />
     {{ pet.name }}
   </label>
-</div><!-- /form-check -->
+</div>
+<!-- /form-check -->
 
-<input class="form-control" v-model="binary">
+<input class="form-control" v-model="binary" />
 ```
-
 
 That's it for the template! The first block loops through a `pets` array and creates a checkbox for each one. By setting the `v-model` to `pet.selected`, Vue will set the checkbox to be selected if the `pet.selected` value is `true`.
 
@@ -62,7 +66,7 @@ We'll build our app in `main.js`:
 
 ```javascript
 new Vue({
-  el: '#app',
+  el: "#app",
   data: {
     pets: [], // coming soon
   },
@@ -74,7 +78,6 @@ new Vue({
   },
 });
 ```
-
 
 Our `pets` array is empty. Fill it up with some common pets. Our template is expecting a `name` and `selected` property for each one.
 
@@ -91,7 +94,6 @@ pets: [
   { name: 'Turtle',  selected: false },
 ],
 ```
-
 
 None of them are selected by default.
 
@@ -112,7 +114,6 @@ binary: {
 },
 ```
 
-
 To take a binary string and set our checkboxes, we must loop through the string and `set` the `selected` properties accordingly. If `1`, then `true`. Else, then `false`.
 
 ```javascript
@@ -127,7 +128,6 @@ binary: {
   },
 },
 ```
-
 
 The app is done! [Check out the finished product.](https://codepen.io/travishorn/pen/YVQEKJ). Check the boxes and watch the binary representation change. Change the binary and watch the boxes check/uncheck themselves.
 

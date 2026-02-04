@@ -3,11 +3,7 @@ title: "Ordered Lists in HTML"
 datePublished: 2017-06-20T22:31:01+00:00
 cover: ./images/izSCb3s4a_.webp
 tags: ["css", "html", "web-development"]
-
 ---
-
-
-
 
 One of my highest rated answers on Stack Overflow is in response to a very simple question.
 
@@ -22,6 +18,7 @@ With that out of the way…
 ### What is the `<ol>` element?
 
 According to the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol)…
+
 > The **HTML `<ol>` element **represents an ordered list of items, typically rendered as a numbered list.
 
 In your web browser, it's typically rendered to look like this:
@@ -36,22 +33,24 @@ In your web browser, it's typically rendered to look like this:
 
 Of course — just as with almost all HTML elements — you can style it with CSS.
 
-
 ### When to use `<ol>`
 
 To represent a list of items in writing, you have a few options:
 
-* In a sentence, separated by commas
+- In a sentence, separated by commas
 
-* In a vertical list with bullet points (like the one you're reading now)
+- In a vertical list with bullet points (like the one you're reading now)
 
-* In a numbered (or otherwise ordered) list
+- In a numbered (or otherwise ordered) list
 
 If there are only a few items, you might just write them out directly in a sentence.
+
 > My cat's names are Fluffy, Smokey, and Tiger.
 
 If there are many items, but the order does not matter, you could use a bulleted list.
+
 > **Native Trees to Missouri**
+
 - Dogwood
 - Pea/Bean
 - Willow
@@ -100,14 +99,14 @@ As far as HTML elements go, `<ol>` is pretty simple. The only element allowed in
 </ol>
 ```
 
-
 There is no need to type out the number next to each list item. The browser will automatically add numbers in ascending order.
 
 For nested lists, follow this format:
 
 ```html
 <ol>
-  <li> First item
+  <li>
+    First item
     <ol>
       <li>First sub-item</li>
       <li>Second sub-item</li>
@@ -119,30 +118,29 @@ For nested lists, follow this format:
 </ol>
 ```
 
-
 ### ARIA
 
 According to the ARIA spec, `<ol>` may have [descriptive roles](https://www.w3.org/TR/wai-aria/roles). Here are the roles and when you would use them.
 
-* directory —references to members of a group, such as a table of contents
+- directory —references to members of a group, such as a table of contents
 
-* group —contains interface objects with are not intended to be included in a page summary or table of contents
+- group —contains interface objects with are not intended to be included in a page summary or table of contents
 
-* listbox — allows the user to select one or more items from list of choices
+- listbox — allows the user to select one or more items from list of choices
 
-* menu — offers choices to the user. Often a list of actions or functions the user can invoke
+- menu — offers choices to the user. Often a list of actions or functions the user can invoke
 
-* menubar — is part of a menu bar similar to those found in Windows, Mac, and Gnome desktop applications
+- menubar — is part of a menu bar similar to those found in Windows, Mac, and Gnome desktop applications
 
-* radiogroup —references a group of radio buttons (where only a single entry can be checked at any one time)
+- radiogroup —references a group of radio buttons (where only a single entry can be checked at any one time)
 
-* tablist — references a series [tabpanel](https://www.w3.org/TR/wai-aria/roles#tabpanel) elements
+- tablist — references a series [tabpanel](https://www.w3.org/TR/wai-aria/roles#tabpanel) elements
 
-* toolbar — a collections of commonly used function buttons or controls represented in compact visual form
+- toolbar — a collections of commonly used function buttons or controls represented in compact visual form
 
-* tree — may contain sub-level nested groups that can be collapsed and expanded
+- tree — may contain sub-level nested groups that can be collapsed and expanded
 
-* presentation — used to change the look of the page but does not have all the functional, interactive, or structural relevance implied by the element type
+- presentation — used to change the look of the page but does not have all the functional, interactive, or structural relevance implied by the element type
 
 ### `<ol>`'s attributes
 
@@ -170,12 +168,13 @@ This attribute is the catalyst for this post. It was deprecated in HTML4 and the
 </ol>
 ```
 
-
 Note that even if you are representing your ordered list using letters (a, b, c) or Roman numerals (i, ii, iii), you will still specify the `start` attribute with a number. For example, the following list will start with the letter "C".
 
 ```html
 <style>
-  ol { list-style-type: upper-alpha; }
+  ol {
+    list-style-type: upper-alpha;
+  }
 </style>
 
 <ol start="3">
@@ -185,20 +184,19 @@ Note that even if you are representing your ordered list using letters (a, b, c)
 </ol>
 ```
 
-
 **Type**
 
 Another attribute you typically want to stay away from is `type`. However, it does have its purpose. You would only use this attribute if the value of the list number matters, such as in legal or technical documents where items are to be referenced by their number/letter. The `type` attribute indicates the numbering type.
 
-* `a` indicates lowercase letters
+- `a` indicates lowercase letters
 
-* `A` indicated uppercase letters
+- `A` indicated uppercase letters
 
-* `i` indicates lowercase Roman numerals
+- `i` indicates lowercase Roman numerals
 
-* `I` indicates uppercase Roman numerals
+- `I` indicates uppercase Roman numerals
 
-* `1` indicates numbers (default)
+- `1` indicates numbers (default)
 
 If you want this functionality, but items aren't referenced by their number/letter elsewhere in your document, opt **not** to use the `type` attribute, but instead use the `list-style-type` CSS property, which I'll cover below.
 
@@ -208,17 +206,17 @@ You can style an ordered list using CSS just as you would with any other element
 
 I want to bring special attention to the `list-style-type` property. It gives you the ability to change the item's marker (number, letter, etc). Here are some hand-picked values that you may want to use:
 
-* decimal (default) — Decimal numbers (1, 2, 3…)
+- decimal (default) — Decimal numbers (1, 2, 3…)
 
-* decimal-leading-zero — Decimal numbers padded by initial zeros (01, 02, 03…)
+- decimal-leading-zero — Decimal numbers padded by initial zeros (01, 02, 03…)
 
-* lower-roman and upper-roman — Lowercase and uppercase Roman numerals (i, ii, iii… and I, II, III…)
+- lower-roman and upper-roman — Lowercase and uppercase Roman numerals (i, ii, iii… and I, II, III…)
 
-* lower-greek — Classical greek alpha, beta, gamma… (α, β, γ…)
+- lower-greek — Classical greek alpha, beta, gamma… (α, β, γ…)
 
-* lower-alpha and upper-alpha — Lowercase and uppercase ASCII letters (a, b, c… and A, B, C…)
+- lower-alpha and upper-alpha — Lowercase and uppercase ASCII letters (a, b, c… and A, B, C…)
 
-* none — No item marker is shown. The list can still semantically have an order to it without numbered markers being displayed visually to the user.
+- none — No item marker is shown. The list can still semantically have an order to it without numbered markers being displayed visually to the user.
 
 ### Using counter-increment instead of start
 
@@ -229,9 +227,10 @@ One final thing I want to point out comes from an [answer by Adam Grant on Stack
 First, remove the numbered markers from both lists:
 
 ```css
-ol { list-style-type: none; }
+ol {
+  list-style-type: none;
+}
 ```
-
 
 Then, show a counter before **each `<li>` element**:
 
@@ -242,15 +241,14 @@ ol li:before {
 }
 ```
 
-
 Finally, make the counter reset on the first `<ol>` only:
 
 ```css
-ol:first-of-type { counter-reset: someCounterName; }
+ol:first-of-type {
+  counter-reset: someCounterName;
+}
 ```
 
-
 With this solution, the numbers stay consistent in both lists automatically, no matter how many items you add to either list.
-
 
 I may continue writing posts that go further in depth regarding my highest voted or viewed Stack Overflow answers. If people get some benefit from seeing those short answers, making posts like these may help even further.

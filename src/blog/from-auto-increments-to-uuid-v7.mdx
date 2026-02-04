@@ -5,8 +5,6 @@ cover: ./images/b30615c4-b4df-43e0-93e9-b1b9d866d913.webp
 tags: ["backend-systems", "databases", "sql"]
 ---
 
-
-
 When picking a primary key for a table in a database, sometimes there is an
 obvious choice. If you're creating a table of users, and users authenticate
 using their email address, you probably want the email address to be unique
@@ -172,7 +170,7 @@ SELECT * FROM users;
 The result:
 
 | id                                   | created_at              | email_address         |
-|--------------------------------------|-------------------------|-----------------------|
+| ------------------------------------ | ----------------------- | --------------------- |
 | 019ab724-0057-7718-94b7-ba6587014141 | 2025-11-24 12:33:01.270 | travis@travishorn.com |
 
 The `created_at` creation time is calculated on the fly.

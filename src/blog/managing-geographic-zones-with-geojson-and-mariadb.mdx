@@ -2,11 +2,11 @@
 cover: ./images/cd7e3c62-2648-4b43-b7fa-bc4591082a31.webp
 datePublished: 2025-12-23 12:00:12+00:00
 tags:
-- api
-- data-visualization
-- performance
-- python
-- sql
+  - api
+  - data-visualization
+  - performance
+  - python
+  - sql
 title: Managing Geographic Zones with GeoJSON and MariaDB
 ---
 
@@ -31,10 +31,10 @@ instantly returns the correct zone.
 
 To achieve this, we will move through a complete spatial data pipeline:
 
-* Creating raw data from visual maps using GeoJSON.
-* Automating the transformation of that data using Python.
-* Leveraging MariaDB's native spatial features to store the boundaries.
-* Writing the SQL logic to determine where a point exists within a polygon.
+- Creating raw data from visual maps using GeoJSON.
+- Automating the transformation of that data using Python.
+- Leveraging MariaDB's native spatial features to store the boundaries.
+- Writing the SQL logic to determine where a point exists within a polygon.
 
 Let's get started by turning those imaginary lines into real data.
 
@@ -53,34 +53,34 @@ open-source editor for map data.
 
 1. Open [GeoJSON.io](http://geojson.io/) in your browser. You will see a map on
    the left and a JSON code editor on the right.
-    ![A screenshot of geojson.io. The leftmost 75% of the screen are taken up by
-    a map of Saint Louis, MO. The remaining 25% shows JSON code in GeoJSON
-    format. An empty `FeatureCollection` is
-    shown.](./images/9b46777e-3751-43d1-98e0-e013152cf390.webp)
+   ![A screenshot of geojson.io. The leftmost 75% of the screen are taken up by
+ a map of Saint Louis, MO. The remaining 25% shows JSON code in GeoJSON
+ format. An empty `FeatureCollection` is
+ shown.](./images/9b46777e-3751-43d1-98e0-e013152cf390.webp)
 2. Zoom into the geographic area where your zones are located (e.g., a specific
    city or neighborhood).
 3. Draw the Zones:
-    1. Select the **Draw Polygon** tool from the toolbar on the right (it looks
+   1. Select the **Draw Polygon** tool from the toolbar on the right (it looks
       like a small pentagon).
-    2. Looking at your reference map (the PDF or image), click points on the map
+   2. Looking at your reference map (the PDF or image), click points on the map
       to trace the outline of your first zone.
-    3. To finish the shape, you **must** click back on the very first point you
+   3. To finish the shape, you **must** click back on the very first point you
       placed to "close the loop." ![An screen recording of geojson.io centered
-      on Saint Louis. The mouse cursor clicks on the button labeled with a
-      pentagon, then clicks various points on the map to draw a boundary,
-      highlighted in yellow. When the first point is clicked for a second time,
-      the shape is finalized and turns gray.](./images/geojson-io-boundary.webp)
+on Saint Louis. The mouse cursor clicks on the button labeled with a
+pentagon, then clicks various points on the map to draw a boundary,
+highlighted in yellow. When the first point is clicked for a second time,
+the shape is finalized and turns gray.](./images/geojson-io-boundary.webp)
 4. A shape without a name isn't very useful in a database. We need to label it.
    In the code editor on the right side of the site, look for the `properties`
    key. Add a new property called `name`. For the value, enter the name of the
    zone (e.g., "North District" or "Zone A"). ![GeoJSON code of a
-    FeatureCollection showing a single feature named North District with some
-    coordinate geometry
-    defined.](./images/db7a48a6-fa8e-4048-840f-f76cbb18b095.webp)
+ FeatureCollection showing a single feature named North District with some
+ coordinate geometry
+ defined.](./images/db7a48a6-fa8e-4048-840f-f76cbb18b095.webp)
 5. Continue this process for every zone on your map. As you draw, you will see
    the JSON on the right side of the screen automatically populate with
    coordinates.
-    
+
 Once you have defined all your zones, click the **Copy** button in the editor
 pane. Paste this data into your code editor and save it as a file named
 `zones-geo.json`.
@@ -242,13 +242,13 @@ contained in that file. Your spatial data is now live in the database.
 ## Querying the Data
 
 Now that our database is populated, we can finally begin to query the data and
-ask the question: *"Which zone does this location belong to?"*
+ask the question: _"Which zone does this location belong to?"_
 
 To answer this, we use the MariaDB spatial function `ST_Contains`. This function
 takes two geometries. In our case, those are…
 
-* the zone boundary (the polygon), and
-* a specific location (the point)
+- the zone boundary (the polygon), and
+- a specific location (the point)
 
 It returns true (`1`) if the second geometry is strictly inside the first.
 
@@ -264,8 +264,8 @@ For example, St. Louis, MO is located around 38.6270, -90.1994.
 
 However, in geometry, we work on an X/Y plane.
 
-* **Longitude** is the X-axis (East/West).
-* **Latitude** is the Y-axis (North/South).
+- **Longitude** is the X-axis (East/West).
+- **Latitude** is the Y-axis (North/South).
 
 Because MariaDB follows the Open Geospatial Consortium (OGC) standards, it
 expects coordinates in `(X Y)` order. This means you must reverse what you are
@@ -315,7 +315,7 @@ language.
 This translation process is called **geocoding**. It turns a text string (`"123
 Main Street"`) into a coordinate pair.
 
-While you *could* build your own geocoder, it is a massive undertaking. In a
+While you _could_ build your own geocoder, it is a massive undertaking. In a
 production environment, you should use an established API such as the Google
 Maps Platform, Mapbox, or the open-source Nominatim (OpenStreetMap).
 
@@ -331,10 +331,10 @@ for the final application looks like this:
    (e.g., `lat: 38.622`, `lng: -90.193`).
 4. Your backend takes those coordinates and injects them into the SQL query we
    wrote earlier:
-    *Remember to check the order!* Some APIs return `lat, lng`, but you must
-    pass `lng, lat` to MariaDB.
+   _Remember to check the order!_ Some APIs return `lat, lng`, but you must
+   pass `lng, lat` to MariaDB.
 5. MariaDB runs `ST_Contains` and returns the matching zone name (e.g., `"North
-   District"`).
+District"`).
 6. The frontend displays the result to the user, perhaps even plotting a pin
    representing the address and a polygon representing the zone on a map overlay
    to confirm the location.
@@ -349,9 +349,9 @@ overlap. But in the real world, geography is often layered.
 
 For example, a single address might simultaneously belong to:
 
-* School District: `"Central High"`
-* Trash Pickup Day: `"Tuesday"`
-* Sales Territory: `"Midwest Region"`
+- School District: `"Central High"`
+- Trash Pickup Day: `"Tuesday"`
+- Sales Territory: `"Midwest Region"`
 
 If you strictly assume one result per query, you might miss critical data.
 Fortunately, the relational nature of MariaDB makes handling layers

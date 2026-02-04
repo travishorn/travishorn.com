@@ -2,9 +2,9 @@
 cover: ./images/ugt4eBF-7.webp
 datePublished: 2016-06-08 22:01:03+00:00
 tags:
-- javascript
-- linux
-- terminal
+  - javascript
+  - linux
+  - terminal
 title: Zero to TypeScript Developer using Visual Studio Code on Ubuntu
 ---
 
@@ -78,13 +78,12 @@ At this point, you have created a new folder for developing your first TypeScrip
 
 ```json
 {
-    "compilerOptions": {
-      "target": "es5",
-      "sourceMap": true
-    }
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true
+  }
 }
 ```
-
 
 As you start typing the above code, you'll notice that IntelliSense is available to help you remember and choose available options.
 
@@ -120,8 +119,7 @@ var user = "World";
 console.log(speak.hello(user));
 ```
 
-
-The code above creates a new [class](https://www.typescriptlang.org/docs/handbook/classes.html) called **speak**. The only thing in this class is a function called **hello**. This function accepts a single argument called **person**, which must be a string. The output is the string "Hello, " plus the value of the **person** argument, plus a period at the end. We then set a variable** **called **user** with the value "World". Finally, we log the returned value of speak.hello(user) to the console.
+The code above creates a new [class](https://www.typescriptlang.org/docs/handbook/classes.html) called **speak**. The only thing in this class is a function called **hello**. This function accepts a single argument called **person**, which must be a string. The output is the string "Hello, " plus the value of the **person** argument, plus a period at the end. We then set a variable\*\* **called **user\*\* with the value "World". Finally, we log the returned value of speak.hello(user) to the console.
 
 The result should be that "Hello, World." is logged to the console.
 
@@ -133,7 +131,7 @@ After a moment, you will see two new files in the working folder. One of them is
 
 This code will run in a browser or other common environment that runs JavaScript. In fact, we can test that now, right from within VS Code.
 
-*Note: The remaining part of this post uses the built-in debugger in VS Code. This is really only good for back-end coding. The debugger runs Node behind the scenes. In the future, I may do some research into getting the debugger to run a headless browser, which would be much more useful for front-end coding.*
+_Note: The remaining part of this post uses the built-in debugger in VS Code. This is really only good for back-end coding. The debugger runs Node behind the scenes. In the future, I may do some research into getting the debugger to run a headless browser, which would be much more useful for front-end coding._
 
 1. Press Ctrl+Shift+D to bring up the **Debug** panel
 
