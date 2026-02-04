@@ -2,15 +2,15 @@
 cover: ./images/YFlWaZWpT.webp
 datePublished: 2020-03-09 11:01:01+00:00
 tags:
-- api
-- d3
-- data-visualization
-- html
-- javascript
-- react
-- svg
-- vue
-- web-development
+  - api
+  - d3
+  - data-visualization
+  - html
+  - javascript
+  - react
+  - svg
+  - vue
+  - web-development
 title: Reacting to data changes in D3 using Vue
 ---
 
@@ -35,7 +35,7 @@ element. Make sure the `<svg>` has an `id`.
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Chart</title>
   </head>
   <body>
@@ -60,14 +60,14 @@ Below the `<svg>` tag, add the scripts.
 </script>
 ```
 
-For this tutorial, we'll plot some *fake* data regarding blue whales; starting
+For this tutorial, we'll plot some _fake_ data regarding blue whales; starting
 with a very small sample size.
 
 ```javascript
 const whales = [
   { age: 13, weight: 114 },
   { age: 33, weight: 101 },
-  { age: 52, weight: 139 }
+  { age: 52, weight: 139 },
 ];
 ```
 
@@ -84,7 +84,7 @@ const margin = {
   top: 20,
   right: 20,
   bottom: 50,
-  left: 60
+  left: 60,
 };
 ```
 
@@ -93,7 +93,8 @@ other chart elements will be placed inside this `<g>`, so we'll call it our
 `chart`.
 
 ```javascript
-const chart = d3.select("#chart")
+const chart = d3
+  .select("#chart")
   .append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 ```
@@ -104,22 +105,20 @@ scale works well for this kind of data.
 The `range` of this scale is the width of our chart (minus the margins we set).
 
 ```javascript
-const x = d3.scaleLinear()
-  .range([0, width - margin.left - margin.right]);
+const x = d3.scaleLinear().range([0, width - margin.left - margin.right]);
 ```
 
 If you know anything about D3.js, you may be expecting the `domain` to be set at
 this time, as well. I'm intentionally omitting it for right now because I only
-want to set chart values that *don't* change with the data. Domains react to
+want to set chart values that _don't_ change with the data. Domains react to
 data changes. Ranges do not.
 
 The y axis will plot our whale weights. A linear scale also works well here.
 
-The `range` of *this* scale is the *height* of our chart.
+The `range` of _this_ scale is the _height_ of our chart.
 
 ```javascript
-const y = d3.scaleLinear()
-  .range([height - margin.top - margin.bottom, 0]);
+const y = d3.scaleLinear().range([height - margin.top - margin.bottom, 0]);
 ```
 
 Notice the first value of the y scale is the height, and the second value is 0.
@@ -132,11 +131,9 @@ point gets added where the age is older than any existing age in the chart, the
 x axis will have to adjust. Likewise for the y axis with weights.
 
 ```javascript
-const xAxis = chart.append("g")
-  .attr(
-    "transform",
-    `translate(0, ${height - margin.top - margin.bottom})`
-  );
+const xAxis = chart
+  .append("g")
+  .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`);
 
 const yAxis = chart.append("g");
 ```
@@ -159,8 +156,8 @@ const plot = () => {
 The first thing to do inside this function is set the domain of our scales.
 
 ```javascript
-x.domain([0, d3.max(whales, d => d.age)]);
-y.domain([0, d3.max(whales, d => d.weight)]);
+x.domain([0, d3.max(whales, (d) => d.age)]);
+y.domain([0, d3.max(whales, (d) => d.weight)]);
 ```
 
 Now we can call our axes and finally get some visual result on our page.
@@ -191,11 +188,12 @@ Back inside the `plot()` function, add the code for appending `<circle>`
 elements.
 
 ```javascript
-chart.selectAll(".point")
+chart
+  .selectAll(".point")
   .data(whales)
   .join("g")
   .attr("class", "point")
-  .attr("transform", d => `translate(${x(d.age)}, ${y(d.weight)})`)
+  .attr("transform", (d) => `translate(${x(d.age)}, ${y(d.weight)})`)
   .append("circle")
   .attr("r", 5);
 ```
@@ -239,7 +237,7 @@ new Vue({
   data: {},
   watch: {},
   methods: {},
-  mounted() {}
+  mounted() {},
 });
 ```
 
@@ -253,11 +251,13 @@ new Vue({
   watch: {},
   methods: {},
   mounted() {
-    const whales = [ /* ... snip ... */ ];
+    const whales = [
+      /* ... snip ... */
+    ];
     const width = 500;
     /* ... snip ... */
     plot();
-  }
+  },
 });
 ```
 
@@ -293,7 +293,7 @@ methods: {
   plot() {
     x.domain([0, d3.max(this.whales, d => d.age)]);
     y.domain([0, d3.max(this.whales, d => d.weight)]);
-    
+
     /* ... snip ... */
   }
 },
@@ -314,11 +314,11 @@ Aha! The `plot()` method cannot access our `x` scale because it's declared in
 the `mounted()` function's scope. Looking at the rest of the code, I can see
 we'll run into the same issue with all of these variables:
 
-* `x`
-* `y`
-* `xAxis`
-* `yAxis`
-* `chart`
+- `x`
+- `y`
+- `xAxis`
+- `yAxis`
+- `chart`
 
 Update all of those those declarations so they're `data` attributes. In
 practice, this means changing all of these:
@@ -347,13 +347,13 @@ of the above variables to `this.x` and `this.y`, etc.
 For example, in `plot()`, the first line says:
 
 ```javascript
-x.domain([0, d3.max(this.whales, d => d.age)]);
+x.domain([0, d3.max(this.whales, (d) => d.age)]);
 ```
 
 This should be changed to:
 
 ```javascript
-this.x.domain([0, d3.max(this.whales, d => d.age)]);
+this.x.domain([0, d3.max(this.whales, (d) => d.age)]);
 ```
 
 Do this for all references to `chart`, `x`, `y`, `xAxis`, and `yAxis`. When
@@ -470,22 +470,23 @@ our data. I added a title to the HTML.
 And I added axis labels using D3. This code goes in the `mounted()` section.
 
 ```javascript
-this.chart.append("text")
+this.chart
+  .append("text")
   .attr("font-size", 10)
   .attr("text-anchor", "middle")
   .attr("x", (width - margin.left - margin.right) / 2)
   .attr("y", height - margin.top - margin.bottom + 40)
   .text("Age (years)");
-    
-this.chart.append("text")
+
+this.chart
+  .append("text")
   .attr("font-size", 10)
   .attr("text-anchor", "middle")
   .attr("transform", "rotate(-90)")
-  .attr("x", 0 - ((height - margin.top - margin.bottom) / 2))
+  .attr("x", 0 - (height - margin.top - margin.bottom) / 2)
   .attr("y", -40)
   .text("Weight (tons)");
 ```
-
 
 [The finished product (with a small set of CSS styles) can be found on
 CodePen.](https://codepen.io/travishorn/pen/gOpXwXV)
