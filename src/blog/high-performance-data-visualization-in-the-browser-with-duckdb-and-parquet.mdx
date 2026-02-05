@@ -50,6 +50,12 @@ entire engine into the browser.
 So, Parquet provides the highly optimized storage structure, and DuckDB-Wasm
 provides the lightning-fast engine to query it.
 
+Follow along as we build a data pipeline from storage to the user's screen.
+
+![A flowchart diagram. Five boxes connected one after another by arrows. The
+boxes are: Parquet File to Network to DuckDB Virtual File System to SQL Query to
+Svelte UI.](./images/parquet-file-to-svelte-ui.webp)
+
 ## The Baseline: Getting It Running
 
 I'm going to use SvelteKit for this project. We can use `sv` to quickly scaffold
