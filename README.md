@@ -38,7 +38,6 @@ This site is built with:
 
 ## Article Ideas
 
-- Parsing Parquet in the browser
 - SQLite production config. WAL mode.
 - Pre-agg dashboard with materialized views
 - Replacing GA with Umami/Plausible
