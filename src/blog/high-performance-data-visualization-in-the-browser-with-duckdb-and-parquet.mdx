@@ -21,24 +21,31 @@ pull in and query millions of rows with no network latency. Using these tools,
 static dashboards become lightning-fast, serverless analytics tools.
 
 In this post, we're going to build a reactive Svelte 5 application that loads
-historical NVIDIA stock data and performs real-time SQL analysis right in the
-browser. We'll start with a baseline implementation to get DuckDB running, and
-then evolve the project in three ways: a zero-latency dashboard for instant
-filtering, a "bring-your-own-data" feature that lets users analyze local files,
-and a robust cross-filtering visualization using Observable Plot. By the end,
-you'll understand how to handle high-performance data engineering directly in
-the frontend.
+[historical NVIDIA stock
+data](https://huggingface.co/datasets/Xmm/stock-data-dataset/viewer/NVDA) and
+performs real-time SQL analysis right in the browser. We'll start with a
+baseline implementation to get DuckDB running, and then evolve the project in
+three ways: a zero-latency dashboard for instant filtering, a
+"bring-your-own-data" feature that lets users analyze local files, and a robust
+cross-filtering visualization using Observable Plot. By the end, you'll
+understand how to handle high-performance data engineering directly in the
+frontend.
+
+All code in this article can be found on GitHub:
+[travishorn/parquet-browser-parse](https://github.com/travishorn/parquet-browser-parse).
 
 ## Why Parquet and DuckDB?
 
-Parquet is a columnar storage format designed to make data analysis as efficient
-as possible. Unlike JSON or CSV, which store data row-by-row, Parquet organizes
-data by columns. This allows for incredible compression and enables the database
-to read only the specific parts of the file it needs.
+[Parquet](https://parquet.apache.org/) is a columnar storage format designed to
+make data analysis as efficient as possible. Unlike JSON or CSV, which store
+data row-by-row, Parquet organizes data by columns. This allows for incredible
+compression and enables the database to read only the specific parts of the file
+it needs.
 
-DuckDB is an analytical, in-process database built for speed. While most
-databases require a server, DuckDB-Wasm brings that entire engine into the
-browser.
+[DuckDB](https://duckdb.org/) is an analytical, in-process database built for
+speed. While most databases require a server,
+[DuckDB-Wasm](https://duckdb.org/docs/stable/clients/wasm/overview) brings that
+entire engine into the browser.
 
 So, Parquet provides the highly optimized storage structure, and DuckDB-Wasm
 provides the lightning-fast engine to query it.
@@ -58,7 +65,7 @@ Change into the new directory:
 cd parquet-duckdb
 ```
 
-Install the DuckDB-Wasm and Apache Arrow packages:
+Install the DuckDB-Wasm and [Apache Arrow](https://arrow.apache.org/) packages:
 
 ```bash
 npm install @duckdb/duckdb-wasm apache-arrow
@@ -86,10 +93,10 @@ npm run dev
 If you visit [http://localhost:5173](http://localhost:5173) in your browser,
 you'll see the default SvelteKit app.
 
-For demonstration purposes, we're using a stock market dataset from Hugging
-Face. While DuckDB-Wasm can query these files directly over the network via
-HTTP, I've downloaded a local copy of the NVIDIA stock file into the SvelteKit
-`static/` directory to keep development fast and reliable.
+For demonstration purposes, we're using a stock market dataset from [Hugging
+Face](https://huggingface.co/). While DuckDB-Wasm can query these files directly
+over the network via HTTP, I've downloaded a local copy of the NVIDIA stock file
+into the SvelteKit `static/` directory to keep development fast and reliable.
 
 Here is the baseline code to get the database initialized and the data
 displayed. Replace everything in `src/routes/+page.svelte` with the following:
@@ -195,6 +202,9 @@ displayed. Replace everything in `src/routes/+page.svelte` with the following:
 	</table>
 {/if}
 ```
+
+[This file is in the **main** branch of the
+repository.](https://github.com/travishorn/parquet-browser-parse/blob/738f6c275a793ee405506e2dbeb6d39f37f5fa37/src/routes/%2Bpage.svelte)
 
 The logic breaks down into four simple steps:
 
@@ -399,6 +409,9 @@ required.
 	</table>
 {/if}
 ```
+
+[This file is on the **zero-latency-dashboard** branch of the
+repository.](https://github.com/travishorn/parquet-browser-parse/blob/8c92d6ace04688667be1cb841c21e92580421b87/src/routes/%2Bpage.svelte)
 
 This version builds on the baseline with a few key changes.
 
@@ -643,6 +656,9 @@ fast.
 {/if}
 ```
 
+[This file is on the **byod** branch of the
+repository.](https://github.com/travishorn/parquet-browser-parse/blob/e5de844eebb696dbc946a9c3b49a8d80b06d196a/src/routes/%2Bpage.svelte)
+
 This implementation introduces dynamic schema handling and local file
 registration.
 
@@ -812,6 +828,9 @@ recalculates the summary statistics for that specific window.
 	<div>Total Volume: {(summary.totalVol / 1000000000).toFixed(1)}B</div>
 {/if}
 ```
+
+[This file is on the **cross-filtering-charts** branch of the
+repository.](https://github.com/travishorn/parquet-browser-parse/blob/eb41e4ec0e2d2b304c51f23406238805830da537/src/routes/%2Bpage.svelte)
 
 This setup combines high-performance querying with reactive rendering.
 
