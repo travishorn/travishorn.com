@@ -38,8 +38,6 @@ This site is built with:
 
 ## Article Ideas
 
-- SQLite production config. WAL mode.
-- Pre-agg dashboard with materialized views
 - Replacing GA with Umami/Plausible
 - Rootless Podman on Linux
 - Explain vector DBs. Embeddings on MariaDB

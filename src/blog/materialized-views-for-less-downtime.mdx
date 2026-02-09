@@ -1,0 +1,150 @@
+---
+title: "Materialized Views for Less Downtime"
+datePublished: 2026-02-24T06:00:00-05:00
+cover: ./images/materialized-views.webp
+tags:
+- automation
+- backed-systems
+- code-quality
+- databases
+- performance
+- software-engineering
+- sql
+draft: true
+---
+
+If you manage reporting databases in PostgreSQL, you've probably worked with
+nightly rebuilding of summary tables. This might involve a script that
+completely drops a summary table and recreates it from scratch to ensure data
+freshness. While this brute-force method works, it introduces unnecessary
+maintenance overhead and creates a window of downtime where your users are left
+staring at empty dashboards. In this post, we'll explore how to upgrade this
+workflow using [Materialized
+Views](https://www.postgresql.org/docs/current/rules-materializedviews.html), a
+native PostgreSQL feature that allows you to cache complex aggregations and
+refresh them transactionally.
+
+Imagine you work for a hospital network. Every night, administrators need a
+summary table that aggregates millions of historical appointment records. They
+use this to analyze resource utilization per clinic and per patient.
+
+Currently, a scheduled job drops the reporting table and rebuilds it from
+scratch, causing the dashboard to go blank for 10 minutes every night at 2:00
+AM.
+
+## The Setup
+
+Let me introduce the source data. We have patients, clinics, and a large
+transactional table of appointments.
+
+```sql
+CREATE TABLE patients (
+    patient_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100)
+);
+
+CREATE TABLE clinics (
+    clinic_id SERIAL PRIMARY KEY,
+    clinic_name VARCHAR(100),
+    region VARCHAR(50)
+);
+
+CREATE TABLE appointments (
+    appointment_id SERIAL PRIMARY KEY,
+    clinic_id INT REFERENCES clinics(clinic_id),
+    patient_id INT REFERENCES patients(patient_id),
+    appointment_date DATE,
+    scheduled_minutes INT,
+    actual_minutes INT,
+    status VARCHAR(20)
+);
+```
+
+## The Old Way
+
+The traditional approach to this problem is often a brute-force script. The
+logic is straightforward but disruptive: first, it drops the existing table,
+then it recreates the schema, and finally, it runs a heavy `INSERT` query to
+populate the new data. While this guarantees a fresh dataset, it creates an
+availability gap. From the moment the `DROP` command executes until the `INSERT`
+transaction commits, summary table is unusable. Anyone trying to view the
+dashboard during this window will see errors or a empty screens.
+
+```sql
+-- Downtime starts here
+DROP TABLE IF EXISTS patient_utilization_summary;
+
+-- Recreate the table structure
+CREATE TABLE patient_utilization_summary (
+    year INT,
+    clinic_name VARCHAR(100),
+    patient_id INT,
+    total_visits INT,
+    total_minutes INT,
+    PRIMARY KEY (year, clinic_name, patient_id)
+);
+
+-- Repopulate it
+INSERT INTO patient_utilization_summary
+SELECT 
+    EXTRACT(YEAR FROM a.appointment_date) AS year,
+    c.clinic_name,
+    a.patient_id,
+    COUNT(*) AS total_visits,
+    SUM(a.actual_minutes) AS total_minutes
+FROM appointments a
+JOIN clinics c ON a.clinic_id = c.clinic_id
+WHERE a.status = 'Completed'
+GROUP BY 1, 2, 3;
+
+-- Downtime ends once INSERT finishes
+```
+
+## The Better Way with Materialized Views
+
+There's a native solution in PostgreSQL designed specifically for this scenario:
+**Materialized Views**. Unlike a standard view that runs a query on the fly, a
+materialized view persists the result set to disk. Then, you can use the
+`REFRESH MATERIALIZED VIEW CONCURRENTLY` command to calculates the updated data
+in a background transaction and merge the changes into the existing view. The
+view remains fully queryable throughout the entire process. Your users continue
+to see the "old" data right up until the "new" data is ready, completely
+eliminating downtime.
+
+### One-Time Setup
+
+```sql
+-- Define the view once
+CREATE MATERIALIZED VIEW patient_utilization_summary AS
+SELECT
+    EXTRACT(YEAR FROM a.appointment_date) AS year,
+    c.clinic_name,
+    a.patient_id,
+    COUNT(*) AS total_visits,
+    SUM(a.actual_minutes) AS total_minutes
+FROM appointments a
+JOIN clinics c ON a.clinic_id = c.clinic_id
+WHERE a.status = 'Completed'
+GROUP BY 1, 2, 3;
+
+-- Create a unique index to distinguish rows during a concurrent refresh
+CREATE UNIQUE INDEX idx_patient_summary_unique 
+ON patient_utilization_summary (year, clinic_name, patient_id);
+```
+
+### The New Nightly Script
+
+```sql
+-- Postgres calculates the changes in the background.
+-- Old data still available until new data is ready.
+REFRESH MATERIALIZED VIEW CONCURRENTLY patient_utilization_summary;
+```
+
+Materialized views empower you to build more resilient data pipelines. You can
+avoid the "drop-and-rebuild" cycle that includes downtime and simplify your
+maintenance code into a single, simple command. Try using materialized views so
+your users have uninterrupted access to the insights they rely on.
+
+Cover photo by [3D Render](https://unsplash.com/@3drender) on
+[Unsplash](https://unsplash.com/photos/abstract-purple-waves-with-highlights-on-black-background-_VPifiDWIBo).
