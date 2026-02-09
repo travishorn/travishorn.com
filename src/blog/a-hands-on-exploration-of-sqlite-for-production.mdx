@@ -1,21 +1,22 @@
 ---
+title: 'A Hands-on Exploration of SQLite for Production'
 datePublished: 2026-02-17 06:00:00-05:00
+cover: ./images/sqlite-production.webp
 tags:
 - databases
 - sql
 - performance
 - backend-systems
 - deployment
-title: 'A Hands-on Exploration of SQLite for Production'
 draft: true
 ---
 
-SQLite is a versatile database, known for its simplicity and serverless
-architecture. It's the go-to choice for countless applications, from mobile apps
-to small-scale web servers. However, deploying SQLite in a production
-environment, especially under concurrent workloads, requires a deeper
-understanding of its configuration. Simply using default settings can lead to
-significant performance bottlenecks or unexpected behavior.
+If you've worked with SQLite before, you know how versatile a database system it
+can be. Its simplicity and serverless architecture make it the go-to choice for
+many applications, from mobile apps to small-scale web servers. However,
+deploying SQLite in a production environment, especially under concurrent
+workloads, requires specialized configuration. Simply using default settings can
+lead to significant performance bottlenecks or unexpected behavior.
 
 This blog post will take you on a hands-on journey through various SQLite
 configurations, demonstrating their impact on throughput, concurrency, and
@@ -30,8 +31,8 @@ production default for high write throughput.
 
 I performed 10,000 individual `INSERT` statements into a SQLite database under
 different configurations of `journal_mode` and `synchronous` settings. Each
-INSERT was executed in its own autocommitted transaction.. The key metric I
-observed was "Inserts per second" (TPS).
+INSERT was executed in its own autocommitted transaction. The key metric I
+observed was "transactions per second" (TPS).
 
 | Journal Mode | Synchronous | Inserts/Sec (TPS) | Notes                                                                                                 |
 | :----------- | :---------- | :---------------- | :---------------------------------------------------------------------------------------------------- |
@@ -43,18 +44,17 @@ observed was "Inserts per second" (TPS).
 | WAL          | OFF         | ~61,994           | Fastest, but dangerous (risk of corruption/data loss on crash).                                       |
 
 Default `DELETE` mode with `synchronous=FULL` is slow. It forces a physical disk
-flush for every single write, leading to very low Transaction Per Second (TPS)
-and high CPU overhead as the system constantly manages I/O.
+flush for every single write, leading to very low TPS and high CPU overhead as
+the system constantly manages I/O.
 
 `WAL` mode significantly boosts performance. In this mode, changes are appended
 to a separate `.wal` file, which allows writers to proceed without blocking
 readers.
 
-In addition to the main `.db` file, two auxiliary files are created:
-`read_write_test.db-wal` (the write-ahead log) and `read_write_test.db-shm` (the
-shared-memory index). These files enable separate read/write paths and managing
-concurrent access. Their size dynamically adjusts based on write activity and
-checkpointing.
+In addition to the main `.db` file, two auxiliary files are created: `.db-wal`
+(the write-ahead log) and `.db-shm` (the shared-memory index). These files
+enable separate read/write paths and managing concurrent access. Their size
+dynamically adjusts based on write activity and checkpointing.
 
 `WAL` with `synchronous=NORMAL` is the sweet spot. This combination achieved
 ~33,135 inserts/sec. That's over 100 times faster than the default! `NORMAL`
@@ -77,17 +77,17 @@ the industry standard for production deployments.
 
 ## The Concurrency Experiment
 
-The goal of this experiment is to understand the "database is locked" error and
-learn effective strategies to mitigate it in concurrent applications.
+Next, I wanted to understand the "database is locked" error and learn effective
+strategies to mitigate it in concurrent applications.
 
 SQLite implements a "single writer, multiple readers" concurrency model. My
-experiments used two separate Python processes: one writer holding a lock, and
+experiment used two separate Python processes: one writer holding a lock, and
 another process (either a writer or a reader-then-writer) contending for access.
 
 ### Baseline
 
 In `DELETE` journal mode, when a writer had an active transaction, any other
-process attempting to write to the database failed with an
+process attempting to write to the database failed with a
 `sqlite3.OperationalError: database is locked`. SQLite's strict single-writer
 policy means that writers obtain an exclusive lock, blocking other writers.
 
@@ -130,31 +130,22 @@ contention exists. Both are important for performant SQLite applications.
 
 ## The Read-While-Writing Experiment
 
-The goal of this experiment was to compare reader behavior during active writes
-in `DELETE` versus `WAL` mode. It involved a writer continuously updating a
-counter while a reader rapidly queried it.
+The goal of this experiment was to observe reader behavior during active writes
+in `DELETE` versus `WAL` mode, using a continuous writer and a querying reader.
+In my initial tests using standard Python driver settings, readers surprisingly
+didn't encounter errors. But this is misleading because the writer's lock was
+too brief and the driver was actually quietly retrying within its default
+timeout.
 
-In the test environment (Windows, Python `sqlite3`), readers did not raise
-`sqlite3.OperationalError: database is locked` in either mode. However, further
-analysis reveals that the **mechanism** for avoiding these errors differs
-fundamentally between the two modes.
+To reveal the actual locking behavior, I forced the writer to hold its exclusive
+lock for a longer duration (50ms). The difference in `DELETE` mode became clear:
+when the writer committed changes, it acquired an `EXCLUSIVE` database lock,
+causing concurrent readers to fail with `SQLITE_BUSY`.
 
-In `DELETE` mode, I didn't get any errors, but I strongly suspect that was
-because of the default behavior of the Python `sqlite3` driver. The driver
-includes a default `timeout` (5 seconds).
-
-When the writer held an `EXCLUSIVE` lock to commit changes to the main database
-file, concurrent readers received a `SQLITE_BUSY` status. Instead of failing
-immediately, the Python driver silently paused execution until the writer
-released the lock.
-
-Readers were **blocked** during commit (although not throughout the entire write
-transaction). They did not run in parallel with the writer; they waited their
-turn. Readers saw a consistent "old" value only because they were forced to wait
-until the writer finished, or they managed to slip in a read _before_ the writer
-committed. `DELETE` mode provides consistency through serialization. It ensures
-valid data by preventing readers and writers from accessing the file at the
-exact same time.
+This confirms that `DELETE` mode enforces consistency through serialization.
+Readers cannot run in parallel with a committing writer; they are completely
+blocked during the write window. The database ensures consistency by stopping
+all read activity until the write is finished.
 
 ### True Concurrency Through `WAL` Mode
 
@@ -221,21 +212,30 @@ application's startup code. These should be run once when the application
 connects to the database.
 
 ```sql
--- Run these once when the app starts
-PRAGMA journal_mode = WAL;   -- Use Write-Ahead Logging for concurrency and performance
-PRAGMA synchronous = NORMAL; -- Balance performance and durability
-PRAGMA busy_timeout = 5000;  -- Wait up to 5 seconds for locked tables (controls tail latency)
-PRAGMA cache_size = -20000;  -- Allocate 20MB for page cache (Negative = KiB, positive = number of pages)
-PRAGMA foreign_keys = ON;    -- Enforce relational integrity
+-- Use Write-Ahead Logging for concurrency and performance
+PRAGMA journal_mode = WAL;
+
+-- Balance performance and durability
+PRAGMA synchronous = NORMAL;
+
+-- Wait up to 5 seconds for locked tables (controls tail latency)
+PRAGMA busy_timeout = 5000;
+
+-- Allocate 20MB for page cache
+-- Negative = KiB, positive = number of pages
+PRAGMA cache_size = -20000;
+
+-- Enforce relational integrity
+PRAGMA foreign_keys = ON;
 ```
 
-## Final Thoughts
+## A Capable System with the Right Configuration
 
 My hands-on exploration showed me how powerful and flexible SQLite can be with
 the right configuration. Using the right journal modes, synchronous settings,
 concurrency models, and backup strategies means achieving high throughput,
-concurrency, and reliable data management. SQLite is more capable than some
-people think. It can definitely be used for many production applications.
+concurrency, and reliable data management. SQLite is more capable than you might
+initially think. It can definitely be used for many production applications.
 
 Cover photo by [Pawel Czerwinski](https://unsplash.com/@pawel_czerwinski) on
 [Unsplash](https://unsplash.com/photos/gray-triangles-form-geometric-shapes-fenSNLutfuo).
