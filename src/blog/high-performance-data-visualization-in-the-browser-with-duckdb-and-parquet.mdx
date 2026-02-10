@@ -10,7 +10,6 @@ tags:
 - sql
 - svelte
 - web-development
-draft: true
 ---
 
 With massive data, frontend visualization often means you either crush the
@@ -25,11 +24,14 @@ In this post, we're going to build a reactive Svelte 5 application that loads
 data](https://huggingface.co/datasets/Xmm/stock-data-dataset/viewer/NVDA) and
 performs real-time SQL analysis right in the browser. We'll start with a
 baseline implementation to get DuckDB running, and then evolve the project in
-three ways: a zero-latency dashboard for instant filtering, a
-"bring-your-own-data" feature that lets users analyze local files, and a robust
-cross-filtering visualization using Observable Plot. By the end, you'll
-understand how to handle high-performance data engineering directly in the
-frontend.
+three ways:
+
+1. a zero-latency dashboard for instant filtering,
+2. a "bring-your-own-data" feature that lets users analyze local files, and
+3. a robust cross-filtering visualization using Observable Plot.
+
+By the end, you'll understand how to handle high-performance data engineering
+directly in the frontend.
 
 All code in this article can be found on GitHub:
 [travishorn/parquet-browser-parse](https://github.com/travishorn/parquet-browser-parse).
@@ -71,10 +73,10 @@ Change into the new directory:
 cd parquet-duckdb
 ```
 
-Install the DuckDB-Wasm and [Apache Arrow](https://arrow.apache.org/) packages:
+Install the DuckDB-Wasm package:
 
 ```bash
-npm install @duckdb/duckdb-wasm apache-arrow
+npm install @duckdb/duckdb-wasm
 ```
 
 In `vite.config.js`, we need to tell Vite **not** to optimize the DuckDB-Wasm
