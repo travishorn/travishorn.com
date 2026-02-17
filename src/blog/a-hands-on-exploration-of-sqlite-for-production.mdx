@@ -8,15 +8,14 @@ tags:
 - performance
 - backend-systems
 - deployment
-draft: true
 ---
 
 If you've worked with SQLite before, you know how versatile a database system it
 can be. Its simplicity and serverless architecture make it the go-to choice for
-many applications, from mobile apps to small-scale web servers. However,
+many applications including mobile apps and small-scale web servers. However,
 deploying SQLite in a production environment, especially under concurrent
 workloads, requires specialized configuration. Simply using default settings can
-lead to significant performance bottlenecks or unexpected behavior.
+lead to significant performance bottlenecks and unexpected behavior.
 
 This blog post will take you on a hands-on journey through various SQLite
 configurations, demonstrating their impact on throughput, concurrency, and
@@ -177,7 +176,7 @@ active, I attempted two backup methods and verified their integrity.
 
 ### Method 1: Operating System File Copy
 
-A direct OS file copy (`read_write_test.db` to `backup_os.db`) passed `PRAGMA
+A direct OS file copy (`test.db` to `backup.db`) passed `PRAGMA
 integrity_check;`.
 
 **Warning:** Despite this result, **direct OS file copying of a live SQLite
@@ -191,8 +190,8 @@ you _can_ do an OS file copy, but all three files must be copied atomically.
 
 ### Method 2: SQLite's `VACUUM INTO` Command
 
-Executing `VACUUM INTO 'backup_sqlite.db'` on the live database resulted in
-`backup_sqlite.db` also passing `PRAGMA integrity_check;`.
+Executing `VACUUM INTO 'backup.db'` on the live database resulted in `backup.db`
+also passing `PRAGMA integrity_check;`.
 
 `VACUUM INTO` is a great built-in SQLite command specifically designed for
 creating consistent copies of a database. It works by creating a new database
