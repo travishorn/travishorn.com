@@ -1,0 +1,109 @@
+---
+datePublished: 2026-03-10 06:00:00-05:00
+title: Switching to uv for Python Management
+cover: ./images/uv.webp
+tags:
+- python
+- terminal
+- software-engineering
+draft: true
+---
+
+For years, I relied on the official installer from python.org to manage my
+Python versions. Recently, however, I uninstalled everything to start fresh with
+**uv**. Here is how (and why) I made the switch.
+
+## Installation
+
+Getting started is simple.
+
+On macOS and Linux:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+On Windows:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+## Keeping uv Updated
+
+To ensure you have access to the latest Python releases, you must keep `uv`
+itself updated. The list of installable Python versions depends directly on the
+version of the tool you are running.
+
+```bash
+uv self update
+```
+
+## Installing Python
+
+You can view a list of all available Python builds via the terminal:
+
+```bash
+uv python list
+```
+
+However, the output can be overwhelming, making it difficult to spot the latest
+release at a glance. It is often easier to visit python.org to verify the
+current version number.
+
+![A screenshot of the python.org homepage. The words "Latest: Python 3.14.3" are
+highlighted by a red annotation rectangle
+outline.](./images/python-org-highlight-latest.webp)
+
+![A close-up screenshot of the **Download** section of the python.org homepage.
+The words "Latest: Python 3.14.3" are highlighted by a red annotation rectangle
+outline.](./images/python-org-highlight-latest-zoom.webp)
+
+Once you have the version number, you can install it. I prefer using the
+`default` flag, which adds the installed version to your `PATH`, allowing you to
+execute `python` globally.
+
+```bash
+uv python install --default --preview-features python-install-default 3.14.3
+```
+
+*Note: Replace `3.14.3` with your desired version.*
+
+## Usage
+
+The biggest shift in workflow is mental: forget about using `python` or `pip`
+directly. From now on, `uv` handles the heavy lifting.
+
+Initialize a project:
+
+```bash
+uv init
+```
+
+Install packages (replaces `pip install`):
+
+```bash
+uv add numpy
+```
+
+Run a script:
+
+```bash
+uv run main.py
+```
+
+## Why I Made the Switch
+
+I moved away from the official installers for three main reasons:
+
+1. I often need different Python versions for different projects, which the
+   standard installer handles poorly.
+2. I used to accidentally install packages to my global workspace. While I knew
+   how to use `python -m venv`, I would occasionally forget to activate the
+   environment before running `pip install`.
+3. `uv` streamlines package management. It removes the need to manually activate
+   virtual environments or freeze requirements files. It manages dependencies
+   automatically with fewer commands.
+
+Photo by [Juliana Tanchak](https://unsplash.com/@radio_jane) on
+[Unsplash](https://unsplash.com/photos/a-room-with-purple-lighting-and-a-white-wall-5yKQ1pikvGg).
