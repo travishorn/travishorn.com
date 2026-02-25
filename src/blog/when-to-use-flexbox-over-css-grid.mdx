@@ -1,0 +1,79 @@
+---
+title: "When to Use Flexbox Over CSS Grid"
+datePublished: 2026-02-25T06:00:00-05:00
+tags:
+  - css
+  - web-development
+draft: true
+---
+
+Both Flexbox and CSS Grid are powerful layout tools built into modern CSS. They
+are often discussed as if you must pick one or the other, but in practice they
+complement each other well. Understanding the strengths of each will help you
+make a confident choice — and sometimes use both at the same time.
+
+## Outline
+
+### 1. Introduction
+
+- The "flexbox vs. grid" debate is a false dichotomy.
+- Both are first-class CSS layout tools.
+- Goal: give you a mental model for choosing quickly.
+
+### 2. Quick Recap: What Each Tool Does
+
+- **Flexbox** — one-dimensional layout (a row *or* a column at a time).
+- **CSS Grid** — two-dimensional layout (rows *and* columns simultaneously).
+
+### 3. When Flexbox Is the Right Choice
+
+- **Single-axis alignment** — navigation bars, button groups, icon+label
+  combinations; anything that flows in one direction.
+- **Content-driven sizing** — when items should shrink and grow based on their
+  own content rather than a fixed grid track.
+- **Small, reusable components** — cards, tags, form controls; components that
+  don't need to align with anything outside themselves.
+- **Spacing between items** — `gap`, `justify-content: space-between`, and
+  friends make even distribution effortless.
+- **Unknown number of items** — a flex container handles any number of children
+  gracefully without explicit track definitions.
+
+### 4. When CSS Grid Is the Right Choice
+
+- **Two-dimensional layouts** — page-level shells (header / sidebar / main /
+  footer) that must align on both axes.
+- **Explicit track sizing** — when column widths or row heights need to be
+  defined and consistent across many items.
+- **Overlapping elements** — grid's placement model lets items share cells.
+- **Alignment across siblings** — lining up cards in a gallery so that titles,
+  images, and footers stay in the same row regardless of content length.
+
+### 5. Using Both Together
+
+- Common pattern: grid for the outer page structure, flexbox inside each grid
+  cell for component-level layout.
+- Example: a product card grid where the grid handles the overall tiling and
+  flexbox keeps the card's inner content vertically distributed.
+
+### 6. Quick Decision Checklist
+
+A short set of questions to ask yourself before writing any layout CSS:
+
+1. Do I need to control layout in **one direction** only? → Flexbox
+2. Do I need items to align across **both rows and columns**? → Grid
+3. Is item sizing driven by **content** or by **the container**? → Content →
+   Flexbox; Container → Grid
+4. Am I building a **small component** or a **page skeleton**? → Component →
+   Flexbox; Skeleton → Grid
+
+### 7. Browser Support and Fallbacks
+
+- Both are universally supported in modern browsers.
+- Brief note on progressive enhancement if older browser support is required.
+
+### 8. Conclusion
+
+- Neither tool is strictly better — they solve different problems.
+- Flexbox excels at one-dimensional, content-driven layouts.
+- Grid excels at two-dimensional, container-driven layouts.
+- Use them together for the most expressive, maintainable CSS.
