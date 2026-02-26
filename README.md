@@ -53,7 +53,6 @@ This site is built with:
 - Local RAG
 - Scrape data from PDF invoices
 - Overoptimizing ("good enough")
-- ARIA basics
 - Scripts, async, defer
 - How browsers evaluate img srcset
 - Linear regression trendline graph
