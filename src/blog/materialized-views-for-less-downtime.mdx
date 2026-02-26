@@ -1,16 +1,15 @@
 ---
 title: "Materialized Views for Less Downtime"
-datePublished: 2026-02-24T06:00:00-05:00
+datePublished: 2026-02-25T16:00:00-05:00
 cover: ./images/materialized-views.webp
 tags:
-- automation
-- backed-systems
-- code-quality
-- databases
-- performance
-- software-engineering
-- sql
-draft: true
+  - automation
+  - backed-systems
+  - code-quality
+  - databases
+  - performance
+  - software-engineering
+  - sql
 ---
 
 If you manage reporting databases in PostgreSQL, you've probably worked with
@@ -87,7 +86,7 @@ CREATE TABLE patient_utilization_summary (
 
 -- Repopulate it
 INSERT INTO patient_utilization_summary
-SELECT 
+SELECT
     EXTRACT(YEAR FROM a.appointment_date) AS year,
     c.clinic_name,
     a.patient_id,
@@ -129,7 +128,7 @@ WHERE a.status = 'Completed'
 GROUP BY 1, 2, 3;
 
 -- Create a unique index to distinguish rows during a concurrent refresh
-CREATE UNIQUE INDEX idx_patient_summary_unique 
+CREATE UNIQUE INDEX idx_patient_summary_unique
 ON patient_utilization_summary (year, clinic_name, patient_id);
 ```
 
