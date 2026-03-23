@@ -6,6 +6,10 @@ import PostCard from "../components/PostCard.astro";
 import type { CollectionEntry } from "astro:content";
 import { getImage } from "astro:assets";
 import homeCover from "../blog/images/travis-horn-og.webp";
+import {
+  comparePublishedBlogPostsByDateDesc,
+  isPublishedBlogPost,
+} from "../utils/blog";
 
 const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 
@@ -14,10 +18,8 @@ const pageOgImage = optimizedHomeCover.src;
 
 // Get all published posts sorted by date
 const allPosts = posts
-  .filter((post) => !post.data.draft)
-  .sort(
-    (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
-  );
+  .filter(isPublishedBlogPost)
+  .sort(comparePublishedBlogPostsByDateDesc);
 
 // Group into featured and latest (non-featured) posts
 const featuredPosts = allPosts.filter((post) => post.data.featured);

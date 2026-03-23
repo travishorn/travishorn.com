@@ -3,16 +3,29 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import PostCard from "./PostCard.astro";
 import { pathHasLocale } from "astro:i18n";
+import {
+  comparePublishedBlogPostsByDateDesc,
+  isPublishedBlogPost,
+  type BlogPost,
+} from "../utils/blog";
 
-const { currentPost } = Astro.props;
+interface Props {
+  currentPost: BlogPost;
+}
+
+const { currentPost } = Astro.props as Props;
+
+// Only show related posts if current post is published
+if (!isPublishedBlogPost(currentPost)) {
+  return null;
+}
 
 type PostWithScore = CollectionEntry<"blog"> & { similarityScore: number };
 
 // Get all blog posts
 const allPosts = await getCollection("blog");
 
-// Filter out drafts
-const publishedPosts = allPosts.filter((post) => !post.data.draft);
+const publishedPosts = allPosts.filter(isPublishedBlogPost);
 
 // Filter out the current post
 const otherPosts = publishedPosts.filter((post) => post.id !== currentPost.id);
@@ -39,16 +52,14 @@ let relatedPosts: PostWithScore[] = otherPosts
     }
 
     //If scores match, sort by date (newest first)
-    return b.data.datePublished.valueOf() - a.data.datePublished.valueOf();
+    return comparePublishedBlogPostsByDateDesc(a, b);
   })
   .slice(0, 3); // Take the top 3
 
 // FALLBACK: If we don't have 3 related posts, fill the gaps with recent posts
 if (relatedPosts.length < 3) {
   const recentPosts: PostWithScore[] = publishedPosts
-    .sort(
-      (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
-    )
+    .sort(comparePublishedBlogPostsByDateDesc)
     .filter((post) => !relatedPosts.find((p) => p.id === post.id)) // Avoid duplicates
     .slice(0, 3 - relatedPosts.length)
     .map((post) => ({ ...post, similarityScore: 0 }));

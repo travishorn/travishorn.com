@@ -1,15 +1,17 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import { siteTitle, siteDescription } from "../site.js";
+import {
+  comparePublishedBlogPostsByDateDesc,
+  isPublishedBlogPost,
+} from "../utils/blog";
 
 export async function GET(context) {
   const blog = await getCollection("blog");
 
   const items = blog
-    .filter((post) => !post.data.draft)
-    .sort(
-      (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
-    )
+    .filter(isPublishedBlogPost)
+    .sort(comparePublishedBlogPostsByDateDesc)
     .map((post) => ({
       title: post.data.title,
       pubDate: post.data.datePublished,

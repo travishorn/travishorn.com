@@ -6,7 +6,6 @@ import ProseImage from "../components/ProseImage.astro";
 import RelatedPosts from "../components/RelatedPosts.astro";
 import Footer from "../components/Footer.astro";
 import defaultCover from "../blog/images/default-cover.webp";
-
 import type { CollectionEntry } from "astro:content";
 
 export async function getStaticPaths() {
@@ -18,7 +17,11 @@ export async function getStaticPaths() {
   }));
 }
 
-const { post } = Astro.props;
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props as Props;
 const { Content } = await render(post);
 
 const cover = post.data.cover ?? defaultCover;
@@ -34,7 +37,9 @@ const schema = JSON.stringify({
   description: pageDescription,
   image: optimizedCover.src,
   author: { "@type": "Person", name: "Travis Horn" },
-  datePublished: post.data.datePublished.toISOString(),
+  ...(post.data.datePublished && {
+    datePublished: post.data.datePublished.toISOString(),
+  }),
 });
 ---
 
@@ -47,7 +52,11 @@ const schema = JSON.stringify({
         {post.data.title}
       </h1>
       <div class="text-zinc-500 dark:text-zinc-400">
-        {post.data.datePublished.toISOString().slice(0, 10)}
+        {
+          post.data.datePublished
+            ? post.data.datePublished.toISOString().slice(0, 10)
+            : "Draft"
+        }
       </div>
       <Image
         src={cover}
@@ -78,5 +87,8 @@ const schema = JSON.stringify({
 
   <RelatedPosts currentPost={post} />
 
-  <Footer creationYear={post.data.datePublished.getFullYear()} />
+  <Footer
+    creationYear={post.data.datePublished?.getFullYear() ??
+      new Date().getFullYear()}
+  />
 </Layout>
