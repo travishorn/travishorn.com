@@ -36,6 +36,10 @@ This site is built with:
 - `npm run build` builds the static site to the `dist/` directory.
 - `npm run preview` previews the built site locally.
 
+## Publishing
+
+See [PUBLISHING.md](./PUBLISHING.md) for the draft and publish workflow.
+
 ## Article Ideas
 
 - Replacing GA with Umami/Plausible
