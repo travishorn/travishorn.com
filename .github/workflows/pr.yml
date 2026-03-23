@@ -50,7 +50,6 @@ jobs:
             --no-progress
             --accept 200,429
             --max-concurrency 8
-            --exclude-mail
             --include-fragments
             README.md
             PUBLISHING.md
