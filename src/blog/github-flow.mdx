@@ -1,0 +1,224 @@
+---
+title: "GitHub Flow"
+datePublished: 2026-04-07T06:00:00-05:00
+cover: ./images/stable-clean.webp
+tags:
+- git
+- software-engineering
+- terminal
+- nodejs
+- javascript
+- web-development
+- code-quality
+- deployment
+---
+
+I've found that having a consistent version control workflow is crucial, no
+matter if I'm working solo or with other contributors. Lately I've been
+experimenting with a style of working on code called "GitHub Flow." In this
+post, we'll walk through a complete, step-by-step guide to the process.
+
+## Short Version
+
+If you're already familiar with the core concepts and just want a quick
+reference, here's the cheat sheet of the exact steps in the order you should
+perform them. If you'd rather see a deeper dive into the "why" behind each step,
+feel free to skip ahead to the full breakdown.
+
+1. Create an issue on GitHub.
+2. Create a new local git branch.
+3. Do work, and commit it.
+4. Push to a new remote, setting the upstream reference.
+5. Create a pull request, merge it, and delete the branch.
+6. Switch to the main branch, and pull from the remote.
+7. Bump the version if necessary, then push, following tags.
+8. Delete the local branch.
+
+## The Flow Explained
+
+Now for the deep dive. This section breaks down the entire process step by step.
+We'll look at the specific commands you need to run, what's happening under the
+hood, and how each piece fits together to keep your workflow organized.
+
+First, create an issue on GitHub that defines the task to be completed.
+
+1. Go to your repository on GitHub.
+2. Click on the **Issues** tab.
+3. Click on the green **New issue** button.
+4. Enter a descriptive title and description.
+5. Click on the green **Create** button.
+6. Make a note of the issue number GitHub which automatically assigns.
+
+Creating an issue before you start coding gives you a clear goal and defines the
+scope of the work to be done. It also acts as a paper trail you can look back on
+later. Making a note of the issue number is especially important here: later in
+the process, we'll use that number to link our incoming code changes directly
+back to this issue.
+
+Next, on your local development machine, make sure you're on the main branch.
+Note that this may be called something different (like `master` or `primary`).
+
+```bash
+git switch main
+```
+
+Once you're on the main branch, make sure you have the latest changes from the
+remote repository.
+
+```bash
+git pull
+```
+
+Pulling the latest changes now guarantees you aren't building on top of outdated
+code, which saves you from untangling messy merge conflicts later on.
+
+With your local repository synced with the latest changes, create a new branch
+to work on the issue.
+
+```bash
+git switch -c <branch-name>
+```
+
+This creates a new branch and switches over to it in one step. If you're used to
+older Git workflows, you might normally use `git checkout -b`. `git switch -c`
+does the exact same thing, but it's a newer command designed specifically for
+handling branches.
+
+You're all set up to work. At this point, start coding!
+
+When you're satisfied with the changes you've made and you're ready to apply the
+code to the main branch, the first step is to stage the changes on your local
+branch.
+
+```bash
+git add <...file-name>
+```
+
+You should `git add` for each file you changed. Or, if you're confident that you
+want to stage all changed files in the repository, you can use the shortcut `git
+add .`.
+
+The changes are staged. Go ahead and commit them to your local branch.
+
+```bash
+git commit -m "<commit-message>"
+```
+
+The commit message should be short, but also should be descriptive of the
+changes you made.
+
+Next, push the changes to a new remote branch.
+
+```bash
+git push -u origin <branch-name>
+```
+
+This pushes your newly created branch up to GitHub. The `-u` flag links your
+local branch to the remote one. This way, if you need to make more commits to
+this branch later, you can just type `git push` without typing out the full
+branch name again.
+
+You're ready to compare the code and create a pull request on GitHub.
+
+1. Go back to the repository on GitHub.
+2. Since you've pushed to a new branch recently, GitHub should display a green
+   **Compare & pull request** button. Click that button.
+3. Add a descriptive title and description. In the description, include the
+   words "Closes #\<gh-issue-number\>". Fill in the issue number you made a note
+   of earlier.
+4. Click on the green **Create pull request** button.
+
+Creating a pull request signals that your code is ready to be reviewed and
+merged into the main branch. Including `"Closes #<gh-issue-number>"` links the
+pull request to the issue we created earlier. When the pull request gets merged,
+GitHub will automatically close that issue for you.
+
+At this point, the pull request is active. You can ask other contributors to
+review it. If you have an GitHub Actions set up to lint or test the code, you
+should see GitHub running those tests and, after a few seconds, the results. Now
+is the time that you and other contributors take to scrutinize and decide if the
+changes should really be merged into the main branch.
+
+1. Ensure any automatic checks on GitHub pass.
+2. (Optional) Click on the down arrow inside the green **Merge pull request**
+   button and choose **Squash and merge**.
+3. Click on the green merge button.
+4. Ensure the commit and description make sense, and click on the green
+   **Confirm** button.
+
+Notice on Step 2, I wrote that you can optionally change the merge type to
+**Squash and merge**. The type of merge is going to be your preference or it
+could be set by the team of contributors to the project.
+
+A standard merge preserves every individual commit you made, which can clutter
+your main branch history with messy updates. **Squash and merge** compresses all
+your work into a single commit. I like it because it keeps your project history
+neat and easy to read.
+
+Once the merge completes (after a few seconds), delete the branch on GitHub by
+clicking on the gray **Delete branch** button that appears just after merging
+completes.
+
+Back on your local development machine, switch back to the main branch.
+
+```bash
+git switch main
+```
+
+Pull the latest changes, which will include the merged pull request.
+
+```bash
+git pull --prune
+```
+
+This updates your local main branch with the code you just merged. The `--prune`
+flag removes the local reference to the remote branch that no longer exists
+(because we just deleted it).
+
+Keep your local repository clean by deleting the no-longer-necessary branch.
+
+```bash
+git branch -D <branch-name>
+```
+
+This deletes the branch from your local machine. We use the uppercase `-D` to
+force the deletion. Because we used **Squash and merge** on GitHub, your local
+Git doesn't realize the branch has already been merged, and it would block a
+standard `-d` deletion.
+
+Are you coding an npm package? Do the changes you just merged constitute a
+version bump? If so, bump the version.
+
+```bash
+npm version <major|minor|patch>
+```
+
+This updates the version number in your `package.json` and creates a new Git
+tag. Use `patch` for bug fixes, `minor` for new features, and `major` for
+breaking changes. [This is the semver way.](https://semver.org/)
+
+Push tags, which syncs the new tag to GitHub.
+
+```bash
+git push --follow-tags
+```
+
+If you have automatic publishing to npm via GitHub Actions set up, that process
+should run automatically. Otherwise, you're ready to publish the new version to
+npm.
+
+```bash
+npm publish
+```
+
+This pushes your code to the npm registry, making the new version available for
+everyone to install. It's the final step to officially ship your changes.
+
+## Stable and Clean
+
+GitHub Flow might seem like a lot of steps at first, but I'm quickly finding it
+to become second nature. Following this process keeps my main branch stable and
+my project history clean. Give it a try on your next project!
+
+Cover photo by [Shubham Dhage](https://unsplash.com/@theshubhamdhage) on
+[Unsplash](https://unsplash.com/photos/daisies-bloom-in-a-field-beneath-a-cloudy-sky-2sjFIy8XVsE).
