@@ -92,5 +92,24 @@ wave. A mouse cursor enters the screen and moves in a circular motion. The line
 plot updates with atan2 in relation to the
 cursor.](./images/observable-plot-onmousemove.webp)
 
+## Bonus!
+
+Don't feel like copying and pasting the Svelte Action above? [I've packaged it
+and published it on npm.](https://www.npmjs.com/package/@travishorn/svplot)
+
+```bash
+npm install @travishorn/svplot
+```
+
+```svelte
+<script>
+    import { ObservablePlot } from '@travishorn/svplot';
+
+    /* Define data and options here, as usual */
+</script>
+
+<div use:ObservablePlot={options} role="img"></div>
+```
+
 Cover photo by [Hassaan Here](https://unsplash.com/@hassaanhre) on
 [Unsplash](https://unsplash.com/photos/abstract-blue-waves-with-a-white-circle-CvW18D-nySY).
