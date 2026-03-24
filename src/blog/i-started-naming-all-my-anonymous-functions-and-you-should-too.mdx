@@ -15,7 +15,7 @@ They are used all over the place in JS. Most of the time, you will see them as
 arguments to other functions.
 
 For example, the
-[`setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
+[`setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout)
 function takes two arguments:
 
 - a function to execute, and
@@ -56,7 +56,7 @@ _Notice I forgot an "s" in "message"._
 
 The message on the page never changes. At this point, as a developer, you see
 that something is wrong and would probably be looking towards the [DevTools
-Console panel](https://developers.google.com/web/tools/chrome-devtools/console/)
+Console panel](https://developer.chrome.com/docs/devtools/console)
 (In Chrome, you could press Ctrl+Shift+J or Cmd+Shift+J). There, you would
 indeed find an error:
 
@@ -117,7 +117,7 @@ _I fixed the typo now, to demonstrate working code._
 
 There are a couple of advantages to this style:
 
-1. It avoids [callback hell](http://callbackhell.com/). Your code becomes
+1. It avoids [callback hell](https://callbackhell.com/). Your code becomes
    "flatter". Imagine multiple callbacks and `setTimeout`s, all nested inside
    each other. Before you know it, you will be working with some seriously
    terrible indentation.

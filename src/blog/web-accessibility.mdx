@@ -7,25 +7,30 @@ tags:
 title: Web accessibility
 ---
 
-Consider users accessing your site from platforms other than the major browsers: mobile devices, screen-readers, and crawlers, for example.
+Consider users accessing your site from platforms other than the major browsers:
+mobile devices, screen-readers, and crawlers, for example.
 
-When you write with accessibility in mind, your code is written more [semantically](http://boagworld.com/dev/semantic-code-what-why-how/) and, therefor, more logical and clear. The code will be easier to maintain this way, as well.
+When you write with accessibility in mind, your code is written more
+[semantically](https://web.dev/learn/html/semantic-html) and, therefor, more
+logical and clear. The code will be easier to maintain this way, as well.
 
-> HTML was originally intended as a means of describing the content of a document, not as a means to make it appear visually pleasing. Semantic code returns to this original concept and encourages web designers to write code that describes the content rather than how that content should look.
+> HTML was originally intended as a means of describing the content of a
+> document, not as a means to make it appear visually pleasing. Semantic code
+> returns to this original concept and encourages web designers to write code
+> that describes the content rather than how that content should look.
 
 Some accessibility information:
 
-- [Section508](http://www.section508.gov/)
+- [Section508](https://www.section508.gov/)
+- [WAI](https://www.w3.org/WAI/)
+- [WAI-ARIA](https://www.w3.org/WAI/standards-guidelines/aria/)
+- [WCAG 2](https://www.w3.org/TR/WCAG20/)
+- [MDN Mobile
+  accessibility](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/Mobile)
 
-- [WAI](http://www.w3.org/WAI/)
-
-- [WAI-ARIA](http://www.w3.org/WAI/intro/aria)
-
-- [WCAG 2](http://www.w3.org/TR/WCAG20/)
-
-- [MobiForge](http://mobiforge.com/) (for mobile development)
-
-Federal agencies are legally required to make their sites accessible to people with disabilities according to [Section 508](http://www.section508.gov/) of the Rehabilitation Act of 1973.
+Federal agencies are legally required to make their sites accessible to people
+with disabilities according to [Section 508](https://www.section508.gov/) of the
+Rehabilitation Act of 1973.
 
 For example, consider the following element.
 
@@ -33,7 +38,10 @@ For example, consider the following element.
 <img src="img/graph.webp" />
 ```
 
-The linked image may appear as a beautiful graph as long as it's being viewed by a human without vision issues, using a standard browser. However, to a crawler or a blind person, it means nothing. Instead, the above element can be re-written like so:
+The linked image may appear as a beautiful graph as long as it's being viewed by
+a human without vision issues, using a standard browser. However, to a crawler
+or a blind person, it means nothing. Instead, the above element can be
+re-written like so:
 
 ```html
 <img
@@ -44,14 +52,30 @@ The linked image may appear as a beautiful graph as long as it's being viewed by
 
 The alt text describes the image for a user who otherwise cannot view it.
 
-At the very least, you should be using [ARIA attributes](http://www.w3.org/WAI/PF/aria/states_and_properties#state_prop_def) such as aria-labelledby to show relation between a label and the object it labels, and aria-hidden to indicate that an element is not visible to any user.
+At the very least, you should be using [ARIA
+attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
+such as aria-labelledby to show relation between a label and the object it
+labels, and aria-hidden to indicate that an element is not visible to any user.
 
 ## Crawlers & robots.txt
 
-Your site needs to be accessible to crawlers so that it can be effeciently indexed by search engines and available to users. It's also important to understand how [robots.txt](http://en.wikipedia.org/wiki/Robots_exclusion_standard) and search engine crawlers work.
+Your site needs to be accessible to crawlers so that it can be effeciently
+indexed by search engines and available to users. It's also important to
+understand how
+[robots.txt](https://en.wikipedia.org/wiki/Robots_exclusion_standard) and search
+engine crawlers work.
 
-> The Robot Exclusion Standard, also known as the Robots Exclusion Protocol or robots.txt protocol, is a convention to prevent cooperating [web crawlers](http://en.wikipedia.org/wiki/Web_crawler) and other [web robots](http://en.wikipedia.org/wiki/Web_robot) from accessing all or part of a website which is otherwise publicly viewable. Robots are often used by search engines to categorize and archive web sites, or by webmasters to proofread source code. The standard is different from, but can be used in conjunction with, [Sitemaps](http://en.wikipedia.org/wiki/Sitemaps), a robot inclusion standard for websites.
+> The Robot Exclusion Standard, also known as the Robots Exclusion Protocol or
+> robots.txt protocol, is a convention to prevent cooperating [web
+> crawlers](https://en.wikipedia.org/wiki/Web_crawler) and other [web
+> robots](https://en.wikipedia.org/wiki/Web_robot) from accessing all or part of
+> a website which is otherwise publicly viewable. Robots are often used by
+> search engines to categorize and archive web sites, or by webmasters to
+> proofread source code. The standard is different from, but can be used in
+> conjunction with, [Sitemaps](https://en.wikipedia.org/wiki/Sitemaps), a robot
+> inclusion standard for websites.
 
-Know that not all crawlers and robots follow robots.txt. Some are programmed to misbehave and will ignore or actively disobey robots.txt.
+Know that not all crawlers and robots follow robots.txt. Some are programmed to
+misbehave and will ignore or actively disobey robots.txt.
 
-_Accessbility icon created by [Visual Pharm](http://icons8.com/)._
+Accessbility icon created by [Visual Pharm](https://icons8.com/).

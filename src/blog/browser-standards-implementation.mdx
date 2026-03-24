@@ -9,37 +9,49 @@ tags:
 title: Browser standards implementation
 ---
 
-Every browser renders pages and behaves differently. Even the ones that try to stick to standards implement them inconsistently. Make sure your site is usable for your target audience. If you are developing for the general public, the audience may be using any browser they choose. At a minimum test against…
+Every browser renders pages and behaves differently. Even the ones that try to
+stick to standards implement them inconsistently. Make sure your site is usable
+for your target audience. If you are developing for the general public, the
+audience may be using any browser they choose. At a minimum test against…
 
-Web Browser Market Share for July 2014 from [W3Counter](http://www.w3counter.com/globalstats.php)
+Web Browser Market Share for July 2014 from
+[W3Counter](https://www.w3counter.com/globalstats.php)
 
-Also consider how browsers render your site in different operating systems. The major ones being…
+Also consider how browsers render your site in different operating systems. The
+major ones being…
 
-- [Apple OSX](http://www.apple.com/osx/)
+- [Apple macOS](https://www.apple.com/os/macos/)
 
-- Linux (such as [Ubuntu](http://www.ubuntu.com/))
+- Linux (such as [Ubuntu](https://ubuntu.com/))
 
-- [Microsoft Windows](http://windows.microsoft.com/en-us/windows/home)
+- [Microsoft Windows](https://www.microsoft.com/en-us/windows/)
 
 and mobile platforms such as…
 
-- [Android](http://www.android.com/)
+- [Android](https://www.android.com/)
 
-- [BlackBerry OS](http://us.blackberry.com/)
+- [BlackBerry OS](https://www.blackberry.com/en)
 
-- [iOS](http://www.apple.com/ios/)
+- [iOS](https://www.apple.com/os/ios/)
 
 A good starting point is using a normalizing stylesheet.
 
-Consider using a [reset stylesheet](http://meyerweb.com/eric/tools/css/reset/) or [normalize.css](http://necolas.github.io/normalize.css/).
+Consider using a [reset stylesheet](https://meyerweb.com/eric/tools/css/reset/)
+or [normalize.css](https://necolas.github.io/normalize.css/).
 
-> The goal of a reset stylesheet is to reduce browser inconsistencies in things like default line heights, margins and font sizes of headings, and so on. … Reset styles quite often appear in CSS frameworks, and the original "meyerweb reset" found its way into [Blueprint](http://blueprintcss.org/), among others.
+> The goal of a reset stylesheet is to reduce browser inconsistencies in things
+> like default line heights, margins and font sizes of headings, and so on. …
+> Reset styles quite often appear in CSS frameworks…
 
 and
 
-> Normalize.css makes browsers render all elements more consistently and in line with modern standards. It precisely targets only the styles that need normalizing.
+> Normalize.css makes browsers render all elements more consistently and in line
+> with modern standards. It precisely targets only the styles that need
+> normalizing.
 
-Keep in mind that you should always be catering to your users. If you are developing an internal-only site for an organization that requires its employees to use Internet Explorer, make sure the site works in Internet Explorer first.
+Keep in mind that you should always be catering to your users. If you are
+developing an internal-only site for an organization that requires its employees
+to use Internet Explorer, make sure the site works in Internet Explorer first.
 
 For example, take a look at the following code.
 
@@ -56,12 +68,21 @@ For example, take a look at the following code.
 <div class="intro">I love cats.</div>
 ```
 
-This will correctly show rounded corners in Chrome and Firefox, but squared corners in Internet Explorer 8 and older. This is a fairly harmless example, but worse inconsistencies can completely break a site.
+This will correctly show rounded corners in Chrome and Firefox, but squared
+corners in Internet Explorer 8 and older. This is a fairly harmless example, but
+worse inconsistencies can completely break a site.
 
-Check out ["Can I use"](http://caniuse.com/) for up-to-date information on browser feature support.
+Check out ["Can I use"](https://caniuse.com/) for up-to-date information on
+browser feature support.
 
-> **Can I use** provides up-to-date browser support tables for support of front-end web technologies on desktop and mobile web browsers.
+> **Can I use** provides up-to-date browser support tables for support of
+> front-end web technologies on desktop and mobile web browsers.
 
-Lately, there have been a number of all-in-one HTML, CSS, and JS frameworks; the most popular of which is Twitter's [Bootstrap](http://getbootstrap.com/). Including Bootstrap in your project will make sure your site displays consistently across the most popular browsers and devices.
+Lately, there have been a number of all-in-one HTML, CSS, and JS frameworks; the
+most popular of which is Twitter's [Bootstrap](https://getbootstrap.com/).
+Including Bootstrap in your project will make sure your site displays
+consistently across the most popular browsers and devices.
 
-Best of all, it's easy to set up. Just include the CSS & JavaScript, and code your site according to [its' structure and classes](http://getbootstrap.com/css/).
+Best of all, it's easy to set up. Just include the CSS & JavaScript, and code
+your site according to [its' structure and
+classes](https://getbootstrap.com/css/).

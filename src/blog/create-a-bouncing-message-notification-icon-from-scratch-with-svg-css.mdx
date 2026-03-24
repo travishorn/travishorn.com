@@ -19,7 +19,7 @@ down.
 black.](./images/n8t69myM-j.webp)
 
 Start off with a new
-[`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg)
+[`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg)
 element in your HTML.
 
 ```html
@@ -35,7 +35,7 @@ element in your HTML.
 
 It is 800 pixels wide by 600 pixels tall, which is a huge area for a
 notification icon. However, it also has a
-[`viewBox`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox)
+[`viewBox`](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/viewBox)
 attribute with those same dimensions. This will allow you to resize the
 `<svg>` element to any size you need without cutting off the contents.
 
@@ -63,7 +63,7 @@ itself will be transparent with a white outline. Feel free to modify the colors
 to your liking.
 
 The icon is created using a
-[`<path>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path).
+[`<path>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/path).
 Add it inside your `<svg>` element.
 
 ```html
@@ -71,7 +71,7 @@ Add it inside your `<svg>` element.
 ```
 
 The [`d`
-attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d) defines
+attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d) defines
 the path this element will follow.
 
 Start out by **moving** the cursor to the 0, 0 position (top left) and creating
@@ -168,7 +168,7 @@ background.](./images/-g9Mgdpq5.webp)
 Making it bounce is done through CSS animations.
 
 Wrap the `<path>` in a [`<g>`
-element](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g) with the
+element](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/g) with the
 `bounce` class.
 
 ```html
@@ -221,7 +221,7 @@ down the icon.
 ```
 
 The [`transform`
-attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform)
+attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/transform)
 `scale`s everything in the `<g>` to 96% it's original size, leaving room
 for the icon to bounce without cutting it off.
 
@@ -232,9 +232,9 @@ CSS.
 
 You can create the illusion of the icon being "drawn" on the screen in front of
 you by using a trick with the
-[`stroke-dasharray`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
+[`stroke-dasharray`](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-dasharray)
 and
-[`stroke-dashoffset`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset)
+[`stroke-dashoffset`](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-dashoffset)
 attributes.
 
 For the first part of the trick, you'll need to know the total length of the

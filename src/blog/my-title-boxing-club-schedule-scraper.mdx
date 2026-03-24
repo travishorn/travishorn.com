@@ -20,7 +20,7 @@ makes it difficult to integrate their schedule with your own personal calendar.
 I decided to create a command line utility that solves this problem.
 
 If you feed this command a location's homepage URL (for example:
-[https://titleboxingclub.com/chicago-south-loop-il/](https://titleboxingclub.com/chicago-south-loop-il/)),
+[https://www.titleboxingclub.com/location/chicago-south-loop-il](https://www.titleboxingclub.com/location/chicago-south-loop-il)),
 it will pull the available schedule and automatically create a CSV file.
 
 The output can be saved to a file and [imported into Google
@@ -38,7 +38,7 @@ npm install
 
 ### Usage
 
-1. Go to [https://titleboxingclub.com](https://titleboxingclub.com)
+1. Go to [https://www.titleboxingclub.com/](https://www.titleboxingclub.com/)
 2. Enter your zip or city and state in the search bar
 3. Click your location
 4. Copy the URL
@@ -61,14 +61,14 @@ node index [options] <url>
 ### Example
 
 ```console
-node index -c Boxing -d 60 -t Jordan https://titleboxingclub.com/chicago-south-loop-il/
+node index -c Boxing -d 60 -t Jordan https://www.titleboxingclub.com/location/chicago-south-loop-il
 ```
 
 This command will output CSV data to the terminal. You can pipe this data to a
 file like so:
 
 ```console
-node index https://titleboxingclub.com/chicago-south-loop-il/ > title-schedule.csv
+node index https://www.titleboxingclub.com/location/chicago-south-loop-il > title-schedule.csv
 ```
 
 Once you have the CSV, you can [import it into Google

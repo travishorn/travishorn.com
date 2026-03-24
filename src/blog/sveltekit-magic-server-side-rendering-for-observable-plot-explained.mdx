@@ -44,7 +44,7 @@ performant server-side rendering to deliver an enhanced user experience.
 You may be able to skip this section if you already have a SvelteKit project
 that you're working on. Otherwise, continue reading to create a new project.
 
-Make sure you have [Node.js](https://nodejs.org/) installed. Then, open up a
+Make sure you have [Node.js](https://nodejs.org/en) installed. Then, open up a
 terminal and create a new SvelteKit project.
 
 ```bash
@@ -155,7 +155,7 @@ export async function load() {
 }
 ```
 
-This file uses [SvelteKit's load function](https://kit.svelte.dev/docs/load) to
+This file uses [SvelteKit's load function](https://svelte.dev/docs/kit/load) to
 load data on the server, and then send it to the page for rendering.
 
 Now, in `+page.svelte`, you can pick up the passed `plot` variable which
@@ -175,7 +175,7 @@ This file uses `export let data` to get a reference to the data passed in from
 generated earlier.
 
 Use `data.plot` with [Svelte's `{@html ...}`
-tag](https://svelte.dev/docs/special-tags#html) to write HTML code directly to
+tag](https://svelte.dev/docs/svelte/@html) to write HTML code directly to
 the page.
 
 ## Result

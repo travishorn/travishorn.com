@@ -113,7 +113,7 @@ Enable the Prometheus service so it starts when the system starts.
 sudo systemctl enable prometheus
 ```
 
-Verify it works by going to http://\[your server's IP address/hostname\]:9090.
+Verify it works by going to https://\[your server's IP address/hostname\]:9090.
 
 ## Add Authentication
 
@@ -308,7 +308,7 @@ Restart the Prometheus service.
 sudo systemctl restart prometheus
 ```
 
-Verify it works by going to `http://[your server IP
+Verify it works by going to `https://[your server IP
 address]:9090/graph?g0.expr=rate(node_disk_io_time_seconds_total[1m])`. That
 page will show you the rate of I/O operations of your system disks.
 
