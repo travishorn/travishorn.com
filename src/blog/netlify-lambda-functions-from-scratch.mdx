@@ -25,14 +25,14 @@ functions that are easy to run on your local machine, but without AWS lambda,
 are harder to deploy out to the public.
 
 [Netlify](https://www.netlify.com/) is a service that offers static website
-hosting with [added features](https://www.netlify.com/features/) such as
-[authentication management](https://www.netlify.com/docs/identity/), [form
-handling](https://www.netlify.com/docs/form-handling/), and most importantly:
-[continuous deployment](https://www.netlify.com/docs/continuous-deployment/) and
-AWS lambda [functions](https://www.netlify.com/docs/functions/). They offer a
+hosting with [added features](https://www.netlify.com/platform/) such as
+[authentication management](https://docs.netlify.com/manage/security/secure-access-to-sites/identity/overview/), [form
+handling](https://docs.netlify.com/manage/forms/setup/), and most importantly:
+[continuous deployment](https://docs.netlify.com/build/configure-builds/overview/) and
+AWS lambda [functions](https://docs.netlify.com/build/functions/overview/). They offer a
 free tier with limited function requests and run time.
 
-In this article, I'm using [GitLab](https://gitlab.com), but Netlify also
+In this article, I'm using [GitLab](https://about.gitlab.com/), but Netlify also
 supports [GitHub](https://github.com/) and [Bitbucket](https://bitbucket.org/).
 Feel free to use whichever one you like, but you do need to use one of them.
 
@@ -50,7 +50,7 @@ git clone https://gitlab.com/[your username]/[your project name].git
 ```
 
 Move into your project directory, [initialize an npm
-package](https://docs.npmjs.com/cli/init), and install
+package](https://docs.npmjs.com/cli/v11/commands/npm-init/), and install
 [netlify-lambda](https://www.npmjs.com/package/netlify-lambda).
 
 ```console
@@ -65,8 +65,8 @@ with Netlify. It has two helpful commands that we'll set up in a minute.
 But first, since netlify-lambda is a Node module, npm automatically created a
 `node_modules` directory full of third-party code that our application will use.
 [We don't want git to track these
-files](https://julie.io/writing/javascript-node-modules/), so create a new file
-called `.gitignore` and type the following line.
+files](https://julie.io/blog/archive/javascript-node-modules#never-check-in-node_modules
+so create a new file called `.gitignore` and type the following line.
 
 ```
 node_modules/
@@ -103,7 +103,7 @@ Create a directory named `src`. Then, create another directory inside it called
 `lambda`. Finally, create a file called `hello.js`.
 
 `hello.js` will be our first lambda function. Netlify expects a [specific
-handler function format](https://www.netlify.com/docs/functions/).
+handler function format](https://docs.netlify.com/build/functions/get-started/?data-tab=TypeScript).
 
 ```javascript
 exports.handler = (event, context, callback) => {
@@ -114,7 +114,9 @@ exports.handler = (event, context, callback) => {
 The `event` object contains useful information from the client like the
 `headers` and `body` of the request. The `context` object contains information
 from Netlify which could include things like `user` information if you're using
-their [Identity](https://www.netlify.com/docs/identity/) API.
+their
+[Identity](https://docs.netlify.com/manage/security/secure-access-to-sites/identity/overview/)
+API.
 
 The `callback` is a function that tells Netlify how to respond to the request.
 Let's fill in our handler with a callback.
@@ -196,7 +198,7 @@ npm i axios
 ```
 
 Next, create a new file called `src/lambda/todo.js`. In this file, we'll
-[require](https://medium.freecodecamp.org/requiring-modules-in-node-js-everything-you-need-to-know-e7fbd119be8)
+[require](https://www.freecodecamp.org/news/requiring-modules-in-node-js-everything-you-need-to-know-e7fbd119be8)
 axios, and then write a handler just like before.
 
 ```javascript

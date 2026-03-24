@@ -14,10 +14,10 @@ title: Building a Telegram Bot with Netlify
 
 Want to build a bot on a messaging platform? You can use
 [Netlify](https://www.netlify.com/) and their
-[Functions](https://www.netlify.com/products/functions/) feature to get up and
+[Functions](https://www.netlify.com/platform/core/functions/) feature to get up and
 running quickly and easily. In this article, you'll see how I built a bot for
 Telegram with nearly unlimited potential for interacting with users. I'll be
-showing how I integrate with [Hashnode's GraphQL API](https://api.hashnode.com/)
+showing how I integrate with [Hashnode's GraphQL API](https://apidocs.hashnode.com/)
 to connect your bot's users with quality articles from other tech writers.
 
 If you follow along, you'll be able to write your own bot that interacts with
@@ -62,7 +62,7 @@ to any code repository!
 I needed a place to store the bot's code.
 
 I already had a [GitHub](https://github.com) account, but if you're following
-along and don't like GitHub, [GitLab](https://gitlab.com), and
+along and don't like GitHub, [GitLab](https://about.gitlab.com/), and
 [Bitbucket](https://bitbucket.org) also work great for what we're doing.
 
 I went to [github.com](https://github.com)
@@ -880,7 +880,7 @@ message the bot with a command that returns some featured
 Hashnode provides a GraphQL API that allows anyone to (among many, many other
 things) pull a list of featured posts.
 
-Check out the results when you query [Hashnode's API](https://api.hashnode.com/)
+Check out the results when you query [Hashnode's API](https://apidocs.hashnode.com/)
 with this query:
 
 ```graphql
@@ -921,7 +921,7 @@ I wrote a new file called `hashnode.js` at the root of my project.
 const axios = require("axios").default;
 
 const get = async (query) => {
-  const res = await axios.post("https://api.hashnode.com/", { query });
+  const res = await axios.post("https://gql.hashnode.com/", { query });
   return res.data.data;
 };
 
@@ -1066,7 +1066,7 @@ Here are some good ideas you could build into this project:
   - Magic 8 ball answers
 - Integrating with other third-party APIs...
   - [Weather](https://openweathermap.org/)
-  - [Sports stats](https://www.api-football.com/documentation)
+  - [Sports stats](https://www.api-football.com/)
   - [Stock market data](https://rapidapi.com/apidojo/api/yh-finance)
   - [Your favorite videogame](https://hearthstoneapi.com/)
 - Use [other Telegram

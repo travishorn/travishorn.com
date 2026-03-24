@@ -187,11 +187,10 @@ comparison](./images/EtOYEVPJU.webp)
 Speaking of fonts, unless you specify one, the table (and everything else on
 your page) will just use the user's (browser's) default. If you want to
 guarantee a nice font, you can use [web
-fonts](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Web_fonts).
+fonts](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Text_styling/Web_fonts).
 This is just personal preference, but I like the Roboto family. Google provides
 a free service that hosts these, and many more fonts. To use **Roboto** and
-**Roboto Mono**, include this `<link>` tag in the `<head>` of your
-page:
+**Roboto Mono**, include this `<link>` tag in the `<head>` of your page:
 
 ```html
 <link
@@ -401,8 +400,8 @@ This works great, but I always try to avoid doing much calculation right in the
 template. Your app will be much easier to reason about when you limit the
 template to simple text interpolation, and do any sort of data manipulation in
 JavaScript. To achieve this, we'll use a [computed
-property](https://vuejs.org/v2/guide/computed.html) that takes the raw standings
-array, and enhances it.
+property](https://vuejs.org/guide/essentials/computed) that takes the raw
+standings array, and enhances it.
 
 First, rename the `standings` property to `rawStandings`.
 
@@ -535,7 +534,7 @@ So clicking the headers sets the appropriate `sortKey` and `sortDirection`. But
 how do we actually use these properties?
 
 Luckily, [Lodash](https://lodash.com/) has a handy
-[`.orderBy()`](https://lodash.com/docs/4.17.4#orderBy) function that accepts an
+[`.orderBy()`](https://lodash.com/docs/#orderBy) function that accepts an
 array, a sort key, and a sort direction. We simply apply this function to our
 values in the computed `standings` property.
 
@@ -672,13 +671,13 @@ methods: {
 ```
 
 The new `rdYlGn()` method sets up a [sequential
-scale](https://github.com/d3/d3-scale/blob/master/README.md#sequential-scales)
-that uses the [RdYlGr (red, yellow, green) color
-scheme](https://github.com/d3/d3-scale-chromatic#interpolateRdYlGn). It then
-uses [`D3.extent()`](https://github.com/d3/d3-array#extent) to get the mininum
-and maximum `pct` values and sets that as the [scale's
-domain](https://github.com/d3/d3-scale#continuous_domain). Finally, it returns
-the color based on the input number.
+scale](https://d3js.org/d3-scale/sequential) that uses the [RdYlGr (red, yellow,
+green) color
+scheme](https://d3js.org/d3-scale-chromatic/diverging#interpolateRdYlGn). It
+then uses [`D3.extent()`](https://d3js.org/d3-array/summarize#extent) to get the
+mininum and maximum `pct` values and sets that as the [scale's
+domain](https://d3js.org/d3-scale/linear#linear_domain). Finally, it returns the
+color based on the input number.
 
 Use this method to set the color style on the **Pct** cells.
 

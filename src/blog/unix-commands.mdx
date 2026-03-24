@@ -5,9 +5,15 @@ cover: ./images/q9e8_igox.webp
 tags: ["linux", "terminal"]
 ---
 
-This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
+This post is part of a project to move my old reference material to my blog.
+Before 2012, when I accessed the same pieces of code or general information
+multiple times, I would write a quick HTML page for my own reference and put it
+on a personal site. Later, I published these pages online. Some of the pages
+still get used and now I want to make them available on my blog.
 
-This is a short list of frequently-used commands for OpenBSD. Many of them are common with most Unix-like platforms. The text is broken into sections designated by the titles in larger print.
+This is a short list of frequently-used commands for OpenBSD. Many of them are
+common with most Unix-like platforms. The text is broken into sections
+designated by the titles in larger print.
 
 ### Logging Out and Shutting Down
 
@@ -43,7 +49,8 @@ Change directory to `x`:
 cd x
 ```
 
-Same as `cd`, but saves the directory you were in when you executed the command. Type `popd` to return to the saved directory:
+Same as `cd`, but saves the directory you were in when you executed the command.
+Type `popd` to return to the saved directory:
 
 ```console
 pushd x
@@ -67,7 +74,8 @@ Remove directory `x` and all files and directories within:
 rm -r x
 ```
 
-List files and directories in current directory. Use `-l` to get details, `-a` to get hidden files, `-F` to id executables, files, and directories:
+List files and directories in current directory. Use `-l` to get details, `-a`
+to get hidden files, `-F` to id executables, files, and directories:
 
 ```console
 ls
@@ -79,7 +87,8 @@ Search all directories for `x`:
 find / -name x
 ```
 
-Mount a Windows share called `sharename` on the server called `servername`. Replace `username` and `password` with appropriate credentials:
+Mount a Windows share called `sharename` on the server called `servername`.
+Replace `username` and `password` with appropriate credentials:
 
 ```console
 mkdir /mnt/sharename
@@ -120,7 +129,8 @@ df -h
 
 ### Disk Management
 
-Adds the disk `wd0` (IDE primary master. `wd1` would be IDE primary slave, etc.) partition a to directory called `files`. `files` must already exist:
+Adds the disk `wd0` (IDE primary master. `wd1` would be IDE primary slave, etc.)
+partition a to directory called `files`. `files` must already exist:
 
 ```console
 mount /wd0a files
@@ -140,7 +150,8 @@ Unix manual. Type `man x` for a manual on a specific command:
 man
 ```
 
-Filter that will pause and wait for user input when the command teakes up more than one screen:
+Filter that will pause and wait for user input when the command teakes up more
+than one screen:
 
 ```console
 x | more
@@ -152,13 +163,15 @@ Elevate access to root privileges:
 su
 ```
 
-See resources each process is using. Use `| head -5` to just get the top 5 lines of the command:
+See resources each process is using. Use `| head -5` to just get the top 5 lines
+of the command:
 
 ```console
 ps -aux
 ```
 
-Send email to `y` (email address) with subject `x`. Type your message and press **Ctrl + D**:
+Send email to `y` (email address) with subject `x`. Type your message and press
+**Ctrl + D**:
 
 ```console
 mail -s "x" y
@@ -178,7 +191,9 @@ Display contents of file `x` on screen:
 cat x
 ```
 
-Open a file full-screen and provide file editing utilities. Exit by hitting `Esc`, type `:wq` to save and exit or `:q!` to exit without saving. [Learn more about vi](http://staff.washington.edu/rells/R110/):
+Open a file full-screen and provide file editing utilities. Exit by hitting
+`Esc`, type `:wq` to save and exit or `:q!` to exit without saving. [Learn more
+about vi](https://staff.washington.edu/rells/R110/):
 
 ```console
 vi
@@ -186,13 +201,16 @@ vi
 
 ### User Management
 
-Create a new user. Accept defaults for most prompts. Enter `username` and `password` when prompted. If you want user to have access to `su`, type `wheel` when prompted for what groups to invite user to:
+Create a new user. Accept defaults for most prompts. Enter `username` and
+`password` when prompted. If you want user to have access to `su`, type `wheel`
+when prompted for what groups to invite user to:
 
 ```console
 adduser
 ```
 
-Add existing user `x` to the `sudoers` list, giving them access to `sudo` command:
+Add existing user `x` to the `sudoers` list, giving them access to `sudo`
+command:
 
 ```console
 echo 'x ALL=(ALL) ALL' >> /etc/sudoers
@@ -230,7 +248,8 @@ chsh -s /bin/ksh x
 
 ### Archiving
 
-Combine all files in directory `y` and write them to a file called `x.tgz`. Will be written back as a directory when extracted:
+Combine all files in directory `y` and write them to a file called `x.tgz`. Will
+be written back as a directory when extracted:
 
 ```console
 tar cvzf x.tgz y
@@ -264,7 +283,8 @@ apachectl stop
 
 ### Adding Software
 
-Sets the package path. This is the location new packages will be downloaded from:
+Sets the package path. This is the location new packages will be downloaded
+from:
 
 ```console
 export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/4.7/packages/amd64
@@ -284,15 +304,18 @@ Connect to an SSH server as `x` at location `y`:
 ssh x@y
 ```
 
-Generate private and public keys to use with public key authentication. You may leave default filename but enter a long passphrase (16+ characters).
+Generate private and public keys to use with public key authentication. You may
+leave default filename but enter a long passphrase (16+ characters).
 
 ```console
 ssh-keygen
 ```
 
-After generating keys, append `~/.ssh/id_rsa.pub` to server's `~/.ssh/authorized_keys` file using the command below.
+After generating keys, append `~/.ssh/id_rsa.pub` to server's
+`~/.ssh/authorized_keys` file using the command below.
 
-Allow client with public key `x` to connect using public key authentication. `x` can be found in client's `~/.ssh/id_rsa.pub` file after running command above.
+Allow client with public key `x` to connect using public key authentication. `x`
+can be found in client's `~/.ssh/id_rsa.pub` file after running command above.
 
 ```console
 cat x >> ~/.ssh/authorized_keys
@@ -304,7 +327,8 @@ Restart SSH daemon after changing config file:
 kill -HUP `cat /var/run/sshd.pid`
 ```
 
-Boot a remote user off SSH. `x` is the PID for their sshd process. The PID can be found by running `ps -aux` and finding the COMMAND labeled `sshd: username`:
+Boot a remote user off SSH. `x` is the PID for their sshd process. The PID can
+be found by running `ps -aux` and finding the COMMAND labeled `sshd: username`:
 
 ```console
 kill x
@@ -312,6 +336,7 @@ kill x
 
 ### Helpful Links
 
-[Adding a new hard drive disk](http://www.computerglitch.net/blog/attic/adding-a-new-hard-drive-to-openbsd.html)
+[Adding a new hard drive disk](https://www.openbsd.org/faq/faq14.html)
 
-Cover photo by [Torkild Retvedt](https://www.flickr.com/photos/torkildr/) under [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/).
+Cover photo by [Torkild Retvedt](https://www.flickr.com/photos/torkildr/) under
+[CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/).

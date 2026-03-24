@@ -17,7 +17,7 @@ In this article, I'll go over how to create an API server that signs and
 verifies JSON Web Tokens for authentication.
 
 Some of the technologies this server uses include [Koa](https://koajs.com/),
-[JWTs](https://jwt.io/), [Knex](https://knexjs.org/),
+[JWTs](https://www.jwt.io/), [Knex](https://knexjs.org/),
 [SQLite](https://www.sqlite.org/), and
 [bcrypt](https://www.npmjs.com/package/bcrypt-nodejs).
 
@@ -136,7 +136,7 @@ Right now, the server responds with "Hello World" no matter what URL you try to
 access. Let's add support for multiple routes at multiple URLs.
 
 For that we need to add
-[koa-router](https://github.com/alexmingoia/koa-router#readme). This package
+[koa-router](https://github.com/ZijianHe/koa-router). This package
 let's us define "routes" that get executed when specific URLs are accessed.
 
 ```console
@@ -208,8 +208,8 @@ you'll see the correct response from the server: "I am the auth route."
 
 `POST`ing isn't as easy as visiting the URL in your browser; that would issue a
 `GET` request. Instead, you'll need to use a tool like
-[curl](https://curl.haxx.se/) (command line interface) or
-[Postman](https://www.getpostman.com/) (graphical user interface).
+[curl](https://curl.se/docs/manpage.html) (command line interface) or
+[Postman](https://www.postman.com/) (graphical user interface).
 
 ![A screenshot of the Postman REST client sending a POST request to
 http://localhost:3000/auth. The response, "I am the auth route" is circled in a
@@ -217,9 +217,9 @@ red annotation](./images/AzQlqpdLq.webp)
 
 ### Signing JWTs
 
-We want the `auth` route to respond with a [JSON Web Token](https://jwt.io/)
+We want the `auth` route to respond with a [JSON Web Token](https://www.jwt.io/)
 (JWT). For that, we'll need to bring in the
-[jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#readme) package.
+[jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) package.
 
 ```console
 npm i jsonwebtoken
@@ -251,9 +251,10 @@ const payload = { sub: 1 };
 ```
 
 This code says that the `sub` claim (short for
-[subject](https://tools.ietf.org/html/rfc7519#section-4.1.2)) should be `1`.
-This would normally be a username or a user ID or something that identifies a
-unique user on your system. For now, we'll just mock it up with a simple number.
+[subject](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.2)) should
+be `1`. This would normally be a username or a user ID or something that
+identifies a unique user on your system. For now, we'll just mock it up with a
+simple number.
 
 Now for the `secret`. This will be the same for every token we sign. So place it
 at the top right under any `require`s.
@@ -274,12 +275,12 @@ JWT.
 ![The same Postman POST request, but this time the response is a JWT
 (`eyJhbGc...`)](./images/Ic23_-wTW.webp)
 
-You can even paste this token into [https://jwt.io](https://jwt.io) and view
-it's contents. This is an important concept: tokens shouldn't contain sensitive
-information. Anyone can view them. The beauty of them becomes apparent when you
-realize that _only your server_, with the secret key, can verify it's signature.
-When verified, you can be sure that your server was the one who issued the
-token.
+You can even paste this token into [https://www.jwt.io](https://www.jwt.io) and
+view it's contents. This is an important concept: tokens shouldn't contain
+sensitive information. Anyone can view them. The beauty of them becomes apparent
+when you realize that _only your server_, with the secret key, can verify it's
+signature. When verified, you can be sure that your server was the one who
+issued the token.
 
 ![A screenshot of jwt.io where the JWT that we saw in Postman is pasted. jwt.io
 shows decoded header, payload, and signature](./images/_EDM0Vb4F.webp)
@@ -320,7 +321,7 @@ Above, we `require` [koa-bodyparser](https://github.com/koajs/bodyparser). Then,
 we add it to the route.
 
 Our server can now parse supplied form data in the
-[x-www-form-urlencoded](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST)
+[x-www-form-urlencoded](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST)
 format.
 
 ![Another Postman screenshot. This one where the Body section has a key for
@@ -510,7 +511,7 @@ ctx.throw(401, wrongUserPassMsg);
 We are storing our passwords in plaintext. [This is a very, very bad
 idea](https://security.stackexchange.com/questions/120540/why-shouldnt-i-store-passwords-in-plaintext).
 Avoid it at all costs. Instead, hash your passwords with something like
-[bcrypt](http://bcrypt.sourceforge.net/).
+[bcrypt](https://bcrypt.sourceforge.net/).
 
 ```console
 npm i bcrypt-nodejs
