@@ -8,13 +8,20 @@ tags:
 title: Access the browser's query string as a JavaScript Object
 ---
 
-I recently read a post on David Walsh's blog called Get Query String Parameters with JavaScript. He provides a simple function for getting parts of the URL query string. However, he mentions:
+I recently read a post on David Walsh's blog called Get Query String Parameters
+with JavaScript. He provides a simple function for getting parts of the URL
+query string. However, he mentions:
 
-> I'd love a more modern method of query string parameter value retrieval but we still only have one string property to pick apart.
+> I'd love a more modern method of query string parameter value retrieval but we
+> still only have one string property to pick apart.
 
-I wrote a (very) small library to do just that. It provides a method to get the query string as a JavaScript object. If you just want to see the code or use the project, [head over to the GitHub repository](https://github.com/travishorn/qs). Below, I will explain how it works.
+I wrote a (very) small library to do just that. It provides a method to get the
+query string as a JavaScript object. If you just want to see the code or use the
+project, [head over to the GitHub repository](https://github.com/travishorn/qs).
+Below, I will explain how it works.
 
-To start out with, it's important to know that the query string can be accessed natively by using
+To start out with, it's important to know that the query string can be accessed
+natively by using
 
 ```javascript
 window.location.search;
@@ -33,7 +40,10 @@ qs.get();
 // }
 ```
 
-I always like to start with an [IIFE](http://benalman.com/news/2010/11/immediately-invoked-function-expression/) to keep my code contained. This also allows me to put my code in strict mode without affecting other included scripts.
+I always like to start with an
+[IIFE](https://benalman.com/news/2010/11/immediately-invoked-function-expression/)
+to keep my code contained. This also allows me to put my code in strict mode
+without affecting other included scripts.
 
 ```javascript
 (function () {
@@ -41,7 +51,11 @@ I always like to start with an [IIFE](http://benalman.com/news/2010/11/immediate
 });
 ```
 
-In this library, I am going to be using [Array.isArray()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray). It has pretty good browser support, but I'll include a [polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill) anyway since it is so small.
+In this library, I am going to be using
+[Array.isArray()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
+It has pretty good browser support, but I'll include a
+[polyfill](https://remysharp.com/2010/10/08/what-is-a-polyfill) anyway since it
+is so small.
 
 ```javascript
 (function () {
@@ -55,15 +69,19 @@ In this library, I am going to be using [Array.isArray()](https://developer.mozi
 });
 ```
 
-Now let's start writing a main object that will be exported as a global. This will go inside the IIFE, underneath the isArray() polyfill.
+Now let's start writing a main object that will be exported as a global. This
+will go inside the IIFE, underneath the isArray() polyfill.
 
 ```javascript
 var qs = {};
 ```
 
-This object will include any methods, such as qs.get(), that we want to be a part of our library. This object should be a global in the browser. We can make it global by attaching it to the window object.
+This object will include any methods, such as qs.get(), that we want to be a
+part of our library. This object should be a global in the browser. We can make
+it global by attaching it to the window object.
 
-First, we'll check that the window object is accessible, then we'll make sure it doesn't have a qs property already. Underneath the declaration of the qs object:
+First, we'll check that the window object is accessible, then we'll make sure it
+doesn't have a qs property already. Underneath the declaration of the qs object:
 
 ```javascript
 if (window) {
@@ -83,7 +101,9 @@ var qs = {
 };
 ```
 
-Inside this function, we'll first capture the query string, then we'll initialize an empty object that we'll eventually fill with our properties and return.
+Inside this function, we'll first capture the query string, then we'll
+initialize an empty object that we'll eventually fill with our properties and
+return.
 
 ```javascript
 var query = window.location.search;
@@ -96,13 +116,15 @@ If there's no query string, we can just return the empty object:
 if (query === "") return obj;
 ```
 
-If the query isn't empty and we don't return the empty object, we can use String.slice() to remove the starting question mark from the query string.
+If the query isn't empty and we don't return the empty object, we can use
+String.slice() to remove the starting question mark from the query string.
 
 ```javascript
 query = query.slice(1);
 ```
 
-Now, we'll split the string into key/value pairs. In the query string, these pairs are ampersand-separated.
+Now, we'll split the string into key/value pairs. In the query string, these
+pairs are ampersand-separated.
 
 ```javascript
 query = query.split("&");
@@ -114,7 +136,8 @@ Now we'll loop through our key/value pairs:
 query.map(function (part) {});
 ```
 
-Inside this loop (for each key/value pair), let's assign the key and value to some easy to access variables:
+Inside this loop (for each key/value pair), let's assign the key and value to
+some easy to access variables:
 
 ```javascript
 var key;
@@ -135,7 +158,10 @@ if (!obj[key]) {
 }
 ```
 
-If it does already exist, that means there is already a value assigned to it. In this case, we need a way to show the current value(s) _and_ the new value. An array is a great option here. If the current value isn't already an array, we need to _make_ it an array.
+If it does already exist, that means there is already a value assigned to it. In
+this case, we need a way to show the current value(s) _and_ the new value. An
+array is a great option here. If the current value isn't already an array, we
+need to _make_ it an array.
 
 ```javascript
 if (Array.isArray(obj[key])) {
@@ -143,13 +169,15 @@ if (Array.isArray(obj[key])) {
 }
 ```
 
-Once we are sure the value is an array, we can push the new value into that array.
+Once we are sure the value is an array, we can push the new value into that
+array.
 
 ```javascript
 obj[key].push(value);
 ```
 
-After the loop, our object contains all the key/value pairs. So outside the loop, we can return it.
+After the loop, our object contains all the key/value pairs. So outside the
+loop, we can return it.
 
 ```javascript
 return obj;
@@ -167,7 +195,9 @@ Once it's included, you can call it like so:
 qs.get();
 ```
 
-If, for example, the URL is [https://example.com/?post=1234&action=edit](https://example.com/?post=1234&action=edit) the returned object will look like
+If, for example, the URL is
+[https://example.com/?post=1234&action=edit](https://example.com/?post=1234&action=edit)
+the returned object will look like
 
 ```javascript
 {
@@ -176,7 +206,9 @@ If, for example, the URL is [https://example.com/?post=1234&action=edit](https:/
 }
 ```
 
-If the URL is [https://example.com/?post=1234&post=4321](https://example.com/?post=1234&post=4321) the returned object will be
+If the URL is
+[https://example.com/?post=1234&post=4321](https://example.com/?post=1234&post=4321)
+the returned object will be
 
 ```javascript
 {
@@ -184,4 +216,6 @@ If the URL is [https://example.com/?post=1234&post=4321](https://example.com/?po
 }
 ```
 
-The fully commented code and minified version are available at the [qs GitHub repository](https://github.com/travishorn/qs). If you find any bugs or would like to add features, please open an issue and/or send a pull request.
+The fully commented code and minified version are available at the [qs GitHub
+repository](https://github.com/travishorn/qs). If you find any bugs or would
+like to add features, please open an issue and/or send a pull request.

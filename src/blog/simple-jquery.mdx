@@ -9,13 +9,19 @@ tags:
 title: Simple jQuery
 ---
 
-This post is part of a project to move my old reference material to my blog. Before 2012, when I accessed the same pieces of code or general information multiple times, I would write a quick HTML page for my own reference and put it on a personal site. Later, I published these pages online. Some of the pages still get used and now I want to make them available on my blog.
+This post is part of a project to move my old reference material to my blog.
+Before 2012, when I accessed the same pieces of code or general information
+multiple times, I would write a quick HTML page for my own reference and put it
+on a personal site. Later, I published these pages online. Some of the pages
+still get used and now I want to make them available on my blog.
 
-jQuery is a fast, concise, JavaScript library that simplifies how to traverse HTML documents, handle events, perform animations, and add AJAX.
+jQuery is a fast, concise, JavaScript library that simplifies how to traverse
+HTML documents, handle events, perform animations, and add AJAX.
 
 ### Including it in a Page
 
-The simplest method is to use the [jQuery CDN](https://code.jquery.com/) and include jQuery just before the closing `</body>` tag.
+The simplest method is to use the [jQuery CDN](https://releases.jquery.com/) and
+include jQuery just before the closing `</body>` tag.
 
 ```html
 <!doctype html>
@@ -26,7 +32,7 @@ The simplest method is to use the [jQuery CDN](https://code.jquery.com/) and inc
   <body>
     [CONTENT]
 
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
     <script>
       $(function() {
         // Put your jQuery code here.
@@ -52,17 +58,21 @@ Select an element that has the id `target`. For example `<div id="target">`:
 $("#target").doSomething();
 ```
 
-Select all elements with the class `selectme`. For example `<div class="selectme">` or `<li class="selectme">`:
+Select all elements with the class `selectme`. For example `<div
+class="selectme">` or `<li class="selectme">`:
 
 ```javascript
 $(".selectme").doSomething();
 ```
 
-For more information about selecting elements, visit [https://api.jquery.com/category/selectors/](https://api.jquery.com/category/selectors/).
+For more information about selecting elements, visit
+[https://api.jquery.com/category/selectors/](https://api.jquery.com/category/selectors/).
 
 ### Manipulating Selected Elements
 
-In all three of the examples above, the method being called was `doSomething()`. There's no such method as `doSomething()` in the default jQuery library, but here are some real ones you can use.
+In all three of the examples above, the method being called was `doSomething()`.
+There's no such method as `doSomething()` in the default jQuery library, but
+here are some real ones you can use.
 
 Add the class `highlight` to every `<span>` on the page:
 
@@ -82,11 +92,13 @@ Changes the `alt` attribute of `<img id="header" …>` to `Sky with clouds`:
 $("img#header").attr("alt", "Sky with clouds");
 ```
 
-For more information about manipulation, visit [https://api.jquery.com/category/manipulation/](http://api.jquery.com/category/manipulation/).
+For more information about manipulation, visit
+[https://api.jquery.com/category/manipulation/](https://api.jquery.com/category/manipulation/).
 
 ### Events
 
-Events are a way to perform an action when a condition is met. Some examples follow.
+Events are a way to perform an action when a condition is met. Some examples
+follow.
 
 Executes when the user clicks on `target`:
 
@@ -112,6 +124,7 @@ $("#target").focus(function () {
 });
 ```
 
-Learn more about events at [https://api.jquery.com/category/events/](http://api.jquery.com/category/events/).
+Learn more about events at
+[https://api.jquery.com/category/events/](https://api.jquery.com/category/events/).
 
 Cover photo by [Charlie Harutaka](https://unsplash.com/@charlieharutaka).

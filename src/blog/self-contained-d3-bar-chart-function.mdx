@@ -20,7 +20,7 @@ from a set of data and insert it into any element.
 This post is the first in a series where I write a function for each chart type.
 In this post, we'll be writing a bar chart function. [In the next one, you can
 find out how to write a pie chart
-function.](https://travishorn.com/self-contained-d3-pie-chart-function-e5b7422be676)
+function.](https://travishorn.com/self-contained-d3-pie-chart-function/)
 
 ### The Goal
 
@@ -70,9 +70,9 @@ option passed to the function. But for the sake of simplicity, I'm just hard
 coding a value.
 
 The width, however, should stay 500. This is because 500 isn't the actual width,
-but the width of the [view
-box](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox). The
-actual width will always expand to the full width of the containing element.
+but the width of the
+[viewBox](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/viewBox).
+The actual width will always expand to the full width of the containing element.
 
 The height is determined from the number of data points multiplied by the height
 of each bar, plus some extra room for gutters between bars. This makes the chart
@@ -83,7 +83,7 @@ The margins are important to make sure axis and data labels fit on the chart.
 The container is a D3 element selected based on the passed-in selector string.
 
 Next, we can use D3 to add an [SVG
-element](https://developer.mozilla.org/en-US/docs/Web/SVG/Element).
+element](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element).
 
 ```javascript
 const chart = container
@@ -116,14 +116,15 @@ the data and it returns a related number along the width (x axis) of the chart.
 The `range` is a 2-point array where the first number is the left edge of the
 chart and the second number is the right edge. So the left edge is 0. Even
 though there is a left margin, we still set 0 because we'll
-[translate](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translate)
+[translate](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/transform-function/translate)
 our chart elements to the right later. For the right edge, we can use the width
 we set earlier. But we also need to take into consideration the margins.
 
 The `domain` is, similarly, a 2-point array. The first number is the lowest
 value on the chart. For bar charts, 0 is always a good starting point. The
 second number is the highest value we will chart. We can use [D3's max
-function](https://github.com/d3/d3-array#max) to find this value in the data.
+function](https://d3js.org/d3-array/summarize#max) to find this value in the
+data.
 
 If you feed this function a value from our data:
 
@@ -179,7 +180,7 @@ const color = d3
 
 This is an ordinal scale where we set the range to an array of colors (specified
 by
-[`d3.schemeCategory10`](https://github.com/d3/d3-scale-chromatic/blob/master/README.md#schemeCategory10)
+[`d3.schemeCategory10`](https://d3js.org/d3-scale-chromatic/categorical#schemeCategory10)
 in this case, but you can change it to any array of colors you'd like). The
 domain is again the name of our data points.
 
@@ -211,10 +212,10 @@ const yAxis = chart
 ```
 
 We append a `<g>` element and call
-[`d3.axisLeft`](https://github.com/d3/d3-axis#axisLeft) on it. d3.axisLeft takes
-a scale as it's only argument. We simply pass in the y scale we made earlier.
-Then we translate the axis to push it to the right and down a little bit
-according to our margins.
+[`d3.axisLeft`](https://d3js.org/d3-axis#axisLeft) on it. d3.axisLeft takes a
+scale as it's only argument. We simply pass in the y scale we made earlier. Then
+we translate the axis to push it to the right and down a little bit according to
+our margins.
 
 At this point, if you were to…
 
@@ -274,7 +275,7 @@ We tie each `bar` element to our data.
 
 We tell D3 that for each new data point that doesn't currently have a `bar`
 assigned to it, append a new
-[`rect`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/rect).
+[`rect`](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/rect).
 
 Then finally, shape the `rect` attributes:
 

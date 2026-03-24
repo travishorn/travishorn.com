@@ -29,8 +29,8 @@ First we'll need some `<div>`s to manipulate.
 That's all the HTML that's needed. Everything else is in CSS.
 
 For the sake of example, I want the animation to appear centered on the page.
-I'll use the [flexbox
-model](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout)
+I'll use the [flexible box
+model](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout)
 for this.
 
 ```css
@@ -106,11 +106,11 @@ Let's apply the animation to the all four balls.
 ```
 
 The balls will bounce every 2 seconds indefinitely. They will be
-[eased](http://easings.net/) in and out.
+[eased](https://easings.net/) in and out.
 
 There's one problem: all four balls bounce at the same time. We can fix this by
 applying a different
-[animation-delay](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-delay)
+[animation-delay](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-delay)
 on each one.
 
 ```css

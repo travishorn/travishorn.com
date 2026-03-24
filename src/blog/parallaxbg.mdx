@@ -9,11 +9,21 @@ tags:
 title: parallaxBG
 ---
 
-I wanted to try my hand at developing a packaged script that you could include on a page with no dependencies (such as jQuery). Today, I'm presenting parallaxBG: a small piece of JavaScript that will appear to scroll the background of a page slower than the content to create a parallax effect.
+I wanted to try my hand at developing a packaged script that you could include
+on a page with no dependencies (such as jQuery). Today, I'm presenting
+parallaxBG: a small piece of JavaScript that will appear to scroll the
+background of a page slower than the content to create a parallax effect.
 
-![Diagram illustrating parallax: two viewpoints (A and B) look at a star-shaped object against a red-white-blue background, and the object appears over different background colors depending on the viewpoint.](./images/1_FgaE6dpDUhSgv7eQltSQKw.webp)_["Parallax Example" by Booyabazooka. Licensed under CC BY-SA 3.0 via Commons](https://commons.wikimedia.org/wiki/File:Parallax_Example.svg#/media/File:Parallax_Example.svg)_
+![Diagram illustrating parallax: two viewpoints (A and B) look at a star-shaped
+object against a red-white-blue background, and the object appears over
+different background colors depending on the
+viewpoint.](./images/1_FgaE6dpDUhSgv7eQltSQKw.webp)
 
-The basis is simple. When the user scrolls the page, move the background image's position the opposite direction. As long as the amount the background position is moved is less than the amount of space the user scrolled, it should appear as though the background is still moving in the same direction, just a bit slower. Here it is in pseudo-code:
+The basis is simple. When the user scrolls the page, move the background image's
+position the opposite direction. As long as the amount the background position
+is moved is less than the amount of space the user scrolled, it should appear as
+though the background is still moving in the same direction, just a bit slower.
+Here it is in pseudo-code:
 
 ```
 when window is scrolled {
@@ -22,13 +32,18 @@ when window is scrolled {
 }
 ```
 
-Of course, it won't be quite that easy because of inconsistencies between browsers. Every major browser has a window.onscroll event, so that part is easy.
+Of course, it won't be quite that easy because of inconsistencies between
+browsers. Every major browser has a window.onscroll event, so that part is easy.
 
 ```javascript
 window.onscroll = function () {};
 ```
 
-Now we want to store the values of where the new background position will be for both top and left. For this step we're going to need to store the html DOM element to save space and so we're not repeatedly jumping into the DOM. We can do this by getting the html element by it's tag name. You'll notice we're using Math.round to get nice integers for each value.
+Now we want to store the values of where the new background position will be for
+both top and left. For this step we're going to need to store the html DOM
+element to save space and so we're not repeatedly jumping into the DOM. We can
+do this by getting the html element by it's tag name. You'll notice we're using
+Math.round to get nice integers for each value.
 
 ```javascript
 var html = document.getElementsByTagName("html")[0];
@@ -39,7 +54,9 @@ window.onscroll = function () {
 };
 ```
 
-Now it's only a matter of setting the background position itself using the new values. We'll also going to store the body element here using the same technique we did for html.
+Now it's only a matter of setting the background position itself using the new
+values. We'll also going to store the body element here using the same technique
+we did for html.
 
 ```javascript
 var html = document.getElementsByTagName("html")[0];
@@ -53,7 +70,12 @@ window.onscroll = function () {
 };
 ```
 
-At this point everything should be working!… except in [Chrome](https://www.google.com/chrome). Chrome doesn't update the html.scrollTop and html.scrollLeft attributes when scrolling. Instead, it updates body.scrollTop and body.scrollLeft. We can solve this easily by testing whether the body attributes have been updated onscroll. If they have, we'll use those values, otherwise we'll use html.
+At this point everything should be working!… except in
+[Chrome](https://www.google.com/chrome/). Chrome doesn't update the
+html.scrollTop and html.scrollLeft attributes when scrolling. Instead, it
+updates body.scrollTop and body.scrollLeft. We can solve this easily by testing
+whether the body attributes have been updated onscroll. If they have, we'll use
+those values, otherwise we'll use html.
 
 ```javascript
 var html = document.getElementsByTagName("html")[0];
@@ -76,4 +98,7 @@ window.onscroll = function () {
 };
 ```
 
-That should do it! A dependency-free script that creates a parallax effect on the page background. Feel free to [fork parallaxBG on GitHub](https://github.com/travishorn/parallaxBG) if you have a feature idea or want to patch a bug you find.
+That should do it! A dependency-free script that creates a parallax effect on
+the page background. Feel free to [fork parallaxBG on
+GitHub](https://github.com/travishorn/parallaxBG) if you have a feature idea or
+want to patch a bug you find.

@@ -12,7 +12,7 @@ To run the code in this post, you need to [have Node installed](https://github.c
 
 ### TCP
 
-This is about as low-level as we can go here seeing as the web runs on [TCP](http://en.wikipedia.org/wiki/Transmission_Control_Protocol). Everything else will be built upon this layer. There is no cruft here: no HTML, no CSS, not even headers will be sent.
+This is about as low-level as we can go here seeing as the web runs on [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol). Everything else will be built upon this layer. There is no cruft here: no HTML, no CSS, not even headers will be sent.
 
 ```javascript
 var net = require("net");
@@ -32,7 +32,7 @@ The net module is a part of Node and its createServer method creates a new TCP s
 
 ### HTTP
 
-[HTTP](http://en.wikipedia.org/wiki/HTTP) is built upon TCP. It defines a communication structure for displaying web pages. Headers are now sent along with content.
+[HTTP](https://en.wikipedia.org/wiki/HTTP) is built upon TCP. It defines a communication structure for displaying web pages. Headers are now sent along with content.
 
 ```javascript
 var http = require("http");
@@ -51,7 +51,7 @@ The http module is another built-in piece of Node. Its createServer method is mo
 
 ### Connect
 
-Now things are starting to get powerful. You can already do a lot with just the http module, but now we're throwing in [Connect](http://www.senchalabs.org/connect/), whose middleware provides some pretty powerful low-level functionality such as logging, serving static files, and authentication just to name a few. Connect basically extends the http module.
+Now things are starting to get powerful. You can already do a lot with just the http module, but now we're throwing in [Connect](https://www.senchalabs.org/connect/), whose middleware provides some pretty powerful low-level functionality such as logging, serving static files, and authentication just to name a few. Connect basically extends the http module.
 
 Connect is not a native part of Node, so you must install it first with npm install connect.
 
@@ -69,7 +69,7 @@ In the code above, the app object becomes a connect instance. In addition to usi
 
 ### Express
 
-Moving up, let's try it with [Express](http://expressjs.com/) now. Express is built on top of Connect, so it provides the same functionality, plus more robust features such as dynamic views and environment-based configurations.
+Moving up, let's try it with [Express](https://expressjs.com/) now. Express is built on top of Connect, so it provides the same functionality, plus more robust features such as dynamic views and environment-based configurations.
 
 Express can be installed by running npm install express.
 
@@ -89,7 +89,7 @@ This time app becomes an instance of express, which we use to create a server. T
 
 ### Zappa
 
-Finally, we have [Zappa](http://zappajs.org/). This platform extends Express, providing support for CoffeeScript and Socket.IO. If you've never used CoffeeScript, it's an optimized language that directly compiles down to plain JavaScript.
+Finally, we have [Zappa](https://zappajs.org/). This platform extends Express, providing support for CoffeeScript and Socket.IO. If you've never used CoffeeScript, it's an optimized language that directly compiles down to plain JavaScript.
 
 You'll need to install Zappa with `npm install zappa`.
 

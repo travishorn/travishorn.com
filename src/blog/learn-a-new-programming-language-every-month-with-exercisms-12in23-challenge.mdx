@@ -195,8 +195,8 @@ each letter of the English alphabet, but I won't paste them all here as it's not
 particularly relevant.
 
 I researched how to use [the `when`
-expression](https://kotlinlang.org/docs/control-flow.html#when-expression) in
-Kotlin to make a function that would return a specific `Int` given a specific
+expression](https://kotlinlang.org/docs/control-flow.html#when-expressions-and-statements)
+in Kotlin to make a function that would return a specific `Int` given a specific
 `Char`.
 
 Then, I used
@@ -219,10 +219,11 @@ First, I figured out how Kotlin handles number ranges: `(1..10)` so I could use
 `(1..n)` where `n` was the given integer. From there, it was just researching
 some built-in math functions and aggregate functions like
 [`kotlin.math.pow()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.math/pow.html)
-and [`.sum()`](https://stackoverflow.com/a/52851213). The only "gotcha" that I
-ran into was that `kotlin.math.pow()` expects a double. So I just had to convert
-to double first, perform the `.pow(2)` (to square the number), then convert back
-to integer.
+and
+[`.sum()`](https://stackoverflow.com/questions/52851161/how-do-i-sum-all-the-items-of-a-list-of-integers-in-kotlin/52851213#52851213).
+The only "gotcha" that I ran into was that `kotlin.math.pow()` expects a double.
+So I just had to convert to double first, perform the `.pow(2)` (to square the
+number), then convert back to integer.
 
 To code my solution, I simply had to put those operations in the right order to
 create a `squareOfSum()` and a `sumOfSquares()` function. Finally, calculating

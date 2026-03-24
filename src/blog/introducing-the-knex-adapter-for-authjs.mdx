@@ -26,7 +26,8 @@ using Knex.js.
 
 In this article, I discuss the necessary steps before installation, guide you
 through the installation process, and demonstrate how to integrate it with
-[Next.js](https://nextjs.org/) or [SvelteKit](https://kit.svelte.dev/).
+[Next.js](https://nextjs.org/) or
+[SvelteKit](https://svelte.dev/docs/kit/introduction).
 
 I'll also talk about the motivation behind creating this adapter. Hint: It is an
 essential tool I needed for the major rewrite of apps and services at my
@@ -257,8 +258,8 @@ As part of this rewrite, I needed a way to authenticate users inside Next.js.
 Whatever solution I came up with had to support [Google as an OAuth
 provider](https://developers.google.com/identity/protocols/oauth2), but also be
 able to support other providers and [custom credential
-authentication](https://authjs.dev/getting-started/credentials-tutorial) if
-necessary in the future.
+authentication](https://authjs.dev/getting-started/authentication/credentials)
+if necessary in the future.
 
 I found NextAuth.js (currently going through a name change to **Auth.js**),
 which is a great solution.
@@ -298,7 +299,7 @@ adapters for Firebase, MongoDB, Prisma, Sequelize, Supabase, and more.
 I was already using Knex.js in my app so I went looking for that adapter.
 Unfortunately, there was no official adapter for Knex.js. On the plus side,
 however, Auth.js provides handy [documentation for writing an adapter
-yourself](https://authjs.dev/guides/adapters/creating-a-database-adapter).
+yourself](https://authjs.dev/guides/creating-a-database-adapter).
 
 I got to work creating the database schema and the Knex.js adapter. What
 resulted is this unofficial Knex adapter for Auth.js.
