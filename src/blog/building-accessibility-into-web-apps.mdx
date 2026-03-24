@@ -1,0 +1,164 @@
+---
+datePublished: 2026-03-24T06:00:00-05:00
+title: Building Accessibility into Web Apps
+cover: ./images/polyfill-for-semantics.webp
+tags:
+- html
+- javascript
+- web-development
+- design-ui
+---
+
+Web apps have evolved beyond static documents, often relying on complex
+interfaces like dropdowns and modals built entirely with generic `<div>`s and
+JavaScript. These widgets may be visually functional, but they lack the context
+that browsers need in order to communicate with assistive technologies. To a
+screen reader, a `<div>` styled to look like a button is just a container.
+
+ARIA stands for Accessible Rich Internet Applications, and it's a specification
+that describes custom code for assistive technology. Following the spec, you act
+as a translator, telling screen readers exactly what an element is, what state
+it is currently in, and how it relates to other content on the page.
+
+Keep reading to learn how you can implement ARIA. We will cover the **First Rule
+of ARIA** and break down the three core pillars of **Roles**, **States**, and
+**Properties**.
+
+## HTML and ARIA
+
+When a browser loads a page, it creates the DOM for rendering and a parallel
+structure called the **Accessibility Tree** for assistive technology. This tree
+strips away visual styles, exposing only the semantic meaning. For example, the
+tree might include things necessary for navigating the page like **link** or
+**heading**. If your HTML doesn't contain enough semantic structure, the
+accessibility tree will be incomplete, making the page difficult or impossible
+to interpret for users leveraging screen reader technology.
+
+Native HTML elements come with built-in, *implicit* semantics that populate the
+accessibility tree automatically. For example, a standard `<button>` tag tells
+the browser it is a clickable control. This is implicit; no extra code is
+needed. ARIA is a tool for applying **explicit** semantics, allowing you to
+manually inject meaning onto generic elements like `<div>` and `<span>`.
+
+This leads to the **First Rule of ARIA**: if a native HTML element serves your
+purpose, use it. Always prefer a standard `<button>` over a `<div>` disguised as
+one. ARIA is designed to fill the gaps where HTML falls short, not to replace
+valid semantic markup.
+
+## The Three Pillars
+
+ARIA attributes fall into 3 categories that define an element's identity and
+behavior: **Roles**, **States**, and **Properties**. Roles define what an object
+*is*, states and properties define the object's *current condition* and
+*relationships*. Understanding how these pillars interact is key to building
+accessible page components.
+
+### Roles
+
+Roles describe *what* a component is. Like "I am a button" or "I am a navigation
+bar.". Once you set a role, such as `role="checkbox"`, you promise the user that
+the element will behave exactly like that native component.
+
+Roles fall into three types:
+
+**Landmark Roles** define major page regions—like `main`, `navigation`,
+`search`, or `banner`. They allow assistive technology users to quickly jump
+between sections of the layout.
+
+**Widget Roles** describe interactive components that may not exist natively in
+HTML, such as `tab`, `slider`, `dialog`, or `tooltip`.
+
+**Document Structure Roles** describe the organization of static content,
+usually mimicking native tags like `heading`, `list`, or `article`.
+
+### States
+
+States are dynamic attributes that represent the current condition of an
+element.
+
+States change frequently based on user input. It is the developer's
+responsibility to write JavaScript that updates these attributes in real-time so
+the screen reader is always in sync with the visual UI.
+
+For example, in a collapsible region like an accordion or a dropdown menu,
+`aria-expanded="true"` tells the user the region is currently open. Logically,
+if that property is `"false"`, it indicates the opposite.
+
+Similarly, `aria-checked="true"` can tell the user when a custom checkbox or
+radio button is checked.
+
+When an element is disabled, `aria-disabled="true"` signals that state.
+
+### Properties
+
+Properties provide additional details. They often define relationships between
+elements or provide specific characteristics.
+
+They're usually used to define static attributes or links between different
+parts of the DOM. This is crucial for gluing elements together into a cohesive
+widget, especially when visual layout separates a label from its control.
+
+For example, `aria-label` defines a string of text that names an element. Then,
+`aria-labelledby` points to the ID of another element acting as its label. This
+basically says, "My name is whatever text is inside *that* element over there."
+
+`aria-describedby` links an element to an additional description, such as a
+tooltip or help text located somewhere else in the DOM.
+
+When a form input is required, use `aria-required="true"` to make sure assistive
+technology announces the requirement to the user before they try to submit.
+
+## Use Cases
+
+Interactive elements without visible text labels (like icon-only buttons), can
+confuse screen reader users. Imagine hearing "button" with no context. You can
+solve this by adding `aria-label="Close"` to the button, or by using
+`aria-labelledby` to point to an existing text element on the page that names
+the control.
+
+Dynamic updates (think form errors and such) often appear without the user
+moving their focus. Add `aria-live="polite"` to a container to instruct the
+screen reader to announce any new text added to that specific region. This keeps
+users informed of changes without forcing them to hunt around the page or lose
+their place.
+
+Complex UI components like tab interfaces rely on structural patterns to work. A
+proper tab widget requires a `tablist` container holding `tab` elements that
+control specific `tabpanel` sections. This hierarchy allows assistive technology
+to understand the relationship between the controls and the content they reveal.
+
+Finally, managing visibility is important. Use `aria-hidden="true"` when you
+want to hide purely decorative elements (like SVG icons) from screen readers
+while keeping them visible on screen. However, if content should be hidden from
+*everyone*, stick to the native `hidden` attribute or CSS `display: none`, which
+automatically removes the element from the accessibility tree.
+
+## The Five Rules of ARIA
+
+These best practices are set out by the ARIA specification.
+
+1.  If a native HTML element functions as expected, always choose it over a
+    custom ARIA implementation.
+
+2.  Never apply a role that conflicts with an element's inherent meaning, such
+    as adding `role="heading"` to a `<button>`.
+
+3.  ARIA provides the semantics, but you must write the JavaScript to handle
+    keyboard focus and key presses (Enter, Space, Arrows).
+
+4.  Never use `role="presentation"` or `aria-hidden="true"` on any element that
+    can receive focus. If an element is focusable, it's not really just *for
+    show* (presentation) or hidden.
+
+5.  Every button, link, or input needs a label to users know what it does. It
+    could be either visible text or an ARIA property.
+
+## A Polyfill for Semantics
+
+ARIA helps users by making complex UI understandable via the accessibility tree.
+Start with semantic HTML first, then sprinkle ARIA where native HTML fails. For
+standard design patterns and code examples, bookmark the [W3C ARIA Authoring
+Practices Guide (APG)](https://www.w3.org/WAI/ARIA/apg/).
+
+Cover photo by [Christian Boragine](https://unsplash.com/@aimha) on
+[Unsplash](https://unsplash.com/photos/glass-prisms-refract-light-creating-rainbow-spectrums-on-black-njScEvgTv7w).
