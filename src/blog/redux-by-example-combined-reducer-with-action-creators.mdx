@@ -43,7 +43,7 @@ const VisibilityFilters = {
 };
 ```
 
-Now, define the [actions](http://redux.js.org/docs/basics/Actions.html)
+Now, define the [actions](https://redux.js.org/docs/basics/Actions.html)
 themselves.
 
 > Actions are payloads of information that send data from your application to
@@ -63,7 +63,7 @@ const setVisibilityFilter = (index) => {
 };
 ```
 
-And now a couple [reducers](http://redux.js.org/docs/basics/Reducers.html).
+And now a couple [reducers](https://redux.js.org/docs/basics/Reducers.html).
 
 > Reducers specify how the application's state changes in response to actions.
 
@@ -125,7 +125,7 @@ const todoApp = Redux.combineReducers({
 ```
 
 Actions and reducers are useless without a
-[store](http://redux.js.org/docs/basics/Store.html).
+[store](https://redux.js.org/docs/basics/Store.html).
 
 > The store holds application state and provides methods to access to state,
 > update state, and registers/unregisters listeners.
@@ -135,7 +135,7 @@ const store = Redux.createStore(todoApp);
 ```
 
 We can listen and react to the store via the `[.subscribe()`
-method](http://redux.js.org/docs/api/Store.html#subscribe).
+method](https://redux.js.org/docs/api/Store.html#subscribe).
 
 ```javascript
 store.subscribe(() => {
@@ -146,7 +146,7 @@ store.subscribe(() => {
 In this case, any time the state is mutated, we'll log it to the console.
 
 That's it! The state can be mutated with actions via the [`.dispatch()`
-method](http://redux.js.org/docs/api/Store.html#dispatch). Here are some
+method](https://redux.js.org/docs/api/Store.html#dispatch). Here are some
 examples.
 
 ### Add a todo

@@ -159,9 +159,9 @@ data() {
 
 In a real world example, you would probably pull in this array from a database.
 I won't go in-depth with it here, but the basic idea in that case would be that
-you use an HTTP client such as [axios](https://github.com/mzabriskie/axios) to
+you use an HTTP client such as [axios](https://github.com/axios/axios) to
 query an API that interfaces with your database when the Vue app is
-[`created()`](https://vuejs.org/v2/api/#created).
+[`created()`](https://vuejs.org/api/application.html#createapp).
 
 The `forSale` array we just created is a list of objects with the following
 properties:
@@ -176,7 +176,7 @@ properties:
   cents.
 
 In the template, we can display these items with a [v-for
-loop](https://vuejs.org/v2/guide/list.html#Mapping-an-Array-to-Elements-with-v-for).
+loop](https://vuejs.org/guide/essentials/list.html#v-for).
 
 ```vue
 <template>
@@ -236,7 +236,7 @@ price.](./images/xg9UupaMW.webp)
 
 At this point, I want to take a step back and show how we can break the item
 card into a component. Whenever possible, you want to encapsulate reusable code
-as a [Vue component](https://vuejs.org/v2/guide/components.html). Start by
+as a [Vue component](https://vuejs.org/guide/essentials/component-basics.html). Start by
 creating a new file in the `src` directory called `Item.vue`:
 
 ```vue
@@ -272,7 +272,7 @@ In the template, cut & paste the item col from `src/App.vue`. Also, remove the
 ```
 
 Our component will accept the item's properties as Vue
-[props](https://vuejs.org/v2/guide/components.html#Props). Set that up in the
+[props](https://vuejs.org/guide/essentials/component-basics.html#passing-props). Set that up in the
 script.
 
 ```vue
@@ -285,8 +285,7 @@ export default {
 ```
 
 Another area that can be cleaned up is the price display. Instead of putting the
-formatting logic in the template, we can apply a
-[filter](https://vuejs.org/v2/guide/filters.html). Create the filter like so:
+formatting logic in the template, we can apply a filter. Create the filter like so:
 
 ```vue
 <script>
@@ -304,6 +303,9 @@ And apply the filter in the template like so:
 ```vue
 <div class="card-text">**{{ price | dollars }}**</div>
 ```
+
+**Update:** Vue 3 removed filters and they're no longer supported. Insted, I
+recommend replacing them with method calls or computed properties.
 
 Back in `src/App.vue`, we can place a single `<Item>` component where our
 item code used to be.
@@ -385,9 +387,9 @@ app, but the state of our app is contained in the main component. Furthermore,
 we'll be building a cart component which will also share this state, as well.
 Many components of our app need access to view and mutate the same state.
 
-At this point, the state management library
-[vuex](https://vuex.vuejs.org/en/intro.html) becomes attractive. Let's take a
-step back again and add it in. In your terminal/command prompt:
+At this point, the state management library [vuex](https://vuex.vuejs.org/)
+becomes attractive. Let's take a step back again and add it in. In your
+terminal/command prompt:
 
 ```console
 npm i -S vuex
@@ -472,7 +474,7 @@ export default new Vuex.Store({
 ```
 
 State should not be accessed directly in vuex. Instead, use
-[getters](https://vuex.vuejs.org/en/getters.html). Create a getter for each of
+[getters](https://vuex.vuejs.org/guide/getters.html). Create a getter for each of
 the arrays in our state.
 
 ```javascript
@@ -501,7 +503,7 @@ forSale: function (state) {
 
 Since our state will come from the store now, we can remove the `data()`
 attribute from `src/App.vue,` And add a [computed
-property](https://vuejs.org/v2/guide/computed.html#Computed-Properties) that
+property](https://vuejs.org/guide/essentials/computed.html) that
 pulls the `forSale` getter from `$store` instead. We can do the same for
 `inCart`, as well.
 
@@ -576,7 +578,7 @@ export default {
 
 When the button is clicked, it fires the `addToCart()` method, passing the
 `invId` of the item as an argument. This method `dispatch`es to the store an
-`addToCart` [action](https://vuex.vuejs.org/en/actions.html) with the `invId` as
+`addToCart` [action](https://vuex.vuejs.org/guide/actions.html) with the `invId` as
 a payload.
 
 We must write the action in `src/store.js`:
@@ -591,7 +593,7 @@ An action's purpose is to perform arbitrary asynchronous operations, if any, and
 commit a mutation to the state. In this case, we have no async code to perform,
 so we just commit the mutation.
 
-And now we write the [mutation](https://vuex.vuejs.org/en/mutations.html).
+And now we write the [mutation](https://vuex.vuejs.org/guide/mutations.html).
 
 ```javascript
 mutations: {
@@ -851,7 +853,7 @@ Notice we're using the `dollars` filter again. But it won't work right now! We
 put that filter in the `Item` component, and we're working in the `ShoppingCart`
 component.
 
-### Keep the code [DRY](https://www.lynda.com/WordPress-tutorials/Introducing-Dont-Repeat-Yourself-DRY-practice/174281/360333-4.html)
+### Keep the code [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
 
 One solution is to repeat yourself and copy the filter here, too. The nicer
 solution is to place all our filters in a module that we can reference whenever
@@ -926,7 +928,7 @@ shopping cart.
 ### The total row
 
 What about a total? That's an easy job for a computed property using the
-[`.reduce()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce?v=b)
+[`.reduce()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce)
 method.
 
 Add a new row to our table. The first cell is blank, the second cell contains

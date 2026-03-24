@@ -5,11 +5,16 @@ cover: ./images/Hm4qzc__g.webp
 tags: ["api", "javascript", "nodejs", "security"]
 ---
 
-Today I am creating a mailing list signup form that will post data to a sheet on Fieldbook. We could give our form the API key but this is a terrible idea as it gives anyone who visits the form the key to do anything they want to your database (Fieldbook book).
+Today I am creating a mailing list signup form that will post data to a sheet on
+Fieldbook. We could give our form the API key but this is a terrible idea as it
+gives anyone who visits the form the key to do anything they want to your
+database (Fieldbook book).
 
 Instead, we'll create a proxy in Node.js in less than 50 lines of code.
 
-First let's set up the database. Log into Fieldbook and create a new book. In that book, make a sheet named **Contacts**. This sheet will contain these three columns
+First let's set up the database. Log into Fieldbook and create a new book. In
+that book, make a sheet named **Contacts**. This sheet will contain these three
+columns
 
 - **Contact ID** (I am just using Fieldbook's built in numeric ID)
 
@@ -17,7 +22,8 @@ First let's set up the database. Log into Fieldbook and create a new book. In th
 
 - **Signup date**.
 
-Now, click on **API**, then **Manage API access**, then **Generate a new API key**. Make sure to copy down the **Username** and **Password**.
+Now, click on **API**, then **Manage API access**, then **Generate a new API
+key**. Make sure to copy down the **Username** and **Password**.
 
 Now for the code. Let's create a new directory and cd into it.
 
@@ -40,7 +46,8 @@ Now we can install dependencies.
 npm install express body-parser requestify moment --save
 ```
 
-The proxy itself is simple enough. In a new file called index.js, we'll first put the parser in strict mode and require our modules.
+The proxy itself is simple enough. In a new file called index.js, we'll first
+put the parser in strict mode and require our modules.
 
 ```javascript
 "use strict";
@@ -67,7 +74,9 @@ var API_OPTIONS = {
 var app = express();
 ```
 
-Since the form will be running from a separate service as our proxy, we'll need to set up CORS. And since we'll be accepting form data, we'll set up the body-parser, too.
+Since the form will be running from a separate service as our proxy, we'll need
+to set up CORS. And since we'll be accepting form data, we'll set up the
+body-parser, too.
 
 ```javascript
 app.use(function (req, res, next) {
@@ -82,7 +91,8 @@ app.use(function (req, res, next) {
 app.use(bodyParser.urlencoded({ extended: true }));
 ```
 
-Finally, we get to the meat of the proxy: a single route for handling POST requests from our form.
+Finally, we get to the meat of the proxy: a single route for handling POST
+requests from our form.
 
 ```javascript
 app.post('/contacts', function(req, res) {
@@ -105,7 +115,8 @@ app.post('/contacts', function(req, res) {
 });
 ```
 
-With everything else set up, we will simply tell our proxy to listen for incoming connections.
+With everything else set up, we will simply tell our proxy to listen for
+incoming connections.
 
 ```javascript
 app.listen(PORT, function () {
@@ -113,7 +124,9 @@ app.listen(PORT, function () {
 });
 ```
 
-In order to run the proxy, we'll set our environment variables. This will depend on your operating system. But if you're on Windows like me, open the command prompt and run these commands:
+In order to run the proxy, we'll set our environment variables. This will depend
+on your operating system. But if you're on Windows like me, open the command
+prompt and run these commands:
 
 ```console
 SET PORT=3000
@@ -127,8 +140,14 @@ And simply start the proxy:
 node index.js
 ```
 
-This proxy will accept form data with an emailAddress key, add the sign up date, and post it to your Fieldbook sheet securely. However, it's worth mentioning that, as it is, this proxy accepts form data from any origin.
+This proxy will accept form data with an emailAddress key, add the sign up date,
+and post it to your Fieldbook sheet securely. However, it's worth mentioning
+that, as it is, this proxy accepts form data from any origin.
 
-[Read part two](https://travishorn.com/creating-a-front-end-for-working-with-your-api-proxy) to see how to write up a quick front-end form for posting data to this proxy. The code for both this proxy and the front-end form is located in [this GitHub repository](https://github.com/travishorn/fieldbook-proxy-example/).
+[Read part
+two](https://travishorn.com/creating-a-front-end-for-working-with-your-api-proxy/)
+to see how to write up a quick front-end form for posting data to this proxy.
+The code for both this proxy and the front-end form is located in [this GitHub
+repository](https://github.com/travishorn/fieldbook-proxy-example/).
 
-Cover photo by [Juan D Nella](https://unsplash.com/juandinella).
+Cover photo by [Juan Di Nella](https://unsplash.com/@juandinella).
