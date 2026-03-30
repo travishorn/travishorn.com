@@ -59,6 +59,13 @@ controls rely on it to handle their internal layout.
 }
 ```
 
+![A wirefram diagram of a navbar UI. A rectangle with a red outline labeled
+".navbar". Nested inside are two elements side-by-side. The first is a green
+rectangle labeled ".logo". Inside is the text "MyLogo". The other is a green
+rectangle labeled ".nav-links". Inside are three blue rectangles labeled "li".
+The text inside them reads "Home", "Pricing", and
+"Contact".](./images/flexbox-nav-links.webp)
+
 ## When to Use CSS Grid
 
 CSS Grid is the best choice for two-dimensional layouts. You can use it for
@@ -98,6 +105,11 @@ main   { grid-area: main; }
 footer { grid-area: footer; }
 ```
 
+![A wireframe diagram of a page UI. At the top is a red rectangle labeled
+"Header". Below that are two side-by-side red rectangles labeled "Sidebar" and
+"Main Content". Below them is a final red rectange labeled
+"Footer".](./images/css-grid-header-sidebar-main-footer.webp)
+
 ## When to Use Both
 
 You don't have to choose between them. A common pattern is using Grid for the
@@ -108,14 +120,6 @@ components.
 Think about a product gallery, for example. Grid handles the two-dimensional
 tiling of the cards across the page. Inside each card, Flexbox takes over to
 vertically distribute the image, text, and buttons.
-
-![A digital illustration of a product gallery. The top section is labeled CSS
-Grid / Page Structure. There is a 3 by 3 grid of cards. The rows and columns are
-separated by dashed orange lines. An arrow points down to another section. This
-second section is labeled Flexbox / Card Content. It is a breakdown of one of
-the cards from the top. There are elements for image, product name, product
-description, and buttons - all in a vertical structure. Each element is
-separated by a dashed orange line.](./images/css-grid-plus-flexbox.webp)
 
 ```html
 <section class="product-gallery">
@@ -155,6 +159,14 @@ separated by a dashed orange line.](./images/css-grid-plus-flexbox.webp)
   margin-top: auto; 
 }
 ```
+
+![A digital illustration of a product gallery. The top section is labeled CSS
+Grid / Page Structure. There is a 3 by 3 grid of cards. The rows and columns are
+separated by dashed orange lines. An arrow points down to another section. This
+second section is labeled Flexbox / Card Content. It is a breakdown of one of
+the cards from the top. There are elements for image, product name, product
+description, and buttons - all in a vertical structure. Each element is
+separated by a dashed orange line.](./images/css-grid-plus-flexbox.webp)
 
 ## Quick Decision Checklist
 
