@@ -1,0 +1,378 @@
+---
+title: Rolling Your Own Node.js Continuous Deployment on Linux
+datePublished: 2026-05-05T06:00:00-05:00
+cover: ./images/self-hosted-continuous-deployment.webp
+tags:
+  - deployment
+  - git
+  - javascript
+  - linux
+  - nodejs
+  - server-management
+---
+
+You don't need a bloated, expensive CI/CD platform to deploy your Node.js apps.
+You can roll your own "push-to-deploy" pipeline directly on your VPS. It's
+lightweight, strictly adheres to the principle of least privilege, and feels
+like magic. Here is your complete, step-by-step guide to building it from
+scratch.
+
+Note: I wrote [a similar guide to this a few years
+ago](/rolling-your-own-continuous-deployment-with-nodejs-git-pm2-and-linux/),
+but this is the updated setup I'm currently using, which is simpler and more
+secure.
+
+This guide assumes...
+
+* you are using a Debian-based system,
+* you have `root` access (`sudo` privileges will work great),
+* `git`, `nodejs`, and `npm` are installed, and
+* you already have a Node.js project that serves HTTP content.
+
+## Create Dedicated Users
+
+We need two separate users: one to securely handle Git connections, and one to
+securely run the application.
+
+1. Create a `git` user:
+
+   ```bash
+   sudo useradd -m -s /usr/bin/git-shell git
+   ```
+
+2. Create a `myapp` user:
+
+   ```bash
+   sudo useradd --system --shell /usr/sbin/nologin --home-dir /nonexistent myapp
+   ```
+
+   **Important:** Don't actually name it `myapp`; name it after the app you're
+   deploying. You should make one of these users per app.
+
+## Configure SSH Access
+
+You need to allow your development machine(s) to authenticate as the `git` user.
+
+1. Create a `.ssh` directory for the `git` user:
+
+   ```bash
+   sudo mkdir -p /home/git/.ssh
+   ```
+
+2. Secure the directory so only the `git` user can read/write/execute it:
+
+   ```bash
+   sudo chmod 700 /home/git/.ssh
+   ```
+
+3. Open the authorized keys file in your text editor:
+
+   ```bash
+   sudo nano /home/git/.ssh/authorized_keys
+   ```
+
+4. Paste your developer public SSH key(s) (e.g., the contents of
+   `~/.ssh/id_ed25519.pub`) into this file and save. Don't have a public SSH
+   key? [Check out this
+   guide.](/unlocking-the-power-of-public-key-authentication-in-openssh-a-comprehensive-guide/)
+
+5. Secure the file so only the `git` user can read/write to it:
+
+   ```bash
+   sudo chmod 600 /home/git/.ssh/authorized_keys
+   ```
+
+6. Set the `git` user as the owner of `.ssh` and its contents:
+
+   ```bash
+   sudo chown -R git:git /home/git/.ssh
+   ```
+
+## Set Up an Application Directory
+
+We need to create a folder structure where the app will live. You should do
+these steps for every app you plan to deploy.
+
+1. Create a directory to hold scripts related to the app:
+
+   ```bash
+   sudo mkdir -p /var/www/myapp/bin
+   ```
+
+2. Create a directory that will hold the production code:
+
+   ```bash
+   sudo mkdir /var/www/myapp/releases
+   ```
+
+3. Open a new `.env` file in your editor:
+
+   ```bash
+   sudo nano /var/www/myapp/.env
+   ```
+
+   Paste in your app's environment variables. We'll have Systemd read this and
+   feed the variables to your app later.
+
+4. Secure this file so only the owner can read it:
+
+   ```bash
+   sudo chmod 600 /var/www/myapp/.env
+   ```
+
+4. Give ownership of this entire structure to the `myapp` user:
+
+   ```bash
+   sudo chown -R myapp:myapp /var/www/myapp
+   ```
+
+## Create a Deployment Script
+
+This script handles extracting your app's code, installing dependencies, and
+swapping a symlink that points to the latest release.
+
+1. Create the script:
+
+   ```bash
+   sudo nano /var/www/myapp/bin/deploy.sh
+   ```
+
+2. Paste the following code:
+
+   ```bash
+   #!/bin/bash
+   
+   # Stop execution immediately if any command fails
+   set -e 
+
+   APP_DIR="/var/www/myapp"
+   RELEASE_NAME=$(date +%Y%m%d%H%M%S)
+   NEW_RELEASE_DIR="$APP_DIR/releases/$RELEASE_NAME"
+
+   # Create new release directory
+   mkdir -p "$NEW_RELEASE_DIR"
+
+   # Extract the tar archive from standard input
+   tar -mx -C "$NEW_RELEASE_DIR"
+
+   # Install dependencies
+   cd "$NEW_RELEASE_DIR"
+   npm ci --cache /tmp/npm-cache
+
+   # Atomic Symlink Swap
+   ln -sfn "$NEW_RELEASE_DIR" "$APP_DIR/current"
+
+   # Restart the systemd service
+   sudo /usr/bin/systemctl restart myapp
+
+   # Keep only the 5 most recent releases
+   ls -dt $APP_DIR/releases/* | tail -n +6 | xargs -d '\n' rm -rf --
+   ```
+
+3. Make it executable:
+
+   ```bash
+   sudo chmod +x /var/www/myapp/bin/deploy.sh
+   ```
+
+4. Set ownership:
+
+   ```bash
+   sudo chown myapp:myapp /var/www/myapp/bin/deploy.sh
+   ```
+
+You may have noticed this line in the deployment script:
+
+```bash
+tar -mx -C "$NEW_RELEASE_DIR"
+```
+
+That line means the script expects a compressed tar archive to be passed to it.
+We'll do that with a post-receive Git hook.
+
+## Configure a Bare Git Repository
+
+This is the repository you will push to from your development machine.
+
+1. Create a directory that will store a bare Git repository:
+
+   ```bash
+   sudo mkdir -p /srv/git/myapp
+   ```
+
+2. Change into that directory:
+
+   ```bash
+   cd /srv/git/myapp
+   ```
+
+3. Initialize a bare Git repository:
+
+   ```bash
+   sudo git init --bare
+   ```
+
+4. Create a `post-receive` hook:
+
+   ```bash
+   sudo nano /srv/git/myapp/hooks/post-receive
+   ```
+
+5. Paste this code, which packages the code and pipes it to the deploy script:
+
+   ```bash
+   #!/bin/bash
+   git archive main | sudo -u myapp /var/www/myapp/bin/deploy.sh
+   ```
+
+6. Make the hook executable:
+
+   ```bash
+   sudo chmod +x /srv/git/myapp/hooks/post-receive
+   ```
+
+7. Give ownership to the `git` user:
+
+   ```bash
+   sudo chown -R git:git /srv/git/myapp
+   ```
+
+## Configure Sudo Rules
+
+We need to allow the new users we created to execute specific commands without
+being prompted for a password.
+
+1. Use `visudo` to safely create a new sudoers file:
+
+   ```bash
+   sudo visudo -f /etc/sudoers.d/deployment
+   ```
+
+2. Add these two lines to the file and save:
+
+   ```text
+   git ALL=(myapp) NOPASSWD: /var/www/myapp/bin/deploy.sh
+   myapp ALL=NOPASSWD: /usr/bin/systemctl restart myapp
+   ```
+
+   These two lines keep the server secure using the [Principle of Least
+   Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+
+   The first line allows the `git` user to execute `deploy.sh` as the `myapp`
+   user. You'll have to place one of these lines for each app you deploy.
+
+   The second line allows the `myapp` user to restart the app. You'll also need
+   one of these per app.
+
+## Create a Systemd Service
+
+This tells Debian how to keep your Node.js application running in the
+background. This is simpler but less powerful than managing processes through
+something like PM2.
+
+1. Create a service file:
+
+   ```bash
+   sudo nano /etc/systemd/system/myapp.service
+   ```
+
+2. Paste the configuration:
+
+   ```ini
+   [Unit]
+   Description=This is my web app.
+   After=network.target
+
+   [Service]
+   User=myapp
+   Group=myapp
+
+   WorkingDirectory=/var/www/myapp/current
+
+   ExecStart=/usr/bin/npm start
+
+   Restart=always
+   RestartSec=10
+
+   EnvironmentFile=/var/www/myapp/.env
+
+   PrivateTmp=true
+   NoNewPrivileges=true
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+   This service file assumes you have a script in `package.json` called `start`
+   which launches your app. If you don't, just edit the `ExecStart` line. For
+   example, if you want to execute the `index.js` file with Node, make the line
+   read `ExecStart=/usr/bin/node index.js`.
+
+   Also notice the `WorkingDirectory` points to `current`. Remember that this is
+   a symlink managed by the deployment script that always points to the most
+   recent release.
+
+3. Tell systemd to read the new file:
+
+   ```bash
+   sudo systemctl daemon-reload
+   ```
+
+4. Enable it to start on boot:
+
+   ```bash
+   sudo systemctl enable myapp.service
+   ```
+
+   Note: Do not start the service yet. It will fail because we haven't set up
+   the `current` symlink. We could do this manually, or we could just have the
+   deployment script do it for us by making our first push.
+
+## Your First Deployment!
+
+Now, go to your development machine where your application's source code lives.
+
+1. Navigate to your local project folder:
+
+   ```bash
+   cd ~/myapp
+   ```
+
+2. Add the remote server (replace `YOUR_SERVER_IP` with the actual IP or
+   domain):
+
+   ```bash
+   git remote add production git@YOUR_SERVER_IP:/srv/git/myapp
+   ```
+
+3. Push the code to deploy!
+
+   ```bash
+   git push production main
+   ```
+
+If everything was set up correctly, you will see the output of the `deploy.sh`
+script stream right back to your local terminal. When you push like this, quite
+a few things happen:
+
+1. The latest code is pushed to the server.
+2. The post-receive hook 
+  * packages the code into a tarball stream, and
+  * pipes it to the deployment script.
+3. The deployment script
+  * creates a new timestamped directory inside `releases/`,
+  * unpacks the code into it,
+  * installs dependencies,
+  * updates the `current` symlink to point to the new release,
+  * restarts the `myapp` systemd service, and
+  * deletes old releases
+
+Your app is now live!
+
+Congratulations, you just built a deployment pipeline without relying on
+third-party services. You now have a custom deployment process that is secure,
+automated, and fast. Go ahead, make a quick code change, type `git push`, and
+watch your server do the heavy lifting.
+
+Cover photo by [Bhautik Patel](https://unsplash.com/@bhautik_patel3) on
+[Unsplash](https://unsplash.com/photos/two-blurred-spheres-on-an-orange-background-3l1t_kIr6Ek).
