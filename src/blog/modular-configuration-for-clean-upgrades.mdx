@@ -1,7 +1,7 @@
 ---
 title: Modular Configuration for Clean Upgrades
 datePublished: 2026-04-21T06:00:00-05:00
-cover: ./images/the-debian-way.webp
+cover: ./images/the-conf.d-drop-in-pattern.webp
 tags:
   - automation
   - backend-systems
@@ -15,20 +15,20 @@ tags:
 ---
 
 This guide helps you make sure your Debian server stays in a high integrity
-state. By following *The Debian Way*, you will never see a `.dpkg-dist` or
-`.dpkg-old` prompt during a distro upgrade again.
+state. By following the conf.d drop-in pattern, you will never see a
+`.dpkg-dist` or `.dpkg-old` prompt during a distro upgrade again.
 
-Standard configuration management involves editing files owned by the package
-manager. This creates conflicts during upgrades, where `dpkg` halts the process
-to ask if you want to keep your local changes or adopt the maintainer's new
-version. This manual intervention kills automation, and leaves your system in a
-"dirty" state.
+Conventional configuration management involves editing files owned by package
+maintainers. This creates conflicts during upgrades, where `dpkg` halts the
+process to ask if you want to keep your local changes or adopt the maintainer's
+new version. This manual intervention kills automation and leaves your system
+in a "dirty" state.
 
-*The Debian Way* solves this by using modular configuration. Instead of
-modifying vendor-provided files, you use drop-in directories (like `conf.d/`) or
-service overrides to load *your* settings last. This way, `apt` can update the
-underlying infrastructure silently, while your custom logic remains isolated and
-portable.
+The **conf.d drop-in pattern** solves this by using modular configuration.
+Instead of modifying vendor-provided files, you use drop-in directories (like
+`conf.d/`) or service overrides to load *your* settings last. This way, `apt`
+can update the underlying infrastructure silently, while your custom logic
+remains isolated and portable.
 
 # Starting Fresh
 
@@ -39,9 +39,9 @@ custom configuration will live alongside the defaults rather than overwriting
 them.
 
 In my case, I'm managing a server in which I must configure MariaDB, Apache, and
-nftables. Here's how to implement *The Debian Way* for each of those. If use
-something else, don't worry; these principles apply to any configurable software
-on most Linux machines.
+nftables. Here's how to implement the conf.d drop-in pattern for each of those.
+If use something else, don't worry; these principles apply to any configurable
+software on most Linux machines.
 
 ## MariaDB
 
@@ -49,7 +49,7 @@ MariaDB uses "modular drop-ins". It reads the files inside
 `/etc/mysql/mariadb.conf.d/` in alphabetical order. 
 
 Do **not** touch `50-server.cnf` or any other `.cnf` file provided by the
-package. Instead, create a new file: `/etc/mysql/mariadb.conf.d/99-custom.cnf`.
+package. Instead, create a new file: `/etc/mysql/mariadb.conf.d/99-local.cnf`.
 Here's an example:
 
 ```ini
@@ -58,7 +58,7 @@ bind-address = 0.0.0.0
 max_connections = 500
 ```
 
-Since `99-custom.cnf` appears alphabetically *after* the default configuration
+Since `99-local.cnf` appears alphabetically *after* the default configuration
 files like `50-server.cnf`, the values in your custom file will be used.
 
 To put the changes into effect, restart the MariaDB service:
@@ -73,7 +73,7 @@ Apache uses an "available/enabled" pattern, plus alphabetical sorting. Because
 defaults like `security.conf` start with "s", use a `zz-` prefix to ensure your
 overrides load last.
 
-Create a custom config at `/etc/apache2/conf-available/zz-custom.conf`. Here's
+Create a custom config at `/etc/apache2/conf-available/zz-local.conf`. Here's
 an example:
 
 ```
@@ -84,7 +84,7 @@ ServerSignature Off
 Once that's written, enable it:
 
 ```bash
-sudo a2enconf zz-custom
+sudo a2enconf zz-local
 ```
 
 Before applying, you can check the synax:
@@ -153,11 +153,11 @@ sudo systemctl restart nftables
 # Fixing an Already Modified Server
 
 If you've already edited the preloaded configuration files, follow this workflow
-to "sanitize" the server without losing your settings.
+to sanitize the server without losing your settings.
 
 ## Audit with `debsums`
 
-You can identify exactly which files are "dirty" (modified or missing) with
+You can identify exactly which files are dirty (modified or missing) with
 `debsums`. It's an audit tool that compares your local files against the
 original package checksums. It identifies exactly which files have been modified
 or corrupted since they were installed.
@@ -168,7 +168,7 @@ Install `debsums`:
 sudo apt install debsums
 ```
 
-Run `debsums`:
+Run it:
 
 ```bash
 sudo debsums -ce
@@ -176,9 +176,9 @@ sudo debsums -ce
 
 The `-c` flag filters the output to only show changed files. The `-e` flag
 restricts the search to configuration files. If this returns output, you've
-found exactly which files are "dirty."
+found exactly which files are dirty and require action.
 
-For example:
+For example, the output might look like this:
 
 ```
 /etc/mysql/mariadb.conf.d/50-server.cnf
@@ -227,16 +227,16 @@ diff -u /tmp/mariadb-orig/etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mari
 The `-u` flag produces a "unified" diff. Lines starting with `-` are in the
 original but missing in your file; lines starting with `+` are your custom
 changes. Focus on the `+` lines. These are the settings you'll probably want to
-put in your `99-custom.cnf` file.
+put in your `99-local.cnf` file.
 
-Extract the custom settings identified by the + lines and move them to a new
-file like `/etc/mysql/mariadb.conf.d/99-custom.cnf`. In the case of MariaDB and
+Extract the custom settings identified by the `+` lines and move them to a new
+file like `/etc/mysql/mariadb.conf.d/99-local.cnf`. In the case of MariaDB and
 some other software, make sure you also include the section header (e.g.,
 `[mariadbd]`).
 
 ## Restore Integrity
 
-Once your changes are safely in a `99-custom` or `zz-custom` file, restore the
+Once your changes are safely in a `99-local` or `zz-local` file, restore the
 original default file:
 
 ```bash
@@ -264,17 +264,15 @@ This method makes things easier in many cases. You can run `apt full-upgrade`
 across a hundred servers without a bunch of "keep or replace" prompts stalling
 your progress.
 
-Usually, you're forced into a bad trade-off: keep your old config and miss out
-on new vendor defaults, or overwrite it and spend an afternoon manually merging
-your changes back from a `.dpkg-old` file. *The Debian Way* totally fixes this
-by keeping custom config separate.
+If you've modified configuration files provided by a package, you're forced into
+a bad trade-off: keep your old config and miss out on new vendor defaults, or
+overwrite it and spend an afternoon manually merging your changes back from a
+`.dpkg-old` file. The conf.d drop-in pattern totally fixes this by keeping
+custom config separate.
 
-Also, you can use `debsums -ce` as a security tool. If it shows a change, you
-know something is up.
-
-Finally, your custom configurations are isolated. If you move to a new server,
-you just copy your `99-custom` files rather than hunting for edits inside
-5,000-line config files.
+Additionally, your custom configurations are isolated. If you move to a new
+server, you just copy your `99-local` files rather than hunting for edits
+inside 5,000-line config files.
 
 Cover photo by [Pawel Czerwinski](https://unsplash.com/@pawel_czerwinski) on
 [Unsplash](https://unsplash.com/photos/a-computer-generated-image-of-a-group-of-swirls-TJz6rvEtMjs).
