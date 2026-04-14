@@ -1,0 +1,188 @@
+---
+title: "When to Use Flexbox Over CSS Grid"
+datePublished: 2026-03-31T06:00:00-05:00
+cover: ./images/flexbox-vs-css-grid.webp
+tags:
+  - css
+  - web-development
+---
+
+Both Flexbox and CSS Grid are powerful layout tools built into modern CSS. They
+are often discussed as if you must pick one or the other, but in practice they
+complement each other well. Understanding the strengths of each will help you
+understand which to use for different scenarios, and even when you might want to
+use both at the same time.
+
+## The Purpose of Each
+
+Flexbox was designed for one-dimensional layout. It handles elements in a single
+direction at a time (either row or column). It takes a sequence of items,
+(horizontal or vertical), and distributes them dynamically along that single
+axis.
+
+CSS Grid, on the other hand, was built for a two-dimensional layout. It controls
+both rows and columns. With Grid, you define a framework of tracks, giving you
+the power to align elements horizontally and vertically at the same time.
+
+## When to Use Flexbox
+
+If your layout flows strictly in one direction, Flexbox is the way to go.
+
+Flexbox lets items shrink or grow based on their actual content. It distributes
+spacing dynamically, even when handling an unknown number of items.
+
+It's great for small, reusable components. Elements like cards, tags, and form
+controls rely on it to handle their internal layout.
+
+```html
+<nav class="navbar">
+  <div class="logo">MyLogo</div>
+  <ul class="nav-links">
+    <li>Home</li>
+    <li>Pricing</li>
+    <li>Contact</li>
+  </ul>
+</nav>
+```
+
+```css
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+```
+
+![A wirefram diagram of a navbar UI. A rectangle with a red outline labeled
+".navbar". Nested inside are two elements side-by-side. The first is a green
+rectangle labeled ".logo". Inside is the text "MyLogo". The other is a green
+rectangle labeled ".nav-links". Inside are three blue rectangles labeled "li".
+The text inside them reads "Home", "Pricing", and
+"Contact".](./images/flexbox-nav-links.webp)
+
+## When to Use CSS Grid
+
+CSS Grid is the best choice for two-dimensional layouts. You can use it for
+building page-level shells. Think mapping out headers, sidebars, and
+footers across both rows and columns.
+
+Grid is perfect when you need container-driven sizing. It keeps column widths
+and row heights consistent, ensuring elements line up regardless of the size of
+their content.
+
+Grid also has a powerful placement model. You can do things like intentionally
+overlapping elements by assigning them to the same grid cells, and more.
+
+```html
+<div class="page-skeleton">
+  <header>Header</header>
+  <aside>Sidebar</aside>
+  <main>Main Content</main>
+  <footer>Footer</footer>
+</div>
+```
+
+```css
+.page-skeleton {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "footer  footer";
+  gap: 20px;
+}
+
+header { grid-area: header; }
+aside  { grid-area: sidebar; }
+main   { grid-area: main; }
+footer { grid-area: footer; }
+```
+
+![A wireframe diagram of a page UI. At the top is a red rectangle labeled
+"Header". Below that are two side-by-side red rectangles labeled "Sidebar" and
+"Main Content". Below them is a final red rectange labeled
+"Footer".](./images/css-grid-header-sidebar-main-footer.webp)
+
+## When to Use Both
+
+You don't have to choose between them. A common pattern is using Grid for the
+macro layout and Flexbox for the micro layout. Grid builds the overall page
+structure, and Flexbox sits inside the grid cells to format the individual
+components.
+
+Think about a product gallery, for example. Grid handles the two-dimensional
+tiling of the cards across the page. Inside each card, Flexbox takes over to
+vertically distribute the image, text, and buttons.
+
+```html
+<section class="product-gallery">
+  
+  <article class="product-card">
+    <img src="product.jpg" alt="Product Image">
+    <h3>Product Name</h3>
+    <p>Product description goes here.</p>
+    <div class="buttons">
+      <button>Button</button>
+      <button>Button</button>
+    </div>
+  </article>
+
+  <!-- Imagine 8 more cards here to make the 3x3 grid -->
+
+</section>
+```
+
+```css
+
+/* CSS Grid: Page Structure */
+.product-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* Flexbox: Card Content */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.product-card .buttons {
+  margin-top: auto; 
+}
+```
+
+![A digital illustration of a product gallery. The top section is labeled CSS
+Grid / Page Structure. There is a 3 by 3 grid of cards. The rows and columns are
+separated by dashed orange lines. An arrow points down to another section. This
+second section is labeled Flexbox / Card Content. It is a breakdown of one of
+the cards from the top. There are elements for image, product name, product
+description, and buttons - all in a vertical structure. Each element is
+separated by a dashed orange line.](./images/css-grid-plus-flexbox.webp)
+
+## Quick Decision Checklist
+
+1. One direction or two? If you only need to control layout in one direction,
+use Flexbox. If you need both rows and columns, use Grid.
+
+2. Content or container? If sizing is driven by the content shrinking and
+growing, use Flexbox. If it is driven by the container, use Grid.
+
+3. Component or skeleton? If you are building a small component, use Flexbox. If
+you are mapping out a page skeleton, use Grid.
+
+Neither tool is better than the other. They solve different problems. Flexbox
+excels at one-dimensional, content-driven layouts, while Grid excels at
+two-dimensional, container-driven layouts. You can and should use both, in the
+right application, for more maintainable CSS.
+
+Cover photo by [Pawel Czerwinski](https://unsplash.com/@pawel_czerwinski) on
+[Unsplash](https://unsplash.com/photos/abstract-composition-of-soft-white-curving-forms-rC1ImGHb3Bg).
