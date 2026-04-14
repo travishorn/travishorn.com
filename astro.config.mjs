@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
+import netlify from "@astrojs/netlify";
 import { redirectMapping } from "./src/redirects.js";
 
 // https://astro.build/config
@@ -11,7 +12,6 @@ export default defineConfig({
   },
 
   site: "https://travishorn.com",
-
   integrations: [mdx(), sitemap()],
 
   build: {
@@ -25,4 +25,6 @@ export default defineConfig({
   },
 
   redirects: redirectMapping,
+
+  adapter: netlify(),
 });
