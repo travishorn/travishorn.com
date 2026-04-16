@@ -273,7 +273,7 @@ const oldPosts = [
 // Create a mapping of old URLs to new URLs.
 /** @type {Record<string, string>} */
 const oldPostMapping = Object.fromEntries(
-  oldPosts.map((post) => [`/${post.slug}-${post.id}`, `/${post.slug}`]),
+  oldPosts.map((post) => [`/${post.slug}-${post.id}`, `/${post.slug}/`]),
 );
 
 // Merge regular redirects with old post redirects.
