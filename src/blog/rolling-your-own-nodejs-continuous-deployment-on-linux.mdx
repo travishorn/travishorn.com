@@ -37,7 +37,7 @@ securely run the application.
 1. Create a `git` user:
 
    ```bash
-   sudo useradd -m -s /usr/bin/git-shell git
+   sudo useradd --system --shell /usr/bin/git-shell git
    ```
 
 2. Create a `myapp` user:
@@ -222,8 +222,23 @@ This is the repository you will push to from your development machine.
 
    ```bash
    #!/bin/bash
-   git archive main | sudo -u myapp /var/www/myapp/bin/deploy.sh
+   set -euo pipefail
+
+   APP_USER="myapp"
+   DEPLOY_SCRIPT="/var/www/myapp/bin/deploy.sh"
+   DEFAULT_REF=$(git symbolic-ref HEAD)
+
+   while read oldrev newrev refname
+   do
+      if [ "$refname" == "$DEFAULT_REF" ]; then
+         git archive "$newrev" | sudo -u "$APP_USER" "$DEPLOY_SCRIPT"
+      fi
+   done
    ```
+
+   Basically, when the default branch (e.g., `main`) receives a push, the hook
+   compresses the code into a tar archive and passes it to the deployment script
+   as the app user.
 
 6. Make the hook executable:
 
@@ -342,13 +357,13 @@ Now, go to your development machine where your application's source code lives.
    domain):
 
    ```bash
-   git remote add production git@YOUR_SERVER_IP:/srv/git/myapp
+   git remote add origin git@YOUR_SERVER_IP:/srv/git/myapp
    ```
 
 3. Push the code to deploy!
 
    ```bash
-   git push production main
+   git push origin main
    ```
 
 If everything was set up correctly, you will see the output of the `deploy.sh`
@@ -366,6 +381,16 @@ a few things happen:
   * updates the `current` symlink to point to the new release,
   * restarts the `myapp` systemd service, and
   * deletes old releases
+
+![A flowchart diagram showing the developer initiating deployment with git push
+origin main, code pushed to server (bare Git repo) over SSH as git user,
+lands in /srv/git/myapp, hook triggered - packages code with git archive main |
+deploy.sh, deployment script runs as myapp user to create release dir in
+/var/www/myapp/releases.., extracts code with tar -mx .. myapp/releases..,
+installs dependencies with npm ci, swaps symlink with ln releases.// current,
+restarts the app with systemctl restart myapp, cleans old releases with ls |
+tail | xargs rm .., and systemd runs updated app because
+WorkingDirectory=/var/www/myapp/current](./images/continuous-deployment-diagram.webp)
 
 Your app is now live!
 
