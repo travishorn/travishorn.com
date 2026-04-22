@@ -15,8 +15,9 @@ tags:
 ---
 
 This guide helps you make sure your Debian server stays in a high integrity
-state. By following the conf.d drop-in pattern, you will never see a
-`.dpkg-dist` or `.dpkg-old` prompt during a distro upgrade again.
+state by following the conf.d drop-in pattern. With this method of configuring
+your server, you will never see a `.dpkg-dist` or `.dpkg-old` prompt during a
+distro upgrade again.
 
 Conventional configuration management involves editing files owned by package
 maintainers. This creates conflicts during upgrades, where `dpkg` halts the
@@ -29,6 +30,12 @@ Instead of modifying vendor-provided files, you use drop-in directories (like
 `conf.d/`) or service overrides to load *your* settings last. This way, `apt`
 can update the underlying infrastructure silently, while your custom logic
 remains isolated and portable.
+
+This guide is split into two sections. If you're starting with a completely
+fresh server, continue reading the **Starting Fresh** section directly below. If
+you already have a configured server and you want to transition to the conf.d
+drop-in pattern, skip to the **Fixing an Already Modified Server** section
+further below.
 
 # Starting Fresh
 
@@ -48,9 +55,9 @@ software on most Linux machines.
 MariaDB uses "modular drop-ins". It reads the files inside
 `/etc/mysql/mariadb.conf.d/` in alphabetical order. 
 
-Do **not** touch `50-server.cnf` or any other `.cnf` file provided by the
-package. Instead, create a new file: `/etc/mysql/mariadb.conf.d/99-local.cnf`.
-Here's an example:
+Contrary to what you might read in many online guides, do **not** touch
+`50-server.cnf` or any other `.cnf` file provided by the package. Instead,
+create a new file: `/etc/mysql/mariadb.conf.d/99-local.cnf`. Here's an example:
 
 ```ini
 [mariadbd]
@@ -184,6 +191,10 @@ For example, the output might look like this:
 /etc/mysql/mariadb.conf.d/50-server.cnf
 /etc/apache2/apache2.conf
 ```
+
+This output means that `50-server.cnf` and `apache2.conf` have been modified
+from their original version. Any changes must be pulled out into a new, custom
+configuration file, and the original must be restored.
 
 ## Extract the Original Defaults
 
