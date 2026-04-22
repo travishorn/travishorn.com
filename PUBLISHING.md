@@ -3,7 +3,7 @@
 Create a new draft branch:
 
 ```bash
-git switch master
+git switch main
 git pull
 git switch -c draft/my-new-post
 ```
@@ -28,16 +28,16 @@ On GitHub...
 Sync the local repo with the remote.
 
 ```bash
-git switch master
-git pull --prune origin master
+git switch main
+git pull --prune origin main
 git branch -D draft/my-new-post
 ```
 
 ## Notes
 
-If `master` changes while you're drafting, you can merge those changes into the draft:
+If `main` changes while you're drafting, you can merge those changes into the draft:
 
 ```bash
 git switch draft/my-new-post
-git merge master
+git merge main
 ```

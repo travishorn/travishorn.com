@@ -36,15 +36,15 @@ a `If-None-Match` (sending that hash back). If the file's current hash matches
 the one the client has, return **304**.
 
 Usually, browsers send both. However, HTTP specifications and server
-configurations often prioritize the **ETag** because it is considered a more
-accurate validator than a simple timestamp.
+configurations usually prioritize the **ETag** because it is a more accurate
+validator than a simple timestamp.
 
 ## The Investigation
 
 First, I discovered that Apache prioritizes `If-None-Match` over
 `If-Modified-Since`. My request headers did indeed include `If-None-Match`, and
 the response headers included an `ETag`. Even though the values seemed to match,
-I was still getting a **200 OK**.
+I was *still* getting a **200 OK** instead of the expected **304 Not Modified**.
 
 Then I remembered I had enabled compression (mod_deflate) using
 `AddOutputFilterByType`.
@@ -74,32 +74,26 @@ match the server's calculated ETag.
 
 ## The Solution
 
-The solution is to simply disable ETags when compression is active, forcing the
-browser and server to rely on the `If-Modified-Since` header instead.
+The solution is to tell mod_deflate not to alter the ETag.
 
-Inside your `<IfModule mod_deflate.c>` block, add `FileETag None`:
+Inside your `<IfModule mod_deflate.c>` block, add `DeflateAlterETag NoChange`:
 
 ```apache
 <IfModule mod_deflate.c>
     # ... your compression settings ...
     AddOutputFilterByType DEFLATE text/plain text/html ...
 
-    # Disable ETags so the server falls back to Last-Modified
-    FileETag None
+    # Do not alter the ETag
+    DeflateAlterETag NoChange
 </IfModule>
 ```
 
-With ETags removed, the client and server successfully fall back to
-`If-Modified-Since` and `Last-Modified`. Since those timestamps match, Apache
-finally respects the cache and returns the elusive **304 Not Modified**.
+Since the ETag remains the same regardless of compression, Apache finally
+respects the cache and returns the elusive **304 Not Modified**.
 
-## Removing ETags is Usually Fine
+## Caveat
 
-Disabling a standard HTTP feature like ETags might feel like a drastic measure,
-but for most static sites, it is actually a safe and often recommended
-optimization.
-
-The only real downside is that `Last-Modified` has a one-second resolution. It
-works by checking the file's timestamp. Unless you are modifying the exact same
-file multiple times within a single second, the timestamp precision is more than
-enough for browsers to detect changes.
+The `DeflateAlterETag` directive is available in Apache 2.4.58 and later. If
+you're running an older version, you will need to upgrade Apache or seek another
+solution (Hint: If you disable ETags completely, Apache and browsers fall back
+to time-based validation).
