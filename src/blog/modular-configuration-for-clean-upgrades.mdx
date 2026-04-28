@@ -1,0 +1,289 @@
+---
+title: Modular Configuration for Clean Upgrades
+datePublished: 2026-04-21T06:00:00-05:00
+cover: ./images/the-conf.d-drop-in-pattern.webp
+tags:
+  - automation
+  - backend-systems
+  - databases
+  - deployment
+  - linux
+  - security
+  - server-management
+  - terminal
+  - web-development
+---
+
+This guide helps you make sure your Debian server stays in a high integrity
+state by following the conf.d drop-in pattern. With this method of configuring
+your server, you will never see a `.dpkg-dist` or `.dpkg-old` prompt during a
+distro upgrade again.
+
+Conventional configuration management involves editing files owned by package
+maintainers. This creates conflicts during upgrades, where `dpkg` halts the
+process to ask if you want to keep your local changes or adopt the maintainer's
+new version. This manual intervention kills automation and leaves your system
+in a "dirty" state.
+
+The **conf.d drop-in pattern** solves this by using modular configuration.
+Instead of modifying vendor-provided files, you use drop-in directories (like
+`conf.d/`) or service overrides to load *your* settings last. This way, `apt`
+can update the underlying infrastructure silently, while your custom logic
+remains isolated and portable.
+
+This guide is split into two sections. If you're starting with a completely
+fresh server, continue reading the **Starting Fresh** section directly below. If
+you already have a configured server and you want to transition to the conf.d
+drop-in pattern, skip to the **Fixing an Already Modified Server** section
+further below.
+
+# Starting Fresh
+
+The core rules is: **never edit a file provided by a package**.
+
+Here's how to implement the "never edit" rule across common services. Your
+custom configuration will live alongside the defaults rather than overwriting
+them.
+
+In my case, I'm managing a server in which I must configure MariaDB, Apache, and
+nftables. Here's how to implement the conf.d drop-in pattern for each of those.
+If use something else, don't worry; these principles apply to any configurable
+software on most Linux machines.
+
+## MariaDB
+
+MariaDB uses "modular drop-ins". It reads the files inside
+`/etc/mysql/mariadb.conf.d/` in alphabetical order. 
+
+Contrary to what you might read in many online guides, do **not** touch
+`50-server.cnf` or any other `.cnf` file provided by the package. Instead,
+create a new file: `/etc/mysql/mariadb.conf.d/99-local.cnf`. Here's an example:
+
+```ini
+[mariadbd]
+bind-address = 0.0.0.0
+max_connections = 500
+```
+
+Since `99-local.cnf` appears alphabetically *after* the default configuration
+files like `50-server.cnf`, the values in your custom file will be used.
+
+To put the changes into effect, restart the MariaDB service:
+
+```bash
+sudo systemctl restart mariadb
+```
+
+## Apache
+
+Apache uses an "available/enabled" pattern, plus alphabetical sorting. Because
+defaults like `security.conf` start with "s", use a `zz-` prefix to ensure your
+overrides load last.
+
+Create a custom config at `/etc/apache2/conf-available/zz-local.conf`. Here's
+an example:
+
+```
+ServerTokens Prod
+ServerSignature Off
+```
+
+Once that's written, enable it:
+
+```bash
+sudo a2enconf zz-local
+```
+
+Before applying, you can check the synax:
+
+```bash
+sudo apache2ctl configtest
+```
+
+And then apply the changes:
+
+```bash
+sudo systemctl reload apache2
+```
+
+## nftables
+
+nftables doesn't use a drop-in configuration setup. Instead you can create a
+custom configuration file and tell systemd to use it when starting nftables.
+
+Create a custom configuration file at `/etc/nftables.local`. Here's an example:
+
+```
+#!/usr/sbin/nft -f
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority 0; policy drop;
+        ct state established,related accept
+        iifname "lo" accept
+        tcp dport { 22, 80, 443 } accept
+    }
+}
+```
+
+Once that's written, edit the systemd service:
+
+```bash
+sudo systemctl edit nftables
+```
+Add these lines:
+
+```ini
+[Service]
+ExecStart=
+ExecStart=/usr/sbin/nft -f /etc/nftables.local
+```
+
+In systemd, you must provide an empty `ExecStart=` line before the new one. This
+clears the existing command defined by the package's service file, preventing
+systemd from trying to run both (which would fail). The second line then points
+the service to your custom file.
+
+Check the configuration:
+
+```bash
+sudo nft -c -f /etc/nftables.local
+```
+
+And restart the service to apply the changes:
+
+```bash
+sudo systemctl restart nftables
+```
+
+# Fixing an Already Modified Server
+
+If you've already edited the preloaded configuration files, follow this workflow
+to sanitize the server without losing your settings.
+
+## Audit with `debsums`
+
+You can identify exactly which files are dirty (modified or missing) with
+`debsums`. It's an audit tool that compares your local files against the
+original package checksums. It identifies exactly which files have been modified
+or corrupted since they were installed.
+
+Install `debsums`:
+
+```bash
+sudo apt install debsums
+```
+
+Run it:
+
+```bash
+sudo debsums -ce
+```
+
+The `-c` flag filters the output to only show changed files. The `-e` flag
+restricts the search to configuration files. If this returns output, you've
+found exactly which files are dirty and require action.
+
+For example, the output might look like this:
+
+```
+/etc/mysql/mariadb.conf.d/50-server.cnf
+/etc/apache2/apache2.conf
+```
+
+This output means that `50-server.cnf` and `apache2.conf` have been modified
+from their original version. Any changes must be pulled out into a new, custom
+configuration file, and the original must be restored.
+
+## Extract the Original Defaults
+
+Don't guess what the original looked like. Get the exact version from the Debian
+repository.
+
+Create a new temporary directory:
+
+```bash
+mkdir /tmp/mariadb-orig
+```
+
+Change into that directory:
+
+```bash
+cd /tmp/mariadb-orig
+```
+
+Download a fresh copy of the package:
+
+```bash
+apt download mariadb-server
+```
+
+Next, use `dpkg-deb` to extract the package contents into your current
+directory:
+
+```bash
+dpkg-deb -x *.deb .
+```
+
+## Diff and Isolate
+
+Compare the extracted original to your live modified file to find your custom
+changes.
+
+```bash
+diff -u /tmp/mariadb-orig/etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+The `-u` flag produces a "unified" diff. Lines starting with `-` are in the
+original but missing in your file; lines starting with `+` are your custom
+changes. Focus on the `+` lines. These are the settings you'll probably want to
+put in your `99-local.cnf` file.
+
+Extract the custom settings identified by the `+` lines and move them to a new
+file like `/etc/mysql/mariadb.conf.d/99-local.cnf`. In the case of MariaDB and
+some other software, make sure you also include the section header (e.g.,
+`[mariadbd]`).
+
+## Restore Integrity
+
+Once your changes are safely in a `99-local` or `zz-local` file, restore the
+original default file:
+
+```bash
+sudo cp /tmp/mariadb-orig/etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+## Restart the Service
+
+If the package you're working on provides a way to check configuration before
+restarting the service, go ahead and do that.
+
+Then, restart the service:
+
+```bash
+sudo systemctl restart mariadb
+```
+
+## Final Health Check
+
+Run `sudo debsums -ce` again. If it returns **nothing**, you're done!
+
+# Why Sysadmins Do This
+
+This method makes things easier in many cases. You can run `apt full-upgrade`
+across a hundred servers without a bunch of "keep or replace" prompts stalling
+your progress.
+
+If you've modified configuration files provided by a package, you're forced into
+a bad trade-off: keep your old config and miss out on new vendor defaults, or
+overwrite it and spend an afternoon manually merging your changes back from a
+`.dpkg-old` file. The conf.d drop-in pattern totally fixes this by keeping
+custom config separate.
+
+Additionally, your custom configurations are isolated. If you move to a new
+server, you just copy your `99-local` files rather than hunting for edits
+inside 5,000-line config files.
+
+Cover photo by [Pawel Czerwinski](https://unsplash.com/@pawel_czerwinski) on
+[Unsplash](https://unsplash.com/photos/a-computer-generated-image-of-a-group-of-swirls-TJz6rvEtMjs).
