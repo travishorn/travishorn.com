@@ -1,0 +1,460 @@
+---
+title: "Finding Things Fast on the Command Line"
+datePublished: 2026-04-28T06:00:00-05:00
+cover: ./images/a-sysadmins-eyes-and-ears.webp
+tags:
+  - linux
+  - terminal
+  - server-management
+  - backend-systems
+  - software-engineering
+---
+
+I manage a multi-purpose Linux server. It hosts bare Git repositories, MariaDB
+databases, automated ETL scripts, and web applications. When a deployment fails,
+a database locks up, or a disk fills up, I need to move faster than `ls` and
+`cd` allow. 
+
+`find` and `grep` are my eyes and ears. They're an essential part of a
+sysadmin's toolkit for navigating file systems, auditing code, and
+troubleshooting logs.
+
+## `find` is the Search Engine
+
+We need a way to navigate our directory structures without `ls`ing every single
+directory. That's where `find` comes in.
+
+The basic command structure is:
+
+```bash
+find [path] [expression]
+```
+
+Some common flags you might use include:
+
+* `-name` searches by filename (case-sensitive).
+* `-iname` searches by filename (case-insensitive).
+* `-type f` looks for **files** only.
+* `-type d` looks for **directories** only.
+* `-not` inverts the search (matches everything *except* the test).
+* `-path` matches an entire path, not just the base filename.
+
+### Scenario 1
+
+Say we want to find all `post-receive` hooks across all our git repos. I know my
+repos are in `/home/git`, but I don't want to dig through every `.git/hooks`
+folder looking for them.
+
+```bash
+find /home/git -name "post-receive"
+```
+
+The output looks like this:
+
+```text
+/home/git/etl/hooks/post-receive
+/home/git/app/hooks/post-receive
+```
+
+Note: If you get "permission denied" errors, you may need elevated privileges.
+Try prefixing commands with `sudo`.
+
+### Scenario 2
+
+Say we want to find all Python scripts in our ETL folder. We're using a virtual
+environment stored in the `venv` directory, so we want to ignore those files.
+
+```bash
+find /srv/etl -type f -name "*.py" -not -path "*/venv/*"
+```
+
+The output looks like this:
+
+```text
+/srv/etl/main.py
+/srv/etl/utils/task_base.py
+/srv/etl/utils/logger.py
+/srv/etl/utils/config.py
+/srv/etl/utils/database.py
+```
+
+### Scenario 3
+
+Sometimes I want to find a directory, but I only remember *part* of the name. 
+
+```bash
+find /var/www/html -type d -iname "*comp*"
+```
+
+The output looks like this:
+
+```text
+/var/www/html/components
+```
+
+## `grep` is Like X-Ray Vision
+
+Now that you can find the right *files*, you need to find the *content* inside
+them. That's what `grep` was made for.
+
+The basic syntax is:
+
+```bash
+grep [options] "search_string" [file_path]
+```
+
+Some common flags include:
+
+* `-r` does a **recursive** search through all files in a directory.
+* `-i` ignores case.
+* `-n` adds **line numbers** so you can see exactly where the match is.
+* `-l` **lists** files only, showing just the filenames containing the match.
+  Perfect for scripting.
+* `--exclude-dir` skips entire directories.
+
+### Scenario 4
+
+Say we want to find what indexes are being created in our ETL scripts. We need
+to know which Python scripts contain `ADD INDEX`:
+
+```bash
+grep -rn "ADD INDEX" /srv/etl --exclude-dir=venv
+```
+
+The output might look like this:
+
+```text
+/srv/etl/tasks/01_users.py:53:    ADD INDEX idx_users_name (name),
+/srv/etl/tasks/02_sessions.py:50: ADD INDEX idx_sessions_expires_at (expires_at),
+/srv/etl/tasks/03_reports.py:55:  ADD INDEX idx_reports_section (section);
+```
+
+### Scenario 5
+
+Say we want to find a specific PHP configuration setting. We can check our web
+app for where `DB_PORT` is defined.
+
+```bash
+grep -rn "DB_PORT" /var/www/html/config
+```
+
+The output looks like this:
+
+```text
+/var/www/html/config/development/database.php:9:define('DB_PORT', 3306);
+/var/www/html/config/production/database.php:9:define('DB_PORT', 3306);
+```
+
+### Scenario 6
+
+Say we want to search our ETL logs for errors. Since we use Systemd for this
+process, our log files are managed by `journalctl`. We can pipe that output
+directly into `grep`:
+
+```bash
+journalctl -u etl.service | grep -i "error"
+```
+
+We might get output like this:
+
+```text
+Apr 13 07:55:00 data python[535500]: 2026-04-13 07:55:00,000 - ERROR - Function task 'Reports' failed: (pymysql.err.OperationalError) (1130, "Host '127.0.0.1' is not allowed to connect to this MariaDB server")
+Apr 13 07:55:00 data python[535500]: (Background on this error at: https://sqlalche.me/e/20/e3q8)
+Apr 13 07:55:00 data python[535500]: 2026-04-13 07:55:00,000 - ERROR - Task 'Reports' failed.
+```
+
+From there, we can investigate why the task failed. In this case, 127.0.0.1
+isn't allowed to connect. Looks like a configuration issue. We need to update
+MariaDB to allow local connections.
+
+Basically:
+
+* Use `find` when you know the **name**, **date**, or **size** of the file.
+* Use `grep` when you know the **content inside** the file.
+
+Let's dig a little deeper.
+
+## Using `find` for Time & Size
+
+Let's move beyond file names and content. Now, let's look at file metadata.
+
+The `-size` flag uses a specific syntax:
+
+* `+` (more than) or `-` (less than).
+* `k` (kilobytes), `M` (megabytes), `G` (gigabytes).
+
+### Scenario 7
+
+Say our `/var/log` directory is getting full. We can find files over 500MB:
+
+```bash
+find /var/log -type f -size +500M
+```
+
+The output points us to the culprits:
+
+```text
+/var/log/apache2/other_vhosts_access.log
+/var/log/mysql/mariadb.log
+```
+
+Now we know exactly which services to investigate. Why are they logging so much?
+What is in the logs? Does `logrotate` need to be reconfigured to purge old data?
+
+### Scenario 8
+
+Sometimes failed ETL runs create empty `.csv` or `.log` files. We can easily
+spot files that are exactly 0 bytes:
+
+```bash
+find /srv/etl -type f -size 0
+```
+
+We might see output like this:
+
+```text
+/srv/etl/output/items.csv
+/srv/etl/output/reports.csv
+```
+
+If we expected data in these files, we know a job failed somewhere.
+
+## Searching by Time
+
+Linux tracks the time each file was last modified.
+
+* `-mtime` allows you to describe the time in **days**.
+* `-mmin` allows you to describe the time in **minutes**.
+
+Use `+` for "older than" and `-` for "newer than."
+
+### Scenario 9
+
+Say we want to see which Git repositories had activity in the last 24 hours.
+Since Git updates the `objects` and `refs` directories when someone pushes, we
+can check for recent modifications in `/home/git`.
+
+```bash
+find /home/git -mtime -1
+```
+
+You might see output like this:
+
+```text
+/home/git
+/home/git/etl
+/home/git/etl/refs/heads
+/home/git/etl/refs/heads/main
+/home/git/etl/objects
+/home/git/etl/HEAD
+/home/git/etl/logs/HEAD
+```
+
+With that, we know the Git repository holding the ETL script code was modified
+recently.
+
+### Scenario 10
+
+Say our Python ETL script runs every 30 minutes, and something went wrong on the
+last run. We can find files that were created or changed in the last 60 minutes.
+
+```bash
+find /srv/etl -type f -mmin -60
+```
+
+A file is shown:
+
+```text
+/srv/etl/tasks/01_users.py
+```
+
+Something changed in that specific file, which most likely introduced the bug.
+
+### Scenario 11
+
+You can chain size and time flags together to be highly specific. Say we want to
+identify large logs modified recently. We can find files larger than 100MB that
+were updated in the last 2 days:
+
+```bash
+find /var/log -type f -size +100M -mtime -2
+```
+
+## More File Info
+
+By default, `find` just lists paths. To see the actual sizes, permissions, and
+dates of what you found, use `-ls`.
+
+```bash
+find /srv/etl -name "*.py" -mtime -7 -ls
+```
+
+The output will look similar to a standard `ls -l` command:
+
+```text
+ 10485875 8 -rwxr-xr-x 1 etl etl 4687 Apr 13 07:55 /srv/etl/main.py
+ 10485924 4 -rwxr-xr-x 1 etl etl 2708 Apr 13 07:55 /srv/etl/utils/task_base.py
+ 10485923 4 -rwxr-xr-x 1 etl etl 1054 Apr 13 07:55 /srv/etl/utils/logger.py
+```
+
+## Context & Patterns in `grep`
+
+Now that we can isolate files based on age and size, let's get back into the
+**content** of those files. Sometimes seeing the exact line that matched isn't
+enough; you need to see the lines around it to understand why an error happened.
+
+Use the `-C [number]` flag for this. You specify a number, and `grep` will
+include that many lines before and after the match for context.
+
+### Scenario 12
+
+For example, if our ETL service failed, we can search the logs for "failed" and
+view the 2 lines before and after the crash:
+
+```bash
+journalctl -u etl.service | grep -C 2 "failed"
+```
+
+You might see output like this:
+
+```text
+Apr 13 07:55:00 data python[535500]: (Background on this error at: https://sqlalche.me/e/20/e3q8)
+Apr 13 07:55:00 data python[535500]: 2026-04-13 07:55:00,000 - WARNING - Task 'Jobs' completed with warnings
+Apr 13 07:55:00 data python[535500]: 2026-04-13 07:55:00,000 - ERROR - Task 'Jobs' failed.
+Apr 13 07:55:00 data python[535500]: 2026-04-13 07:55:00,000 - INFO - Completed: 0/20 tasks successful
+Apr 13 07:55:00 data systemd[1]: etl.service: Main process exited, code=exited, status=1/FAILURE
+```
+
+This gives us immediate context. We see the failure **and** that exactly 0 out
+of 20 tasks succeeded. Some bigger issue is occurring here.
+
+## Chaining `find` and `grep`
+
+Now we can really become a surgeon. Only finding files can be incomplete.
+Grepping everything can be slow and noisy. Let's combine them: use `find` to
+select the files, and `grep` to search inside them.
+
+The `xargs` command takes the output of one command and turns it into arguments
+for another.
+
+The syntax is:
+
+```bash
+find [path] [criteria] -print0 | xargs -0 grep "pattern"
+```
+
+Note: The `-print0` and `-0` flags are crucial. They use a "null character" to
+separate filenames, which prevents the command from breaking if a filename has a
+space in it.
+
+### Scenario 13
+
+Say we want to find `import pandas` only in Python files modified in the last 7
+days. We don't want to search our entire ETL history, just recent work. We also
+want to ignore the `venv` directory.
+
+```bash
+find /srv/etl -name "*.py" -not -path "*/venv/*" -mtime -7 -print0 | xargs -0 grep "import pandas"
+```
+
+The output might look like this:
+
+```text
+/srv/etl/tasks/05_sections.py:import pandas as pd
+/srv/etl/tasks/06_periods.py:import pandas as pd
+```
+
+### Scenario 14
+
+Say a PHP application is throwing a "Permission Denied" error, and we need to
+find which file is trying to write to `/var/tmp/data`. We only want to search
+`.php` files that were changed recently (since the error started).
+
+```bash
+find /var/www/html -name "*.php" -mtime -2 -print0 | xargs -0 grep "/var/tmp/data"
+```
+
+If the output looks like this:
+
+```text
+/var/www/html/create_filter.php:file_put_contents('/var/tmp/data', $data)
+```
+
+Now we know that `create_filter.php` is the culprit, and we know exactly which
+line is causing the error.
+
+Note: `grep -r` is great for simple recursive searches, but it cannot filter by
+size, modification date, or permissions. Using `find` and `grep` together gives
+you the most power and flexibility.
+
+## Lightning Round: More Scenarios
+
+**Problem:** Whenever I push to my repo, it triggers a staging build, but I
+don't know which repo has that hook or where it's sending the data.
+
+**Solution:** Search all post-receive hooks for a specific deployment URL.
+
+```bash
+sudo find /home/git -name "post-receive" -exec grep -H "staging.example.com" {} +
+```
+
+**Problem:** My Python ETL script is managed by a systemd timer. The database
+has no new data from this morning, but the systemd service says "Active." I
+suspect a silent Python exception occurred.
+
+**Solution:** Find logs in `/srv/etl` modified in the last 8 hours containing
+"Error" or "Exception".
+
+```bash
+find /srv/etl -mmin -480 -not -path "*/venv/*" -print0 | xargs -0 grep -Ei "error|exception"
+```
+
+**Problem:** The MariaDB service restarted unexpectedly. I need to check the
+error logs, but `/var/log/mysql/` has dozens of old gzipped files alongside
+large text files.
+
+**Solution:** Find the error log modified most recently and search for common
+problem language.
+
+```bash
+find /var/log/mysql -type f -mtime -1 -print0 | xargs -0 grep -i "deadlock"
+```
+
+If the logs are compressed, use `zgrep` instead of `grep`. This requires a
+different syntax:
+
+```bash
+find /var/log/mysql -name "*.gz" -mtime -1 -exec zgrep "deadlock" {} +
+```
+
+**Problem:** I need to ensure none of my PHP applications are using the
+dangerous `eval()` function, which can lead to remote code execution.
+
+**Solution:** Find every `.php` file in `/var/www/html` and show the line where
+`eval()` appears, along with 2 lines of context.
+
+```bash
+grep -rnC 2 "eval(" /var/www/html --include="*.php" --exclude-dir=vendor
+```
+
+**Problem:** My server is at 99% disk usage. I suspect the ETL script or MariaDB
+dumped a massive temporary file somewhere.
+
+**Solution:** Find any file larger than 500MB, anywhere on the system, and show
+its size and last modified date.
+
+```bash
+find / -xdev -type f -size +500M -ls
+```
+Note: `-xdev` is important here. It tells `find` to stay on the current
+filesystem and not dive into system-level virtual folders or mounted network
+drives.
+
+## Query the Filesystem like a Database
+
+As you continue to manage your server, remember the core workflow: use `find` to
+isolate the "where" and `grep` to investigate the "what". Together, they turn a
+complex server into a fully searchable workspace.
+
+Cover photo by [Matt Str](https://unsplash.com/@matt039_yt) on
+[Unsplash](https://unsplash.com/photos/abstract-blue-topographic-map-with-glowing-lines-L5BTvO8eEyQ).
