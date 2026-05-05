@@ -12,15 +12,16 @@ tags:
 ---
 
 You don't need a bloated, expensive CI/CD platform to deploy your Node.js apps.
-You can roll your own "push-to-deploy" pipeline directly on your VPS. It's
-lightweight, strictly adheres to the principle of least privilege, and feels
-like magic. Here is your complete, step-by-step guide to building it from
+You can roll your own "push-to-deploy" pipeline directly on your VPS. This
+method is lightweight, strictly adheres to the principle of least privilege, and
+feels like magic. Here is your complete, step-by-step guide to building it from
 scratch.
 
 Note: I wrote [a similar guide to this a few years
 ago](/rolling-your-own-continuous-deployment-with-nodejs-git-pm2-and-linux/),
 but this is the updated setup I'm currently using, which is simpler and more
-secure.
+secure. It takes into account all of the lessons I've learned since I've been
+maintaining CD on my own like this.
 
 This guide assumes...
 
@@ -68,7 +69,7 @@ You need to allow your development machine(s) to authenticate as the `git` user.
 3. Open the authorized keys file in your text editor:
 
    ```bash
-   sudo nano /home/git/.ssh/authorized_keys
+   sudo edit /home/git/.ssh/authorized_keys
    ```
 
 4. Paste your developer public SSH key(s) (e.g., the contents of
@@ -90,7 +91,7 @@ You need to allow your development machine(s) to authenticate as the `git` user.
 
 ## Set Up an Application Directory
 
-We need to create a folder structure where the app will live. You should do
+We need to create a directory structure where the app will live. You should do
 these steps for every app you plan to deploy.
 
 1. Create a directory to hold scripts related to the app:
@@ -108,7 +109,7 @@ these steps for every app you plan to deploy.
 3. Open a new `.env` file in your editor:
 
    ```bash
-   sudo nano /var/www/myapp/.env
+   sudo edit /var/www/myapp/.env
    ```
 
    Paste in your app's environment variables. We'll have Systemd read this and
@@ -134,7 +135,7 @@ swapping a symlink that points to the latest release.
 1. Create the script:
 
    ```bash
-   sudo nano /var/www/myapp/bin/deploy.sh
+   sudo edit /var/www/myapp/bin/deploy.sh
    ```
 
 2. Paste the following code:
@@ -192,7 +193,8 @@ We'll do that with a post-receive Git hook.
 
 ## Configure a Bare Git Repository
 
-This is the repository you will push to from your development machine.
+This is the repository on the server to which you will push from your
+development machine.
 
 1. Create a directory that will store a bare Git repository:
 
@@ -215,7 +217,7 @@ This is the repository you will push to from your development machine.
 4. Create a `post-receive` hook:
 
    ```bash
-   sudo nano /srv/git/myapp/hooks/post-receive
+   sudo edit /srv/git/myapp/hooks/post-receive
    ```
 
 5. Paste this code, which packages the code and pipes it to the deploy script:
@@ -282,13 +284,13 @@ being prompted for a password.
 ## Create a Systemd Service
 
 This tells Debian how to keep your Node.js application running in the
-background. This is simpler but less powerful than managing processes through
+background. This is less powerful but simpler than managing processes through
 something like PM2.
 
 1. Create a service file:
 
    ```bash
-   sudo nano /etc/systemd/system/myapp.service
+   sudo edit /etc/systemd/system/myapp.service
    ```
 
 2. Paste the configuration:
@@ -339,22 +341,21 @@ something like PM2.
    sudo systemctl enable myapp.service
    ```
 
-   Note: Do not start the service yet. It will fail because we haven't set up
-   the `current` symlink. We could do this manually, or we could just have the
-   deployment script do it for us by making our first push.
+   This enables start-on-boot but doesn't start the service immediately. That's
+   good because it would fail right now, until we push our first deployment.
 
 ## Your First Deployment!
 
 Now, go to your development machine where your application's source code lives.
 
-1. Navigate to your local project folder:
+1. Navigate to your local project directory:
 
    ```bash
    cd ~/myapp
    ```
 
 2. Add the remote server (replace `YOUR_SERVER_IP` with the actual IP or
-   domain):
+   hostname):
 
    ```bash
    git remote add origin git@YOUR_SERVER_IP:/srv/git/myapp
