@@ -4,3 +4,29 @@
 @theme {
   --font-mono: "Source Code Pro Variable", "monospace";
 }
+
+/* Tailwind Typography inserts physical backticks before and after inline code
+   elements. Remove them. */
+@utility prose {
+  code {
+    &::before, &::after {
+      content: "";
+    }
+  }
+}
+
+/* To better indicate inline code, add custom styling that emulates the Shiki
+   theme. */
+.prose :not(pre) > code {
+  background-color: #0a0c10;
+  color: #ebf3f1;
+  padding: 0.10rem 0.35rem;
+  border-radius: 0.25rem;
+  font-weight: 400;
+
+  /* Prevent wrapping inline code */
+  display: inline-block;
+  vertical-align: baseline;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
