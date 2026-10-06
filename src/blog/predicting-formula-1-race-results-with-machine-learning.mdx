@@ -1,0 +1,954 @@
+---
+cover: ./images/f1xml.webp
+datePublished: 2026-10-06 06:00:00+00:00
+tags:
+  - api
+  - html
+  - javascript
+  - web-development
+title: Predicting Formula 1 Race Results with Machine Learning
+---
+
+Formula 1 is notoriously chaotic, but most races come down to a few key
+fundamentals. We can use those patterns to train a machine learning model and
+predict how the season unfolds.
+
+## Prerequisites
+
+This experiment requires Python 3.10+. I recommend managing your environment
+with `uv`, which is what we'll use throughout this guide.
+
+## Phase 0: Initialize the Project and Gather Data
+
+Create an empty directory called `f1`:
+
+```bash
+mkdir f1
+```
+
+Change into it:
+
+```bash
+cd f1
+```
+
+Initialize a uv project:
+
+```bash
+uv init
+```
+
+We'll be using a couple Python packages. Install them:
+
+```bash
+uv add pandas scikit-learn
+```
+
+### Acquiring the Source Data
+
+In F1, car pace and starting position explain around 70–80% of a race outcome. For
+a minimal viable model, we only need tabular data at the race/driver level:
+
+- Driver & constructor identities (who is driving for who in which races)
+- Qualifying position and grid position
+- Race results like finishing position, points scored, and status
+  (Finished, Collision, Engine DNF, etc.).
+- A rolling average of the constructors' finish position over recent races.
+- A rolling average of the drivers' finish position over recent races.
+- Drivers' average gap relative to their teammate (helps the model isolate
+  driver skill from car advantage).
+
+I acquired data from the [**Formula 1 World Championship (1950 - 2024)** dataset
+on
+Kaggle](https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020).
+This is a set of CSV files, which I placed in a `data` directory under the `f1`
+directory.
+
+Important files in the dataset are:
+
+- `results.csv`: Driver finishes, points, grid position, fastest laps, and
+  status codes (Engine failure, crash, finished, etc.).
+- `qualifying.csv`: Q1, Q2, Q3 lap times and qualifying rank.
+- `races.csv`: Year, round number, race date, and circuit ID.
+- `drivers.csv` & `constructors.csv`: Names, nationalities, and IDs.
+
+## Phase 1: Set the Era and Do a Sanity Check
+
+Before writing any ML logic, let's decide how far back the model will look.
+Using all the historical data available doesn't make sense because scoring was
+different, cars were different, and drivers were different. The practical choice
+is to focus on the turbo-hybrid era (2014–present), which for our Kaggle dataset
+covers 2014-2024.
+
+With that set, let's write a check just to inspect `results.csv`, `races.csv`,
+and `drivers.csv`. Before we trust any of this data, we want to answer four
+questions:
+
+1. Do the IDs in `results.csv` resolve to their parent tables?
+2. How are non-finishes represented?
+3. Is `grid` clean?
+4. Does every result have a matching qualifying row?
+
+`sanity_check.py`:
+
+```python
+from pathlib import Path
+import pandas as pd
+
+DATA_DIR = "data/"
+ERA_START_YEAR = 2014
+
+def load_csv(name: str) -> pd.DataFrame:
+    return pd.read_csv(DATA_DIR + f"{name}.csv", na_values=r"\N")
+
+def check_ids_match(
+    child: pd.DataFrame,
+    child_col: str,
+    parent: pd.DataFrame,
+    parent_col: str,
+) -> None:
+    # Report whether every ID in child_col exists in parent_col.
+    child_ids = set(child[child_col].dropna().unique())
+    parent_ids = set(parent[parent_col].dropna().unique())
+    missing = child_ids - parent_ids
+
+    label = f"{child_col} -> {parent_col}"
+    if not missing:
+        print(f"{label} OK")
+    else:
+        print(f"{label} MISSING {len(missing)}")
+
+
+def describe_non_finishes(results: pd.DataFrame) -> None:
+    # Show how non-finishes show up in the (era) results table.
+    classified = results["position"].notna()
+
+    print("\nHOW ARE NON-FINISHES REPRESENTED")
+    print(f"Position set: {int(classified.sum())}")
+    print(f"Position blank: {int((~classified).sum())}")
+
+    # A row is a non-finish when position is blank. The positionText column
+    # carries a short code for why.
+
+    print("\nNON-FINISH positionText CODES")
+    for code, count in results.loc[~classified, "positionText"].value_counts().items():
+        print(f"{str(code)}: {count}")
+
+    print("\nstatus TEXT FOR NON-FINISHES (TOP 10)")
+    for text, count in results.loc[~classified, "status"].value_counts().head(10).items():
+        print(f"{str(text)}: {count}")
+
+
+def describe_grid_sentinel(results: pd.DataFrame) -> None:
+    # grid == 0 is not a real position. It means "no grid slot" (withdrew,
+    # pit-lane start, or retired before the start), so it must not be read as
+    # starting last.
+    sentinel = results["grid"] == 0
+
+    print("\nGRID == 0 SENTINEL")
+    print(f"Rows with grid == 0: {int(sentinel.sum())}")
+    print(f"Real grid range: {int(results.loc[~sentinel, 'grid'].min())}-{int(results.loc[~sentinel, 'grid'].max())}")
+
+def check_qualifying_coverage(results: pd.DataFrame, qualifying: pd.DataFrame) -> None:
+    # Every result should have a matching qualifying row. Report the ones that
+    # don't, since a left join would leave their qualiPosition blank.
+    keys = ["raceId", "driverId"]
+    matched = results.merge(qualifying[keys].assign(hasQualifying=True), on=keys, how="left")
+    missing = matched["hasQualifying"].isna()
+
+    print("\nQUALIFYING COVERAGE")
+    print(f"Results without a qualifying row: {int(missing.sum())}")
+
+def main() -> None:
+    results = load_csv("results")
+    races = load_csv("races")
+    drivers = load_csv("drivers")
+    constructors = load_csv("constructors")
+    qualifying = load_csv("qualifying")
+    status = load_csv("status")
+
+    # Attach the season year to every result, then keep only the era we model.
+    results = results.merge(races[["raceId", "year", "round"]], on="raceId", how="left")
+    era = results[results["year"] >= ERA_START_YEAR].copy()
+
+    print("SANITY CHECK")
+    print("------------")
+    print(f"All results rows:  {len(results)}")
+    print(f"Era results rows:  {len(era)}  ({int(era['year'].min())}-{int(era['year'].max())})")
+
+    print("\nID INTEGRITY")
+    check_ids_match(era, "raceId", races, "raceId")
+    check_ids_match(era, "driverId", drivers, "driverId")
+    check_ids_match(era, "constructorId", constructors, "constructorId")
+    check_ids_match(era, "statusId", status, "statusId")
+
+    # Bring in the human-readable status text so DNFs are easy to read.
+    era = era.merge(status, on="statusId", how="left")
+    describe_non_finishes(era)
+    describe_grid_sentinel(era)
+    check_qualifying_coverage(era, qualifying)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+uv run sanity_check.py
+SANITY CHECK
+------------
+All results rows:  26759
+Era results rows:  4626  (2014-2024)
+
+ID INTEGRITY
+raceId -> raceId OK
+driverId -> driverId OK
+constructorId -> constructorId OK
+statusId -> statusId OK
+
+HOW ARE NON-FINISHES REPRESENTED
+Position set: 3905
+Position blank: 721
+
+NON-FINISH positionText CODES
+R: 680
+W: 28
+D: 11
+N: 1
+E: 1
+
+status TEXT FOR NON-FINISHES (TOP 10)
+Collision: 137
+Accident: 77
+Engine: 75
+Collision damage: 52
+Brakes: 43
+Retired: 41
+Power Unit: 38
+Gearbox: 34
+Suspension: 21
+Electrical: 14
+
+GRID == 0 SENTINEL
+Rows with grid == 0: 79
+Real grid range: 1-22
+
+QUALIFYING COVERAGE
+Results without a qualifying row: 16
+```
+
+The check confirms that IDs match. Every `raceId`, `driverId`, `constructorId`,
+and `statusId` used in the era's `results.csv` rows resolves to a row in its
+parent table, so joins won't silently drop data.
+
+It also confirms that non-finishes are represented as a **blank** finish position.
+
+Note that the source data writes missing values as the literal string `\N`,
+which pandas reads as text. So we pass `na_values=r"\N"`. With that set,
+non-finish rows line up perfectly with the short `positionText` codes: `R`, `W`,
+`D`, `N`, and `E`. In the era, that's 721 non-finishes out of 4,626 results.
+
+The `status` table gives the human-readable reason (`Collision`, `Engine`,
+`Brakes`, etc.). We'll use these later when non-finishing becomes part of the
+target.
+
+The check also caught something to take note of. `grid == 0` means "no grid
+slot" (withdrew, pit-lane start, or retired before the start). Real grid
+positions run 1–22, so we must convert 0 to "missing" before using `grid` as a
+feature.
+
+Finally, the check also revealed that 16 results have no qualifying row. These
+are drivers who didn't take part in qualifying, so a left join onto
+`qualifying.csv` will leave their `qualiPosition` blank. We'll need to handle
+those rows when we build features.
+
+## Phase 2: Merge into a Single Race Weekend Dataset
+
+Right now, our data is split across 4–5 files. We need one clean table where
+every row represents one driver in one race.
+
+Before actually doing any joins, we still have to decide if we want our target
+to be the `positionOrder` (the official final classification from `1` to `20`)
+or if we want to use `points` directly.
+
+If we used `points`, half the training rows would have a target of `0` because
+positions 11 through 20 all receive 0 points. `positionOrder` is more granular.
+For that reason, let's go with `positionOrder` which we can map to `points`
+afterward anyway.
+
+With that decided, we must...
+
+1. Join `results.csv` with `races.csv` (adds `year`, `round`, `circuit`).
+2. Join with `drivers.csv` and `constructors.csv` (adds human-readable
+   names/IDs).
+3. Join with `qualifying.csv` (adds grid position).
+
+`build_dataset.py`:
+
+```python
+import pandas as pd
+
+DATA_DIR = "data/"
+ERA_START_YEAR = 2014
+OUTPUT_FILE = "data/race_weekend.csv"
+
+def load_csv(name: str) -> pd.DataFrame:
+    return pd.read_csv(DATA_DIR + f"{name}.csv", na_values=r"\N")
+
+def build_race_weekend() -> pd.DataFrame:
+    results = load_csv("results")
+    races = load_csv("races")
+    drivers = load_csv("drivers")
+    constructors = load_csv("constructors")
+    qualifying = load_csv("qualifying")
+    status = load_csv("status")
+
+    # Attach race info (year, round, circuit) and keep only the era we model.
+    races = races[["raceId", "year", "round", "circuitId", "name"]].rename(
+        columns={"name": "race"}
+    )
+    df = results.merge(races, on="raceId", how="left")
+    df = df[df["year"] >= ERA_START_YEAR].copy()
+
+    # Attach human-readable driver and constructor names.
+    drivers = drivers.assign(driver=drivers["forename"] + " " + drivers["surname"])
+    df = df.merge(drivers[["driverId", "driver"]], on="driverId", how="left")
+
+    constructors = constructors[["constructorId", "name"]].rename(
+        columns={"name": "constructor"}
+    )
+    df = df.merge(constructors, on="constructorId", how="left")
+
+    # Attach the pure qualifying result. results.grid is the race grid, so we
+    # rename qualifying's position to avoid clashing with the race position.
+    qualifying = qualifying[["raceId", "driverId", "position"]].rename(
+        columns={"position": "qualiPosition"}
+    )
+    df = df.merge(qualifying, on=["raceId", "driverId"], how="left")
+
+    # Attach the human-readable status text.
+    df = df.merge(status, on="statusId", how="left")
+
+    # grid == 0 is a sentinel for "no grid slot" not a real position, so treat
+    # it as missing.
+    df["grid"] = df["grid"].where(df["grid"] != 0)
+
+    return df
+
+
+def main() -> None:
+    df = build_race_weekend()
+
+    # Keep one row per driver per race, with the columns we actually need.
+    columns = [
+        "raceId", "year", "round", "race", "circuitId",
+        "driverId", "driver", "constructorId", "constructor",
+        "grid", "qualiPosition",
+        "positionOrder", "positionText", "points", "status",
+    ]
+    df = df[columns]
+
+    print("RACE WEEKEND DATASET")
+    print("--------------------")
+    print(f"Rows: {len(df)}")
+    print(f"Races: {df['raceId'].nunique()}")
+    print(f"Drivers: {df['driverId'].nunique()}")
+    print(f"Constructors: {df['constructorId'].nunique()}")
+    print(f"Years: {int(df['year'].min())}-{int(df['year'].max())}")
+
+    print("\nMISSING VALUES")
+    for column in ["grid", "qualiPosition", "positionOrder", "status"]:
+        print(f"{column}: {int(df[column].isna().sum())}")
+
+    df.to_csv(OUTPUT_FILE, index=False)
+    print(f"\nWrote {OUTPUT_FILE}")
+
+if __name__ == "__main__":
+    main()
+```
+
+```powershell
+uv run build_dataset.py
+RACE WEEKEND DATASET
+--------------------
+Rows: 4626
+Races: 228
+Drivers: 59
+Constructors: 20
+Years: 2014-2024
+
+MISSING VALUES
+grid: 79
+qualiPosition: 16
+positionOrder: 0
+status: 0
+
+Wrote data/race_weekend.csv
+```
+
+The merge produces 4,626 rows. That's one per driver per race across 228
+races, 59 drivers, and 20 constructors, spanning 2014–2024. The row count
+matches the era count from Phase 1, so no rows were lost or duplicated by the
+joins.
+
+The 79 `grid == 0` rows and 16 missing `qualiPosition` rows show up here exactly
+as expected, and we handle them.
+
+`positionOrder` and `status` are complete (no missing values), which is what we
+want since `positionOrder` is our target.
+
+The new dataset file is written to `data/race_weekend.csv`.
+
+## Phase 3: Feature Engineering
+
+If we only feed the model raw categorical IDs, it won't generalize well. We want
+to compute dynamic metrics that will help us predict outcomes.
+
+First, we'll calculate a "rolling form." What was this constructor’s average finish over the last 3 to 5 races? What was the driver's?
+
+Next, we'll calculate "teammate delta." How does Driver A perform compared to
+Driver B in the exact same car?
+
+When engineering features, we must adhere to this golden rule: prevent data
+leakage. For our data, that means being aware of chronological data. Because F1
+is chronological, any feature for any given race must only be calculated using
+data from races that _came before it_. We can never use a random
+`train_test_split`; we must always split chronologically (e.g., train on seasons
+2018–2022, validate on 2023).
+
+`build_features.py`:
+
+```python
+import pandas as pd
+
+DATA_DIR = "data/"
+INPUT_FILE = "race_weekend"
+OUTPUT_FILE = "data/features.csv"
+ROLLING_WINDOW = 5
+
+def load_csv(name: str) -> pd.DataFrame:
+    return pd.read_csv(DATA_DIR + f"{name}.csv", na_values=r"\N")
+
+def add_rolling_form(df: pd.DataFrame, group_col: str, output_col: str) -> pd.DataFrame:
+    # Average finish position over the previous ROLLING_WINDOW races for each
+    # driver or constructor. shift(1) drops the current race, so a row only ever
+    # sees races that happened before it (the golden rule).
+    df[output_col] = (
+        df.groupby(group_col)["positionOrder"]
+        .transform(lambda s: s.shift(1).rolling(ROLLING_WINDOW, min_periods=1).mean())
+    )
+    return df
+
+def add_teammate_delta(df: pd.DataFrame) -> pd.DataFrame:
+    # For each row, the qualifying position of the other car(s) in the same team
+    # that race. Returns NaN when there is no teammate.
+    group = df.groupby(["raceId", "constructorId"])["qualiPosition"]
+    total = group.transform("sum")
+    count = group.transform("count")
+    df["teammateQuali"] = (total - df["qualiPosition"]) / (count - 1)
+
+    # Positive means this driver qualified worse than their teammate.
+    df["teammateDelta"] = df["qualiPosition"] - df["teammateQuali"]
+    return df
+
+def build_features() -> pd.DataFrame:
+    df = load_csv(INPUT_FILE)
+
+    # F1 is chronological, so order races oldest to newest before any rolling.
+    df = df.sort_values(["year", "round"]).reset_index(drop=True)
+
+    df = add_rolling_form(df, "driverId", "driverForm")
+    df = add_rolling_form(df, "constructorId", "constructorForm")
+    df = add_teammate_delta(df)
+
+    return df
+
+def main() -> None:
+    df = build_features()
+
+    columns = [
+        "raceId", "year", "round", "race",
+        "driverId", "driver", "constructorId", "constructor",
+        "grid", "qualiPosition", "teammateDelta",
+        "driverForm", "constructorForm",
+        "positionOrder",
+    ]
+    df = df[columns]
+
+    print("FEATURES")
+    print("--------")
+    print(f"Rows: {len(df)}")
+    print(f"Years: {int(df['year'].min())}-{int(df['year'].max())}")
+
+    print("\nMISSING VALUES")
+    for column in ["grid", "qualiPosition", "teammateDelta", "driverForm", "constructorForm"]:
+        print(f"{column}: {int(df[column].isna().sum())}")
+
+    print("\nSAMPLE (2014 round 5, so rolling form has history)")
+    sample = df[(df["year"] == 2014) & (df["round"] == 5)]
+    print(sample.head(5).to_string(index=False))
+
+    df.to_csv(OUTPUT_FILE, index=False)
+    print(f"\nWrote {OUTPUT_FILE}")
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+uv run build_features.py
+FEATURES
+--------
+Rows: 4626
+Years: 2014-2024
+
+MISSING VALUES
+grid: 79
+qualiPosition: 16
+teammateDelta: 32
+driverForm: 59
+constructorForm: 20
+
+SAMPLE (2014 round 5, so rolling form has history)
+ raceId  year  round               race  driverId           driver  constructorId constructor  grid  qualiPosition  teammateDelta  driverForm  constructorForm  positionOrder
+    904  2014      5 Spanish Grand Prix         1   Lewis Hamilton            131    Mercedes   1.0            1.0           -1.0        5.50              1.6              1
+    904  2014      5 Spanish Grand Prix         3     Nico Rosberg            131    Mercedes   2.0            2.0            1.0        1.75              1.4              2
+    904  2014      5 Spanish Grand Prix       817 Daniel Ricciardo              9    Red Bull   3.0            3.0           -7.0       11.50              7.0              3
+    904  2014      5 Spanish Grand Prix        20 Sebastian Vettel              9    Red Bull  15.0           10.0            7.0        8.00              4.4              4
+    904  2014      5 Spanish Grand Prix       822  Valtteri Bottas              3    Williams   4.0            4.0           -5.0        7.00              9.0              5
+
+Wrote data/features.csv
+```
+
+We now have three engineered features on top of the raw grid and qualifying
+positions.
+
+**`driverForm`** and **`constructorForm`** are the average finish position over
+the previous 5 races. We sort races oldest to newest and use `shift(1)` before
+the rolling mean, so a row only ever sees races that happened _before_ it. We
+can verify this by hand: Hamilton's `driverForm` at round 6 is `4.6`, exactly
+the mean of his rounds 1–5 finishes (`19, 1, 1, 1, 1`). No leakage.
+
+And **`teammateDelta`** is the driver's qualifying position minus their
+teammate's in the same race. Positive means they qualified worse than their
+teammate, so it isolates driver skill from the car.
+
+The missing values are all expected and traceable:
+
+- `grid` (79) and `qualiPosition` (16) are the sentinel and missing-qualifying
+  rows we already flagged.
+- `driverForm` (59) and `constructorForm` (20) represent the first race for each
+  driver and constructor, where there is no prior history yet..
+- `teammateDelta` (32) are the rows with no teammate that race (a lone car, or a
+  missing `qualiPosition`).
+
+The feature set is written to `data/features.csv`.
+
+## Phase 4: Establish the "Dumb" Baseline
+
+Before touching any machine learning library, let's establish a baseline score
+to beat. Our baseline will be: "Predict that every driver finishes in the exact
+position they started."
+
+From there, we can calculate the Mean Absolute Error (MAE) of that naive
+prediction.
+
+In F1, grid position is a surprisingly strong predictor. If our fancy ML model
+cannot beat the grid position baseline, the model isn't really learning.
+
+`baseline.py`:
+
+```python
+import pandas as pd
+
+DATA_DIR = "data/"
+INPUT_FILE = "features"
+
+def load_csv(name: str) -> pd.DataFrame:
+    return pd.read_csv(DATA_DIR + f"{name}.csv", na_values=r"\N")
+
+def add_start_position(df: pd.DataFrame) -> pd.DataFrame:
+    # The baseline predicts the finish from where the driver started. grid is
+    # the race grid, but it's missing for the sentinel rows, so fall back to the
+    # qualifying position when we can.
+    df["startPosition"] = df["grid"].fillna(df["qualiPosition"])
+    return df
+
+def main() -> None:
+    df = load_csv(INPUT_FILE)
+    df = add_start_position(df)
+
+    # We can only score rows that have a starting position and a finish.
+    scored = df.dropna(subset=["startPosition", "positionOrder"]).copy()
+
+    # The "dumb" baseline: predict every driver finishes exactly where they
+    # started.
+    scored["prediction"] = scored["startPosition"]
+    scored["error"] = (scored["prediction"] - scored["positionOrder"]).abs().astype(int)
+
+    mae = scored["error"].mean()
+
+    print("BASELINE: FINISH = START POSITION")
+    print("---------------------------------")
+    print(f"Rows scored: {len(scored)}")
+    print(f"Dropped (no start position): {len(df) - len(scored)}")
+    print(f"MAE: {mae:.3f}")
+
+    print("\nERROR DISTRIBUTION")
+    for error, count in scored["error"].value_counts().sort_index().items():
+        print(f"{error}: {count}")
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+uv run baseline.py
+BASELINE: FINISH = START POSITION
+---------------------------------
+Rows scored: 4624
+Dropped (no start position): 2
+MAE: 3.605
+
+ERROR DISTRIBUTION
+0: 689
+1: 944
+2: 699
+3: 524
+4: 424
+5: 314
+6: 250
+7: 193
+8: 115
+9: 101
+10: 79
+11: 59
+12: 58
+13: 40
+14: 33
+15: 25
+16: 32
+17: 18
+18: 16
+19: 8
+20: 3
+```
+
+### The Baseline Score
+
+The naive baseline scores a **Mean Absolute Error of 3.605**. That means the
+prediction is off by about 3.6 positions on average. That's the number our model
+must beat.
+
+This output also gives us some insight into Formula 1. The error distribution
+shows the baseline is exactly right for 689 rows and within 1 position for
+another 944. Starting position is a very strong indicator of finishing position.
+But the long tail (errors of 10+) is where the chaos of F1 lives. All the
+crashes, mechanical failures, and other unpredictable factors live there.
+
+## Phase 5: Train the Model
+
+Now we're ready to use `scikit-learn`, the ML library.
+
+We'll treat this as a regression task. Meaning we'll predict expected finishing
+position as a continuous float like `4.2`, then sort the drivers `1` to `20` per
+race.
+
+We'll train on past seasons, test on a holdout season, and measure whether our
+error beats the baseline from Phase 4.
+
+`model.py`:
+
+```python
+import pandas as pd
+from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.metrics import mean_absolute_error
+
+DATA_DIR = "data/"
+INPUT_FILE = "features"
+HOLDOUT_YEAR = 2023
+
+FEATURES = ["grid", "qualiPosition", "teammateDelta", "driverForm", "constructorForm"]
+TARGET = "positionOrder"
+
+def load_csv(name: str) -> pd.DataFrame:
+    return pd.read_csv(DATA_DIR + f"{name}.csv", na_values=r"\N")
+
+def add_start_position(df: pd.DataFrame) -> pd.DataFrame:
+    # Same starting position the Phase 4 baseline uses, so we can score both on
+    # the exact same holdout rows.
+    df["startPosition"] = df["grid"].fillna(df["qualiPosition"])
+    return df
+
+def split_by_year(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    # The golden rule: split chronologically, never randomly. Train on every
+    # season before the holdout, test on the holdout season.
+    train = df[df["year"] < HOLDOUT_YEAR]
+    test = df[df["year"] == HOLDOUT_YEAR]
+    return train, test
+
+def main() -> None:
+    df = load_csv(INPUT_FILE)
+    df = add_start_position(df)
+
+    train, test = split_by_year(df)
+
+    # HistGradientBoosting handles missing feature values natively, so we don't
+    # need to impute the grid/quali/form gaps.
+    model = HistGradientBoostingRegressor(random_state=0)
+    model.fit(train[FEATURES], train[TARGET])
+
+    test = test.copy()
+    test["prediction"] = model.predict(test[FEATURES])
+
+    # Score the model and the baseline on the same rows for a fair comparison.
+    scored = test.dropna(subset=["startPosition", TARGET])
+    model_mae = mean_absolute_error(scored[TARGET], scored["prediction"])
+    baseline_mae = mean_absolute_error(scored[TARGET], scored["startPosition"])
+
+    print("MODEL vs BASELINE")
+    print("-----------------")
+    print(f"Train rows: {len(train)}  ({int(train['year'].min())}-{int(train['year'].max())})")
+    print(f"Test rows:  {len(scored)}  ({HOLDOUT_YEAR})")
+    print(f"Baseline MAE: {baseline_mae:.3f}")
+    print(f"Model MAE:    {model_mae:.3f}")
+    print(f"Improvement:  {baseline_mae - model_mae:.3f}")
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+uv run model.py
+MODEL vs BASELINE
+-----------------
+Train rows: 3707  (2014-2022)
+Test rows:  440  (2023)
+Baseline MAE: 3.702
+Model MAE:    3.461
+Improvement:  0.241
+```
+
+The model beats the baseline! On the 2023 holdout season, the naive baseline MAE
+was `3.702`. Our model's MAE is `3.461`. That's a `0.241` position improvement.
+
+That's a real but modest gain. The model is better than "everyone finishes where
+they started," which means the engineered features (`driverForm`,
+`constructorForm`, `teammateDelta`) are adding real signal on top of grid
+position.
+
+## Phase 6: The Simulation Engine
+
+To predict how this or next season finishes...
+
+1. Take the upcoming race calendar.
+2. For Race 1, estimate the grid/pace, feed it through the trained model to get
+   predicted finish positions, and award championship points (25 for 1st, 18 for
+   2nd, etc.).
+3. Update the drivers' and teams' rolling form using the predicted results.
+4. Repeat for the next race on the calendar, accumulating points until the
+   season finale.
+5. Rank drivers and constructors by total simulated points.
+
+`simulate.py`:
+
+```python
+import pandas as pd
+from sklearn.ensemble import HistGradientBoostingRegressor
+
+DATA_DIR = "data/"
+INPUT_FILE = "features"
+TRAIN_END_YEAR = 2023
+SIM_YEAR = 2024
+ROLLING_WINDOW = 5
+
+FEATURES = ["grid", "qualiPosition", "teammateDelta", "driverForm", "constructorForm"]
+TARGET = "positionOrder"
+
+# The points system used throughout the Turbo-Hybrid era.
+POINTS = {1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1}
+
+def load_csv(name: str) -> pd.DataFrame:
+    return pd.read_csv(DATA_DIR + f"{name}.csv", na_values=r"\N")
+
+def train_model(df: pd.DataFrame) -> HistGradientBoostingRegressor:
+    train = df[df["year"] <= TRAIN_END_YEAR]
+    model = HistGradientBoostingRegressor(random_state=0)
+    model.fit(train[FEATURES], train[TARGET])
+    return model
+
+def form_for(history: pd.DataFrame, group_col: str, keys: pd.Series) -> pd.Series:
+    # Mean of the last ROLLING_WINDOW finishes for each driver or constructor.
+    recent = (
+        history.groupby(group_col)["positionOrder"]
+        .apply(lambda s: s.tail(ROLLING_WINDOW).mean())
+    )
+    return keys.map(recent)
+
+def teammate_delta(race: pd.DataFrame) -> pd.Series:
+    # Same idea as Phase 3, but computed within a single race.
+    group = race.groupby("constructorId")["qualiPosition"]
+    total = group.transform("sum")
+    count = group.transform("count")
+    teammate = (total - race["qualiPosition"]) / (count - 1)
+    return race["qualiPosition"] - teammate
+
+def build_race_features(race: pd.DataFrame, history: pd.DataFrame) -> pd.DataFrame:
+    features = race.copy()
+    features["driverForm"] = form_for(history, "driverId", race["driverId"])
+    features["constructorForm"] = form_for(history, "constructorId", race["constructorId"])
+    features["teammateDelta"] = teammate_delta(race)
+    return features
+
+def simulate_season(model, season: pd.DataFrame, history: pd.DataFrame) -> pd.DataFrame:
+    # history grows as we go: each race's predicted finishes feed the next
+    # race's rolling form, so the season evolves on its own predictions.
+    results = []
+    for _, race in season.groupby("raceId", sort=True):
+        features = build_race_features(race, history)
+        race = race.copy()
+        race["prediction"] = model.predict(features[FEATURES])
+
+        # Rank the field by predicted finish and award championship points.
+        race = race.sort_values("prediction").reset_index(drop=True)
+        race["simPosition"] = race.index + 1
+        race["points"] = race["simPosition"].map(POINTS).fillna(0)
+        results.append(race)
+
+        # Feed the predicted finishes back in as history for the next race.
+        history = pd.concat([
+            history,
+            race[["driverId", "constructorId", "simPosition"]].rename(
+                columns={"simPosition": "positionOrder"}
+            ),
+        ])
+
+    return pd.concat(results)
+
+def total_points(results: pd.DataFrame, group_col: str) -> pd.Series:
+    return results.groupby(group_col)["points"].sum().sort_values(ascending=False)
+
+def main() -> None:
+    df = load_csv(INPUT_FILE)
+    model = train_model(df)
+
+    season = df[df["year"] == SIM_YEAR]
+    history = df[df["year"] < SIM_YEAR]
+
+    simulated = simulate_season(model, season, history)
+
+    # Actual points, using the same scoring, so the comparison is fair.
+    actual = season.copy()
+    actual["points"] = actual["positionOrder"].map(POINTS).fillna(0)
+
+    print(f"SIMULATED {SIM_YEAR} SEASON")
+    print("--------------------------")
+    print(f"Races: {season['raceId'].nunique()}")
+
+    print("\nDRIVERS (simulated vs actual points)")
+    sim_drivers = total_points(simulated, "driverId")
+    act_drivers = total_points(actual, "driverId")
+    names = season.drop_duplicates("driverId").set_index("driverId")["driver"]
+    for driver_id in sim_drivers.head(10).index:
+        print(f"{names[driver_id]:<22} sim {sim_drivers[driver_id]:>5.0f}   actual {act_drivers.get(driver_id, 0):>5.0f}")
+
+    print("\nCONSTRUCTORS (simulated vs actual points)")
+    sim_teams = total_points(simulated, "constructorId")
+    act_teams = total_points(actual, "constructorId")
+    team_names = season.drop_duplicates("constructorId").set_index("constructorId")["constructor"]
+    for team_id in sim_teams.index:
+        print(f"{team_names[team_id]:<22} sim {sim_teams[team_id]:>5.0f}   actual {act_teams.get(team_id, 0):>5.0f}")
+
+    print(f"\nSimulated champion: {names[sim_drivers.index[0]]}")
+    print(f"Actual champion:    {names[act_drivers.index[0]]}")
+
+if __name__ == "__main__":
+    main()
+```
+
+```bash
+uv run simulate.py
+SIMULATED 2024 SEASON
+--------------------------
+Races: 24
+
+DRIVERS (simulated vs actual points)
+Max Verstappen         sim   456   actual   396
+Lando Norris           sim   375   actual   338
+Charles Leclerc        sim   314   actual   324
+Oscar Piastri          sim   263   actual   265
+Carlos Sainz           sim   225   actual   261
+George Russell         sim   225   actual   224
+Sergio Pérez           sim   210   actual   137
+Lewis Hamilton         sim   153   actual   205
+Fernando Alonso        sim    81   actual    69
+Yuki Tsunoda           sim    44   actual    29
+
+CONSTRUCTORS (simulated vs actual points)
+Red Bull               sim   666   actual   533
+McLaren                sim   638   actual   603
+Ferrari                sim   541   actual   591
+Mercedes               sim   378   actual   429
+Aston Martin           sim    90   actual    93
+RB F1 Team             sim    59   actual    40
+Alpine F1 Team         sim    26   actual    63
+Haas F1 Team           sim    19   actual    51
+Williams               sim     6   actual    17
+Sauber                 sim     1   actual     4
+
+Simulated champion: Max Verstappen
+Actual champion:    Max Verstappen
+```
+
+Note: To keep the comparison 1:1, "actual" points here are calculated using only
+the standard Grand Prix top-10 scoring table (excluding sprint races and fastest
+lap bonus points).
+
+The simulation gets the big picture right. It predicts **Max Verstappen** as the
+2024 champion, matching reality, and the top of the table is close: Verstappen,
+Norris, Leclerc, and Piastri are the top four in both the simulation and real
+life.
+
+The mechanics work exactly as planned:
+
+1. We train on every season up to 2023.
+2. For each 2024 race, we build the features, predict a finish for every driver,
+   rank them, and award points.
+3. The predicted finishes are fed back in as history, so each race's rolling
+   form is built from the simulation's own earlier predictions.
+4. We accumulate points across all 24 races and rank drivers and constructors.
+
+There are some gaps, however. The simulation is too confident about the top
+teams. For example, it gives Red Bull and Pérez too many points. That's because
+the model leans on `constructorForm` and `qualiPosition`, which were strong for
+Red Bull early in the era, so it doesn't capture Pérez's mid-season collapse.
+
+It also underrates the midfield (Alpine and Haas), where real races are decided
+by chaos the model can't see.
+
+That's the limitation of a pure pace model. It predicts the shape of the season
+well but smooths out the variance that makes F1 unpredictable.
+
+## Next Steps & Further Ideas
+
+The pipeline works, but where might we go next?
+
+The simulation still relies on actual qualifying and grid data from each 2024
+race weekend. To predict an upcoming season before it happens, you won't have
+grid slots in advance. You could build a two-stage pipeline that first predicts
+the qualifying position, and then feeds the simulated grid into the race finish
+model.
+
+Another idea: F1 has huge structural variance that a deterministic average
+smooths away. You could run 1,000 or 10,000 simulated seasons Monte-Carlo style,
+injecting sample DNF probabilities or Gaussian noise to predicted finish values
+to simulate race-day chaos.
+
+One more: The model currently uses a regressor that treats every driver
+independently. It does not understand that a race is a zero-sum, closed system
+with exactly 20 participants where one driver gaining a spot forces another to
+lose one. You could use a pairwise ranking objective like `LGBMRanker` so the
+model learns relative ordering within each individual Grand Prix.
+
+Cover photo by [Lennon Kong](https://unsplash.com/@bylennonk) on
+[Unsplash](https://unsplash.com/photos/a-close-up-of-a-toy-race-car-on-a-white-surface-iczg9tvalKA).
