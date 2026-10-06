@@ -1,6 +1,8 @@
 ---
 import "@fontsource-variable/source-code-pro";
+import "@fontsource-variable/source-sans-3";
 import sourceCodeProWoff2 from "@fontsource-variable/source-code-pro/files/source-code-pro-latin-wght-normal.woff2?url";
+import sourceSans3Woff2 from "@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url";
 import "../styles/global.css";
 import { getImage } from "astro:assets";
 import { siteTitle, siteDescription } from "../site";
@@ -38,6 +40,13 @@ const pageOgImage = ogImage || optimizedDefaultCover.src;
       href={sourceCodeProWoff2}
       crossorigin="anonymous"
     />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href={sourceSans3Woff2}
+      crossorigin="anonymous"
+    />
 
     <title>{pageTitle}</title>
 
@@ -65,7 +74,7 @@ const pageOgImage = ogImage || optimizedDefaultCover.src;
   </head>
   <body>
     <div
-      class="min-h-screen bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-50 pb-24 font-mono"
+      class="min-h-screen bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-50 pb-24 text-xl"
     >
       <div class="max-w-3xl mx-auto py-12 px-4 flex flex-col gap-12">
         <header class="flex flex-col gap-4">

@@ -2,6 +2,7 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
+  --font-sans: "Source Sans 3 Variable", sans-serif;
   --font-mono: "Source Code Pro Variable", "monospace";
 }
 
@@ -18,15 +19,20 @@
 /* To better indicate inline code, add custom styling that emulates the Shiki
    theme. */
 .prose :not(pre) > code {
-  background-color: #0a0c10;
+  background-color: #0a0c10c0;
   color: #ebf3f1;
-  padding: 0.10rem 0.35rem;
+  padding: 0rem 0.35rem;
   border-radius: 0.25rem;
   font-weight: 400;
+  font-size: 0.8em;
 
   /* Prevent wrapping inline code */
   display: inline-block;
   vertical-align: baseline;
   max-width: 100%;
   overflow-wrap: break-word;
+}
+
+.prose pre {
+  line-height: 1.4;
 }
