@@ -5,132 +5,145 @@ tags:
 title: Financial Anomalies and Fraud Detection using Vectors
 ---
 
-* **The Hook:** Walk through a classic fraud rule: `IF amount > $5,000 AND
-  country != 'US' THEN flag_fraud()`.
-* **The Problem:** Fraudsters know these thresholds. They don't steal $10,000
-  all at once; they make odd $45 purchases at weird hours or in strange
-  categories that don't trigger scalar rules.
-* **The Goal:** What if your database could detect when a transaction simply
-  **looks or feels out of place**, without you writing 500 brittle `IF/ELSE`
-  statements?
-* **The Teaser:** You don't need a dedicated data science platform to do this;
-  you can do it right inside MariaDB using geometric distance.
+If you have a database of financial transactions and you need to identify which
+ones might be fraudulent, how might you start? Here's a very simple query:
+
+```sql
+SELECT
+  t.*
+FROM transaction t
+WHERE
+  t.amount > 5000
+  AND t.country <> 'US';
+```
+
+There's a problem here, though. Criminals committing fraud are rarely so
+ignorant to make such an obvious transaction like that would be caught using a
+naive query like that. They're not stealing large amounts in one transaction.
+They attempt to avoid standing out by making smaller transactions at various
+hours that don't trigger simple alerts.
+
+Our system needs to detect when a transaction "feels" out of place without
+writing hundreds of complex `if/else` rules.
+
+You don't need a dedicated data science platform to do this! Often, you can do
+it right inside the RDBMS you already use.
 
 ## Thinking in Dimensions
 
-*Goal: Demystify vectors before ever introducing the word "embedding."*
+Let's consider a single property: **transaction amount**. We can plot some
+transactions on a 1 dimensional number line.
 
-* **1 Dimension (The Number Line):**
-  * Start with a single property: **Transaction Amount**.
-  * A 1D line from \$0 to \$10,000.
-  * \$12 (lunch) is close to \$15 (lunch). Both are far away from \$2,500 (new
-    laptop).
-* **2 Dimensions (The Flat Grid / Graph):**
-  * Add a second property: **Time of Day** (0 to 24 hours).
-  * Now we have an $X$ and $Y$ axis.
-  * An \$8 transaction at 8:00 AM (coffee) sits right next to another \$9
-    transaction at 8:15 AM.
-* **3 Dimensions (The Physical Room):**
-  * Add a third property: **Distance from Home** (in miles).
-  * Now transactions are floating points in a 3D cube.
-  * Regular grocery runs cluster together: low price, daytime, low distance.
-* **Breaking the Visual Barrier: N-Dimensions:**
-  * Humans cannot picture 4D, 50D, or 768D space, but **the math does not
-    change**.
-  * Each extra detail (merchant category, device signature, memo keywords,
-    purchase frequency) is just another axis on the coordinate grid.
-* **The Big Reveal (The "Vector"):**
-  * Explain that a "vector" is simply this point's address: an array of numbers
-    representing its position along all those axes (e.g., `[12.50, 8.5, 1.2,
-    0.44, ...]`).
+![A number line starting at 0 and ending at 300. Dots are clustered on the left
+with a few spaced far away on the right.](./images/1d-number-line.webp)
+
+You can easily see a cluster of $5-25 transactions, a couple higher-prices
+transactions, and one $300 transaction that's very far away from the others.
+
+Now let's add another property: **time of day**. We can plot those exact same
+transactions on a flat 2-dimension grid.
+
+![A scatter plot with numbers 0 to 300 on the X axis. Times 00:00 to 24:00 on
+the Y axis. Dots are mostly clustered on the upper left with some
+outliers.](./images/2d-flat-scatter.webp)
+
+This adds another dimension that we can use to further visualize clusters of
+transactions. Most are low-price and during the day. Some are higher price
+and/or later in the day.
+
+Let's continue by adding a third property: **distance from home**.
+
+![A 3D plot with axes for amount, time of day, and distance. Some dots are
+clustered and others are outliers. Animated: the perspective slowly shifts to
+see the dots from different angles.](./images/3d-scatter-transactions.webp)
+
+Now transactions are floating points in a 3D cube. This gives us another
+dimension to visually see which dots are clustered and which are outliers.
+Regular transactions cluster together: low price, daytime, nearby. Outliers
+appear easily because high price, nighttime, distant transactions appear further
+from the regular cluster.
+
+
+This is as far as we can go *visually*. Humans cannot picture 4D, 50D, or 768D
+space, but **the math does not change**.
+
+Each extra property (merchant category, device signature, memo keywords,
+purchase frequency) is just another axis that we can add to our virtual graph.
+
+You may have heard of **vectors** or a **vector database**. A vector is simply a
+point's address. It's an array of numbers representing the point's position
+along all those axes. For example: `[4.85, 7.45, 1.2, ...]`.
 
 ## From Normal Transactions to Vectors
 
-*Goal: Ground the concept in familiar relational database terms.*
+Numeric properties are easy to plot and calculate a distance between. Messy,
+complex properties like descriptions, memos, and behavior are a different story.
 
-* **The Familiar Ground:**
-  * Show a standard relational table the reader already has:
-    ```text
-    transactions (id, user_id, amount, merchant_name, description, created_at)
-    ```
-* **Introducing "Embeddings" Gently:**
-  * Define an embedding model simply: a tool that takes messy, complex data
-    (descriptions, memos, behavior) and translates it into that list of
-    coordinates.
-* **Adding the Vector to MariaDB:**
-  * Highlight how natural it is: you don't migrate data; you simply add a
-    `VECTOR` column and an index to your existing table.
-  * The coordinates live right alongside the user ID, invoice number, and
-    timestamp.
+Luckily, we have **embedding models**. They take that messy data and translate
+it into vectors. The models, like OpenAI's `text-embedding-3` have been trained
+on an enormous amount of text and can easily capture what the transaction is
+*conceptually about*. For example, an embedding model will place "Shell" and
+"Chevron" near to each other because, even if those two words seem unrelated on
+their face, we know (and the model knows) they are both names of gas stations.
+
+Adding a vector is not complicated:
+
+1. Add a database column with the appropriate data type. For example, in MariaDB, you can add `VECTOR(1536)`.
+2. Pass a transaction's merchant name, description, memo, and similar to either a local model or a third-party like OpenAI.
+3. Update the transaction with the returned vector.
+
+The vector lives right alongside the rest of your transaction's values.
 
 ## How "Normal" Behavior Clusters
 
-*Goal: Solidify the concept of similarity and clustering before pivoting to
-anomalies.*
+A typical consumer's financial life forms a "neighborhood" in high-dimensional
+space. They may purchase transit passes every weekday. They may frequent nearby
+lunch spots. They may pay for recurring subscriptions.
 
-* **The Daily Routine:**
-  * A typical customer's financial life forms a "neighborhood" in
-    high-dimensional space:
-    * Weekday transit passes.
-    * Nearby lunch spots.
-    * Recurring subscriptions.
-* **Visualization Suggestion for the Post:**
-  * *Tip:* Include a conceptual 2D scatter plot (or sketch) showing dozens of
-    dots clustered tightly together labeled *"Alice's Normal Habits"*
-    (groceries, bills, lunch).
-* **Measuring "Closeness":**
-  * Explain that MariaDB can calculate the distance between any two points
-    (using cosine or Euclidean distance).
-  * High similarity = tiny distance.
+Your database system can calculate the distance between any two points. Points
+that are near to each other have a high similarity.
 
 ## Inverting Vector Search for Anomaly Detection
 
-*Goal: Deliver the core insight of the article.*
+What happens when you check a transaction and the distance to its nearest
+neighbor is **miles away**?
 
-* **The Search Paradigm We're Used To:**
-  * Vector search usually asks: *"Find me the 5 things closest to this point."*
-* **The Inversion (The Eureka Step):**
-  * What happens when you check the distance to the nearest neighbor, and the
-    closest point is **still miles away**?
-  * If a new transaction lands in an empty, unpopulated region of Alice's
-    coordinate space, it means **this customer has never done anything
-    conceptually like this before**.
-* **Concrete Financial Scenario:**
-  * Alice's regular habits are clustered.
-  * A new transaction arrives: \$48 at 3:00 AM for *"Cryptocurrency gift card
-    exchange"*.
-  * The amount (\$48) is small enough to bypass traditional high-dollar alerts,
-    but in vector space, it is stranded completely outside her normal cluster.
-  * **Result:** Instant anomaly flag.
+If a new transaction lands in an empty, unpopulated region of the person's
+coordinate space, it means **the person has never done anything conceptually
+like this before**.
+
+For example, let's say a new transaction arrives: $48 at 3:00 AM for a
+"cryptocurrency gift card exchange".
+
+The $48 amount is small enough to bypass traditional high-dollar alerts, but in
+vector space, it is located completely outside her normal cluster.
+
+That's an instant anomaly flag.
 
 ## How It Looks in Practice
 
-*Goal: Show the developer that implementation is straightforward.*
+When a new transaction arrives, find its distance to the same consumer's closest
+past transactions:
 
-* **The Logic in Pseudo-SQL:**
-  * When a new transaction arrives, find its distance to Alice's closest past
-    transactions:
-    ```sql
-    SELECT VEC_DISTANCE_COSINE(embedding, :new_transaction_vector) AS distance
-    FROM transactions
-    WHERE user_id = :user_id
-    ORDER BY distance ASC
-    LIMIT 1;
-    ```
-* **The Decision Rule:**
-  * If `distance > threshold`, send an SMS verification or pause the transaction
-    for manual review.
-* **Why MariaDB Shines Here:**
-  * Point out that you don't need a separate vector database cluster or complex
-    sync pipelines.
-  * Because MariaDB handles vectors natively, you can do hybrid checks in a
-    single query: filter by `user_id` or date range, calculate distance, and
-    trigger the alert in milliseconds within your existing transaction loop.
+```sql
+SELECT
+  VEC_DISTANCE_COSINE(embedding, :new_transaction_vector)
+FROM transactions
+WHERE
+  user_id = :user_id
+ORDER BY
+  distance ASC
+LIMIT 1;
+```
+
+If the resulting distance is beyond a certain threshold, send a notification or
+pause the transaction for manual review.
 
 ## Not Just a Gimmick
 
-* **Key Takeaway:** Vector technology isn't just a gimmick for AI chatbots or
-  search boxes; it's a way to measure **context and normality**.
-* **Closing Thought:** Challenge the reader to look at their current database
-  tables: What other data forms "clusters" of normality where outliers would be
-  valuable to catch (e.g., error logs, login events, user review patterns)?
+Vector technology isn't just a gimmick for AI chatbots or search boxes. You can
+use it to measure context and anomalous activity.
+
+Look at your current database tables. What other data forms "clusters" where
+outliers would be valuable to catch? Hint: think along the lines of error logs,
+login events, and user review patterns.
