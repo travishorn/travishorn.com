@@ -1,6 +1,6 @@
 ---
 cover: ./images/finding-outliers-in-vector-space.webp
-datePublished: 2026-11-06 06:00:00-06:00
+datePublished: 2026-11-07 09:00:00-06:00
 tags:
   - backend-systems
   - data-science
@@ -31,7 +31,7 @@ transactions that get caught by such a naive check. They aren't stealing massive
 amounts all at once. Instead, they try to blend in by making smaller
 transactions at odd hours that won't trigger basic threshold alerts.
 
-Our system needs to detect when a transaction *feels* out of place without
+Our system needs to detect when a transaction _feels_ out of place without
 requiring us to write hundreds complex `if/else` rules.
 
 The best part? You don't need a dedicated data science platform to do this.
@@ -87,7 +87,7 @@ story.
 
 Luckily, we have **embedding models**. They take messy text and translate it
 into vectors. Models like OpenAI's `text-embedding-3` are trained on a massive
-amount of text. They can capture what a piece of text is *conceptually about*.
+amount of text. They can capture what a piece of text is _conceptually about_.
 For instance, an embedding model places "Shell" and "Chevron" near each other
 because, even though the strings look completely different, the model
 understands they are both gas stations.
